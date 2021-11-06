@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+
+  # NestJS backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    env_file:
+      - .env
+    volumes:
+      - ./backend:${BACKEND_SRC}
+      - .${BACKEND_SRC}/node_modules
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_PORT}'
+    depends_on:
+      - postgres
+    command: npm run start:dev
+
+  # Angular frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    env_file:
+      - .env
+    volumes:
+      - ./frontend:${FRONTEND_SRC}
+      - .${FRONTEND_SRC}/node_modules
+    ports:
+      - '${FRONTEND_PORT}:${FRONTEND_PORT}'
+    depends_on:
+      - backend
+    links:
+      - backend
+    command: ng serve --open --host=${HOST} --port ${FRONTEND_PORT}
+
+  # Postgres database
+  postgres:
+    image: postgres:14.0
+    env_file:
+      - .env
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
