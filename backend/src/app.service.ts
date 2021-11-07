@@ -3,6 +3,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   getHello(): any {
-    return { status: 'app running 3' };
+    return { status: 'nightwoodrepaired' };
   }
 }
