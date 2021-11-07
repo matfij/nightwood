@@ -72,12 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dragon-handlers-frontend:build:production",
-              "proxyConfig": "src/proxy.conf.json"
+              "browserTarget": "dragon-handlers-frontend:build:production"
             },
             "development": {
-              "browserTarget": "dragon-handlers-frontend:build:development",
-              "proxyConfig": "src/proxy.conf.json"
+              "browserTarget": "dragon-handlers-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"

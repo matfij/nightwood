@@ -31,4 +31,6 @@ WORKDIR ${BACKEND_SRC}
 
 COPY --from=development ${BACKEND_SRC} .
 
+EXPOSE ${PORT}
+
 CMD ["node", "dist/main"]

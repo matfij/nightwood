@@ -32,11 +32,7 @@ services:
       - .${FRONTEND_SRC}/node_modules
     ports:
       - '${FRONTEND_PORT}:${FRONTEND_PORT}'
-    depends_on:
-      - backend
-    links:
-      - backend
-    command: ng serve --open --host=${HOST} --port ${FRONTEND_PORT}
+    command: ng serve --host=${HOST} --port ${FRONTEND_PORT}
 
   # Postgres database
   postgres:
