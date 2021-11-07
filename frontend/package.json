@@ -1,6 +1,9 @@
 {
-  "name": "dragon-handlers-frontend",
+  "name": "nightwood-frontend",
   "version": "0.0.0",
+  "author": "matfij",
+  "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +11,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~12.1.0",
     "@angular/common": "~12.1.0",

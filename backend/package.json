@@ -1,8 +1,7 @@
 {
-  "name": "dragon-handlers-backend",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "nightwood-backend",
+  "version": "0.0.0",
+  "author": "matfij",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

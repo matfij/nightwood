@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "dragon-handlers-frontend": {
+    "nightwood-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/dragon-handlers-frontend",
+            "outputPath": "dist/nightwood-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dragon-handlers-frontend:build:production"
+              "browserTarget": "nightwood-frontend:build:production"
             },
             "development": {
-              "browserTarget": "dragon-handlers-frontend:build:development"
+              "browserTarget": "nightwood-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dragon-handlers-frontend:build"
+            "browserTarget": "nightwood-frontend:build"
           }
         },
         "test": {
@@ -107,5 +107,5 @@
       }
     }
   },
-  "defaultProject": "dragon-handlers-frontend"
+  "defaultProject": "nightwood-frontend"
 }
