@@ -12,7 +12,7 @@ services:
       - .env
     volumes:
       - ./backend:${BACKEND_SRC}
-      - .${BACKEND_SRC}/node_modules
+      - ${BACKEND_SRC}/node_modules/
     ports:
       - '${BACKEND_PORT}:${BACKEND_PORT}'
     depends_on:
