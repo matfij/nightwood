@@ -7,12 +7,8 @@ export class CreateUserDto {
     email: string;
 
     @IsString()
-    @MinLength(PASSWORD_MIN_LENGTH)
-    @MaxLength(PASSWORD_MAX_LENGTH)
     password: string;
 
     @IsString()
-    @MinLength(NICKNAME_MIN_LENGTH)
-    @MaxLength(NICKNAME_MAX_LENGTH)
     nickname: string;
 }

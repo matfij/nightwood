@@ -5,8 +5,7 @@ import { AuthService } from 'src/api/auth/service/auth.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../model/dto/create-user.dto';
 import { GetUserDto } from '../model/dto/get-user.dto';
-import { ILoginResponse } from '../model/dto/login-response.interface';
-import { LoginUserDto } from '../model/dto/login-user.dto';
+import { UpdateUserDto } from '../model/dto/update-user.dto';
 import { User } from '../model/user.entity';
 import { IUser } from '../model/user.interface';
 
@@ -18,22 +17,6 @@ export class UserService {
         private userRepository: Repository<User>,
         private authService: AuthService,
     ) {}
-
-    async login(dto: LoginUserDto): Promise<ILoginResponse> {
-        const user = await this.userRepository.findOne({ nickname: dto.nickname });
-        if (!user) throw new NotFoundException();
-
-        const match: boolean = await this.authService.validatePassword(dto.password, user.password);
-        if (!match) throw new BadRequestException('Incorrect password');
-
-        const token = await this.authService.generateJwt(user);
-        return {
-            id: user.id,
-            email: user.email,
-            nickname: user.nickname,
-            accessToken: token,
-        };
-    }
 
     async create(dto: CreateUserDto): Promise<IUser> {
         if (await this.emailExists(dto.email)) throw new BadRequestException('Email occupied');
@@ -48,6 +31,22 @@ export class UserService {
 
         const createdUser = this.userRepository.create(newUser);
         return this.userRepository.save(createdUser);
+    }
+
+    async update(id: string, dto: UpdateUserDto): Promise<IUser> {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new NotFoundException();
+
+        if (dto.email && dto.email !== user.email && await this.emailExists(dto.email))
+            throw new BadRequestException('Email occupied');
+        if (dto.nickname && dto.nickname !== user.nickname && await this.nicknameExists(dto.nickname))
+            throw new BadRequestException('Nickname occupied');
+
+        if (dto.email) user.email = dto.email;
+        if (dto.nickname) user.nickname = dto.nickname;
+        if (dto.password) user.password = await this.authService.hashPassword(user.password);
+
+        return this.userRepository.save(user);
     }
 
     async getOne(id: string): Promise<IUser> {
