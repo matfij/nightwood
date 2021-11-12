@@ -11,3 +11,9 @@ export const SALT_ROUNDS = 12;
  */
 export const NICKNAME_MIN_LENGTH = 4;
 export const NICKNAME_MAX_LENGTH = 16;
+
+/**
+ * Pagination
+ */
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_LIMIT = 100;
