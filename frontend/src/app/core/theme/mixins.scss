@@ -1,0 +1,5 @@
+@mixin size($size, $margin: 0px) {
+  width: $size;
+  height: $size;
+  margin: $margin;
+}

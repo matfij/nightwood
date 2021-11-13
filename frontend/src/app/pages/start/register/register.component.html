@@ -1,1 +1,18 @@
-<p>register works!</p>
+<div class="wrapper-main">
+  <div class="wrapper-content">
+
+    <div class="title title-main">Nightwood</div>
+    <div class="title title-small">Create a new account</div>
+
+    <div class="wrapper-form">
+      <form [formGroup]="form" (ngSubmit)="register()">
+        <input type="email" formControlName="email"><br>
+        <input type="text" formControlName="nickname"><br>
+        <input type="password" formControlName="password"><br>
+        <input type="password" formControlName="passwordConfirm"><br>
+
+        <button [disabled]="!form.valid">Register</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~ngx-toastr/toastr';
+
+@import 'app/core/theme/mixins.scss';
+@import 'app/core/theme/variables.scss';
+
+html, body {
+  height: 100%;
+  margin: 0px !important;
+
+  padding: 0px !important;
+}
+
+.wrapper-main {
+  height: 100%;
+
+  text-align: center;
+  color: $app-light;
+  background: $app-dark;
+}
+
+.wrapper-content {
+  @include size(200px, auto);
+}
+
+.title {
+  color: $app-gold;
+  font-size: 32px;
+}

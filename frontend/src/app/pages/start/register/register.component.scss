@@ -1,0 +1,32 @@
+@import '../../../core/theme/mixins.scss';
+@import '../../../core/theme/variables.scss';
+
+.wrapper-main {
+  display: flex;
+  align-content: center;
+}
+
+.wrapper-content {
+  @include size(600px, auto);
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  color: $app-light;
+  background: lighten($color: $app-dark, $amount: 11);
+  border-radius: 4px;
+}
+
+.wrapper-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title-main {
+  margin: 10px;
+}
+
+.title-small {
+  font-size: 24px;
+}

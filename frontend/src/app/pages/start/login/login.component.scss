@@ -1,0 +1,19 @@
+@import '../../../core/theme/mixins.scss';
+@import '../../../core/theme/variables.scss';
+
+.wrapper-main {
+  display: flex;
+  align-content: center;
+}
+
+.wrapper-content {
+  @include size(300px, auto);
+
+  color: $app-light;
+  background: lighten($color: $app-dark, $amount: 11);
+  border-radius: 4px;
+}
+
+.title-main {
+  margin: 25px;
+}
