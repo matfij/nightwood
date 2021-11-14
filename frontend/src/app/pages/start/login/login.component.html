@@ -1,8 +1,9 @@
 <div class="wrapper-main">
   <div class="wrapper-content">
 
-    <div class="title title-main">Nightwood</div>
+    <div class="title title-main">{{ 'common.appName' | translate }}</div>
+    <div class="title text-hint">{{ 'common.appHint' | translate }}</div>
 
-    <button [routerLink]="['..', 'register']">Register</button>
+    <button [routerLink]="['..', 'register']">{{ 'start.register' | translate }}</button>
   </div>
 </div>

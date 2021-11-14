@@ -1,0 +1,11 @@
+{
+  "common": {
+    "appName": "Nightwood",
+    "appHint": "Reject modernity, return to the roots"
+  },
+  "start": {
+    "login": "Login",
+    "register": "Register",
+    "registerHint": "Create a new account"
+  }
+}
