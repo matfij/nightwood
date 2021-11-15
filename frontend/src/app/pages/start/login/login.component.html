@@ -4,6 +4,23 @@
     <div class="title title-main">{{ 'common.appName' | translate }}</div>
     <div class="title text-hint">{{ 'common.appHint' | translate }}</div>
 
-    <button [routerLink]="['..', 'register']">{{ 'start.register' | translate }}</button>
+    <div class="wrapper-img">
+      <img src="assets/img/logo.png" alt="logo">
+    </div>
+
+    <div class="wrapper-form">
+      <form [formGroup]="form" (ngSubmit)="login()">
+        <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
+
+        <button [disabled]="!form.valid" class="btn-base">
+          {{ 'start.login' | translate }}
+        </button>
+      </form>
+    </div>
+
+    <button class="btn-base" [routerLink]="['..', 'register']">
+      {{ 'start.register' | translate }}
+    </button>
+
   </div>
 </div>

@@ -8,7 +8,18 @@ html, body {
   margin: 0px !important;
 
   padding: 0px !important;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
+
+*:focus {
+  outline: none;
+  border: none;
+}
+
+/**
+ * Wrappers
+ */
 
 .wrapper-main {
   height: 100%;
@@ -18,12 +29,23 @@ html, body {
   background: $app-dark;
 }
 
-.wrapper-content {
-  @include size(200px, auto);
-}
+/**
+ * Text
+ */
 
 .title {
   color: $app-gold;
   font-size: 32px;
   letter-spacing: 0.5px;
 }
+
+/**
+ * Buttons
+ */
+
+.btn-base {
+  @include button();
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

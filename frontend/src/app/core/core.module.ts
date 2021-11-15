@@ -3,8 +3,11 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
+import { InputBaseComponent } from '../components/forms/input-base/input-base.component';
 
-const COMPONENTS = [];
+const COMPONENTS = [
+  InputBaseComponent,
+];
 const MODULES = [
   ReactiveFormsModule,
   ToastrModule.forRoot({
@@ -13,18 +16,21 @@ const MODULES = [
   TranslateModule.forChild(),
 ];
 const CHILD_PROVIDERS = [
-  ...(TranslateModule.forChild().providers ?? [])
+  ...(TranslateModule.forChild().providers ?? []),
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ...COMPONENTS,
+  ],
   imports: [
     CommonModule,
     ...MODULES
   ],
   providers: [],
   exports: [
-    MODULES
+    MODULES,
+    ...COMPONENTS,
   ],
 })
 export class CoreModule {

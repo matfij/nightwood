@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { ApiService } from 'src/app/client/api.service';
-import { User } from 'src/app/definitions/interfaces/user.interface';
-import { ToastService } from 'src/app/services/toast.service';
+import { ApiService } from '../../../client/api.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-register',

@@ -1,0 +1,36 @@
+@import '../../../core/theme/variables.scss';
+
+.wrapper {
+  width: 240px;
+  max-width: 95%;
+  margin: 10px auto;
+}
+
+.label {
+  color: $app-light;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 0.25px;
+}
+
+.input {
+  width: 100%;
+  margin: auto;
+
+  padding: 2px;
+  border: none;
+  border-radius: 4px;
+  color: $app-light;
+  background-color: $app-dark;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.error {
+  color: $app-red;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 0.25px;
+}

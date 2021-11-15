@@ -7,17 +7,41 @@
 }
 
 .wrapper-content {
-  @include size(300px, auto);
+  width: 95%;
+  max-width: 600px;
+  margin: auto;
 
+  padding: 20px auto;
+  display: block;
   color: $app-light;
   background: lighten($color: $app-dark, $amount: 11);
   border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wrapper-img {
+  width: 90%;
+  max-width: 250px;
+  margin: 20px auto;
+
+  img {
+    @include size(100%);
+  }
+}
+
+.wrapper-form {
+  margin-bottom: 40px;
 }
 
 .title-main {
-  margin: 25px;
+  margin-bottom: 20px;
 }
 
 .text-hint {
   font-size: 20px;
+}
+
+.btn-base {
+  margin: 20px auto;
 }

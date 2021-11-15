@@ -3,3 +3,26 @@
   height: $size;
   margin: $margin;
 }
+
+@mixin button() {
+  width: 240px;
+  max-width: 95%;
+  height: 30px;
+  margin: auto;
+
+  display: block;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background: $app-gold;
+  color: $app-dark;
+  letter-spacing: 0.25px;
+  font-size: 14px;
+  font-weight: 600;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background: darken($color: $app-gold, $amount: 10);
+    color: darken($color: $app-dark, $amount: 10);
+  }
+}
