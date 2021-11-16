@@ -1,4 +1,5 @@
 @import '~ngx-toastr/toastr';
+@import '~bootstrap/scss/bootstrap';
 
 @import 'app/core/theme/mixins.scss';
 @import 'app/core/theme/variables.scss';
@@ -34,7 +35,7 @@ html, body {
  */
 
 .title {
-  color: $app-gold;
+  color: $app-primary;
   font-size: 32px;
   letter-spacing: 0.5px;
 }
@@ -47,5 +48,18 @@ html, body {
   @include button();
 }
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+/**
+ * Toasts
+ */
+
+#toast-container > .toast-success {
+  background-image: none;
+  background-color: $app-green;
+  color: $app-dark;
+}
+
+#toast-container > .toast-error {
+  background-image: none;
+  background-color: $app-red;
+  color: $app-light;
+}

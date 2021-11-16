@@ -14,7 +14,7 @@
   cursor: pointer;
   border: none;
   border-radius: 4px;
-  background: $app-gold;
+  background: $app-primary;
   color: $app-dark;
   letter-spacing: 0.25px;
   font-size: 14px;
@@ -22,7 +22,17 @@
 
   &:hover {
     transition: all 0.2s ease-in-out;
-    background: darken($color: $app-gold, $amount: 10);
+    background: darken($color: $app-primary, $amount: 10);
     color: darken($color: $app-dark, $amount: 10);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+
+    &:hover {
+      background: $app-primary;
+      color: $app-dark;
+    }
   }
 }

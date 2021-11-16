@@ -27,6 +27,11 @@
 
   img {
     @include size(100%);
+
+    &:hover {
+      transform: rotate(360deg);
+      transition: transform 0.76s;
+    }
   }
 }
 

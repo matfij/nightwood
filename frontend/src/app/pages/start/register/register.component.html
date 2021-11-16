@@ -6,13 +6,16 @@
 
     <div class="wrapper-form">
       <form [formGroup]="form" (ngSubmit)="register()">
-        <input type="email" formControlName="email"><br>
-        <input type="text" formControlName="nickname"><br>
-        <input type="password" formControlName="password"><br>
-        <input type="password" formControlName="passwordConfirm"><br>
+        <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
-        <button [disabled]="!form.valid">{{ 'start.register' | translate }}</button>
+        <button [disabled]="!form.valid" class="btn-base">
+          {{ 'start.register' | translate }}
+        </button>
       </form>
     </div>
+
+    <button routerLink="../login" class="btn-base">
+      {{ 'common.back' | translate }}
+    </button>
   </div>
 </div>

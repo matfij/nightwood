@@ -1,14 +1,24 @@
 {
   "common": {
     "appName": "Nightwood",
-    "appHint": "Reject modernity, return to the woods"
+    "appHint": "Reject modernity, return to the woods",
+    "back": "Back"
   },
   "start": {
     "login": "Login",
     "register": "Register",
-    "registerHint": "Create a new account"
+    "registerHint": "Create a new account",
+    "nickname": "Nickname",
+    "password": "Password",
+    "passwordConfirm": "Confirm password",
+    "email": "Email",
+    "passwordsMismatch": "Passwords do not match",
+    "loginOccupied": "Login is occupied"
   },
   "errors": {
-    "incorrectFieldsValue": "Please provide correct {{ value }}"
+    "error": "Error",
+    "incorrectFieldsValue": "Please provide correct {{ value }}",
+    "formInvalid": "Form invalid",
+    "formInvalidHint": "Please check entered values"
   }
 }

@@ -9,6 +9,7 @@ import { CoreModule } from './core/core.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DEFAULT_LANG } from './core/configuration';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -40,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 export class AppModule {
 
   constructor(translateService: TranslateService) {
-    translateService.setDefaultLang('en');
-    translateService.use('en');
+    translateService.setDefaultLang(DEFAULT_LANG);
+    translateService.use(DEFAULT_LANG);
   }
 }
