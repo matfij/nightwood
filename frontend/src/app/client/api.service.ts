@@ -22,4 +22,12 @@ export class ApiService {
     return this.httpClient.post<User>(this.BASE_URL + '/auth/register', user);
   }
 
+  getTopUsers(): Observable<PaginationData<User>> {
+    return this.httpClient.get<PaginationData<User>>(this.BASE_URL + '/user/getAll');
+  }
+}
+
+export interface PaginationData<Data> {
+  meta: any;
+  items: Data[];
 }

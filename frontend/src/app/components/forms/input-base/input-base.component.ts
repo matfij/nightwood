@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { FormInputOptions } from '../../../definitions/interfaces/form-input-options.interface';
 
@@ -9,7 +9,9 @@ import { FormInputOptions } from '../../../definitions/interfaces/form-input-opt
   styleUrls: ['./input-base.component.scss']
 })
 export class InputBaseComponent implements OnInit {
+
   @Input() options!: FormInputOptions;
+
   field?: FormControl;
   fieldName?: string;
 

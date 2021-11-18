@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { MainRoutingModule } from './main-routing.module';
+import { GameRoutingModule } from './game-routing.module';
 import { HomeComponent } from './home/home.component';
-import { CoreModule } from 'src/app/core/core.module';
-
+import { CoreModule } from '../../core/core.module';
 
 @NgModule({
   declarations: [
@@ -12,8 +10,8 @@ import { CoreModule } from 'src/app/core/core.module';
   ],
   imports: [
     CommonModule,
-    MainRoutingModule,
+    GameRoutingModule,
     CoreModule.forChild(),
   ]
 })
-export class MainModule { }
+export class GameModule { }

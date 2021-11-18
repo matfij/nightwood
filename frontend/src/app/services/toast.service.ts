@@ -14,15 +14,15 @@ export class ToastService {
 
   showSuccess(title: string, message: string) {
     this.toastrService.success(
-      this.translateService.instant(title),
       this.translateService.instant(message),
+      this.translateService.instant(title),
     );
   }
 
   showError(title: string, message: string) {
     this.toastrService.error(
-      this.translateService.instant(title),
       this.translateService.instant(message),
+      this.translateService.instant(title),
     );
   }
 }

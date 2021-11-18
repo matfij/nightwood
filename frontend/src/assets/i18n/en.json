@@ -13,7 +13,11 @@
     "passwordConfirm": "Confirm password",
     "email": "Email",
     "passwordsMismatch": "Passwords do not match",
-    "loginOccupied": "Login is occupied"
+    "loginOccupied": "Login is occupied",
+    "loginError": "Login error",
+    "loginErrorHint": "Nickname or password incorrect",
+    "loginSuccess": "Login successful",
+    "loginSuccessHint": "Welcome back trainer"
   },
   "errors": {
     "error": "Error",

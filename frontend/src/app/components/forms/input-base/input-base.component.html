@@ -1,6 +1,6 @@
 <form class="wrapper" [formGroup]="options.form">
   <div class="label">{{ options.label | translate }}</div>
   <input class="input" [type]="options.type" [formControlName]="options.key"><br>
-  <div *ngIf="field && field.touched && !field.valid" class="error">
+  <div *ngIf="field && (field.touched || field.dirty) && !field.valid" class="error">
     {{ 'errors.incorrectFieldsValue' | translate:{ value: fieldName } }}</div>
 </form>

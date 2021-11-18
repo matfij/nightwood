@@ -1,0 +1,16 @@
+@import '../../../core/theme/variables.scss';
+@import '../../../core/theme/mixins.scss';
+
+.spinner {
+  @include size(28px);
+
+  margin: 0px;
+  padding: 0px;
+
+  color: $app-primary;
+
+  span {
+    margin: 0px;
+    padding: 0px;
+  }
+}
