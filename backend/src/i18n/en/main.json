@@ -1,0 +1,12 @@
+{
+    "common": {
+        "welcomeUser": "Welcome, {user}"
+    },
+    "errors": {
+        "emailNotUnique": "Email occupied",
+        "emailIncorrectLength": "Email must be between {min} and {max} characters",
+        "nicknameNotUnique": "Nickname occupied",
+        "nicknameIncorrectLength": "Nickname must be between {min} and {max} characters",
+        "tokenInvalid": "Invalid token"
+    }
+}
