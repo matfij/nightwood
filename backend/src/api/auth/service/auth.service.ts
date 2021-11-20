@@ -6,7 +6,7 @@ import { User } from '../../user/model/user.entity';
 import { IUser } from '../../user/model/user.interface';
 import { SALT_ROUNDS } from '../../../configuration/user.config';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { IAuthResponse } from '../dto/auth-response.interface';
+import { AuthResponseDto } from '../dto/auth-response.dto';
 import { RegisterUserDto } from '../dto/register-user.dto';
 import { GetUserDto } from '../../user/model/dto/get-user.dto';
 
@@ -21,7 +21,7 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async login(dto: LoginUserDto): Promise<IAuthResponse> {
+    async login(dto: LoginUserDto): Promise<AuthResponseDto> {
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
         if (!user) throw new NotFoundException();
 
@@ -37,7 +37,7 @@ export class AuthService {
         };
     }
 
-    async register(dto: RegisterUserDto): Promise<IAuthResponse> {
+    async register(dto: RegisterUserDto): Promise<AuthResponseDto> {
         if (await this.emailExists(dto.email)) throw new BadRequestException('Email occupied');
         if (await this.nicknameExists(dto.nickname)) throw new BadRequestException('Nickname occupied');
 
