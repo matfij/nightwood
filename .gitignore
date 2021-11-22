@@ -37,3 +37,6 @@ lerna-debug.log*
 
 # Secrets
 .env
+
+# Generated
+generator/generated/
