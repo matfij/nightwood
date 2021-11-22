@@ -1,0 +1,66 @@
+{
+    "runtime": "Default",
+    "documentGenerator": {
+      "fromDocument": {
+        "url": "generator/schema.json"
+      }
+    },
+    "codeGenerators": {
+      "openApiToTypeScriptClient": {
+        "className": "{controller}ApiClient",
+        "moduleName": "",
+        "namespace": "",
+        "typeScriptVersion": 4.3,
+        "template": "Fetch",
+        "httpClass": "HttpClient",
+        "withCredentials": false,
+        "useSingletonProvider": false,
+        "injectionTokenType": "OpaqueToken",
+        "rxJsVersion": 6,
+        "dateTimeType": "String",
+        "nullValue": "Null",
+        "generateClientClasses": true,
+        "generateClientInterfaces": true,
+        "generateOptionalParameters": false,
+        "exportTypes": true,
+        "wrapDtoExceptions": false,
+        "exceptionClass": "ApiException",
+        "wrapResponses": false,
+        "wrapResponseMethods": [],
+        "generateResponseClasses": true,
+        "responseClass": "SwaggerResponse",
+        "protectedMethods": [],
+        "configurationClass": "",
+        "useTransformOptionsMethod": false,
+        "useTransformResultMethod": false,
+        "generateDtoTypes": true,
+        "operationGenerationMode": "MultipleClientsFromOperationId",
+        "markOptionalProperties": true,
+        "generateCloneMethod": false,
+        "typeStyle": "Interface",
+        "classTypes": [],
+        "extendedClasses": [],
+        "extensionCode": "api-client.extensions.ts",
+        "generateDefaultValues": false,
+        "excludedTypeNames": [],
+        "excludedParameterNames": [],
+        "handleReferences": false,
+        "generateConstructorInterface": false,
+        "convertConstructorInterfaceData": false,
+        "importRequiredTypes": true,
+        "useGetBaseUrlMethod": false,
+        "baseUrlTokenName": "API_BASE_URL",
+        "queryNullValue": "",
+        "inlineNamedDictionaries": false,
+        "inlineNamedAny": false,
+        "templateDirectory": null,
+        "typeNameGeneratorType": null,
+        "propertyNameGeneratorType": null,
+        "enumNameGeneratorType": null,
+        "serviceHost": null,
+        "serviceSchemes": null,
+        "output": "generator/generated/api.ts"
+      }
+    }
+  }
+  

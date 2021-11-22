@@ -1,5 +1,4 @@
 {
-  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
     "version": "5.3.0",
@@ -9,10 +8,14 @@
         "output": "#{cwd}/generator/generated",
         "glob": "generator/api-schema.json",
         "additionalProperties": {
-          "npmName": "testCient",
+          "npmName": "client",
+          "npmVersion": "1.0.0",
           "ngVersion": "12.1.0",
-          "supportsES6": "true",
-          "npmVersion": "1.0.0"
+          "supportsES6": true,
+          "fileNaming": "kebab-case",
+          "modelFileSuffix": ".model",
+          "withoutPrefixEnums": true,
+          "withSeparateModelsAndApi": false
         }
       }
     }
