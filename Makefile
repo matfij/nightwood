@@ -1,5 +1,17 @@
 .ONESHELL:
 
+
+start:
+	docker-compose up -d
+
+rebuild:
+	docker-compose build
+
+rester:
+	docker-compose build
+	docker-compose up -d
+
+
 client.gen.openapi:
 	rm -rf generator/generated
 	cp backend/schema.json generator/schema.json
