@@ -17,7 +17,9 @@
     "loginError": "Login error",
     "loginErrorHint": "Nickname or password incorrect",
     "loginSuccess": "Login successful",
-    "loginSuccessHint": "Welcome back trainer"
+    "loginSuccessHint": "Welcome back trainer",
+    "registerSuccess": "Registration successful",
+    "registerSuccessHint": "Welcome to Nightwood"
   },
   "errors": {
     "error": "Error",

@@ -7,7 +7,7 @@
     },
     "codeGenerators": {
       "openApiToTypeScriptClient": {
-        "className": "{controller}Client",
+        "className": "{controller}",
         "moduleName": "",
         "namespace": "",
         "typeScriptVersion": 4.3,
@@ -17,7 +17,7 @@
         "useSingletonProvider": true,
         "injectionTokenType": "InjectionToken",
         "rxJsVersion": 6.5,
-        "dateTimeType": "String",
+        "dateTimeType": "string",
         "nullValue": "Undefined",
         "generateClientClasses": true,
         "generateClientInterfaces": true,

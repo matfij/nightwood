@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthController, RegisterUserDto } from 'src/app/client/api';
 import { MAX_NICKNAME_LENGTH, MAX_PASSWORD_LENGTH, MIN_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH } from 'src/app/core/configuration';
 import { FormInputOptions } from 'src/app/definitions/interfaces/form-input-options.interface';
+import { RepositoryService } from 'src/app/services/repository.service';
 import { CustomValidator } from 'src/app/utils/custom-validator';
-import { ApiService } from '../../../client/api.service';
 import { ToastService } from '../../../services/toast.service';
 
 @Component({
@@ -37,6 +39,7 @@ export class RegisterComponent {
     { form: this.form, key: 'password', label: 'start.password', type: 'password' },
     { form: this.form, key: 'passwordConfirm', label: 'start.passwordConfirm', type: 'password' },
   ];
+  submitLoading?: boolean;
 
   get email(): FormControl { return this.form.get('email') as FormControl; }
   get nickname(): FormControl { return this.form.get('nickname') as FormControl; }
@@ -44,24 +47,35 @@ export class RegisterComponent {
   get passwordConfirm(): FormControl { return this.form.get('passwordConfirm') as FormControl; }
 
   constructor(
-    private apiService: ApiService,
+    private router: Router,
+    private authController: AuthController,
+    private repositoryService: RepositoryService,
     private toastService: ToastService,
   ) {}
 
   private validatePasswords() {
-    return CustomValidator.fieldValuesMatch(this.password, ['password', 'passwordConfirm']);
+    return this.password.value === this.passwordConfirm.value;
   }
 
   register() {
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
     if (!this.validatePasswords()) { this.toastService.showError('errors.error', 'start.passwordsMismatch'); return; }
 
-    const user = {
+    const user: RegisterUserDto = {
       email: this.email.value,
       nickname: this.nickname.value,
       password: this.password.value,
     };
-    this.apiService.registerUser(user).subscribe(x => console.log('success', x), x => console.log('error', x));
+    this.submitLoading = true;
+    this.authController.register(user).subscribe(x => {
+      this.submitLoading = false;
+      this.toastService.showSuccess('start.registerSuccess', 'start.registerSuccessHint');
+
+      this.repositoryService.setAccessToken(x.accessToken);
+      this.router.navigate(['../game/home']);
+    }, _ => {
+      this.submitLoading = false;
+    });
   }
 
 }

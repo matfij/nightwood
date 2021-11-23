@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiService } from '../../../client/api.service';
 import { ToastService } from '../../../services/toast.service';
 import { FormInputOptions } from '../../../definitions/interfaces/form-input-options.interface';
 import { MAX_NICKNAME_LENGTH, MIN_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from '../../../core/configuration';
-import { RepositoryService } from 'src/app/services/repository.service';
-import { AuthControllerApiClient } from 'src/app/client/api';
+import { RepositoryService } from '../../../services/repository.service';
+import { AuthController } from '../../../client/api';
 
 @Component({
   selector: 'app-login',
@@ -32,28 +31,26 @@ export class LoginComponent {
   submitLoading?: boolean;
 
   constructor(
-    private apiService: ApiService,
+    private router: Router,
+    private authController: AuthController,
     private toastService: ToastService,
     private repositoryService: RepositoryService,
-    private router: Router,
   ) {}
 
   login() {
-    const client = new AuthControllerApiClient();
-    client.login(this.form.value).then()
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
-    // this.submitLoading = true;
-    // this.apiService.loginUser(this.form.value).subscribe(x => {
-    //   this.submitLoading = false;
-    //   this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
+    this.submitLoading = true;
+    this.authController.login(this.form.value).subscribe(x => {
+      this.submitLoading = false;
+      this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
 
-    //   this.repositoryService.setAccessToken(x.accessToken!);
-    //   this.router.navigate(['../game/home']);
-    // }, _ => {
-    //   this.submitLoading = false;
-    //   this.toastService.showError('start.loginError', 'start.loginErrorHint');
-    // });
+      this.repositoryService.setAccessToken(x.accessToken);
+      this.router.navigate(['../game/home']);
+    }, _ => {
+      this.submitLoading = false;
+      this.toastService.showError('start.loginError', 'start.loginErrorHint');
+    });
   }
 
 }

@@ -12,11 +12,9 @@ import { Observable, throwError as _observableThrow, of as _observableOf } from 
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
-import * as moment from 'moment';
-
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
-export interface IAuthControllerClient {
+export interface IAuthController {
     login(body: LoginUserDto): Observable<AuthResponseDto>;
     register(body: RegisterUserDto): Observable<AuthResponseDto>;
     refreshToken(): Observable<string>;
@@ -25,7 +23,7 @@ export interface IAuthControllerClient {
 @Injectable({
     providedIn: 'root'
 })
-export class AuthControllerClient implements IAuthControllerClient {
+export class AuthController implements IAuthController {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -185,7 +183,7 @@ export class AuthControllerClient implements IAuthControllerClient {
     }
 }
 
-export interface IUserControllerClient {
+export interface IUserController {
     create(body: CreateUserDto): Observable<void>;
     update(id: string, body: UpdateUserDto): Observable<void>;
     getOne(id: string): Observable<void>;
@@ -195,7 +193,7 @@ export interface IUserControllerClient {
 @Injectable({
     providedIn: 'root'
 })
-export class UserControllerClient implements IUserControllerClient {
+export class UserController implements IUserController {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -410,7 +408,7 @@ export interface AuthResponseDto {
     email: string;
     nickname: string;
     accessToken: string;
-    expires?: moment.Moment;
+    expires?: string;
 }
 
 export interface RegisterUserDto {

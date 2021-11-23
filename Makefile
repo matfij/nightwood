@@ -2,14 +2,14 @@
 
 
 start:
-	docker-compose up -d
+	docker-compose up
 
-rebuild:
+build:
 	docker-compose build
 
-rester:
+restart:
 	docker-compose build
-	docker-compose up -d
+	docker-compose up
 
 
 client.gen.openapi:
@@ -25,3 +25,10 @@ client.gen.nswag:
 	cp generator/nswag.json nswag.json
 	nswag run
 	rm nswag.json
+	cp generator/api.ts frontend/src/app/client/api.ts
+
+
+git.push:
+	git add .
+	git commit -m "$(m)"
+	git push
