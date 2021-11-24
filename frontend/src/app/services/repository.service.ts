@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { AuthResponseDto } from "../client/api";
 import { ACCESS_TOKEN, StoreService, USER_DATA } from "./store.service";
 
 @Injectable({
@@ -9,15 +10,15 @@ import { ACCESS_TOKEN, StoreService, USER_DATA } from "./store.service";
 export class RepositoryService {
 
   constructor(
-    private storeService: StoreService,
     private router: Router,
+    private storeService: StoreService,
   ) {}
 
-  setUserData(user: any) {
+  setUserData(user: AuthResponseDto) {
     this.storeService.setItem(USER_DATA, JSON.stringify(user));
   }
 
-  getUserData() {
+  getUserData(): AuthResponseDto {
     return JSON.parse(this.storeService.getItem(USER_DATA));
   }
 

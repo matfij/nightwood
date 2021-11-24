@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthController, RegisterUserDto } from 'src/app/client/api';
 import { MAX_NICKNAME_LENGTH, MAX_PASSWORD_LENGTH, MIN_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH } from 'src/app/core/configuration';
-import { FormInputOptions } from 'src/app/definitions/interfaces/form-input-options.interface';
+import { FormInputOptions } from 'src/app/definitions/interfaces/form-definitions';
 import { RepositoryService } from 'src/app/services/repository.service';
 import { CustomValidator } from 'src/app/utils/custom-validator';
 import { ToastService } from '../../../services/toast.service';

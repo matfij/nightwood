@@ -13,6 +13,7 @@ import { DEFAULT_LANG } from './core/configuration';
 import { AuthInterceptor } from './client/interceptors/auth.interceptor';
 import { environment } from 'src/environments/environment';
 import { API_BASE_URL } from './client/api';
+import { ErrorInterceptor } from './client/interceptors/error.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -41,6 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     { provide: API_BASE_URL, useFactory: () => environment.apiUrl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
