@@ -20,6 +20,11 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Angular CLI (optional)
  - NestJS CLI (optional)
 
+ ## Client generation
+ - Requires .Net Core 2.1 SDK
+ - Start backend application to generate schema.json: `make start`
+ - Run NSwag: `make client.gen.nswag`
+
 ## Quic start
 1. Allow file sharing inside application folder in Docker settings
 ```sh 
