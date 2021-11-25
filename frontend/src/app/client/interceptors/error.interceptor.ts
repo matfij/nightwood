@@ -72,7 +72,6 @@ export class ErrorInterceptor {
   private showError(error: Blob) {
     if (error instanceof Blob) {
       this.utilsService.blobToJsonObject<ApiError>(error).subscribe((x) => {
-        console.log(x)
         this.toastService.showError('errors.error', x.message);
       });
     }

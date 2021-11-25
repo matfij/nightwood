@@ -22,7 +22,7 @@ import * as path from 'path';
       fallbackLanguage: DEFAULT_LANG,
       parser: I18nJsonParser,
       parserOptions: {
-        path: path.join(__dirname, '/i18n/'),
+        path: path.join(__dirname, 'assets/i18n/'),
         watch: true,
       },
     }),

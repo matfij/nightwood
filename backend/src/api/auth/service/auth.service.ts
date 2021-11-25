@@ -3,12 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../user/model/user.entity';
-import { IUser } from '../../user/model/user.interface';
 import { SALT_ROUNDS } from '../../../configuration/user.config';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { AuthResponseDto } from '../dto/auth-response.dto';
 import { RegisterUserDto } from '../dto/register-user.dto';
 import { GetUserDto } from '../../user/model/dto/get-user.dto';
+import { UserDto } from 'src/api/user/model/dto/user.dto';
+import { AuthUserDto } from '../dto/auth-user.dto';
 
 const bcrypt = require('bcrypt');
 
@@ -21,7 +21,7 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async login(dto: LoginUserDto): Promise<AuthResponseDto> {
+    async login(dto: LoginUserDto): Promise<AuthUserDto> {
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
         if (!user) throw new NotFoundException();
 
@@ -37,12 +37,12 @@ export class AuthService {
         };
     }
 
-    async register(dto: RegisterUserDto): Promise<AuthResponseDto> {
+    async register(dto: RegisterUserDto): Promise<AuthUserDto> {
         if (await this.emailExists(dto.email)) throw new BadRequestException('Email occupied');
         if (await this.nicknameExists(dto.nickname)) throw new BadRequestException('Nickname occupied');
 
         const hashedPassword = await this.hashPassword(dto.password);
-        const newUser: IUser = {
+        const newUser: UserDto = {
             email: dto.email,
             password: hashedPassword,
             nickname: dto.nickname,
@@ -60,7 +60,15 @@ export class AuthService {
         };
     }
 
-    async generateJwt(user: IUser): Promise<string> {
+    async refreshToken(dto: AuthUserDto) {
+        try { this.jwtService.verify(dto.accessToken) } catch (_) { throw new BadRequestException('Incorrect token') };
+
+        dto.accessToken = await this.generateJwt(dto);
+
+        return dto;
+    }
+
+    async generateJwt(user: UserDto): Promise<string> {
         return this.jwtService.signAsync({ user });
     }
 

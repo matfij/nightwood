@@ -6,8 +6,8 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../model/dto/create-user.dto';
 import { GetUserDto } from '../model/dto/get-user.dto';
 import { UpdateUserDto } from '../model/dto/update-user.dto';
+import { UserDto } from '../model/dto/user.dto';
 import { User } from '../model/user.entity';
-import { IUser } from '../model/user.interface';
 
 @Injectable()
 export class UserService {
@@ -18,12 +18,12 @@ export class UserService {
         private authService: AuthService,
     ) {}
 
-    async create(dto: CreateUserDto): Promise<IUser> {
+    async create(dto: CreateUserDto): Promise<UserDto> {
         if (await this.emailExists(dto.email)) throw new BadRequestException('Email occupied');
         if (await this.nicknameExists(dto.nickname)) throw new BadRequestException('Nickname occupied');
 
         const hashedPassword = await this.authService.hashPassword(dto.password);
-        const newUser: IUser = {
+        const newUser: UserDto = {
             email: dto.email,
             password: hashedPassword,
             nickname: dto.nickname,
@@ -33,7 +33,7 @@ export class UserService {
         return this.userRepository.save(createdUser);
     }
 
-    async update(id: string, dto: UpdateUserDto): Promise<IUser> {
+    async update(id: string, dto: UpdateUserDto): Promise<UserDto> {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new NotFoundException();
 
@@ -49,12 +49,12 @@ export class UserService {
         return this.userRepository.save(user);
     }
 
-    async getOne(id: string): Promise<IUser> {
+    async getOne(id: string): Promise<UserDto> {
         return this.userRepository.findOne(id);
     }
 
-    async getAll(dto: GetUserDto): Promise<Pagination<IUser>> {
-        return paginate<IUser>(this.userRepository, { page: dto.page, limit: dto.limit });
+    async getAll(dto: GetUserDto): Promise<Pagination<UserDto>> {
+        return paginate<UserDto>(this.userRepository, { page: dto.page, limit: dto.limit });
     }
 
     private async emailExists(email: string): Promise<boolean> {

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TranslateService } from 'src/core/services/translate.service';
+import { TranslateService } from 'src/common/services/translate.service';
 import { User } from '../user/model/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './service/auth.service';
