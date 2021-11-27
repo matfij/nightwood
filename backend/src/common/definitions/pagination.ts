@@ -1,22 +1,22 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsArray } from "class-validator";
 
 export class PageMetaDto {
 
-    @ApiProperty()
-    totalItems: number;
+    @ApiPropertyOptional()
+    totalItems?: number;
 
-    @ApiProperty()
-    itemCount: number;
+    @ApiPropertyOptional()
+    itemCount?: number;
 
-    @ApiProperty()
-    itemsPerPage: number;
+    @ApiPropertyOptional()
+    itemsPerPage?: number;
 
-    @ApiProperty()
-    totalPages: number;
+    @ApiPropertyOptional()
+    totalPages?: number;
 
-    @ApiProperty()
-    currentPage: number;
+    @ApiPropertyOptional()
+    currentPage?: number;
 }
 
 export class PageDto<T> {
@@ -25,6 +25,11 @@ export class PageDto<T> {
     @ApiProperty()
     readonly data: T[];
 
+    @ApiProperty({ type: () => PageMetaDto })
+    readonly meta: PageMetaDto;
+}
+
+export abstract class PaginationBaseDto {
     @ApiProperty({ type: () => PageMetaDto })
     readonly meta: PageMetaDto;
 }

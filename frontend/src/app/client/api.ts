@@ -15,9 +15,9 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IAuthController {
-    login(body: LoginUserDto): Observable<AuthResponseDto>;
-    register(body: RegisterUserDto): Observable<AuthResponseDto>;
-    refreshToken(): Observable<string>;
+    login(body: LoginUserDto): Observable<AuthUserDto>;
+    register(body: RegisterUserDto): Observable<AuthUserDto>;
+    refreshToken(body: AuthUserDto): Observable<AuthUserDto>;
 }
 
 @Injectable({
@@ -33,7 +33,7 @@ export class AuthController implements IAuthController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    login(body: LoginUserDto) : Observable<AuthResponseDto> {
+    login(body: LoginUserDto) : Observable<AuthUserDto> {
         let url_ = this.baseUrl + "/api/v1/auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -56,14 +56,14 @@ export class AuthController implements IAuthController {
                 try {
                     return this.processLogin(<any>response_);
                 } catch (e) {
-                    return <Observable<AuthResponseDto>><any>_observableThrow(e);
+                    return <Observable<AuthUserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AuthResponseDto>><any>_observableThrow(response_);
+                return <Observable<AuthUserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processLogin(response: HttpResponseBase): Observable<AuthResponseDto> {
+    protected processLogin(response: HttpResponseBase): Observable<AuthUserDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -73,7 +73,7 @@ export class AuthController implements IAuthController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <AuthResponseDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <AuthUserDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -81,10 +81,10 @@ export class AuthController implements IAuthController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AuthResponseDto>(<any>null);
+        return _observableOf<AuthUserDto>(<any>null);
     }
 
-    register(body: RegisterUserDto) : Observable<AuthResponseDto> {
+    register(body: RegisterUserDto) : Observable<AuthUserDto> {
         let url_ = this.baseUrl + "/api/v1/auth/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -107,14 +107,14 @@ export class AuthController implements IAuthController {
                 try {
                     return this.processRegister(<any>response_);
                 } catch (e) {
-                    return <Observable<AuthResponseDto>><any>_observableThrow(e);
+                    return <Observable<AuthUserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AuthResponseDto>><any>_observableThrow(response_);
+                return <Observable<AuthUserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRegister(response: HttpResponseBase): Observable<AuthResponseDto> {
+    protected processRegister(response: HttpResponseBase): Observable<AuthUserDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -124,7 +124,7 @@ export class AuthController implements IAuthController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <AuthResponseDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <AuthUserDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -132,17 +132,21 @@ export class AuthController implements IAuthController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AuthResponseDto>(<any>null);
+        return _observableOf<AuthUserDto>(<any>null);
     }
 
-    refreshToken() : Observable<string> {
+    refreshToken(body: AuthUserDto) : Observable<AuthUserDto> {
         let url_ = this.baseUrl + "/api/v1/auth/refreshToken";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -154,14 +158,14 @@ export class AuthController implements IAuthController {
                 try {
                     return this.processRefreshToken(<any>response_);
                 } catch (e) {
-                    return <Observable<string>><any>_observableThrow(e);
+                    return <Observable<AuthUserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<string>><any>_observableThrow(response_);
+                return <Observable<AuthUserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRefreshToken(response: HttpResponseBase): Observable<string> {
+    protected processRefreshToken(response: HttpResponseBase): Observable<AuthUserDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -171,7 +175,7 @@ export class AuthController implements IAuthController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <string>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <AuthUserDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -179,15 +183,15 @@ export class AuthController implements IAuthController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<string>(<any>null);
+        return _observableOf<AuthUserDto>(<any>null);
     }
 }
 
 export interface IUserController {
-    create(body: CreateUserDto): Observable<void>;
-    update(id: string, body: UpdateUserDto): Observable<void>;
-    getOne(id: string): Observable<void>;
-    getAll(body: GetUserDto): Observable<void>;
+    create(body: CreateUserDto): Observable<UserDto>;
+    update(id: string, body: UpdateUserDto): Observable<UserDto>;
+    getOne(id: string): Observable<UserDto>;
+    getAll(body: GetUserDto): Observable<PageUserDto>;
 }
 
 @Injectable({
@@ -203,7 +207,7 @@ export class UserController implements IUserController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    create(body: CreateUserDto) : Observable<void> {
+    create(body: CreateUserDto) : Observable<UserDto> {
         let url_ = this.baseUrl + "/api/v1/user/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -215,6 +219,7 @@ export class UserController implements IUserController {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -225,33 +230,35 @@ export class UserController implements IUserController {
                 try {
                     return this.processCreate(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<UserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<UserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<void> {
+    protected processCreate(response: HttpResponseBase): Observable<UserDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 201) {
+        if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<UserDto>(<any>null);
     }
 
-    update(id: string, body: UpdateUserDto) : Observable<void> {
+    update(id: string, body: UpdateUserDto) : Observable<UserDto> {
         let url_ = this.baseUrl + "/api/v1/user/update/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -266,6 +273,7 @@ export class UserController implements IUserController {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -276,14 +284,14 @@ export class UserController implements IUserController {
                 try {
                     return this.processUpdate(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<UserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<UserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processUpdate(response: HttpResponseBase): Observable<void> {
+    protected processUpdate(response: HttpResponseBase): Observable<UserDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -292,17 +300,19 @@ export class UserController implements IUserController {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<UserDto>(<any>null);
     }
 
-    getOne(id: string) : Observable<void> {
+    getOne(id: string) : Observable<UserDto> {
         let url_ = this.baseUrl + "/api/v1/user/getOne/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -313,6 +323,7 @@ export class UserController implements IUserController {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "application/json"
             })
         };
 
@@ -323,14 +334,14 @@ export class UserController implements IUserController {
                 try {
                     return this.processGetOne(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<UserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<UserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetOne(response: HttpResponseBase): Observable<void> {
+    protected processGetOne(response: HttpResponseBase): Observable<UserDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -339,17 +350,19 @@ export class UserController implements IUserController {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<UserDto>(<any>null);
     }
 
-    getAll(body: GetUserDto) : Observable<void> {
+    getAll(body: GetUserDto) : Observable<PageUserDto> {
         let url_ = this.baseUrl + "/api/v1/user/getAll";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -361,6 +374,7 @@ export class UserController implements IUserController {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -371,14 +385,14 @@ export class UserController implements IUserController {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<PageUserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<PageUserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<void> {
+    protected processGetAll(response: HttpResponseBase): Observable<PageUserDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -387,14 +401,16 @@ export class UserController implements IUserController {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PageUserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<PageUserDto>(<any>null);
     }
 }
 
@@ -403,7 +419,7 @@ export interface LoginUserDto {
     password: string;
 }
 
-export interface AuthResponseDto {
+export interface AuthUserDto {
     id: number;
     email: string;
     nickname: string;
@@ -418,12 +434,42 @@ export interface RegisterUserDto {
 }
 
 export interface CreateUserDto {
+    email: string;
+    password: string;
+    nickname: string;
+}
+
+export interface UserDto {
+    id?: number;
+    email: string;
+    password?: string;
+    nickname: string;
 }
 
 export interface UpdateUserDto {
+    email?: string;
+    password?: string;
+    nickname?: string;
 }
 
 export interface GetUserDto {
+    email?: string;
+    nickname?: string;
+    page?: number;
+    limit?: number;
+}
+
+export interface PageMetaDto {
+    totalItems?: number;
+    itemCount?: number;
+    itemsPerPage?: number;
+    totalPages?: number;
+    currentPage?: number;
+}
+
+export interface PageUserDto {
+    meta: PageMetaDto;
+    data: UserDto[];
 }
 
 export class SwaggerException extends Error {

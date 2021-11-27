@@ -3,14 +3,14 @@ import { ApiExtraModels, ApiOkResponse, getSchemaPath } from "@nestjs/swagger";
 import { Any } from "typeorm";
 import { PageDto } from "../definitions/pagination";
 
-export const PaginatedResponse = <TModel extends Type<any>>(model: TModel,) => {
+export const ApiPaginatedResponse = <TModel extends Type<any>>(model: TModel,) => {
     return applyDecorators(
-        ApiExtraModels(PageDto, Any),
+        ApiExtraModels(PageDto),
         ApiOkResponse({
             schema: {
                 allOf: [ 
                     { $ref: getSchemaPath(PageDto)},
-                    { properties: { data: { type: 'array', items: { $ref: getSchemaPath(model) } } } },
+                    { properties: { items: { type: 'array', items: { $ref: getSchemaPath(model) } } } },
                 ],
             },
         }),

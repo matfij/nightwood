@@ -2,9 +2,11 @@ import { BadRequestException,Injectable, NotFoundException } from '@nestjs/commo
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { AuthService } from 'src/api/auth/service/auth.service';
+import { PageDto } from 'src/common/definitions/pagination';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../model/dto/create-user.dto';
 import { GetUserDto } from '../model/dto/get-user.dto';
+import { PageUserDto } from '../model/dto/page-user.dto';
 import { UpdateUserDto } from '../model/dto/update-user.dto';
 import { UserDto } from '../model/dto/user.dto';
 import { User } from '../model/user.entity';
@@ -53,8 +55,14 @@ export class UserService {
         return this.userRepository.findOne(id);
     }
 
-    async getAll(dto: GetUserDto): Promise<Pagination<UserDto>> {
-        return paginate<UserDto>(this.userRepository, { page: dto.page, limit: dto.limit });
+    async getAll(dto: GetUserDto): Promise<PageUserDto> {
+        const page = await paginate<UserDto>(this.userRepository, { page: dto.page, limit: dto.limit });
+        
+        const pageUser: PageUserDto = {
+            data: page.items,
+            meta: page.meta,
+        };
+        return pageUser;
     }
 
     private async emailExists(email: string): Promise<boolean> {

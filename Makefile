@@ -12,7 +12,7 @@ restart:
 	docker-compose up
 
 
-client.gen.nswag:
+gen.client:
 	rm -rf generator/generated
 	cp backend/schema.json generator/schema.json
 	cp generator/nswag.json nswag.json
