@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { STORAGE_PREFIX } from '../core/configuration';
+import { STORAGE_PREFIX } from 'src/app/core/configuration';
 
 @Injectable({
   providedIn: 'root'

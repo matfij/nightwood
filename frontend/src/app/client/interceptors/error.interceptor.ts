@@ -1,12 +1,11 @@
 import { HttpHandler, HttpRequest, HttpStatusCode } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { EMPTY, Observable, throwError } from "rxjs";
-import { catchError, switchMap, tap, throttleTime } from "rxjs/operators";
-import { ApiError } from "src/app/definitions/interfaces/api-definitions";
-import { RepositoryService } from "src/app/services/repository.service";
-import { ToastService } from "src/app/services/toast.service";
-import { UtilsService } from "src/app/services/utils.service";
-import { AuthController } from "../api";
+import { catchError, map, switchMap, tap, throttleTime } from "rxjs/operators";
+import { RepositoryService } from "src/app/common/services/repository.service";
+import { ToastService } from "src/app/common/services/toast.service";
+import { UtilsService } from "src/app/common/services/utils.service";
+import { AuthController, AuthUserDto } from "../api";
 
 @Injectable()
 export class ErrorInterceptor {
@@ -42,7 +41,7 @@ export class ErrorInterceptor {
               this.showError(e.error);
             }
             if (user.accessToken) {
-              this.refreshToken(user.accessToken).pipe(
+              this.refreshToken(user).pipe(
                 throttleTime(2000),
                 switchMap(() => { return next.handle(request.clone({
                   setHeaders: {
@@ -63,15 +62,16 @@ export class ErrorInterceptor {
     )
   }
 
-  private refreshToken(token: string): Observable<string> {
-    return this.authController.refreshToken().pipe(
-      tap((token: string) => this.repositoryService.setAccessToken(token))
+  private refreshToken(user: AuthUserDto): Observable<string> {
+    return this.authController.refreshToken(user).pipe(
+      tap((x: AuthUserDto) => this.repositoryService.setAccessToken(x.accessToken)),
+      map((x: AuthUserDto) => x.accessToken),
     );
   }
 
   private showError(error: Blob) {
     if (error instanceof Blob) {
-      this.utilsService.blobToJsonObject<ApiError>(error).subscribe((x) => {
+      this.utilsService.blobToJsonObject<any>(error).subscribe((x) => {
         this.toastService.showError('errors.error', x.message);
       });
     }

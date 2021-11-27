@@ -3,8 +3,8 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
-import { LoadingIndicatorComponent } from '../components/common/loading-indicator/loading-indicator.component';
-import { InputBaseComponent } from '../components/forms/input-base/input-base.component';
+import { LoadingIndicatorComponent } from '../common/components/common/loading-indicator/loading-indicator.component';
+import { InputBaseComponent } from '../common/components/forms/input-base/input-base.component';
 
 const COMPONENTS = [
   InputBaseComponent,

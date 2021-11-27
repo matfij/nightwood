@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { FormInputOptions } from '../../../definitions/interfaces/form-definitions';
+import { FormInputOptions } from 'src/app/common/definitions/forms';
 
 @Component({
   selector: 'app-input-base',

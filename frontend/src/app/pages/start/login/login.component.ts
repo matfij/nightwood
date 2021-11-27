@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastService } from '../../../services/toast.service';
-import { FormInputOptions } from '../../../definitions/interfaces/form-definitions';
-import { MAX_NICKNAME_LENGTH, MIN_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from '../../../core/configuration';
-import { RepositoryService } from '../../../services/repository.service';
-import { AuthController } from '../../../client/api';
+import { AuthController } from 'src/app/client/api';
+import { FormInputOptions } from 'src/app/common/definitions/forms';
+import { RepositoryService } from 'src/app/common/services/repository.service';
+import { ToastService } from 'src/app/common/services/toast.service';
+import { MIN_NICKNAME_LENGTH, MAX_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from 'src/app/core/configuration';
 
 @Component({
   selector: 'app-login',
