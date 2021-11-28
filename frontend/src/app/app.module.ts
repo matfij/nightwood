@@ -37,7 +37,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    NgbModule,
   ],
   providers: [
     { provide: API_BASE_URL, useFactory: () => environment.apiUrl },

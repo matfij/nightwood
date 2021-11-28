@@ -20,7 +20,6 @@ export class ErrorInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
-
     return next.handle(request).pipe(
       catchError(e => {
         const user = this.repositoryService.getUserData();

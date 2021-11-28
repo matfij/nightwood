@@ -1,0 +1,30 @@
+@import '../../../core/theme/variables.scss';
+
+.bg-light {
+  background-color: $app-primary !important;
+}
+
+.btn-outline {
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.navbar-toggler-icon {
+  color: red !important;
+}
+
+.app-nav-link {
+  color: $app-dark !important;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: 600;
+  }
+}
+
+.app-active {
+  font-weight: 600;
+}

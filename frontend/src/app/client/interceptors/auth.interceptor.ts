@@ -13,7 +13,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const user = this.repositoryService.getUserData();
     const token = this.repositoryService.getAccessToken();
-
     if (user && token) {
       request = request.clone({
         setHeaders: {

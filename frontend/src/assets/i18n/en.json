@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "Nightwood",
-    "appHint": "Reject modernity, return to the woods",
+    "appHint": "Reject modernity, embrace the woods",
     "back": "Back"
   },
   "start": {
@@ -26,5 +26,13 @@
     "incorrectFieldsValue": "Please provide correct {{ value }}",
     "formInvalid": "Form invalid",
     "formInvalidHint": "Please check entered values"
+  },
+  "game": {
+    "home": "Home",
+    "adoptDragon": "Adopt dragon",
+    "myDragons": "My dragons",
+    "explore": "Explore",
+    "arena": "Arena",
+    "logout": "Logout"
   }
 }

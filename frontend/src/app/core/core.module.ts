@@ -3,12 +3,15 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
-import { LoadingIndicatorComponent } from '../common/components/common/loading-indicator/loading-indicator.component';
-import { InputBaseComponent } from '../common/components/forms/input-base/input-base.component';
+import { LoadingIndicatorComponent } from '../common/components/loading-indicator/loading-indicator.component';
+import { InputBaseComponent } from '../common/components/input-base/input-base.component';
+import { NavigationBarComponent } from '../common/components/navigation-bar/navigation-bar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const COMPONENTS = [
-  InputBaseComponent,
+  NavigationBarComponent,
   LoadingIndicatorComponent,
+  InputBaseComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,
@@ -16,6 +19,7 @@ const MODULES = [
     positionClass :'toast-bottom-center'
   }),
   TranslateModule.forChild(),
+  NgbModule,
 ];
 const CHILD_PROVIDERS = [
   ...(TranslateModule.forChild().providers ?? []),

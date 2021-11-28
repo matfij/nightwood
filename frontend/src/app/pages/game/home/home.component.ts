@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GetUserDto, UserController, UserDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-home',
@@ -7,20 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  users: any[] = [];
+  users: UserDto[] = [];
 
   constructor(
-
+    private userController: UserController,
   ) {}
 
   ngOnInit(): void {
-    this.users = [
-      {
-        id: 1,
-        nickname: 'John Doe',
-        email: 'mail'
-      }
-    ];
+    this.getBestUsers();
+  }
+
+  getBestUsers() {
+    const dto: GetUserDto = {
+      limit: 5,
+    };
+    this.userController.getAll(dto).subscribe(x => {
+      this.users = x.data;
+    });
   }
 
 }
