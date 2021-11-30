@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavigationItem } from '../../definitions/navigaion';
 import { RepositoryService } from '../../services/repository.service';
@@ -23,7 +23,7 @@ export class NavigationBarComponent {
 
   constructor(
     private router: Router,
-    // private repositoryService: RepositoryService
+    private repositoryService: RepositoryService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class NavigationBarComponent {
   }
 
   logout() {
-    // this.repositoryService.logout();
+    this.repositoryService.logout();
   }
 
 }

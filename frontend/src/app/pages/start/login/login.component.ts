@@ -46,6 +46,7 @@ export class LoginComponent {
       this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
 
       this.repositoryService.setAccessToken(x.accessToken);
+      this.repositoryService.setUserData(x);
       this.router.navigate(['../game/home']);
     }, _ => {
       this.submitLoading = false;
