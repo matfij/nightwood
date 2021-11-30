@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { PageDto } from 'src/common/definitions/pagination';
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/configuration/user.config';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
 import { CreateUserDto } from './model/dto/create-user.dto';

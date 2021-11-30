@@ -2,7 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { APP_NAME } from './configuration/app.config';
+import { APP_NAME, SCHEMA_FILE, SWAGGER_URL } from './configuration/app.config';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 const fs = require('fs');
@@ -18,8 +18,8 @@ async function bootstrap() {
     .setTitle(APP_NAME)
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  fs.writeFileSync("./schema.json", JSON.stringify(document));
-  SwaggerModule.setup('docs', app, document);
+  fs.writeFileSync(SCHEMA_FILE, JSON.stringify(document));
+  SwaggerModule.setup(SWAGGER_URL, app, document);
 
   await app.listen(process.env.PORT);
 }

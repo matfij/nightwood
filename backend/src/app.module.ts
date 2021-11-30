@@ -1,16 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { I18nJsonParser, I18nModule } from 'nestjs-i18n';
 import { UserModule } from './api/user/user.module';
 import { AuthModule } from './api/auth/auth.module';
-import { I18nJsonParser, I18nModule } from 'nestjs-i18n';
 import { DEFAULT_LANG } from './configuration/app.config';
+import { DragonModule } from './api/dragon/dragon.module';
 import * as path from 'path';
+
+const API_MODULES = [
+  AuthModule,
+  UserModule,
+  DragonModule,
+];
 
 @Module({
   imports: [
-    AuthModule,
-    UserModule,
+    ...API_MODULES,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
