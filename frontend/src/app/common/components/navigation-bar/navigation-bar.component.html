@@ -1,6 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
 
-  <a class="navbar-brand" href="game/home">{{ 'common.appName' | translate }}</a>
+  <div class="navbar-brand">
+    <a href="game/home">
+      <img src="/assets/img/brand.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    </a>
+    {{ user?.nickname ?? '' }}
+  </div>
 
   <button class="navbar-toggler btn btn-outline" type="button" (click)="isCollapsed = !isCollapsed">
     <span class="navbar-toggler-icon"></span>
@@ -12,11 +17,10 @@
         <div class="nav-link app-nav-link" (click)="navigate(item.path)">{{ item.label | translate }}</div>
       </li>
     </ul>
-  </div>
 
-  <div (click)="logout()" class="nav-item last-item">
-    {{ 'game.logout' | translate }}
+    <div (click)="logout()" class="nav-item logout">
+      {{ 'game.logout' | translate }}
+    </div>
   </div>
-
 
 </nav>

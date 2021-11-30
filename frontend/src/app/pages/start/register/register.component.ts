@@ -71,6 +71,7 @@ export class RegisterComponent {
       this.toastService.showSuccess('start.registerSuccess', 'start.registerSuccessHint');
 
       this.repositoryService.setAccessToken(x.accessToken);
+      this.repositoryService.setUserData(x);
       this.router.navigate(['../game/home']);
     }, _ => {
       this.submitLoading = false;

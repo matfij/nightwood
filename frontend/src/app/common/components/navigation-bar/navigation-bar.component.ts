@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserDto } from 'src/app/client/api';
 import { NavigationItem } from '../../definitions/navigaion';
 import { RepositoryService } from '../../services/repository.service';
 
@@ -19,7 +20,8 @@ export class NavigationBarComponent {
     { label: 'game.explore', path: 'explore', icon: '', isActive: false },
     { label: 'game.arena', path: 'arena', icon: '', isActive: false },
   ];
-  isCollapsed: boolean = false;
+  isCollapsed: boolean = true;
+  user?: UserDto;
 
   constructor(
     private router: Router,
@@ -28,6 +30,8 @@ export class NavigationBarComponent {
 
   ngOnInit(): void {
     this.navigationItems.forEach(x => x.isActive = this.currentLocation === x.path);
+
+    this.user = this.repositoryService.getUserData();
   }
 
   navigate(path: string) {

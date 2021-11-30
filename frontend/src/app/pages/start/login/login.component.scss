@@ -1,23 +1,9 @@
 @import '../../../core/theme/mixins.scss';
 @import '../../../core/theme/variables.scss';
 
-.wrapper-main {
-  display: flex;
-  align-content: center;
-}
-
 .wrapper-content {
-  width: 95%;
   max-width: 600px;
-  margin: auto;
-
-  padding: 20px auto;
-  display: block;
-  color: $app-light;
-  background: lighten($color: $app-dark, $amount: 11);
-  border-radius: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-height: none;
 }
 
 .wrapper-img {
