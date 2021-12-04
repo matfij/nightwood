@@ -7,12 +7,13 @@ import { DEFAULT_LANG } from './configuration/app.config';
 import { DragonModule } from './api/dragons/dragon/dragon.module';
 import { AuthModule } from './api/users/auth/auth.module';
 import { UserModule } from './api/users/user/user.module';
-import { ActionModule } from './api/dragons/action/action.module';
+import { DragonActionModule } from './api/dragons/dragon-action/dragon-action.module';
 
 const API_MODULES = [
   AuthModule,
   UserModule,
   DragonModule,
+  DragonActionModule,
 ];
 
 @Module({
@@ -33,7 +34,6 @@ const API_MODULES = [
         watch: true,
       },
     }),
-    ActionModule,
   ],
   controllers: [],
 })

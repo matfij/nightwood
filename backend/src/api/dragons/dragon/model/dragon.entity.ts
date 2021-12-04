@@ -1,6 +1,6 @@
 import { DEFAULT_ATTRIBUTE_POINTS, DEFAULT_LEVEL } from "src/configuration/dragon.config";
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { DragonAction, DragonActionType } from "./definitions/dragon-action";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
 import { DragonNature } from "./definitions/dragon-nature";
 
 @Entity()
@@ -13,9 +13,10 @@ export class Dragon {
     name: string;
 
     @Column()
-    ownerId?: number;
+    ownerId: number;
 
     @OneToOne(_ => DragonAction)
+    @JoinColumn()
     action: DragonAction;
 
     @Column()

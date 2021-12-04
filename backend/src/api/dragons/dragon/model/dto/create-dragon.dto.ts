@@ -1,9 +1,14 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsEnum, IsString } from "class-validator";
+import { DragonNature } from "../definitions/dragon-nature";
 
 export class CreateDragonDto {
 
-    @ApiProperty()
     @IsString()
+    @ApiProperty()
     name: string;
+
+    @IsEnum(DragonNature)
+    @ApiProperty({ enum: DragonNature })
+    nature: DragonNature;
 }
