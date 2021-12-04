@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose, Transform } from "class-transformer";
+import { DragonAction } from "src/api/dragons/dragon-action/model/dragon-action.entity";
 import { DragonNature } from "../definitions/dragon-nature";
 
 export class DragonDto {
@@ -16,6 +17,14 @@ export class DragonDto {
     @Transform(({obj}) => obj.user.id)
     @ApiProperty()
     ownerId: number;
+
+    // @OneToOne(_ => DragonAction)
+    // @JoinColumn()
+    // action: DragonAction;
+
+    @Expose()
+    @ApiProperty()
+    action: DragonAction;
 
     @Expose()
     @ApiProperty({ enum: DragonNature })
