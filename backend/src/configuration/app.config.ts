@@ -10,6 +10,11 @@ export const API_VERSION = 'v1';
 export const DEFAULT_LANG = 'en';
 
 /**
+ * Dates
+ */
+export const DATE_FORMAT = 'yyyy-MM-DD[T]HH:mm:ssZZ';
+
+/**
  * Swagger
  */
 export const SWAGGER_URL = 'swagger';

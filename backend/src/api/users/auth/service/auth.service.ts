@@ -3,12 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../user/model/user.entity';
-import { SALT_ROUNDS } from '../../../configuration/user.config';
 import { LoginUserDto } from '../dto/login-user.dto';
 import { RegisterUserDto } from '../dto/register-user.dto';
 import { GetUserDto } from '../../user/model/dto/get-user.dto';
-import { UserDto } from 'src/api/user/model/dto/user.dto';
 import { AuthUserDto } from '../dto/auth-user.dto';
+import { SALT_ROUNDS } from 'src/configuration/user.config';
+import { UserDto } from '../../user/model/dto/user.dto';
 
 const bcrypt = require('bcrypt');
 

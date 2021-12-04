@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsEmail, MinLength, MaxLength } from "class-validator";
-import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "../../../configuration/user.config";
+import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH } from "src/configuration/user.config";
 
 export class RegisterUserDto {
 

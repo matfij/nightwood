@@ -1,12 +1,13 @@
+import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { I18nJsonParser, I18nModule } from 'nestjs-i18n';
-import { UserModule } from './api/user/user.module';
-import { AuthModule } from './api/auth/auth.module';
 import { DEFAULT_LANG } from './configuration/app.config';
-import { DragonModule } from './api/dragon/dragon.module';
-import * as path from 'path';
+import { DragonModule } from './api/dragons/dragon/dragon.module';
+import { AuthModule } from './api/users/auth/auth.module';
+import { UserModule } from './api/users/user/user.module';
+import { ActionModule } from './api/dragons/action/action.module';
 
 const API_MODULES = [
   AuthModule,
@@ -32,6 +33,7 @@ const API_MODULES = [
         watch: true,
       },
     }),
+    ActionModule,
   ],
   controllers: [],
 })
