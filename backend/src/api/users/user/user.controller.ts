@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/configuration/user.config';
+import { PaginationInterceptor } from 'src/common/interceptors/pagination.interceptor';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
 import { CreateUserDto } from './model/dto/create-user.dto';
 import { GetUserDto } from './model/dto/get-user.dto';
@@ -37,12 +37,9 @@ export class UserController {
     }
 
     @Get('getAll')
+    @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: PageUserDto })
     getAll(@Body() dto: GetUserDto): Promise<PageUserDto> {
-        // todo - add default pagination middleware
-        dto.page = dto.page ?? DEFAULT_PAGE;
-        dto.limit = dto.limit ?? DEFAULT_LIMIT;
-
         return this.userService.getAll(dto);
     }
 

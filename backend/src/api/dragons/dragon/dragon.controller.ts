@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Request, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
 import { AuthorizedRequest } from "src/common/definitions/requests";
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from "src/configuration/user.config";
+import { PaginationInterceptor } from "src/common/interceptors/pagination.interceptor";
 import { CreateDragonDto } from "./model/dto/create-dragon.dto";
 import { DragonDto } from "./model/dto/dragon.dto";
 import { GetDragonDto } from "./model/dto/get-dragon.dto";
@@ -31,12 +31,9 @@ export class DragonController {
     }
 
     @Get('getAll')
+    @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: PageDragonDto })
     getAll(@Body() dto: GetDragonDto): Promise<PageDragonDto> {
-        // todo - add default pagination middleware
-        dto.page = dto.page ?? DEFAULT_PAGE;
-        dto.limit = dto.limit ?? DEFAULT_LIMIT;
-
         return this.dragonService.getAll(dto);
     }
 }
