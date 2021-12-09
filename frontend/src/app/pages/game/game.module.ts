@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { GameRoutingModule } from './game-routing.module';
 import { HomeComponent } from './home/home.component';
 import { CoreModule } from '../../core/core.module';
+import { AdoptDragonComponent } from './adopt-dragon/adopt-dragon.component';
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    AdoptDragonComponent,
   ],
   imports: [
     CommonModule,
@@ -14,4 +16,4 @@ import { CoreModule } from '../../core/core.module';
     CoreModule.forChild(),
   ]
 })
-export class GameModule { }
+export class GameModule {}

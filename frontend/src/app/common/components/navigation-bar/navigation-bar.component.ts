@@ -15,8 +15,8 @@ export class NavigationBarComponent {
 
   navigationItems: NavigationItem[] = [
     { label: 'game.home', path: 'home', icon: '', isActive: false },
-    { label: 'game.adoptDragon', path: 'adoptDragon', icon: '', isActive: false },
-    { label: 'game.myDragons', path: 'myDragons', icon: '', isActive: false },
+    { label: 'game.adoptDragon', path: 'adopt-dragon', icon: '', isActive: false },
+    { label: 'game.myDragons', path: 'my-dragons', icon: '', isActive: false },
     { label: 'game.explore', path: 'explore', icon: '', isActive: false },
     { label: 'game.arena', path: 'arena', icon: '', isActive: false },
   ];

@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
 
   getBestUsers() {
     const dto: GetUserDto = {
-      limit: 5,
+      limit: 15,
     };
     this.userController.getAll(dto).subscribe(x => {
       this.users = x.data;
