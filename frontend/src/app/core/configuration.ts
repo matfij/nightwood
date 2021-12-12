@@ -22,3 +22,9 @@ export const MIN_NICKNAME_LENGTH = 4;
 export const MAX_NICKNAME_LENGTH = 16;
 export const MIN_PASSWORD_LENGTH = 4;
 export const MAX_PASSWORD_LENGTH = 30;
+
+/**
+ * Drgons
+ */
+export const DRAGON_MIN_NAME_LENGTH = 3;
+export const DRAGON_MAX_NAME_LENGTH = 12;

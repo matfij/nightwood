@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DragonNature } from 'src/app/common/definitions/dragons';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DragonNature } from 'src/app/client/api';
+import { FormInputOptions } from 'src/app/common/definitions/forms';
+import { DRAGON_MAX_NAME_LENGTH, DRAGON_MIN_NAME_LENGTH } from 'src/app/core/configuration';
 
 @Component({
   selector: 'app-adopt-dragon',
@@ -41,14 +44,36 @@ export class AdoptDragonComponent implements OnInit {
     },
   ];
   currentStep: AdoptStep = AdoptStep.Trait;
+  chosenAnswers: AdoptAnswer[] = [];
 
-  constructor() { }
+
+  form: FormGroup = new FormGroup({
+    name: new FormControl(
+      null,
+      [Validators.required, Validators.minLength(DRAGON_MIN_NAME_LENGTH), Validators.maxLength(DRAGON_MAX_NAME_LENGTH)],
+    )
+  });
+  fields: FormInputOptions[] = [
+    { form: this.form, key: 'name', label: 'dragon.name', type: 'text' },
+  ];
+  submitLoading?: boolean;
+
+  constructor(
+  ) {}
 
   ngOnInit(): void {
+    this.currentStep = AdoptStep.Trait;
+    this.chosenAnswers = [];
+    this.currentStep
   }
 
   saveAnswer(answer: AdoptAnswer) {
     this.currentStep += 1;
+    this.chosenAnswers.push(answer);
+  }
+
+  adoptDragon() {
+    console.log(this.chosenAnswers)
   }
 
 }
@@ -68,5 +93,6 @@ export enum AdoptStep {
   Trait,
   Value,
   Location,
+  Name,
   Finished,
 }

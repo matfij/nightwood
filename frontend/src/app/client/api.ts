@@ -414,6 +414,178 @@ export class UserController implements IUserController {
     }
 }
 
+export interface IDragonController {
+    create(body: CreateDragonDto): Observable<DragonDto>;
+    getOne(id: string): Observable<DragonDto>;
+    getAll(body: GetDragonDto): Observable<PageDragonDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class DragonController implements IDragonController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    create(body: CreateDragonDto) : Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/dragon/create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    getOne(id: string) : Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/dragon/getOne/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOne(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOne(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetOne(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    getAll(body: GetDragonDto) : Observable<PageDragonDto> {
+        let url_ = this.baseUrl + "/api/v1/dragon/getAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PageDragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PageDragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PageDragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PageDragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PageDragonDto>(<any>null);
+    }
+}
+
 export interface LoginUserDto {
     nickname: string;
     password: string;
@@ -470,6 +642,53 @@ export interface PageMetaDto {
 export interface PageUserDto {
     meta: PageMetaDto;
     data: UserDto[];
+}
+
+export interface CreateDragonDto {
+    name: string;
+    nature: CreateDragonDtoNature;
+}
+
+export interface DragonAction {
+}
+
+export enum DragonNature {
+    Fire = "Fire",
+    Water = "Water",
+    Wind = "Wind",
+    Earth = "Earth",
+}
+
+export interface DragonDto {
+    id?: number;
+    name: string;
+    ownerId: number;
+    action: DragonAction;
+    nature: DragonNature;
+    level: number;
+    strength: number;
+    dexterity: number;
+    endurance: number;
+    will: number;
+    luck: number;
+}
+
+export interface GetDragonDto {
+    ownerId?: number;
+    page?: number;
+    limit?: number;
+}
+
+export interface PageDragonDto {
+    meta: PageMetaDto;
+    data: DragonDto[];
+}
+
+export enum CreateDragonDtoNature {
+    Fire = "Fire",
+    Water = "Water",
+    Wind = "Wind",
+    Earth = "Earth",
 }
 
 export class SwaggerException extends Error {

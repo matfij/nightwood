@@ -52,6 +52,7 @@
     "fireLocation": "Forest",
     "waterLocation": "Lake",
     "windLocation": "Mountain",
-    "earthLocation": "Desert"
+    "earthLocation": "Desert",
+    "name": "Name"
   }
 }
