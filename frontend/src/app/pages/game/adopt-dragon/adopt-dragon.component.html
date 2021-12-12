@@ -3,10 +3,21 @@
 
   <div class="wrapper-content">
 
-    <h1>ADOPT DRAGON PAGE</h1>
+    <div>{{ 'dragon.adoptDragonTilte' | translate }}</div>
+    <div>{{ 'dragon.adoptDragonHint' | translate }}</div>
 
-    <h2>Adopt dragon dialog</h2>
+    <div *ngFor="let stage of adoptStages" class="wrapper-stage">
+      <div *ngIf="stage.step === currentStep">
+        <b>{{ stage.question | translate }}</b>
+        <div *ngFor="let answer of stage.answers">
+          <div (click)="saveAnswer(answer)" class="answer">
 
+            {{ answer.value | translate }}
+          </div>
+        </div>
+      </div>
+
+    </div>
 
   </div>
 </div>

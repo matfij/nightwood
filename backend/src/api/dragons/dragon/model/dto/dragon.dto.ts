@@ -27,7 +27,7 @@ export class DragonDto {
     action: DragonAction;
 
     @Expose()
-    @ApiProperty({ enum: DragonNature })
+    @ApiProperty({ enum: DragonNature, enumName: 'DragonNature' })
     nature: DragonNature;
 
     @Expose()

@@ -34,5 +34,24 @@
     "explore": "Explore",
     "arena": "Arena",
     "logout": "Logout"
+  },
+  "dragon": {
+    "adoptDragonTilte": "Who are you fated to encounter?",
+    "adoptDragonHint": "Open a door on a new adventure throughout lands and heavens",
+    "traitQuestion": "I aim to maximize ...",
+    "fireTrait": "Strength",
+    "waterTrait": "Brilliance",
+    "windTrait": "Dexterity",
+    "earthTrait": "Tenacity",
+    "valueQuestion": "I value ...",
+    "fireValue": "Growth",
+    "waterValue": "Balance",
+    "windValue": "Excitement",
+    "earthValue": "Serenity",
+    "locationQuestion": "I would like to live close to ...",
+    "fireLocation": "Forest",
+    "waterLocation": "Lake",
+    "windLocation": "Mountain",
+    "earthLocation": "Desert"
   }
 }
