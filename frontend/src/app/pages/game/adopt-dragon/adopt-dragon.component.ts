@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DragonNature } from 'src/app/client/api';
+import { Router } from '@angular/router';
+import { CreateDragonDto, DragonController, DragonNature } from 'src/app/client/api';
+import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/common/definitions/dragons';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
+import { ToastService } from 'src/app/common/services/toast.service';
 import { DRAGON_MAX_NAME_LENGTH, DRAGON_MIN_NAME_LENGTH } from 'src/app/core/configuration';
 
 @Component({
@@ -16,30 +19,30 @@ export class AdoptDragonComponent implements OnInit {
       step: AdoptStep.Trait,
       question: 'dragon.traitQuestion',
       answers: [
-        { nature: DragonNature.Fire, value: 'dragon.fireTrait' },
-        { nature: DragonNature.Water, value: 'dragon.waterTrait' },
-        { nature: DragonNature.Wind, value: 'dragon.windTrait' },
-        { nature: DragonNature.Earth, value: 'dragon.earthTrait' },
+        { label: 'dragon.fireTrait', points: this.setNaturePoints(90, 30, 10, 40) },
+        { label: 'dragon.waterTrait', points: this.setNaturePoints(40, 100, 30, 20) },
+        { label: 'dragon.windTrait', points: this.setNaturePoints(20, 20, 90, 5) },
+        { label: 'dragon.earthTrait', points: this.setNaturePoints(15, 25, 10, 80) },
       ]
     },
     {
       step: AdoptStep.Value,
       question: 'dragon.valueQuestion',
       answers: [
-        { nature: DragonNature.Fire, value: 'dragon.fireValue' },
-        { nature: DragonNature.Water, value: 'dragon.waterValue' },
-        { nature: DragonNature.Wind, value: 'dragon.windValue' },
-        { nature: DragonNature.Earth, value: 'dragon.earthValue' },
+        { label: 'dragon.fireValue', points: this.setNaturePoints(80, 60, 50, 50) },
+        { label: 'dragon.waterValue', points: this.setNaturePoints(10, 80, 50, 30) },
+        { label: 'dragon.windValue', points: this.setNaturePoints(70, 40, 90, 20) },
+        { label: 'dragon.earthValue', points: this.setNaturePoints(30, 50, 20, 70) },
       ]
     },
     {
       step: AdoptStep.Location,
       question: 'dragon.locationQuestion',
       answers: [
-        { nature: DragonNature.Fire, value: 'dragon.fireLocation' },
-        { nature: DragonNature.Water, value: 'dragon.waterLocation' },
-        { nature: DragonNature.Wind, value: 'dragon.windLocation' },
-        { nature: DragonNature.Earth, value: 'dragon.earthLocation' },
+        { label: 'dragon.fireLocation', points: this.setNaturePoints(60, 40, 50, 50) },
+        { label: 'dragon.waterLocation', points: this.setNaturePoints(-10, 90, 30, 40) },
+        { label: 'dragon.windLocation', points: this.setNaturePoints(30, 10, 60, 50) },
+        { label: 'dragon.earthLocation', points: this.setNaturePoints(40, 10, 10, 60) },
       ]
     },
   ];
@@ -58,7 +61,12 @@ export class AdoptDragonComponent implements OnInit {
   ];
   submitLoading?: boolean;
 
+  get dragonName(): FormControl { return this.form.get('name') as FormControl; }
+
   constructor(
+    private router: Router,
+    private dragonController: DragonController,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -67,32 +75,43 @@ export class AdoptDragonComponent implements OnInit {
     this.currentStep
   }
 
+  setNaturePoints(fire: number, water: number, wind: number, earth: number): NaturePoints[] {
+    return [{nature: DragonNature.Fire, value: 10}]
+  }
+
   saveAnswer(answer: AdoptAnswer) {
     this.currentStep += 1;
     this.chosenAnswers.push(answer);
   }
 
+  determineNature(): DragonNature {
+    let naturePoints = Object.keys(DragonNature).map(x => {
+      return {
+        nature: DragonNature[x as DragonNature],
+        points: 0,
+      };
+    });
+
+    console.log(naturePoints)
+    return DragonNature.Fire;
+  }
+
   adoptDragon() {
-    console.log(this.chosenAnswers)
+    if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
+
+    const dragon: CreateDragonDto = {
+      name: this.dragonName.value,
+      nature: this.determineNature(),
+    };
+    this.submitLoading = true;
+    // this.dragonController.create(dragon).subscribe(x => {
+    //   this.submitLoading = false;
+
+    // }, _ => {
+    //   this.submitLoading = false;
+    //   this.toastService.showError('start.loginError', 'start.loginErrorHint');
+    // });
   }
 
 }
 
-export interface AdoptStage {
-  step: AdoptStep;
-  question: string;
-  answers: AdoptAnswer[];
-}
-
-export interface AdoptAnswer {
-  nature: DragonNature;
-  value: string;
-}
-
-export enum AdoptStep {
-  Trait,
-  Value,
-  Location,
-  Name,
-  Finished,
-}

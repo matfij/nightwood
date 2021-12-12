@@ -9,6 +9,6 @@ export class CreateDragonDto {
     name: string;
 
     @IsEnum(DragonNature)
-    @ApiProperty({ enum: DragonNature })
+    @ApiProperty({ enum: DragonNature, enumName: 'DragonNature' })
     nature: DragonNature;
 }

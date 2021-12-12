@@ -644,19 +644,19 @@ export interface PageUserDto {
     data: UserDto[];
 }
 
-export interface CreateDragonDto {
-    name: string;
-    nature: CreateDragonDtoNature;
-}
-
-export interface DragonAction {
-}
-
 export enum DragonNature {
     Fire = "Fire",
     Water = "Water",
     Wind = "Wind",
     Earth = "Earth",
+}
+
+export interface CreateDragonDto {
+    name: string;
+    nature: DragonNature;
+}
+
+export interface DragonAction {
 }
 
 export interface DragonDto {
@@ -682,13 +682,6 @@ export interface GetDragonDto {
 export interface PageDragonDto {
     meta: PageMetaDto;
     data: DragonDto[];
-}
-
-export enum CreateDragonDtoNature {
-    Fire = "Fire",
-    Water = "Water",
-    Wind = "Wind",
-    Earth = "Earth",
 }
 
 export class SwaggerException extends Error {

@@ -53,6 +53,7 @@
     "waterLocation": "Lake",
     "windLocation": "Mountain",
     "earthLocation": "Desert",
-    "name": "Name"
+    "name": "Name",
+    "adopt": "Adopt"
   }
 }
