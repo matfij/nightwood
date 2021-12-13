@@ -1,6 +1,6 @@
 export enum DragonNature {
-    Fire,
-    Water,
-    Wind,
-    Earth,
+    Fire = 'Fire',
+    Water = 'Water',
+    Wind = 'Wind',
+    Earth = 'Earth',
 }

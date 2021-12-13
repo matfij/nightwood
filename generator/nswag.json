@@ -1,5 +1,10 @@
 {
     "runtime": "Default",
+    "swaggerGenerator": {
+      "webApiToSwagger": {
+        "defaultEnumHandling": "Integer"
+      }
+    },
     "documentGenerator": {
       "fromDocument": {
         "url": "generator/schema.json"

@@ -76,7 +76,12 @@ export class AdoptDragonComponent implements OnInit {
   }
 
   setNaturePoints(fire: number, water: number, wind: number, earth: number): NaturePoints[] {
-    return [{nature: DragonNature.Fire, value: 10}]
+    return [
+      { nature: DragonNature.Fire, value: fire },
+      { nature: DragonNature.Water, value: water },
+      { nature: DragonNature.Wind, value: wind },
+      { nature: DragonNature.Earth, value: earth },
+    ]
   }
 
   saveAnswer(answer: AdoptAnswer) {
@@ -85,15 +90,21 @@ export class AdoptDragonComponent implements OnInit {
   }
 
   determineNature(): DragonNature {
-    let naturePoints = Object.keys(DragonNature).map(x => {
+    const calculatedPoints = Object.keys(DragonNature).map(x => {
       return {
         nature: DragonNature[x as DragonNature],
         points: 0,
       };
     });
 
-    console.log(naturePoints)
-    return DragonNature.Fire;
+    this.chosenAnswers.forEach((adoptAnswer: AdoptAnswer) => {
+      adoptAnswer.points.forEach((naturePoints: NaturePoints) => {
+        calculatedPoints.find(x => x.nature === naturePoints.nature)!.points += naturePoints.value;
+      });
+    });
+
+    const chosenNature = calculatedPoints.sort((x, y) => x.points + y.points)[0];
+    return chosenNature.nature;
   }
 
   adoptDragon() {
@@ -104,13 +115,10 @@ export class AdoptDragonComponent implements OnInit {
       nature: this.determineNature(),
     };
     this.submitLoading = true;
-    // this.dragonController.create(dragon).subscribe(x => {
-    //   this.submitLoading = false;
+    this.dragonController.create(dragon).subscribe(x => {
+      this.submitLoading = false;
 
-    // }, _ => {
-    //   this.submitLoading = false;
-    //   this.toastService.showError('start.loginError', 'start.loginErrorHint');
-    // });
+    }, _ => this.submitLoading = false);
   }
 
 }
