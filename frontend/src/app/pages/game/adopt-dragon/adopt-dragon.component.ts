@@ -57,7 +57,7 @@ export class AdoptDragonComponent implements OnInit {
     )
   });
   fields: FormInputOptions[] = [
-    { form: this.form, key: 'name', label: 'dragon.name', type: 'text' },
+    { form: this.form, key: 'name', label: '', type: 'text' },
   ];
   submitLoading?: boolean;
 
@@ -118,7 +118,8 @@ export class AdoptDragonComponent implements OnInit {
     this.submitLoading = true;
     this.dragonController.create(dragon).subscribe(x => {
       this.submitLoading = false;
-
+      this.toastService.showSuccess('common.success', 'dragon.adoptSuccess');
+      this.router.navigate(['game/dragons'])
     }, _ => this.submitLoading = false);
   }
 

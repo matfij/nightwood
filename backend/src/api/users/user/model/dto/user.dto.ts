@@ -13,4 +13,10 @@ export class UserDto {
 
     @ApiProperty()
     nickname?: string;
+
+    @ApiProperty()
+    ownedDragons?: number;
+
+    @ApiProperty()
+    maxOwnedDragons?: number;
 }

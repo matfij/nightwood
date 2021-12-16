@@ -49,11 +49,11 @@ export class AuthService {
         };
 
         const createdUser = this.userRepository.create(newUser);
-        this.userRepository.save(createdUser);
+        const savedUser = await this.userRepository.save(createdUser);
 
         const token = await this.generateJwt(createdUser);
         return {
-            id: createdUser.id,
+            id: savedUser.id,
             email: createdUser.email,
             nickname: createdUser.nickname,
             accessToken: token,

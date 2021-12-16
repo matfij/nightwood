@@ -2,7 +2,8 @@
   "common": {
     "appName": "Nightwood",
     "appHint": "Reject modernity, return to the woods",
-    "back": "Back"
+    "back": "Back",
+    "success": "Success"
   },
   "start": {
     "login": "Login",
@@ -37,13 +38,13 @@
   },
   "dragon": {
     "adoptDragonTilte": "Who are you fated to encounter?",
-    "adoptDragonHint": "Open a door on a new adventure throughout lands and heavens",
+    "adoptDragonHint": "Open a door on a new adventure throughout lands of Nightwood",
     "traitQuestion": "During my adventures I aim to maximize",
     "fireTrait": "Strength",
     "waterTrait": "Brilliance",
     "windTrait": "Dexterity",
     "earthTrait": "Tenacity",
-    "valueQuestion": "I value ...",
+    "valueQuestion": "In everyday life I value ...",
     "fireValue": "Growth",
     "waterValue": "Balance",
     "windValue": "Excitement",
@@ -53,7 +54,8 @@
     "waterLocation": "Lake",
     "windLocation": "Mountain",
     "earthLocation": "Desert",
-    "name": "Name",
-    "adopt": "Adopt"
+    "chooseDragonName": "Choose a name for your dragon",
+    "adopt": "Adopt",
+    "adoptSuccess": "You have adopted a new dragon!"
   }
 }

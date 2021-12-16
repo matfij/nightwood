@@ -17,6 +17,8 @@
 }
 
 .wrapper-stage {
+  width: 95%;
+  max-width: 800px;
   margin: 20px auto;
 }
 
@@ -27,17 +29,15 @@
 
 .answers-wrapper {
   max-width: 600px;
-  margin: 10px auto;
+  margin: 20px auto;
 
+  padding: 10px;
   display: grid;
   gap: 1rem;
   grid-template-areas:
     'a b'
     'c d';
-  grid-template-rows: repeat(4, 25%);
-  // grid-template-columns: repeat(4, 100px);
-  // grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  // grid-auto-rows: 100px;
+  grid-template-rows: repeat(4, 40%);
 }
 
 @keyframes answerEntrance {
@@ -53,21 +53,36 @@
   }
 }
 
-$areas: (('1': 'a'), ('2': 'b'), ('3': 'c'), ('4': 'd'));
-$stagger-delay: 100ms;
+$areas: (1 'a' 'fire', 2 'b' 'water', 3 'c' 'wind', 4 'd' 'earth');
+$delay: 5000ms;
 
-@each $i, $area in $areas {
-  .answer:nth-child(n) {
+@each $ind, $area, $img in $areas {
+  .answer:nth-child(#{$ind}) {
     grid-area: $area;
-    animation-delay: calc($i * $stagger-delay);
+    animation-delay: calc(#{$ind} * 100ms);
+    background: linear-gradient(rgba($app-dark, 0.8), rgba($app-dark, 0.6)), url('/assets/img/adopt-dragon/#{$img}.jpg');
+
+    :hover {
+      background:  linear-gradient(rgba($app-dark, 0.5), rgba($app-dark, 0.6)), url('/assets/img/adopt-dragon/#{$img}.jpg');
+    }
   }
 }
 
 .answer {
+  color: $app-light;
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
   background-color: black;
   animation: answerEntrance 700ms ease-in-out;
   animation-fill-mode: backwards;
+  border-radius: 4px;
+  overflow: hidden;
+  line-height: 5;
+  box-shadow: 0 0 9px $app-light;
+
+  :hover {
+    // TODO - fix transition
+    transition: all 0.5s ease-in-out !important;
+  }
 }

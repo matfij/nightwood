@@ -21,7 +21,7 @@ export class InputBaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.field = this.options.form.get(this.options.key) as FormControl;
-    this.fieldName = this.translateService.instant(this.options.label);
+    this.fieldName = this.options.label ? this.translateService.instant(this.options.label) : '';
   }
 
 }

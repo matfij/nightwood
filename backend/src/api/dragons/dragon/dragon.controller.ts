@@ -21,7 +21,7 @@ export class DragonController {
     @Post('create')
     @ApiOkResponse({ type: DragonDto })
     create(@Request() req: AuthorizedRequest, @Body() dto: CreateDragonDto): Promise<DragonDto> {
-        return this.dragonService.create(req.user.id, dto);
+        return this.dragonService.create(req.user, dto);
     }
 
     @Get('getOne/:id')
@@ -30,7 +30,7 @@ export class DragonController {
         return this.dragonService.getOne(id);
     }
 
-    @Get('getAll')
+    @Post('getAll')
     @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: PageDragonDto })
     getAll(@Body() dto: GetDragonDto): Promise<PageDragonDto> {

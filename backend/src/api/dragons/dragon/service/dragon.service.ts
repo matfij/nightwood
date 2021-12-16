@@ -9,6 +9,8 @@ import { GetDragonDto } from '../model/dto/get-dragon.dto';
 import { PageDragonDto } from '../model/dto/page-dragon.dto';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { GET_ALL_RELATIONS, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
+import { UserService } from 'src/api/users/user/service/user.service';
+import { UserDto } from 'src/api/users/user/model/dto/user.dto';
 
 @Injectable()
 export class DragonService {
@@ -17,13 +19,17 @@ export class DragonService {
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
         private dragonActionService: DragonActionService,
+        private userService: UserService,
     ) {}
 
-    async create(ownerId: number, dto: CreateDragonDto): Promise<DragonDto> {
-        const dragon = this.dragonRepository.create({...dto, ownerId});
-        dragon.action = this.dragonActionService.create();
+    async create(owner: UserDto, dto: CreateDragonDto): Promise<DragonDto> {
+        await this.userService.incrementOwnedDragons(owner.id);
+        
+        const dragon = this.dragonRepository.create({...dto, ownerId: owner.id});
+        dragon.action = await this.dragonActionService.create();
+        const savedDragon = await this.dragonRepository.save(dragon);
 
-        return this.dragonRepository.save(dragon);
+        return savedDragon;
     }
 
     async getOne(id: string): Promise<DragonDto> {

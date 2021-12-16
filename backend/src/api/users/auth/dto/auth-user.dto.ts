@@ -23,4 +23,12 @@ export class AuthUserDto {
     @IsDateString()
     @ApiPropertyOptional({ type: Date })
     expires?: string;
+
+    @IsNumber()
+    @ApiProperty()
+    ownedDragons?: number;
+
+    @IsNumber()
+    @ApiProperty()
+    maxOwnedDragons?: number;
 }

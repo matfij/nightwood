@@ -5,11 +5,11 @@ Adopt, personalize and train dragons to participate in expeditions and battles t
 The game is slow-paced and non-time intensive, suitable for both individual players and cooperation.
 
 ## MVP Features
- - Dialog-based dragon adoption [40%]
- - Dragon feeding & base stats [20%]
+ - Dialog-based dragon adoption [100%]
+ - Dragon feeding & base stats [30%]
  - Items & expeditions [10%]
- - Combat system [0%]
- - Breed-specific skills [0%]
+ - Combat system [5%]
+ - Breed-specific skills [5%]
  - Players messaging & live chat [0%]
  - Auction house [0%]
 

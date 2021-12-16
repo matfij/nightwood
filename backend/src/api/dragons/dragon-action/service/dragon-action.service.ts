@@ -13,12 +13,12 @@ export class DragonActionService {
     private dragonActionRepository: Repository<DragonAction>,
   ) {}
 
-  create() {
+  async create() {
     const action: DragonActionDto = { type: DragonActionType.None };
     const dragonAction = this.dragonActionRepository.create(action);
 
-    this.dragonActionRepository.save(dragonAction);
-    return dragonAction;
+    const savedAction = await this.dragonActionRepository.save(dragonAction);
+    return savedAction;
   }
 
 }

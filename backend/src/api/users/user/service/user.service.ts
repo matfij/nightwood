@@ -34,7 +34,7 @@ export class UserService {
         return this.userRepository.save(createdUser);
     }
 
-    async update(id: string, dto: UpdateUserDto): Promise<UserDto> {
+    async update(id: string | number, dto: UpdateUserDto): Promise<UserDto> {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new NotFoundException();
 
@@ -46,6 +46,8 @@ export class UserService {
         if (dto.email) user.email = dto.email;
         if (dto.nickname) user.nickname = dto.nickname;
         if (dto.password) user.password = await this.authService.hashPassword(user.password);
+        if (dto.ownedDragons) user.ownedDragons = dto.ownedDragons;
+        if (dto.maxOwnedDragons) user.maxOwnedDragons = dto.ownedDragons;
 
         return this.userRepository.save(user);
     }
@@ -62,6 +64,16 @@ export class UserService {
             meta: page.meta,
         };
         return pageUser;
+    }
+
+    async incrementOwnedDragons(id: number | string) {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new NotFoundException();
+        
+        if (user.ownedDragons >= user.maxOwnedDragons) throw new BadRequestException('Max number of dragons exceeded');
+        user.ownedDragons += 1;
+
+        return this.userRepository.save(user);
     }
 
     private async emailExists(email: string): Promise<boolean> {

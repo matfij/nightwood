@@ -23,6 +23,7 @@
 
     <div *ngIf="currentStep === adoptStep.Name" class="wrapper-form">
       <form [formGroup]="form" (ngSubmit)="adoptDragon()">
+        <div class="question">{{ 'dragon.chooseDragonName' | translate }}</div>
         <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
         <button *ngIf="!submitLoading" [disabled]="!form.valid" class="btn-base">
