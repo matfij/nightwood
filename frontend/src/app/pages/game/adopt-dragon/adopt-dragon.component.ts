@@ -61,6 +61,7 @@ export class AdoptDragonComponent implements OnInit {
   ];
   submitLoading?: boolean;
 
+  adoptStep = AdoptStep;
   get dragonName(): FormControl { return this.form.get('name') as FormControl; }
 
   constructor(

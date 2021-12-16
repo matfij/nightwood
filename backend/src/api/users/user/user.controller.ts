@@ -36,7 +36,7 @@ export class UserController {
         return this.userService.getOne(id);
     }
 
-    @Get('getAll')
+    @Post('getAll')
     @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: PageUserDto })
     getAll(@Body() dto: GetUserDto): Promise<PageUserDto> {

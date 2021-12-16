@@ -36,6 +36,7 @@ export class DragonService {
             { page: dto.page, limit: dto.limit }, 
             { relations: GET_ALL_RELATIONS }
         );
+
         const dragonPage: PageDragonDto = {
             data: page.items,
             meta: page.meta,

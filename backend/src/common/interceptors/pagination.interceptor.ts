@@ -9,7 +9,7 @@ export class PaginationInterceptor implements NestInterceptor {
         let request = context.switchToHttp().getRequest();
         if (request.body) {
             request.body.page = request.body.page ?? DEFAULT_PAGE;
-            request.body.limit = request.body.page ?? DEFAULT_LIMIT;
+            request.body.limit = request.body.limit ?? DEFAULT_LIMIT;
         }
         return next.handle();
     }

@@ -3,21 +3,25 @@
 
   <div class="wrapper-content">
 
-    <div>{{ 'dragon.adoptDragonTilte' | translate }}</div>
-    <div>{{ 'dragon.adoptDragonHint' | translate }}</div>
+    <div>
+      <div class="title">{{ 'dragon.adoptDragonTilte' | translate }}</div>
+      <div class="title-secondary">{{ 'dragon.adoptDragonHint' | translate }}</div>
+    </div>
 
-    <div *ngFor="let stage of adoptStages" class="wrapper-stage">
-      <div *ngIf="stage.step === currentStep">
-        <b>{{ stage.question | translate }}</b>
-        <div *ngFor="let answer of stage.answers">
-          <div (click)="saveAnswer(answer)" class="answer">
-            {{ answer.label | translate }}
+    <div *ngFor="let stage of adoptStages">
+      <div *ngIf="stage.step === currentStep" class="wrapper-stage">
+        <div class="question">{{ stage.question | translate }}</div>
+        <div class="answers-wrapper">
+          <div *ngFor="let answer of stage.answers" class="answer">
+            <div (click)="saveAnswer(answer)">
+              {{ answer.label | translate }}
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="wrapper-form">
+    <div *ngIf="currentStep === adoptStep.Name" class="wrapper-form">
       <form [formGroup]="form" (ngSubmit)="adoptDragon()">
         <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
