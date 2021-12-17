@@ -550,7 +550,7 @@ export class DragonController implements IDragonController {
             })
         };
 
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processGetAll(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -597,6 +597,8 @@ export interface AuthUserDto {
     nickname: string;
     accessToken: string;
     expires?: string;
+    ownedDragons: number;
+    maxOwnedDragons: number;
 }
 
 export interface RegisterUserDto {
@@ -616,12 +618,16 @@ export interface UserDto {
     email: string;
     password?: string;
     nickname: string;
+    ownedDragons: number;
+    maxOwnedDragons: number;
 }
 
 export interface UpdateUserDto {
     email?: string;
     password?: string;
     nickname?: string;
+    ownedDragons?: number;
+    maxOwnedDragons?: number;
 }
 
 export interface GetUserDto {

@@ -119,7 +119,7 @@ export class AdoptDragonComponent implements OnInit {
     this.dragonController.create(dragon).subscribe(x => {
       this.submitLoading = false;
       this.toastService.showSuccess('common.success', 'dragon.adoptSuccess');
-      this.router.navigate(['game/dragons'])
+      this.router.navigate(['game', 'my-dragons'])
     }, _ => this.submitLoading = false);
   }
 

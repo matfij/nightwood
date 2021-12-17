@@ -1,0 +1,20 @@
+<div class="wrapper-main">
+  <app-navigation-bar currentLocation="home"></app-navigation-bar>
+
+  <div class="wrapper-content">
+
+    <!-- DRAGON COMPONENT -->
+    <div *ngFor="let dragon of ownedDragons">
+      <div class="container">
+        {{ dragon.name }}
+        [{{ dragon.level }}]
+        <br>
+        {{ dragon.nature }}
+      </div>
+    </div>
+
+
+
+
+  </div>
+</div>

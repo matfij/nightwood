@@ -4,11 +4,13 @@ import { GameRoutingModule } from './game-routing.module';
 import { HomeComponent } from './home/home.component';
 import { CoreModule } from '../../core/core.module';
 import { AdoptDragonComponent } from './adopt-dragon/adopt-dragon.component';
+import { MyDragonsComponent } from './my-dragons/my-dragons.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     AdoptDragonComponent,
+    MyDragonsComponent,
   ],
   imports: [
     CommonModule,
