@@ -7,11 +7,13 @@ import { LoadingIndicatorComponent } from '../common/components/loading-indicato
 import { InputBaseComponent } from '../common/components/input-base/input-base.component';
 import { NavigationBarComponent } from '../common/components/navigation-bar/navigation-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DragonPreviewComponent } from './components/dragon-preview/dragon-preview.component';
 
 const COMPONENTS = [
   NavigationBarComponent,
   LoadingIndicatorComponent,
   InputBaseComponent,
+  DragonPreviewComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

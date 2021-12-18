@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CreateDragonDto, DragonController, DragonNature } from 'src/app/client/api';
-import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/common/definitions/dragons';
+import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/core/definitions/dragons';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DRAGON_MAX_NAME_LENGTH, DRAGON_MIN_NAME_LENGTH } from 'src/app/core/configuration';

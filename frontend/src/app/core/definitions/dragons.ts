@@ -1,4 +1,4 @@
-import { DragonNature } from "src/app/client/api";
+import { DragonDto, DragonNature } from "src/app/client/api";
 
 export interface AdoptStage {
   step: AdoptStep;
@@ -22,4 +22,8 @@ export enum AdoptStep {
   Location,
   Name,
   Finished,
+}
+
+export interface DisplayDragon extends DragonDto {
+  image?: string;
 }

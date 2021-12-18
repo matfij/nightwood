@@ -28,3 +28,8 @@ export const MAX_PASSWORD_LENGTH = 30;
  */
 export const DRAGON_MIN_NAME_LENGTH = 3;
 export const DRAGON_MAX_NAME_LENGTH = 12;
+
+export const DRAGON_MAX_EGG_LEVEL = 5;
+export const DRAGON_MAX_KID_LEVEL = 15;
+export const DRAGON_MAX_ADULT_LEVEL = 50;
+export const DRAGON_MAX_SAGE_LEVEL = Infinity;

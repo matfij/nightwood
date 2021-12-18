@@ -3,18 +3,11 @@
 
   <div class="wrapper-content">
 
-    <!-- DRAGON COMPONENT -->
-    <div *ngFor="let dragon of ownedDragons">
-      <div class="container">
-        {{ dragon.name }}
-        [{{ dragon.level }}]
-        <br>
-        {{ dragon.nature }}
+    <div class="wrapper-dragons">
+      <div *ngFor="let dragon of ownedDragons">
+        <app-dragon-preview [dragon]="dragon"></app-dragon-preview>
       </div>
     </div>
-
-
-
 
   </div>
 </div>
