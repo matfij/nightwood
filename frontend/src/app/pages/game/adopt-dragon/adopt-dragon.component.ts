@@ -104,7 +104,7 @@ export class AdoptDragonComponent implements OnInit {
       });
     });
 
-    const chosenNature = calculatedPoints.sort((x, y) => x.points + y.points)[0];
+    const chosenNature = calculatedPoints.sort((x, y) => x.points - y.points)[calculatedPoints.length - 1];
     return chosenNature.nature;
   }
 

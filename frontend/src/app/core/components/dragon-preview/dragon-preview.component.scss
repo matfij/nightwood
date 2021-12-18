@@ -1,0 +1,95 @@
+@import "../../theme/mixins.scss";
+@import "../../theme/variables.scss";
+
+.container {
+  max-width: 98%;
+  margin-bottom: 3px;
+  padding-left: 10%;
+
+  display: grid;
+  gap: 2%;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
+  border: 1.5px solid darken($color: $app-dark, $amount: 10);
+}
+
+.wrapper-name {
+  @include size(200px);
+  margin-top: 2%;
+
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.wrapper-image {
+
+  img {
+    @include size(100%);
+
+    overflow: hidden;
+  }
+}
+
+.wrapper-stats {
+  margin-top: 5%;
+
+  display: flex;
+  flex-direction: column;
+  align-content: space-evenly;
+  text-align: left;
+
+  p {
+    line-height: 1;
+  }
+}
+
+.wrapper-actions {
+  margin-top: 5%;
+
+  display: flex;
+  flex-direction: column;
+  align-content: space-evenly;
+  text-align: left;
+
+
+  .action {
+    width: 100px;
+    height: 27px;
+    margin-bottom: 5px;
+
+    padding: 1px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: $app-primary;
+    font-weight: 500;
+    background-color: $app-dark;
+    border-radius: 4px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-threshold) {
+  .container {
+    padding: 0%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2%;
+  }
+
+  .wrapper-stats {
+    display: none;
+  }
+
+  .wrapper-actions {
+    flex-direction: row;
+
+    .action {
+      margin: 5px;
+    }
+  }
+}

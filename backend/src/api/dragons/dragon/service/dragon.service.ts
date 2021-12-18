@@ -40,11 +40,11 @@ export class DragonService {
         const page = await paginate<DragonDto>(
             this.dragonRepository, 
             { page: dto.page, limit: dto.limit }, 
-            { relations: GET_ALL_RELATIONS }
+            { relations: GET_ALL_RELATIONS },
         );
 
         const dragonPage: PageDragonDto = {
-            data: page.items,
+            data: page.items.filter(x => x.ownerId === dto.ownerId),
             meta: page.meta,
         };
         return dragonPage;

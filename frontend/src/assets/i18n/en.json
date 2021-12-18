@@ -32,6 +32,7 @@
     "home": "Home",
     "adoptDragon": "Adopt dragon",
     "myDragons": "My dragons",
+    "inventory": "Inventory",
     "explore": "Explore",
     "arena": "Arena",
     "logout": "Logout"
@@ -44,7 +45,7 @@
     "waterTrait": "Brilliance",
     "windTrait": "Dexterity",
     "earthTrait": "Tenacity",
-    "valueQuestion": "In everyday life I value ...",
+    "valueQuestion": "The most important thing in life ...",
     "fireValue": "Growth",
     "waterValue": "Balance",
     "windValue": "Excitement",
@@ -56,6 +57,23 @@
     "earthLocation": "Desert",
     "chooseDragonName": "Choose a name for your dragon",
     "adopt": "Adopt",
-    "adoptSuccess": "You have adopted a new dragon!"
+    "adoptSuccess": "You have adopted a new dragon!",
+    "nature": "Nature",
+    "strength": "Strength",
+    "strengthHint": "Strength has impact on the dragon's physical capabilities",
+    "dexterity": "Dexterity",
+    "dexterityHint": "Dexterity has impact on the dragon's ability to move quickly",
+    "endurance": "Endurance",
+    "enduranceHint": "Endurance has impact on the dragon's ability to withstand attacks",
+    "will": "Will",
+    "willHint": "Will has impact on the dragon's magical abilities",
+    "luck": "Luck",
+    "luckHint": "Luck has impact on critical strikes and exploration success",
+    "ongoingAction": "Ongoing action",
+    "feed": "Feed",
+    "explore": "Explore",
+    "battle": "Battle",
+    "noOwnedDragons": "You don't own any dragon yet",
+    "adoptFirstDragon": "Adopt your first dragon"
   }
 }

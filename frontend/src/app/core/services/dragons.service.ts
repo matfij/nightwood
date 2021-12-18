@@ -22,9 +22,9 @@ export class DragonService {
 
     let adulthood: number;
     if (dragon.level < DRAGON_MAX_EGG_LEVEL) adulthood = 1;
-    if (dragon.level < DRAGON_MAX_KID_LEVEL) adulthood = 2;
-    if (dragon.level < DRAGON_MAX_ADULT_LEVEL) adulthood = 3;
-    if (dragon.level < DRAGON_MAX_SAGE_LEVEL) adulthood = 4;
+    else if (dragon.level < DRAGON_MAX_KID_LEVEL) adulthood = 2;
+    else if (dragon.level < DRAGON_MAX_ADULT_LEVEL) adulthood = 3;
+    else if (dragon.level < DRAGON_MAX_SAGE_LEVEL) adulthood = 4;
     else adulthood = 0;
 
     const image = `${this.BASE_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;

@@ -19,6 +19,29 @@ html, body {
 }
 
 /**
+ * Scrollbar
+ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: lighten($color: $app-dark, $amount: 10) $app-primary;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: $app-dark;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: $app-primary;
+  border-radius: 20px;
+  border: 2px solid lighten($color: $app-dark, $amount: 10);
+}
+
+/**
  * Wrappers
  */
 
@@ -29,6 +52,7 @@ html, body {
   flex-direction: column;
   align-content: center;
   text-align: center;
+  overflow: hidden;
   color: $app-light;
   background: $app-dark;
 }
@@ -37,16 +61,28 @@ html, body {
   width: 95%;
   max-width: 1200px;
   min-height: 70vh;
+  max-height: 90vh;
   margin: auto;
 
   padding-top: 10px;
   padding: 20px auto;
   display: block;
   color: $app-light;
-  background: lighten($color: $app-dark, $amount: 11);
+  background: lighten($color: $app-dark, $amount: 10);
   border-radius: 4px;
-  overflow: hidden;
+  overflow-y: visible;
+  overflow-x: hidden;
   text-overflow: ellipsis;
+}
+
+@media all and (max-width: $mobile-threshold) {
+  .wrapper-content {
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+
+    padding: 25px 5px;
+  }
 }
 
 /**
@@ -54,13 +90,13 @@ html, body {
  */
 
 .title {
-  color: $app-primary;
+  color: $app-light;
   font-size: 32px;
   letter-spacing: 0.5px;
 }
 
 .title-secondary {
-  color: $app-secondary;
+  color: $app-light;
   font-size: 24px;
   letter-spacing: 0.25px;
 }

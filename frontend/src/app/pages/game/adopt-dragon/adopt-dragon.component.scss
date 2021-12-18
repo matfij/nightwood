@@ -5,7 +5,7 @@
   margin-top: 10px;
 
   font-size: 27px;
-  color: $app-secondary;
+  color: $app-light;
 }
 
 .title-secondary {
@@ -13,13 +13,14 @@
   margin-bottom: 60px;
 
   font-size: 21px;
-  color: $app-secondary;
+  color: $app-light;
 }
 
 .wrapper-stage {
   width: 95%;
   max-width: 800px;
   margin: 20px auto;
+  letter-spacing: 0.5px;
 }
 
 .question {

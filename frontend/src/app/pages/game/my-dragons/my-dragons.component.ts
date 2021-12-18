@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { DragonController, DragonDto, GetDragonDto } from 'src/app/client/api';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 
@@ -13,6 +14,7 @@ export class MyDragonsComponent implements OnInit {
   getDragonsLoading!: boolean;
 
   constructor(
+    private router: Router,
     private dragonController: DragonController,
     private repositoryService: RepositoryService,
   ) {}
@@ -25,7 +27,6 @@ export class MyDragonsComponent implements OnInit {
 
   getOwnedDragons(): void {
     const params: GetDragonDto = {
-      limit: 5,
       ownerId: this.repositoryService.getUserData().id,
     };
     this.getDragonsLoading = true;
@@ -34,6 +35,10 @@ export class MyDragonsComponent implements OnInit {
 
       this.ownedDragons = x.data;
     }, _ => this.getDragonsLoading = false)
+  }
+
+  navigateAdopt() {
+    this.router.navigate(['game', 'adopt-dragon']);
   }
 
 }
