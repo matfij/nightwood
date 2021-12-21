@@ -36,8 +36,15 @@ services:
 
   # Postgres database
   postgres:
-    image: postgres:14.0
+    image: postgres:14.1
     env_file:
       - .env
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - .env
+    ports:
+      - '${PG_ADMIN_PORT}:${PG_ADMIN_PORT}'
