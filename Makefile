@@ -4,13 +4,14 @@
 start:
 	docker-compose up
 
+restart:
+	docker-compose up --build
+
 build:
 	docker-compose build
 
-restart:
-	docker-compose build
-	docker-compose up
-
+down:
+	docker-compose down
 
 gen.client:
 	rm -rf generator/generated

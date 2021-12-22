@@ -8,12 +8,14 @@ import { DragonModule } from './api/dragons/dragon/dragon.module';
 import { AuthModule } from './api/users/auth/auth.module';
 import { UserModule } from './api/users/user/user.module';
 import { DragonActionModule } from './api/dragons/dragon-action/dragon-action.module';
+import { ItemModule } from './api/items/item/item.module';
 
 const API_MODULES = [
   AuthModule,
   UserModule,
   DragonModule,
   DragonActionModule,
+  ItemModule,
 ];
 
 @Module({

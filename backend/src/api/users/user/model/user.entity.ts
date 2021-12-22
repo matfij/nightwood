@@ -1,5 +1,6 @@
+import { Item } from "src/api/items/item/model/item.entity";
 import { MAX_OWNED_DRAGONS } from "src/configuration/user.config";
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -21,6 +22,9 @@ export class User {
 
     @Column({ default: MAX_OWNED_DRAGONS })
     maxOwnedDragons: number;
+
+    @OneToMany(type => Item, item => item.user)
+    items: Item[];
 
     @BeforeInsert()
     normalizeEmail(): string {

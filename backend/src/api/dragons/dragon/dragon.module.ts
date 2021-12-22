@@ -13,7 +13,7 @@ import { DragonService } from './service/dragon.service';
     UserModule,
   ],
   controllers: [
-    DragonController
+    DragonController,
   ],
   providers: [
     DragonService,
