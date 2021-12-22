@@ -23,7 +23,7 @@ export class User {
     @Column({ default: MAX_OWNED_DRAGONS })
     maxOwnedDragons: number;
 
-    @OneToMany(type => Item, item => item.user)
+    @OneToMany(_ => Item, x => x.user)
     items: Item[];
 
     @BeforeInsert()

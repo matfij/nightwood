@@ -9,6 +9,7 @@ import { GetUserDto } from '../../user/model/dto/get-user.dto';
 import { AuthUserDto } from '../dto/auth-user.dto';
 import { SALT_ROUNDS } from 'src/configuration/user.config';
 import { UserDto } from '../../user/model/dto/user.dto';
+import { ItemService } from 'src/api/items/item/service/item.service';
 
 const bcrypt = require('bcrypt');
 
@@ -18,7 +19,8 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private itemService: ItemService, 
     ) {}
 
     async login(dto: LoginUserDto): Promise<AuthUserDto> {
@@ -50,6 +52,8 @@ export class AuthService {
 
         const createdUser = this.userRepository.create(newUser);
         const savedUser = await this.userRepository.save(createdUser);
+
+        this.itemService.createStartingItems(savedUser);
 
         const token = await this.generateJwt(createdUser);
         return {

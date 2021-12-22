@@ -1,6 +1,7 @@
 import { BadRequestException,Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from 'nestjs-typeorm-paginate';
+import { ItemService } from 'src/api/items/item/service/item.service';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/service/auth.service';
 import { CreateUserDto } from '../model/dto/create-user.dto';
@@ -17,6 +18,7 @@ export class UserService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
         private authService: AuthService,
+        private itemService: ItemService,
     ) {}
 
     async create(dto: CreateUserDto): Promise<UserDto> {
@@ -31,7 +33,11 @@ export class UserService {
         };
 
         const createdUser = this.userRepository.create(newUser);
-        return this.userRepository.save(createdUser);
+        const savedUser = await this.userRepository.save(createdUser);
+
+        this.itemService.createStartingItems(savedUser);
+
+        return savedUser;
     }
 
     async update(id: string | number, dto: UpdateUserDto): Promise<UserDto> {

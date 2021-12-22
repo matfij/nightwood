@@ -18,10 +18,6 @@ export class DragonDto {
     @ApiProperty()
     ownerId: number;
 
-    // @OneToOne(_ => DragonAction)
-    // @JoinColumn()
-    // action: DragonAction;
-
     @Expose()
     @ApiProperty()
     action: DragonAction;

@@ -48,3 +48,5 @@ services:
       - .env
     ports:
       - '${PG_ADMIN_PORT}:${PG_ADMIN_PORT}'
+    logging:
+      driver: none

@@ -1,6 +1,6 @@
 import { User } from "src/api/users/user/model/user.entity";
-import { DEFAULT_LEVEL } from "src/configuration/item.config";
-import { Column, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { DEFAULT_LEVEL, DEFAULT_POSITION, DEFAULT_QUANTITY } from "src/configuration/item.config";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EquipmentType, FoodType, ItemType } from "./definitions/item-type";
 
 @Entity()
@@ -9,14 +9,20 @@ export class Item {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
-    name: string;
-
     @Column()
-    type: ItemType;
+    name: string;
 
     @Column({ default: DEFAULT_LEVEL })
     level: number;
+
+    @Column({ default: DEFAULT_QUANTITY })
+    quantity: number;
+
+    @Column({ default: DEFAULT_POSITION })
+    position: number;
+    
+    @Column()
+    type: ItemType;
 
     @Column({ nullable: true })
     foodType?: FoodType;
@@ -24,7 +30,6 @@ export class Item {
     @Column({ nullable: true })
     equipmentType?: EquipmentType;
 
-    @ManyToMany(type => User, user => user.items)
-    @JoinColumn({ name: 'user_id' })
+    @ManyToOne(_ => User, x => x.items)
     user: User;
 }

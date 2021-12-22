@@ -25,7 +25,7 @@ export class DragonService {
     async create(owner: UserDto, dto: CreateDragonDto): Promise<DragonDto> {
         await this.userService.incrementOwnedDragons(owner.id);
         
-        const dragon = this.dragonRepository.create({...dto, ownerId: owner.id});
+        const dragon = this.dragonRepository.create({ ...dto, ownerId: owner.id });
         dragon.action = await this.dragonActionService.create();
         const savedDragon = await this.dragonRepository.save(dragon);
 

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ItemModule } from 'src/api/items/item/item.module';
 import { TranslateService } from 'src/common/services/translate.service';
 import { User } from '../user/model/user.entity';
 import { AuthController } from './auth.controller';
@@ -17,6 +18,7 @@ import { JwtStrategy } from './util/jwt.strategy';
       inject: [ConfigService],
       useFactory: async(x: ConfigService) => ({ secret: x.get('JWT_KEY') }),
     }),
+    ItemModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -25,6 +27,8 @@ import { JwtStrategy } from './util/jwt.strategy';
     JwtAuthGuard,
     TranslateService,
   ],
-  exports: [AuthService],
+  exports: [
+    AuthService,
+  ],
 })
 export class AuthModule {}
