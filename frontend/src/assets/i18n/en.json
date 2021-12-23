@@ -75,5 +75,12 @@
     "battle": "Battle",
     "noOwnedDragons": "You don't own any dragon yet",
     "adoptFirstDragon": "Adopt your first dragon"
+  },
+  "items": {
+    "bubulaeSteak": "Bubulae steak",
+    "ihonBerry": "Ihon berry",
+    "reliqumEgg": "Reliqum egg",
+    "spirialNut": "Spirial nut",
+    "rorisLeefs": "Roris leefs"
   }
 }

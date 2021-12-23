@@ -5,12 +5,14 @@ import { HomeComponent } from './home/home.component';
 import { CoreModule } from '../../core/core.module';
 import { AdoptDragonComponent } from './adopt-dragon/adopt-dragon.component';
 import { MyDragonsComponent } from './my-dragons/my-dragons.component';
+import { InventoryComponent } from './inventory/inventory.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     AdoptDragonComponent,
     MyDragonsComponent,
+    InventoryComponent,
   ],
   imports: [
     CommonModule,

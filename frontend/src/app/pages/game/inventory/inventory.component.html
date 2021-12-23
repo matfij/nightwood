@@ -1,0 +1,14 @@
+<div class="wrapper-main">
+  <app-navigation-bar currentLocation="inventory"></app-navigation-bar>
+
+  <div class="wrapper-content">
+
+    <div class="wrapper-items">
+      <div *ngFor="let item of ownedItems" class="item">
+        {{ ('items.'+item.name) | translate }}
+        <img [src]="item.image" [alt]="item.name">
+      </div>
+    </div>
+
+  </div>
+</div>

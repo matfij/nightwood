@@ -187,6 +187,71 @@ export class AuthController implements IAuthController {
     }
 }
 
+export interface IItemController {
+    getOwnedFoods(): Observable<PageItemDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ItemController implements IItemController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getOwnedFoods() : Observable<PageItemDto> {
+        let url_ = this.baseUrl + "/api/v1/item/getOwnedFoods";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOwnedFoods(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOwnedFoods(<any>response_);
+                } catch (e) {
+                    return <Observable<PageItemDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PageItemDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetOwnedFoods(response: HttpResponseBase): Observable<PageItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PageItemDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PageItemDto>(<any>null);
+    }
+}
+
 export interface IUserController {
     create(body: CreateUserDto): Observable<UserDto>;
     update(id: string, body: UpdateUserDto): Observable<UserDto>;
@@ -607,6 +672,51 @@ export interface RegisterUserDto {
     nickname: string;
 }
 
+export interface PageMetaDto {
+    totalItems?: number;
+    itemCount?: number;
+    itemsPerPage?: number;
+    totalPages?: number;
+    currentPage?: number;
+}
+
+export enum ItemType {
+    Food = "Food",
+    Ingredient = "Ingredient",
+    Equipment = "Equipment",
+}
+
+export enum FoodType {
+    Strength = "Strength",
+    Dexterity = "Dexterity",
+    Endurance = "Endurance",
+    Will = "Will",
+    Luck = "Luck",
+    Special = "Special",
+}
+
+export enum EquipmentType {
+    Armor = "Armor",
+    Charm = "Charm",
+}
+
+export interface ItemDto {
+    id?: number;
+    name: string;
+    level: number;
+    quantity?: number;
+    position?: number;
+    type: ItemType;
+    foodType?: FoodType;
+    equipmentType?: EquipmentType;
+    userId?: number;
+}
+
+export interface PageItemDto {
+    meta: PageMetaDto;
+    data: ItemDto[];
+}
+
 export interface CreateUserDto {
     email: string;
     password: string;
@@ -635,14 +745,6 @@ export interface GetUserDto {
     nickname?: string;
     page?: number;
     limit?: number;
-}
-
-export interface PageMetaDto {
-    totalItems?: number;
-    itemCount?: number;
-    itemsPerPage?: number;
-    totalPages?: number;
-    currentPage?: number;
 }
 
 export interface PageUserDto {
