@@ -11,7 +11,7 @@ import { RepositoryService } from 'src/app/common/services/repository.service';
 export class MyDragonsComponent implements OnInit {
 
   ownedDragons!: DragonDto[];
-  getDragonsLoading!: boolean;
+  dragonsLoading!: boolean;
 
   constructor(
     private router: Router,
@@ -20,7 +20,7 @@ export class MyDragonsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getDragonsLoading = true;
+    this.dragonsLoading = true;
     this.ownedDragons = [];
     this.getOwnedDragons();
   }
@@ -29,12 +29,12 @@ export class MyDragonsComponent implements OnInit {
     const params: GetDragonDto = {
       ownerId: this.repositoryService.getUserData().id,
     };
-    this.getDragonsLoading = true;
+    this.dragonsLoading = true;
     this.dragonController.getAll(params).subscribe(x => {
-      this.getDragonsLoading = false;
+      this.dragonsLoading = false;
 
       this.ownedDragons = x.data;
-    }, _ => this.getDragonsLoading = false)
+    }, _ => this.dragonsLoading = false)
   }
 
   navigateAdopt() {

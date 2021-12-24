@@ -1,0 +1,20 @@
+@import '../../../core/theme/variables.scss';
+
+
+.wrapper-items {
+  margin: 10px;
+
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fill, 75px);
+  grid-template-rows: repeat(75px, min);
+  justify-content: center;
+  padding: auto;
+}
+
+.item {
+  display: flex;
+  border: 2px solid darken($color: $app-dark, $amount: 10);
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 24px 12px $app-dark;
+}

@@ -3,13 +3,17 @@
 
   <div class="wrapper-content">
 
-    <div *ngIf="!getDragonsLoading" class="wrapper-dragons">
+    <div *ngIf="dragonsLoading" class="mt-5">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+
+    <div *ngIf="!dragonsLoading" class="wrapper-dragons">
       <div *ngFor="let dragon of ownedDragons">
         <app-dragon-preview [dragon]="dragon"></app-dragon-preview>
       </div>
     </div>
 
-    <div *ngIf="!getDragonsLoading && !ownedDragons.length" class="wrapper-adopt">
+    <div *ngIf="!dragonsLoading && !ownedDragons.length" class="wrapper-adopt">
       <div class="title">{{ 'dragon.noOwnedDragons' | translate }}</div>
 
       <button (click)="navigateAdopt()" class="btn-base btn-adopt">
