@@ -1,0 +1,12 @@
+<div class="container">
+  <ng-template #tipContent>
+    <h5>{{ displayItem.name | translate }}</h5>
+    {{ 'inventory.type' | translate }}: {{ displayItem.type }} <br>
+    {{ 'inventory.level' | translate }}: {{ displayItem.level }} <br>
+    {{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br>
+  </ng-template>
+
+  <div class="item" [ngbTooltip]="tipContent">
+    <img [src]="displayItem.image" [alt]="item.name">
+  </div>
+</div>

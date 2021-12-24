@@ -8,12 +8,14 @@ import { InputBaseComponent } from '../common/components/input-base/input-base.c
 import { NavigationBarComponent } from '../common/components/navigation-bar/navigation-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DragonPreviewComponent } from './components/dragon-preview/dragon-preview.component';
+import { ItemDisplayComponent } from './components/item-display/item-display.component';
 
 const COMPONENTS = [
   NavigationBarComponent,
   LoadingIndicatorComponent,
   InputBaseComponent,
   DragonPreviewComponent,
+  ItemDisplayComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

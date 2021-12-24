@@ -8,7 +8,7 @@ import { DisplayDragon } from "../definitions/dragons";
 })
 export class DragonService {
 
-  private readonly BASE_PATH = 'assets/img/dragons';
+  private readonly BASE_IMG_PATH = 'assets/img/dragons';
   private readonly EXTENSION = 'png';
 
   setDragonImage(dragon: DragonDto): DisplayDragon {
@@ -27,7 +27,7 @@ export class DragonService {
     else if (dragon.level < DRAGON_MAX_SAGE_LEVEL) adulthood = 4;
     else adulthood = 0;
 
-    const image = `${this.BASE_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;
+    const image = `${this.BASE_IMG_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;
     return {
       ...dragon,
       image: image,

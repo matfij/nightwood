@@ -76,6 +76,11 @@
     "noOwnedDragons": "You don't own any dragon yet",
     "adoptFirstDragon": "Adopt your first dragon"
   },
+  "inventory": {
+    "type": "Type",
+    "level": "Required level",
+    "quantity": "Quantity"
+  },
   "items": {
     "bubulaeSteak": "Bubulae steak",
     "ihonBerry": "Ihon berry",

@@ -5,8 +5,7 @@
 
     <div class="wrapper-items">
       <div *ngFor="let item of ownedItems" class="item">
-        {{ ('items.'+item.name) | translate }}
-        <img [src]="item.image" [alt]="item.name">
+        <app-item-display [item]="item"></app-item-display>
       </div>
     </div>
 
