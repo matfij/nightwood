@@ -9,12 +9,14 @@ import { NavigationBarComponent } from '../common/components/navigation-bar/navi
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DragonPreviewComponent } from './components/dragon-preview/dragon-preview.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
+import { DragonFeedModalComponent } from './components/dragon-feed-modal/dragon-feed-modal.component';
 
 const COMPONENTS = [
   NavigationBarComponent,
   LoadingIndicatorComponent,
   InputBaseComponent,
   DragonPreviewComponent,
+  DragonFeedModalComponent,
   ItemDisplayComponent,
 ];
 const MODULES = [

@@ -28,7 +28,7 @@
 
   &:disabled {
     opacity: 0.5;
-    cursor: default;
+    cursor: default !important;
 
     &:hover {
       background: $app-primary;

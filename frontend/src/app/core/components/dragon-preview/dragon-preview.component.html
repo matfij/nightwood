@@ -1,3 +1,29 @@
+<div *ngIf="showFeedModal && dragon" class="container-modal">
+  <div *ngIf="feedLoading" class="mb-5">
+    <app-loading-indicator></app-loading-indicator>
+  </div>
+
+  <div *ngIf="!feedLoading">
+    <div class="title">{{ 'dragon.feed' | translate }} {{ dragon.name }}</div>
+    <p>{{ 'dragon.chooseFoodHint' | translate }}</p>
+
+    <div *ngIf="foodLoading" class="mt-5">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+    <div class="wrapper-foods" *ngIf="!foodLoading">
+      <div *ngFor="let item of availableFood" (click)="feedDragon(item.id!)" class="food">
+          <img [src]="item.image" [alt]="item.name">
+          {{ item.name | translate }}
+          ({{ item.quantity }}) <br>
+      </div>
+    </div>
+
+    <button (click)="showFeedModal = false" class="btn-base">
+      {{ 'common.cancel' | translate }}
+    </button>
+  </div>
+</div>
+
 <div *ngIf="dragon" class="container">
 
   <div class="wrapper-name">
@@ -7,8 +33,6 @@
       <img [src]="dragon.image" alt="fire dragon">
     </div>
   </div>
-
-
 
   <div class="wrapper-stats">
     <p>{{ 'dragon.nature' | translate }}: <b>{{ dragon.nature }}</b></p>
@@ -21,15 +45,15 @@
   </div>
 
   <div class="wrapper-actions">
-    <div (click)="feedDragon()" class="action">
+    <button (click)="prepareFeedModal()" [disabled]="!feedAvailable" class="btn-base action">
       {{ 'dragon.feed' | translate }}
-    </div>
-    <div (click)="navigateExplore()" class="action">
+    </button>
+    <button (click)="navigateExplore()" class="btn-base action">
       {{ 'dragon.explore' | translate }}
-    </div>
-    <div (click)="navigateArena()" class="action">
+    </button>
+    <button (click)="navigateArena()" class="btn-base action">
       {{ 'dragon.battle' | translate }}
-    </div>
+    </button>
   </div>
 
 </div>

@@ -3,7 +3,8 @@
     "appName": "Nightwood",
     "appHint": "Reject modernity, return to the woods",
     "back": "Back",
-    "success": "Success"
+    "success": "Success",
+    "cancel": "Cancel"
   },
   "start": {
     "login": "Login",
@@ -74,7 +75,10 @@
     "explore": "Explore",
     "battle": "Battle",
     "noOwnedDragons": "You don't own any dragon yet",
-    "adoptFirstDragon": "Adopt your first dragon"
+    "adoptFirstDragon": "Adopt your first dragon",
+    "chooseFoodHint": "The choice of a meal can influence the development of dragon attributes",
+    "feedSuccess": "The dragon was fed",
+    "feedSuccessHint": "Some attributes have changed"
   },
   "inventory": {
     "type": "Type",

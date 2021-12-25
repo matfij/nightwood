@@ -51,11 +51,10 @@
   align-content: space-evenly;
   text-align: left;
 
-
   .action {
     width: 100px;
     height: 27px;
-    margin-bottom: 5px;
+    margin: 0px 0px 10px 0px;
 
     padding: 1px;
     letter-spacing: 0.5px;
@@ -64,10 +63,6 @@
     font-weight: 500;
     background-color: $app-dark;
     border-radius: 4px;
-
-    &:hover {
-      cursor: pointer;
-    }
   }
 }
 
@@ -91,5 +86,56 @@
     .action {
       margin: 5px;
     }
+  }
+}
+
+.container-modal {
+  width: 100vw;
+  min-height: 100vh;
+
+  z-index: 100;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: transparentize($color: $app-dark, $amount: 0.08);
+
+  p {
+    font-size: 18px;
+  }
+
+  .btn-base {
+    margin: 20px auto;
+  }
+
+}
+
+.wrapper-foods {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.food {
+  height: 40px;
+  width: 240px;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  img {
+    width: 40px;
+    height: auto !important;
+    margin-right: 10px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: darken($color: $app-dark, $amount: 5);
   }
 }
