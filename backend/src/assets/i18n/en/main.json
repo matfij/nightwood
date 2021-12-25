@@ -7,6 +7,11 @@
         "emailIncorrectLength": "Email must be between {min} and {max} characters",
         "nicknameNotUnique": "Nickname occupied",
         "nicknameIncorrectLength": "Nickname must be between {min} and {max} characters",
-        "tokenInvalid": "Invalid token"
+        "tokenInvalid": "Invalid token",
+        "itemNotFound": "Item not found",
+        "itemInvalid": "Invalid item",
+        "insufficientQuantity": "Insufficient quantity",
+        "dragonNotFound": "Dragon not found",
+        "dragonAlreadyFed": "Selected dragon has been fed recently"
     }
 }

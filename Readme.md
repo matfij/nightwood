@@ -6,12 +6,12 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 
 ## MVP Features
  - Dialog-based dragon adoption [100%]
- - Dragon feeding & base stats [30%]
- - Items & expeditions [10%]
+ - Dragon feeding & base stats [60%]
+ - Items & expeditions [40%]
  - Combat system [5%]
  - Breed-specific skills [5%]
  - Players messaging & live chat [0%]
- - Auction house [0%]
+ - Auction house [10%]
 
 ## Requirements
  - Docker, Docker Compose

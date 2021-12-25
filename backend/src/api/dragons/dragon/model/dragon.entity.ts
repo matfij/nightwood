@@ -19,6 +19,9 @@ export class Dragon {
     @JoinColumn()
     action: DragonAction;
 
+    @Column({ default: 0, type: 'int8' })
+    nextFeed: number;
+
     @Column()
     nature: DragonNature;
 

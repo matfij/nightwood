@@ -23,6 +23,10 @@ export class DragonDto {
     action: DragonAction;
 
     @Expose()
+    @ApiProperty()
+    nextFeed: number;
+
+    @Expose()
     @ApiProperty({ enum: DragonNature, enumName: 'DragonNature' })
     nature: DragonNature;
 
