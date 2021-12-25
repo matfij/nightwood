@@ -12,8 +12,8 @@ export class Dragon {
     @Column()
     name: string;
 
-    @Column()
-    ownerId: number;
+    @Column({ nullable: true })
+    ownerId?: number;
 
     @OneToOne(_ => DragonAction)
     @JoinColumn()

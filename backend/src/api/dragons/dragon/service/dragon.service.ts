@@ -1,21 +1,19 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DragonActionService } from '../../dragon-action/service/dragon-action.service';
 import { Dragon } from '../model/dragon.entity';
-import { CreateDragonDto } from '../model/dto/create-dragon.dto';
+import { AdoptDragonDto } from '../model/dto/adopt-dragon.dto';
 import { DragonDto } from '../model/dto/dragon.dto';
 import { GetDragonDto } from '../model/dto/get-dragon.dto';
 import { PageDragonDto } from '../model/dto/page-dragon.dto';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { FEED_INTERVAL, GET_ALL_RELATIONS, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
-import { UserService } from 'src/api/users/user/service/user.service';
-import { UserDto } from 'src/api/users/user/model/dto/user.dto';
-import { Item } from 'src/api/items/item/model/item.entity';
 import { TranslateService } from 'src/common/services/translate.service';
 import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
+import { CreateDragonDto } from '../model/dto/create-dragon.dto';
 
 @Injectable()
 export class DragonService {
@@ -24,15 +22,12 @@ export class DragonService {
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
         private dragonActionService: DragonActionService,
-        private userService: UserService,
         private translateService: TranslateService,
         private dateService: DateService,
     ) {}
 
-    async create(owner: UserDto, dto: CreateDragonDto): Promise<DragonDto> {
-        await this.userService.incrementOwnedDragons(owner.id);
-        
-        const dragon = this.dragonRepository.create({ ...dto, ownerId: owner.id });
+    async create(dto: CreateDragonDto): Promise<DragonDto> {
+        const dragon = this.dragonRepository.create({ ...dto });
         dragon.action = await this.dragonActionService.create();
         const savedDragon = await this.dragonRepository.save(dragon);
 
@@ -55,6 +50,14 @@ export class DragonService {
             meta: page.meta,
         };
         return dragonPage;
+    }
+
+    async adopt(ownerId: number, dto: AdoptDragonDto): Promise<DragonDto> {
+        const dragon = this.dragonRepository.create({ ...dto, ownerId: ownerId });
+        dragon.action = await this.dragonActionService.create();
+        const savedDragon = await this.dragonRepository.save(dragon);
+
+        return savedDragon;
     }
 
     async checkFeedingDragon(ownerId: number, dragonId: number): Promise<DragonDto> {

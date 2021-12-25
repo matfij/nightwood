@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards, Request } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
-import { CreateDragonDto } from "src/api/dragons/dragon/model/dto/create-dragon.dto";
+import { AdoptDragonDto } from "src/api/dragons/dragon/model/dto/adopt-dragon.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { FeedDragonDto } from "src/api/dragons/dragon/model/dto/feed-dragon.dto";
 import { AuthorizedRequest } from "src/common/definitions/requests";
@@ -18,7 +18,7 @@ export class ActionController {
     
     @Post('adoptDragon')
     @ApiOkResponse({ type: DragonDto })
-    adoptDragon(@Request() req: AuthorizedRequest, @Body() dto: CreateDragonDto): Promise<DragonDto> {
+    adoptDragon(@Request() req: AuthorizedRequest, @Body() dto: AdoptDragonDto): Promise<DragonDto> {
         return this.actionDragonService.adopt(req.user, dto);
     }
 

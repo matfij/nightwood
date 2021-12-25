@@ -14,9 +14,8 @@ export class DragonDto {
     name: string;
 
     @Expose()
-    @Transform(({obj}) => obj.user.id)
-    @ApiProperty()
-    ownerId: number;
+    @ApiPropertyOptional()
+    ownerId?: number;
 
     @Expose()
     @ApiProperty()

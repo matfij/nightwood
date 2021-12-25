@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CreateDragonDto, DragonController, DragonNature } from 'src/app/client/api';
+import { ActionController, CreateDragonDto, DragonController, DragonNature } from 'src/app/client/api';
 import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/core/definitions/dragons';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -66,7 +66,7 @@ export class AdoptDragonComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dragonController: DragonController,
+    private actionController: ActionController,
     private toastService: ToastService,
   ) {}
 
@@ -116,11 +116,11 @@ export class AdoptDragonComponent implements OnInit {
       nature: this.determineNature(),
     };
     this.submitLoading = true;
-    this.dragonController.create(dragon).subscribe(x => {
+    this.actionController.adoptDragon(dragon).subscribe(() => {
       this.submitLoading = false;
       this.toastService.showSuccess('common.success', 'dragon.adoptSuccess');
       this.router.navigate(['game', 'my-dragons'])
-    }, _ => this.submitLoading = false);
+    }, () => this.submitLoading = false);
   }
 
 }

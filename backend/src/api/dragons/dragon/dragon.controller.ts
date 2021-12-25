@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
-import { AuthorizedRequest } from "src/common/definitions/requests";
 import { PaginationInterceptor } from "src/common/interceptors/pagination.interceptor";
 import { CreateDragonDto } from "./model/dto/create-dragon.dto";
 import { DragonDto } from "./model/dto/dragon.dto";
@@ -20,8 +19,8 @@ export class DragonController {
 
     @Post('create')
     @ApiOkResponse({ type: DragonDto })
-    create(@Request() req: AuthorizedRequest, @Body() dto: CreateDragonDto): Promise<DragonDto> {
-        return this.dragonService.create(req.user, dto);
+    create(@Body() dto: CreateDragonDto): Promise<DragonDto> {
+        return this.dragonService.create(dto);
     }
 
     @Get('getOne/:id')
