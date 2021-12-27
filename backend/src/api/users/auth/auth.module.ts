@@ -3,10 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ItemModule } from 'src/api/items/item/item.module';
-import { TranslateService } from 'src/common/services/translate.service';
 import { User } from '../user/model/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './service/auth.service';
+import { ErrorService } from './service/error.service';
 import { JwtAuthGuard } from './util/jwt.guard';
 import { JwtStrategy } from './util/jwt.strategy';
 
@@ -25,7 +25,7 @@ import { JwtStrategy } from './util/jwt.strategy';
     AuthService,
     JwtStrategy,
     JwtAuthGuard,
-    TranslateService,
+    ErrorService,
   ],
   exports: [
     AuthService,

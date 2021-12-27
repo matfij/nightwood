@@ -25,9 +25,24 @@
   },
   "errors": {
     "error": "Error",
+    "unknown": "Unknown error",
     "incorrectFieldsValue": "Please provide correct {{ value }}",
     "formInvalid": "Form invalid",
-    "formInvalidHint": "Please check entered values"
+    "formInvalidHint": "Please check entered values",
+
+    "emailNotUnique": "Email occupied",
+    "emailIncorrectLength": "Email must be between {min} and {max} characters",
+    "nicknameNotUnique": "Nickname occupied",
+    "nicknameIncorrectLength": "Nickname must be between {min} and {max} characters",
+    "loginNotFound": "Login not found",
+    "passwordIncorrect": "Incorrect password",
+    "tokenInvalid": "Invalid access token",
+    "itemNotFound": "Item not found",
+    "itemInvalid": "Invalid item",
+    "insufficientQuantity": "Insufficient quantity",
+    "dragonNotFound": "Dragon not found",
+    "dragonAlreadyFed": "Selected dragon has been fed recently",
+    "maxDragonsExceeded": "Maximum number of dragons exceeded"
   },
   "game": {
     "home": "Home",

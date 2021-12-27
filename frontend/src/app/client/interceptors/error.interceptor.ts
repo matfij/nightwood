@@ -1,5 +1,6 @@
 import { HttpHandler, HttpRequest, HttpStatusCode } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
 import { EMPTY, Observable, throwError } from "rxjs";
 import { catchError, map, switchMap, tap, throttleTime } from "rxjs/operators";
 import { RepositoryService } from "src/app/common/services/repository.service";
@@ -13,6 +14,7 @@ export class ErrorInterceptor {
   private refreshTokenUrl = '/api/v1/auth/refreshToken';
 
   constructor(
+    private translateService: TranslateService,
     private authController: AuthController,
     private repositoryService: RepositoryService,
     private toastService: ToastService,
@@ -71,7 +73,19 @@ export class ErrorInterceptor {
   private showError(error: Blob) {
     if (error instanceof Blob) {
       this.utilsService.blobToJsonObject<any>(error).subscribe((x) => {
-        this.toastService.showError('errors.error', x.message);
+        if (x.message) {
+          if (typeof x.message === 'string') {
+            const message = this.translateService.instant(x.message);
+            this.toastService.showError('errors.error', message);
+          } else {
+            try {
+              const message = this.translateService.instant(x.message[0]);
+              this.toastService.showError('errors.error', message);
+            } catch (_) {
+              this.toastService.showError('errors.error', 'errors.unknown');
+            }
+          }
+        }
       });
     }
   }

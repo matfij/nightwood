@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './model/user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ItemModule } from 'src/api/items/item/item.module';
+import { ErrorService } from '../auth/service/error.service';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ItemModule } from 'src/api/items/item/item.module';
   ],
   providers: [
     UserService,
+    ErrorService,
   ],
   exports: [
     UserService,

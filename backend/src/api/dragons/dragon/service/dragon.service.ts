@@ -9,11 +9,11 @@ import { GetDragonDto } from '../model/dto/get-dragon.dto';
 import { PageDragonDto } from '../model/dto/page-dragon.dto';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { FEED_INTERVAL, GET_ALL_RELATIONS, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
-import { TranslateService } from 'src/common/services/translate.service';
 import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
 import { CreateDragonDto } from '../model/dto/create-dragon.dto';
+import { ErrorService } from 'src/api/users/auth/service/error.service';
 
 @Injectable()
 export class DragonService {
@@ -22,7 +22,7 @@ export class DragonService {
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
         private dragonActionService: DragonActionService,
-        private translateService: TranslateService,
+        private errorService: ErrorService,
         private dateService: DateService,
     ) {}
 
@@ -63,9 +63,9 @@ export class DragonService {
     async checkFeedingDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.dragonRepository.findOne(dragonId);
 
-        if (!dragon) await this.translateService.throw('errors.dragonNotFound');
-        if (dragon.ownerId !== ownerId) await this.translateService.throw('errors.dragonNotFound');
-        if (!this.dateService.checkIfEventAvailable(dragon.nextFeed)) await this.translateService.throw('errors.dragonAlreadyFed');
+        if (!dragon) this.errorService.throw('errors.dragonNotFound');
+        if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');
+        if (!this.dateService.checkIfEventAvailable(dragon.nextFeed)) this.errorService.throw('errors.dragonAlreadyFed');
 
         return dragon;
     }
@@ -86,6 +86,7 @@ export class DragonService {
                 break; 
             }
         };
+        dragon.level += 1;
         dragon.nextFeed = Date.now() + FEED_INTERVAL;
 
         const fedDragon = await this.dragonRepository.save(dragon);

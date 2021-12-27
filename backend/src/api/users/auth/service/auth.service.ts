@@ -10,6 +10,7 @@ import { AuthUserDto } from '../dto/auth-user.dto';
 import { SALT_ROUNDS } from 'src/configuration/user.config';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
+import { ErrorService } from './error.service';
 
 const bcrypt = require('bcrypt');
 
@@ -21,14 +22,15 @@ export class AuthService {
         private userRepository: Repository<User>,
         private jwtService: JwtService,
         private itemService: ItemService, 
+        private errorService: ErrorService,
     ) {}
 
     async login(dto: LoginUserDto): Promise<AuthUserDto> {
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
-        if (!user) throw new NotFoundException();
+        if (!user) this.errorService.throw('errors.loginNotFound');
 
         const match: boolean = await this.validatePassword(dto.password, user.password);
-        if (!match) throw new BadRequestException('Incorrect password');
+        if (!match) this.errorService.throw('errors.passwordIncorrect');
 
         const token = await this.generateJwt(user);
         return {
@@ -40,8 +42,8 @@ export class AuthService {
     }
 
     async register(dto: RegisterUserDto): Promise<AuthUserDto> {
-        if (await this.emailExists(dto.email)) throw new BadRequestException('Email occupied');
-        if (await this.nicknameExists(dto.nickname)) throw new BadRequestException('Nickname occupied');
+        if (await this.emailExists(dto.email)) this.errorService.throw('errors.emailNotUnique');
+        if (await this.nicknameExists(dto.nickname)) this.errorService.throw('errors.nicknameNotUnique');
 
         const hashedPassword = await this.hashPassword(dto.password);
         const newUser: UserDto = {
@@ -65,7 +67,7 @@ export class AuthService {
     }
 
     async refreshToken(dto: AuthUserDto) {
-        try { this.jwtService.verify(dto.accessToken) } catch (_) { throw new BadRequestException('Incorrect token') };
+        try { this.jwtService.verify(dto.accessToken) } catch (_) { this.errorService.throw('errors.tokenInvalid'); };
 
         dto.accessToken = await this.generateJwt(dto);
 

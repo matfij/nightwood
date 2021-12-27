@@ -4,6 +4,7 @@ import { paginate } from 'nestjs-typeorm-paginate';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/service/auth.service';
+import { ErrorService } from '../../auth/service/error.service';
 import { CreateUserDto } from '../model/dto/create-user.dto';
 import { GetUserDto } from '../model/dto/get-user.dto';
 import { PageUserDto } from '../model/dto/page-user.dto';
@@ -19,11 +20,12 @@ export class UserService {
         private userRepository: Repository<User>,
         private authService: AuthService,
         private itemService: ItemService,
+        private errorService: ErrorService,
     ) {}
 
     async create(dto: CreateUserDto): Promise<UserDto> {
-        if (await this.emailExists(dto.email)) throw new BadRequestException('Email occupied');
-        if (await this.nicknameExists(dto.nickname)) throw new BadRequestException('Nickname occupied');
+        if (await this.emailExists(dto.email)) this.errorService.throw('errors.emailNotUnique');
+        if (await this.nicknameExists(dto.nickname)) this.errorService.throw('errors.nicknameNotUnique');
 
         const hashedPassword = await this.authService.hashPassword(dto.password);
         const newUser: UserDto = {
@@ -44,10 +46,8 @@ export class UserService {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new NotFoundException();
 
-        if (dto.email && dto.email !== user.email && await this.emailExists(dto.email))
-            throw new BadRequestException('Email occupied');
-        if (dto.nickname && dto.nickname !== user.nickname && await this.nicknameExists(dto.nickname))
-            throw new BadRequestException('Nickname occupied');
+        if (dto.email && dto.email !== user.email && await this.emailExists(dto.email)) this.errorService.throw('errors.emailNotUnique');
+        if (dto.nickname && dto.nickname !== user.nickname && await this.nicknameExists(dto.nickname)) this.errorService.throw('errors.nicknameNotUnique');
 
         if (dto.email) user.email = dto.email;
         if (dto.nickname) user.nickname = dto.nickname;
@@ -76,7 +76,7 @@ export class UserService {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new NotFoundException();
         
-        if (user.ownedDragons >= user.maxOwnedDragons) throw new BadRequestException('Max number of dragons exceeded');
+        if (user.ownedDragons >= user.maxOwnedDragons) this.errorService.throw('errors.maxDragonsExceeded');
         user.ownedDragons += 1;
 
         return this.userRepository.save(user);
