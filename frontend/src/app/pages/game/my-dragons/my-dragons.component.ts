@@ -34,7 +34,7 @@ export class MyDragonsComponent implements OnInit {
       this.dragonsLoading = false;
 
       this.ownedDragons = x.data;
-    }, _ => this.dragonsLoading = false)
+    }, () => this.dragonsLoading = false)
   }
 
   navigateAdopt() {

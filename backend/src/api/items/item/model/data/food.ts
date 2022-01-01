@@ -3,7 +3,7 @@ import { FoodType, ItemType } from "../definitions/item-type";
 import { ItemDto } from "../dto/item.dto"
 
 export const BUBULAE_STEAK: ItemDto = {
-    name: 'bubulaeSteak',
+    name: 'BubulaeSteak',
     level: 0,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
@@ -11,7 +11,7 @@ export const BUBULAE_STEAK: ItemDto = {
 };
 
 export const IHON_BERRY: ItemDto = {
-    name: 'ihonBerry',
+    name: 'IhonBerry',
     level: 0,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
@@ -19,7 +19,7 @@ export const IHON_BERRY: ItemDto = {
 };
 
 export const RELIQUM_EGG: ItemDto = {
-    name: 'reliqumEgg',
+    name: 'ReliqumEgg',
     level: 0,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
@@ -27,7 +27,7 @@ export const RELIQUM_EGG: ItemDto = {
 };
 
 export const SPIRAL_NUT: ItemDto = {
-    name: 'spirialNut',
+    name: 'SpirialNut',
     level: 0,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
@@ -35,7 +35,7 @@ export const SPIRAL_NUT: ItemDto = {
 };
 
 export const RORIS_LEEFS: ItemDto = {
-    name: 'rorisLeefs',
+    name: 'RorisLeefs',
     level: 0,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,

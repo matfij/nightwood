@@ -28,7 +28,7 @@ export const CARRANGA_SANDS: ExpeditionDto = {
 }
 
 export const HARNA_PEAKS: ExpeditionDto = {
-    name: 'RangaSands',
+    name: 'HarnaPeaks',
     level: 25,
     loots: [
         BUBULAE_STEAK,

@@ -1,0 +1,40 @@
+@import '../../../core/theme/variables.scss';
+
+.wrapper-expeditions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.expedition {
+  width: 100%;
+  max-width: 828px;
+  margin: 10px;
+
+  display: grid;
+  gap: 0px 8px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
+  box-shadow: inset 1px 1px 24px 12px $app-dark;
+  justify-content: center;
+  text-align: center;
+  padding: 8px;
+}
+
+.expedition-img {
+  max-width: 400px;
+  max-height: 200px;
+
+  box-shadow: inset 1px 1px 24px 12px $app-dark;
+
+  img {
+    width: 100%;
+  }
+}
+
+.expedition-hint {
+  min-width: 200px;
+  max-width: 100%;
+
+  padding: 8px;
+  text-align: justify;
+}

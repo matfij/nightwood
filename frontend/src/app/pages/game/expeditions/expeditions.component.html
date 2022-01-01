@@ -5,5 +5,32 @@
 
     <h2>Explore lands of Nightwood</h2>
 
+    <div *ngIf="expeditionsLoading" class="mt-5">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+
+    <div *ngIf="!expeditionsLoading" class="wrapper-expeditions">
+      <div *ngFor="let expedition of expeditions" class="expedition">
+
+        <div class="expedition-img">
+          <img [src]="expedition.image" [alt]="expedition.name">
+        </div>
+
+        <div class="expedition-hint">
+          <b>{{ expedition.name | translate }}</b><br>
+          {{ expedition.hint | translate }} <br>
+
+          <select #selectDragon>
+            <option *ngFor="let dragon of ownedDragons" [value]="dragon.id">
+              {{ dragon.name }}
+            </option>
+          </select>
+          <button (click)="startExpedition()" class="btn-base">
+            {{ 'explore.send' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
