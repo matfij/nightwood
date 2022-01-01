@@ -11,11 +11,5 @@ export class DragonAction {
     type: DragonActionType;
 
     @Column({ nullable: true })
-    startTime?: string;
-
-    @Column({ nullable: true })
-    endTime?: string;
-
-    @Column({ nullable: true })
-    duration?: string;
+    nextAction?: number;
 }

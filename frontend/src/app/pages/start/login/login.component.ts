@@ -50,7 +50,6 @@ export class LoginComponent {
       this.router.navigate(['../game/home']);
     }, _ => {
       this.submitLoading = false;
-      this.toastService.showError('start.loginError', 'start.loginErrorHint');
     });
   }
 

@@ -1,36 +1,10 @@
-import { DEFAULT_STARTING_FOOD_QUANTITY } from "src/configuration/item.config";
-import { CreateItemDto } from "../dto/create-item.dto";
-import { FoodType, ItemType } from "./item-type";
+import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT,  } from "../data/food";
+import { ItemDto } from "../dto/item.dto";
 
-export const StartingItems: CreateItemDto[] = [
-    {
-        name: 'bubulaeSteak',
-        quantity: DEFAULT_STARTING_FOOD_QUANTITY,
-        type: ItemType.Food,
-        foodType: FoodType.Strength,
-    },
-    {
-        name: 'ihonBerry',
-        quantity: DEFAULT_STARTING_FOOD_QUANTITY,
-        type: ItemType.Food,
-        foodType: FoodType.Dexterity,
-    },
-    {
-        name: 'reliqumEgg',
-        quantity: DEFAULT_STARTING_FOOD_QUANTITY,
-        type: ItemType.Food,
-        foodType: FoodType.Endurance,
-    },
-    {
-        name: 'spirialNut',
-        quantity: DEFAULT_STARTING_FOOD_QUANTITY,
-        type: ItemType.Food,
-        foodType: FoodType.Will,
-    },
-    {
-        name: 'rorisLeefs',
-        quantity: DEFAULT_STARTING_FOOD_QUANTITY,
-        type: ItemType.Food,
-        foodType: FoodType.Luck,
-    },
+export const StartingItems: ItemDto[] = [
+    BUBULAE_STEAK,
+    IHON_BERRY,
+    RELIQUM_EGG,
+    SPIRAL_NUT,
+    RORIS_LEEFS,
 ];

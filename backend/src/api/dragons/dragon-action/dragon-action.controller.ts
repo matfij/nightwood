@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseGuards, UseInterceptors } from '@nestjs/common';
 import { DragonActionService } from './service/dragon-action.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/api/users/auth/util/jwt.guard';
+import { PaginationInterceptor } from 'src/common/interceptors/pagination.interceptor';
+import { PageExpeditionDto } from './model/dto/page-expedition.dto';
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -11,5 +13,12 @@ export class DragonActionController {
   constructor(
     private actionService: DragonActionService
   ) {}
+
+  @Post('getAll')
+  @UseInterceptors(PaginationInterceptor)
+  @ApiOkResponse({ type: PageExpeditionDto })
+  getExpeditions(): Promise<PageExpeditionDto> {
+    return this.actionService.getExpeditions();
+  }
 
 }
