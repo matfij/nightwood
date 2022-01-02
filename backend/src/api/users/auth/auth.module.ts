@@ -6,7 +6,7 @@ import { ItemModule } from 'src/api/items/item/item.module';
 import { User } from '../user/model/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './service/auth.service';
-import { ErrorService } from './service/error.service';
+import { ErrorService } from '../../../common/services/error.service';
 import { JwtAuthGuard } from './util/jwt.guard';
 import { JwtStrategy } from './util/jwt.strategy';
 

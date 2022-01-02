@@ -2,6 +2,7 @@ import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT } from 
 import { ExpeditionDto } from "../dto/expedition.dto";
 
 export const ANDREW_FOREST: ExpeditionDto = {
+    id: 1,
     name: 'AndrewForest',
     level: 1,
     loots: [
@@ -11,10 +12,11 @@ export const ANDREW_FOREST: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 3 * 60 * 60 * 1000
+    minimumActionTime: 3 * 60 * 60 * 1000,
 }
 
 export const CARRANGA_SANDS: ExpeditionDto = {
+    id: 2,
     name: 'RangaSands',
     level: 10,
     loots: [
@@ -24,10 +26,11 @@ export const CARRANGA_SANDS: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 6 * 60 * 60 * 1000
+    minimumActionTime: 6 * 60 * 60 * 1000,
 }
 
 export const HARNA_PEAKS: ExpeditionDto = {
+    id: 3,
     name: 'HarnaPeaks',
     level: 25,
     loots: [
@@ -37,5 +40,5 @@ export const HARNA_PEAKS: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 12 * 60 * 60 * 1000
+    minimumActionTime: 12 * 60 * 60 * 1000,
 }

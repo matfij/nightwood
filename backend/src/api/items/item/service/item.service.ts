@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ErrorService } from "src/api/users/auth/service/error.service";
+import { ErrorService } from "src/common/services/error.service";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { Repository } from "typeorm";
 import { StartingItems } from "../model/definitions/item-blueprints";

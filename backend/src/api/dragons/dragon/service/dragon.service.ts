@@ -13,7 +13,7 @@ import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
 import { CreateDragonDto } from '../model/dto/create-dragon.dto';
-import { ErrorService } from 'src/api/users/auth/service/error.service';
+import { ErrorService } from 'src/common/services/error.service';
 
 @Injectable()
 export class DragonService {
@@ -60,11 +60,18 @@ export class DragonService {
         return savedDragon;
     }
 
-    async checkFeedingDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
+    async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.dragonRepository.findOne(dragonId);
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
         if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');
+
+        return dragon;
+    }
+
+    async checkFeedingDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
+        const dragon = await this.checkDragon(ownerId, dragonId);
+
         if (!this.dateService.checkIfEventAvailable(dragon.nextFeed)) this.errorService.throw('errors.dragonAlreadyFed');
 
         return dragon;
@@ -91,6 +98,14 @@ export class DragonService {
 
         const fedDragon = await this.dragonRepository.save(dragon);
         return fedDragon;
+    }
+
+    async checkIfEventAvailable(ownerId: number, dragonId: number): Promise<DragonDto> {
+        const dragon = await this.checkDragon(ownerId, dragonId);
+
+        if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) this.errorService.throw('errors.dragonBusy');
+
+        return dragon;
     }
 
 }

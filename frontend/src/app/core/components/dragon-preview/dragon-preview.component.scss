@@ -100,7 +100,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: transparentize($color: $app-dark, $amount: 0.08);
+  background: transparentize($color: $app-dark, $amount: 0.04);
 
   p {
     width: 95%;

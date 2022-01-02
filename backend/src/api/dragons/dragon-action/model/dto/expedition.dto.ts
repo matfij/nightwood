@@ -5,6 +5,9 @@ import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 export class ExpeditionDto {
 
     @ApiProperty()
+    id: number;
+
+    @ApiProperty()
     name: string;
 
     @ApiProperty()

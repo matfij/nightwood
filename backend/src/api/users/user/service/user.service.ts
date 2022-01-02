@@ -4,7 +4,7 @@ import { paginate } from 'nestjs-typeorm-paginate';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/service/auth.service';
-import { ErrorService } from '../../auth/service/error.service';
+import { ErrorService } from '../../../../common/services/error.service';
 import { CreateUserDto } from '../model/dto/create-user.dto';
 import { GetUserDto } from '../model/dto/get-user.dto';
 import { PageUserDto } from '../model/dto/page-user.dto';

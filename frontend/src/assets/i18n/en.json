@@ -43,7 +43,9 @@
     "dragonNotFound": "Dragon not found",
     "dragonAlreadyFed": "Selected dragon has been fed recently",
     "maxDragonsExceeded": "Maximum number of dragons exceeded",
-    "dragonTooYoung": "Selected dragon is not mature enough"
+    "dragonTooYoung": "Selected dragon is not mature enough",
+    "dragonBusy": "Selected dragon is busy",
+    "expeditionNotFound": "Location not found"
   },
   "game": {
     "home": "Home",

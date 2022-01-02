@@ -17,6 +17,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 export interface IActionController {
     adoptDragon(body: AdoptDragonDto): Observable<DragonDto>;
     feedDragon(body: FeedDragonDto): Observable<DragonDto>;
+    startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
 }
 
 @Injectable({
@@ -132,6 +133,57 @@ export class ActionController implements IActionController {
             }));
         }
         return _observableOf<DragonDto>(<any>null);
+    }
+
+    startExpedition(body: StartExpeditionDto) : Observable<DragonActionDto> {
+        let url_ = this.baseUrl + "/api/v1/action/startExpedition";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStartExpedition(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStartExpedition(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonActionDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonActionDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processStartExpedition(response: HttpResponseBase): Observable<DragonActionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonActionDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonActionDto>(<any>null);
     }
 }
 
@@ -872,6 +924,19 @@ export interface FeedDragonDto {
     itemId: number;
 }
 
+export interface StartExpeditionDto {
+    dragonId: number;
+    expeditionId: number;
+}
+
+export interface DragonActionDto {
+    id?: number;
+    type: number;
+    startTime?: string;
+    endTime?: string;
+    duration?: string;
+}
+
 export interface CreateUserDto {
     email: string;
     password: string;
@@ -995,6 +1060,7 @@ export interface PageDragonDto {
 }
 
 export interface ExpeditionDto {
+    id: number;
     name: string;
     level: number;
     loots: ItemDto[];

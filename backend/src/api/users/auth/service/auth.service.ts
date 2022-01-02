@@ -10,7 +10,7 @@ import { AuthUserDto } from '../dto/auth-user.dto';
 import { SALT_ROUNDS } from 'src/configuration/user.config';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
-import { ErrorService } from './error.service';
+import { ErrorService } from '../../../../common/services/error.service';
 
 const bcrypt = require('bcrypt');
 
