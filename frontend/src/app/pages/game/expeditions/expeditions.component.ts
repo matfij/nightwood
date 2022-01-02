@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { DragonActionController, DragonController, DragonDto, ExpeditionDto, GetDragonDto } from 'src/app/client/api';
+import { ActionController, DragonActionController, DragonController, DragonDto, ExpeditionDto, GetDragonDto, StartExpeditionDto } from 'src/app/client/api';
 import { RepositoryService } from 'src/app/common/services/repository.service';
+import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
   selector: 'app-expeditions',
@@ -25,9 +26,11 @@ export class ExpeditionsComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService,
+    private actionController: ActionController,
     private dragonController: DragonController,
     private dragonActionController: DragonActionController,
     private repositoryService: RepositoryService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +83,17 @@ export class ExpeditionsComponent implements OnInit {
 
   startExpedition(dragon: DragonDto, expedition: ExpeditionDto) {
     this.showDragonChoiceModal = false;
-    console.log(dragon, expedition);
+
+    const dto: StartExpeditionDto = {
+      dragonId: dragon.id!,
+      expeditionId: expedition.id,
+    };
+    this.expeditionsLoading = true;
+    this.actionController.startExpedition(dto).subscribe(x => {
+      this.expeditionsLoading = false;
+      this.toastService.showSuccess('explore.expeditionStarted', 'explore.expeditionStartedHint');
+      this.getDragons();
+    }, () => this.expeditionsLoading = false);
   }
 }
 

@@ -7,9 +7,9 @@ export class DragonAction {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ default: DragonActionType.None })
     type: DragonActionType;
 
-    @Column({ nullable: true })
-    nextAction?: number;
+    @Column({ default: 0, type: 'int8' })
+    nextAction: number;
 }

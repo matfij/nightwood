@@ -26,7 +26,7 @@ export class DragonActionService {
   ) {}
 
   async create() {
-    const action: DragonActionDto = { type: DragonActionType.None };
+    const action: DragonActionDto = { type: DragonActionType.None, nextAction: Date.now() };
     const dragonAction = this.dragonActionRepository.create(action);
 
     const savedAction = await this.dragonActionRepository.save(dragonAction);

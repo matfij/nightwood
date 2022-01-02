@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
-import { DragonDto, DragonNature } from "src/app/client/api";
+import { TranslateService } from "@ngx-translate/core";
+import { DragonActionType, DragonDto, DragonNature } from "src/app/client/api";
+import { DateService } from "src/app/common/services/date.service";
 import { DRAGON_MAX_ADULT_LEVEL, DRAGON_MAX_EGG_LEVEL, DRAGON_MAX_KID_LEVEL, DRAGON_MAX_SAGE_LEVEL } from "../configuration";
 import { DisplayDragon } from "../definitions/dragons";
 
@@ -11,7 +13,12 @@ export class DragonService {
   private readonly BASE_IMG_PATH = 'assets/img/dragons';
   private readonly EXTENSION = 'png';
 
-  setDragonImage(dragon: DragonDto): DisplayDragon {
+  constructor(
+    private translateService: TranslateService,
+    private dateService: DateService,
+  ) {}
+
+  toDisplayDragon(dragon: DragonDto): DisplayDragon {
     let nature: string;
     switch (dragon.nature) {
       case DragonNature.Fire: { nature = 'fire'; break; }
@@ -28,10 +35,26 @@ export class DragonService {
     else adulthood = 0;
 
     const image = `${this.BASE_IMG_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;
+
+    const currentAction = !this.dateService.checkIfEventAvailable(dragon.action.nextAction)
+      ? this.getDragonActionName(dragon.action.type)
+      : '---';
+
     return {
       ...dragon,
       image: image,
+      currentAction: currentAction,
     };
+  }
+
+  getDragonActionName(type: DragonActionType): string {
+    let name;
+    switch(type) {
+      case DragonActionType.None: { name = 'dragon.actionNone'; break; }
+      case DragonActionType.Expedition: { name = 'dragon.actionExpedition'; break; }
+      case DragonActionType.Training: { name = 'dragon.actionTraining'; break; }
+    }
+    return this.translateService.instant(name);
   }
 
 }

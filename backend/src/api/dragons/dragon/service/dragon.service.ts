@@ -61,7 +61,7 @@ export class DragonService {
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(dragonId);
+        const dragon = await this.dragonRepository.findOne(dragonId, { relations: GET_ALL_RELATIONS });
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
         if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');

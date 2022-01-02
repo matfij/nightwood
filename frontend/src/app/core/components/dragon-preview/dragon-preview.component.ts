@@ -35,7 +35,7 @@ export class DragonPreviewComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.dragon) {
-      this.dragon = this.dragonService.setDragonImage(this.dragon);
+      this.dragon = this.dragonService.toDisplayDragon(this.dragon);
       this.feedAvailable = this.dateService.checkIfEventAvailable(this.dragon.nextFeed);
     }
     this.showFeedModal = false;
@@ -78,7 +78,7 @@ export class DragonPreviewComponent implements OnInit {
 
   navigateExplore() {
     // todo - select current dragon
-    this.router.navigate(['game', 'explore']);
+    this.router.navigate(['game', 'expeditions']);
   }
 
   navigateArena() {

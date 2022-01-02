@@ -88,7 +88,7 @@
     "willHint": "Will has impact on the dragon's magical abilities",
     "luck": "Luck",
     "luckHint": "Luck has impact on critical strikes and exploration success",
-    "ongoingAction": "Ongoing action",
+    "ongoingAction": "Performs",
     "feed": "Feed",
     "explore": "Explore",
     "battle": "Battle",
@@ -96,7 +96,10 @@
     "adoptFirstDragon": "Adopt your first dragon",
     "chooseFoodHint": "The choice of a meal can influence the development of dragon attributes",
     "feedSuccess": "The dragon was fed",
-    "feedSuccessHint": "Some attributes have changed"
+    "feedSuccessHint": "Some attributes have changed",
+    "actionNone": "---",
+    "actionExpedition": "Expedition",
+    "actionTraining": "Training"
   },
   "inventory": {
     "type": "Type",
@@ -117,7 +120,9 @@
     "startExpeditionOf": "Start exploration of {{ location }}",
     "startExpeditionShort": "This is a relatively short trip that usually takes around three hours and requires dragon to have at least [{{ level }}] maturity level.",
     "startExpeditionMedium": "This is a typical expedition that usually takes around six hours and requires dragon to have at least [{{ level }}] maturity level.",
-    "startExpeditionLong": "This is a long and arduous journey that usually takes around twelve hours and requires dragon to have at least [{{ level }}] maturity level."
+    "startExpeditionLong": "This is a long and arduous journey that usually takes around twelve hours and requires dragon to have at least [{{ level }}] maturity level.",
+    "expeditionStarted": "Expedition started",
+    "expeditionStartedHint": "Your dragon will be busy for a while"
   },
   "expeditions": {
     "AndrewForest": "Andrew Forest",

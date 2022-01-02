@@ -26,4 +26,5 @@ export enum AdoptStep {
 
 export interface DisplayDragon extends DragonDto {
   image?: string;
+  currentAction?: string;
 }

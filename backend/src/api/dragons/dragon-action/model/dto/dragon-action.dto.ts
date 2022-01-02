@@ -9,18 +9,10 @@ export class DragonActionDto {
     id?: number;
 
     @Expose()
-    @ApiProperty()
+    @ApiProperty({ enum: DragonActionType, enumName: 'DragonActionType' })
     type: DragonActionType;
 
     @Expose()
-    @ApiPropertyOptional()
-    startTime?: string;
-
-    @Expose()
-    @ApiPropertyOptional()
-    endTime?: string;
-
-    @Expose()
-    @ApiPropertyOptional()
-    duration?: string;
+    @ApiProperty()
+    nextAction: number;
 }

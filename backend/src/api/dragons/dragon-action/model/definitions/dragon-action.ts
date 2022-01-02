@@ -1,5 +1,5 @@
 export enum DragonActionType {
-    None,
-    Expedition,
-    Training,
+    None='None',
+    Expedition='Expedition',
+    Training='Training',
 }

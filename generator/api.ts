@@ -901,14 +901,23 @@ export interface AdoptDragonDto {
     nature: DragonNature;
 }
 
-export interface DragonAction {
+export enum DragonActionType {
+    None = "None",
+    Expedition = "Expedition",
+    Training = "Training",
+}
+
+export interface DragonActionDto {
+    id?: number;
+    type: DragonActionType;
+    nextAction: number;
 }
 
 export interface DragonDto {
     id?: number;
     name: string;
     ownerId?: number;
-    action: DragonAction;
+    action: DragonActionDto;
     nextFeed: number;
     nature: DragonNature;
     level: number;
@@ -927,14 +936,6 @@ export interface FeedDragonDto {
 export interface StartExpeditionDto {
     dragonId: number;
     expeditionId: number;
-}
-
-export interface DragonActionDto {
-    id?: number;
-    type: number;
-    startTime?: string;
-    endTime?: string;
-    duration?: string;
 }
 
 export interface CreateUserDto {

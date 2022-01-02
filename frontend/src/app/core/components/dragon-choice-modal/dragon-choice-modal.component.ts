@@ -30,7 +30,7 @@ export class DragonChoiceModalComponent implements OnInit {
     this.message = this.message ?? '';
     this.level = this.level ?? 0;
 
-    this.displayDragons = this.dragons.map(x => this.dragonService.setDragonImage(x));
+    this.displayDragons = this.dragons.map(x => this.dragonService.toDisplayDragon(x));
   }
 
   closeModal() {

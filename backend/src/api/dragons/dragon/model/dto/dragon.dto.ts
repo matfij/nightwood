@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Expose, Transform } from "class-transformer";
-import { DragonAction } from "src/api/dragons/dragon-action/model/dragon-action.entity";
+import { Expose } from "class-transformer";
+import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
 import { DragonNature } from "../definitions/dragon-nature";
 
 export class DragonDto {
@@ -19,7 +19,7 @@ export class DragonDto {
 
     @Expose()
     @ApiProperty()
-    action: DragonAction;
+    action: DragonActionDto;
 
     @Expose()
     @ApiProperty()
