@@ -42,7 +42,8 @@
     "insufficientQuantity": "Insufficient quantity",
     "dragonNotFound": "Dragon not found",
     "dragonAlreadyFed": "Selected dragon has been fed recently",
-    "maxDragonsExceeded": "Maximum number of dragons exceeded"
+    "maxDragonsExceeded": "Maximum number of dragons exceeded",
+    "dragonTooYoung": "Selected dragon is not mature enough"
   },
   "game": {
     "home": "Home",
@@ -108,15 +109,20 @@
     "RorisLeefs": "Roris leefs"
   },
   "explore": {
+    "explorePageTitle": "Explore lands of Nightwood",
     "selectDragon": "Select dragon",
-    "send": "Send"
+    "explore": "Explore",
+    "startExpeditionOf": "Start exploration of {{ location }}",
+    "startExpeditionShort": "This is a relatively short trip that usually takes around three hours and requires dragon to have at least [{{ level }}] maturity level.",
+    "startExpeditionMedium": "This is a typical expedition that usually takes around six hours and requires dragon to have at least [{{ level }}] maturity level.",
+    "startExpeditionLong": "This is a long and arduous journey that usually takes around twelve hours and requires dragon to have at least [{{ level }}] maturity level."
   },
   "expeditions": {
-    "LukamerForest": "Lukamer Forest",
-    "LukamerForestHint": "Explore the forest and find a way to the lake",
+    "AndrewForest": "Andrew Forest",
+    "AndrewForestHint": "Desipe the first impression it is a suprisingly calm and warm place, ideal for young dragons. The forest is protected by Andrew, a legendary dragon who has been guarding the forest since the great migration.",
     "RangaSands": "Ranga Sands",
-    "RangaSandsHint": "Phasellus dignissim sit amet nisl in condimentum. Praesent blandit enim ante, vitae vehicula purus malesuada eget. Ut quis tristique nisi, sed dictum orci.",
+    "RangaSandsHint": "A faraway land, covered with sand and rocks where the wind is strong and the temperature is scorching. The desert is a place of great danger, but it is also a place of great treasure.",
     "HarnaPeaks": "Harna Peaks",
-    "HarnaPeaksHint": "Explore the mountains to find ranges of berries, artifacts and treasures"
+    "HarnaPeaksHint": "Mysterious and unexplored place filled with magical particles. Exploration requires an exceptional amount of power therefore it is accessible only for matured dragons."
   }
 }

@@ -3,7 +3,7 @@
 
   <div class="wrapper-content">
 
-    <h2>Explore lands of Nightwood</h2>
+    <div class="title">{{ 'explore.explorePageTitle' | translate }}</div>
 
     <div *ngIf="expeditionsLoading" class="mt-5">
       <app-loading-indicator></app-loading-indicator>
@@ -20,14 +20,18 @@
           <b>{{ expedition.name | translate }}</b><br>
           {{ expedition.hint | translate }} <br>
 
-          <select #selectDragon>
-            <option *ngFor="let dragon of ownedDragons" [value]="dragon.id">
-              {{ dragon.name }}
-            </option>
-          </select>
-          <button (click)="startExpedition()" class="btn-base">
-            {{ 'explore.send' | translate }}
+          <button (click)="prepareExpedition(expedition)" class="btn-base">
+            {{ 'explore.explore' | translate }}
           </button>
+          <app-dragon-choice-modal
+            *ngIf="showDragonChoiceModal && expedition.name === selectedExpedition"
+            [title]="modalTitle"
+            [message]="modalMessage"
+            [dragons]="ownedDragons"
+            [level]="expedition.level"
+            (close)="showDragonChoiceModal = false"
+            (dragonSelected)="startExpedition($event, expedition)">
+          </app-dragon-choice-modal>
         </div>
       </div>
     </div>

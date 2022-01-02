@@ -103,6 +103,10 @@
   background: transparentize($color: $app-dark, $amount: 0.08);
 
   p {
+    width: 95%;
+    max-width: 800px;
+    margin: 12px auto;
+
     font-size: 18px;
   }
 

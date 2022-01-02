@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CARRANGA_SANDS, HARNA_PEAKS, LUKAMER_FOREST } from '../model/data/expeditions';
+import { CARRANGA_SANDS, HARNA_PEAKS, ANDREW_FOREST } from '../model/data/expeditions';
 import { DragonActionType } from '../model/definitions/dragon-action';
 import { DragonAction } from '../model/dragon-action.entity';
 import { DragonActionDto } from '../model/dto/dragon-action.dto';
@@ -25,7 +25,7 @@ export class DragonActionService {
 
   async getExpeditions(): Promise<PageExpeditionDto> {
     const expeditions = [
-      { ...LUKAMER_FOREST, loots: [] },
+      { ...ANDREW_FOREST, loots: [] },
       { ...CARRANGA_SANDS, loots: [] },
       { ...HARNA_PEAKS, loots: [] },
     ];

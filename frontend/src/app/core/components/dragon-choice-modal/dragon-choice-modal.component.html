@@ -1,0 +1,17 @@
+<div *ngIf="dragons" class="container-modal">
+
+  <div class="title">{{ title! | translate }}</div>
+  <p>{{ message! | translate }}</p>
+
+  <div class="wrapper-dragons">
+    <div *ngFor="let dragon of displayDragons" (click)="chooseDragon(dragon)" class="dragon">
+        <img [src]="dragon.image" [alt]="dragon.name">
+        {{ dragon.name }} [{{ dragon.level }}]
+    </div>
+  </div>
+
+  <button (click)="closeModal()" class="btn-base">
+    {{ 'common.cancel' | translate }}
+  </button>
+
+</div>

@@ -1,8 +1,8 @@
 import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT } from "src/api/items/item/model/data/food";
 import { ExpeditionDto } from "../dto/expedition.dto";
 
-export const LUKAMER_FOREST: ExpeditionDto = {
-    name: 'LukamerForest',
+export const ANDREW_FOREST: ExpeditionDto = {
+    name: 'AndrewForest',
     level: 1,
     loots: [
         BUBULAE_STEAK,
@@ -11,7 +11,7 @@ export const LUKAMER_FOREST: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 1000
+    minimumActionTime: 3 * 60 * 60 * 1000
 }
 
 export const CARRANGA_SANDS: ExpeditionDto = {
@@ -24,7 +24,7 @@ export const CARRANGA_SANDS: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 1000
+    minimumActionTime: 6 * 60 * 60 * 1000
 }
 
 export const HARNA_PEAKS: ExpeditionDto = {
@@ -37,5 +37,5 @@ export const HARNA_PEAKS: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 1000
+    minimumActionTime: 12 * 60 * 60 * 1000
 }

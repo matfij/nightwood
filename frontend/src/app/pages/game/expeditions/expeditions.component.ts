@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { DragonActionController, DragonController, DragonDto, ExpeditionDto, GetDragonDto } from 'src/app/client/api';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 
@@ -17,9 +18,13 @@ export class ExpeditionsComponent implements OnInit {
   expeditionsLoading!: boolean;
   expeditions!: DisplayExpedition[];
   ownedDragons!: DragonDto[];
-  selectedDragonId?: number;
+  showDragonChoiceModal!: boolean;
+  modalTitle?: string;
+  modalMessage?: string;
+  selectedExpedition?: string;
 
   constructor(
+    private translateService: TranslateService,
     private dragonController: DragonController,
     private dragonActionController: DragonActionController,
     private repositoryService: RepositoryService,
@@ -29,6 +34,7 @@ export class ExpeditionsComponent implements OnInit {
     this.expeditionsLoading = false;
     this.expeditions = [];
     this.ownedDragons = [];
+    this.showDragonChoiceModal = false;
     this.getExpeditions();
     this.getDragons();
   }
@@ -57,8 +63,24 @@ export class ExpeditionsComponent implements OnInit {
     })
   }
 
-  startExpedition() {
-    console.log(this.selectDragon?.nativeElement.value, this.selectedDragonId)
+  prepareExpedition(expedition: DisplayExpedition) {
+    const titleParams = { location: this.translateService.instant(expedition.name) };
+    this.modalTitle = this.translateService.instant('explore.startExpeditionOf', titleParams);
+
+    let message = 'explore.';
+    if (expedition.minimumActionTime < 4 * 60 * 60 * 1000) message += 'startExpeditionShort';
+    else if (expedition.minimumActionTime < 7 * 60 * 60 * 1000) message += 'startExpeditionMedium';
+    else if (expedition.minimumActionTime < 13 * 60 * 60 * 1000) message += 'startExpeditionLong';
+
+    this.modalMessage = this.translateService.instant(message, { level: expedition.level });
+
+    this.selectedExpedition = expedition.name;
+    this.showDragonChoiceModal = true;
+  }
+
+  startExpedition(dragon: DragonDto, expedition: ExpeditionDto) {
+    this.showDragonChoiceModal = false;
+    console.log(dragon, expedition);
   }
 }
 

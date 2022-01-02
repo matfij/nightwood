@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DragonFeedModalComponent } from './dragon-feed-modal.component';
+import { DragonChoiceModalComponent } from './dragon-choice-modal.component';
 
-describe('DragonFeedModalComponent', () => {
-  let component: DragonFeedModalComponent;
-  let fixture: ComponentFixture<DragonFeedModalComponent>;
+describe('DragonChoiceModalComponent', () => {
+  let component: DragonChoiceModalComponent;
+  let fixture: ComponentFixture<DragonChoiceModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DragonFeedModalComponent ]
+      declarations: [ DragonChoiceModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DragonFeedModalComponent);
+    fixture = TestBed.createComponent(DragonChoiceModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
