@@ -10,6 +10,12 @@ export class DragonAction {
     @Column({ default: DragonActionType.None })
     type: DragonActionType;
 
+    @Column({ nullable: true })
+    expeditionId: number;
+
+    @Column({ default: false })
+    awardCollected: boolean;
+
     @Column({ default: 0, type: 'int8' })
     nextAction: number;
 }

@@ -6,8 +6,8 @@ import { DragonNature } from "../definitions/dragon-nature";
 export class DragonDto {
 
     @Expose()
-    @ApiPropertyOptional()
-    id?: number;
+    @ApiProperty()
+    id: number;
 
     @Expose()
     @ApiProperty()

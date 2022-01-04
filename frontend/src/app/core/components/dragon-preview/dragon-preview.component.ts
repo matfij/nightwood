@@ -55,7 +55,9 @@ export class DragonPreviewComponent implements OnInit {
     this.foodLoading = true;
     this.itemController.getOwnedFoods().subscribe(foodsPage => {
       this.foodLoading = false;
-      this.availableFood = foodsPage.data.map(item => this.itemService.setItemImage(item));
+      this.availableFood = foodsPage.data
+        .map(item => this.itemService.setItemImage(item))
+        .filter(item => item.quantity! > 0);
     }, () => this.foodLoading = false);
   }
 
@@ -66,7 +68,7 @@ export class DragonPreviewComponent implements OnInit {
       itemId: itemId,
       dragonId: this.dragon.id!,
     }
-    this.foodLoading = true;
+    this.feedLoading = true;
     this.actionController.feedDragon(dto).subscribe(fedDragon => {
       this.feedLoading = false;
       this.showFeedModal = false;

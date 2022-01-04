@@ -7,6 +7,11 @@ import { StartingItems } from "../model/definitions/item-blueprints";
 import { ItemDto } from "../model/dto/item.dto";
 import { PageItemDto } from "../model/dto/page-item.dto";
 import { Item } from "../model/item.entity";
+import { ExpeditionResultDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
+import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
+import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
+import { IHON_BERRY } from "../model/data/food";
+import { ItemType } from "../model/definitions/item-type";
 
 @Injectable()
 export class ItemService {
@@ -25,7 +30,7 @@ export class ItemService {
     }
 
     async getOwnedFoods(user: UserDto): Promise<PageItemDto> {
-        const items = await this.itemRepository.find({ user: user });
+        const items = await this.itemRepository.find({ user: user, type: ItemType.Food });
         const itemsPage: PageItemDto = {
             data: items,
             meta: {},
@@ -46,5 +51,41 @@ export class ItemService {
     async consumeFeedingItem(item: ItemDto): Promise<void> {
         item.quantity -= 1;
         this.itemRepository.save(item);
+    }
+
+    async updateInventory(user: UserDto, loots: ItemDto[]) {
+        const items = await this.itemRepository.find({ user: user, type: ItemType.Food });
+
+        const newItems = [];
+        loots.forEach(loot => {
+            if (items.map(x => x.name).includes(loot.name)) {
+                const item = items[items.map(x => x.name).findIndex(x => x === loot.name)];
+                item.quantity += loot.quantity;
+            } else {
+                const newItem = this.itemRepository.create({ ...loot, user });
+                newItems.push(newItem);
+            }
+        });
+
+        await this.itemRepository.save([...items, ...newItems]);
+    }
+
+    async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ExpeditionResultDto> {
+        const loots: ItemDto[] = [];
+        expedition.loots.forEach(loot => {
+            const presence = Math.random() + (dragon.luck / (2*dragon.level + 10)) > 0.5;
+            if (presence) {
+                const quantity = Math.floor(1 + ((dragon.luck + dragon.level) / dragon.level));
+                loots.push({ ...loot, quantity: quantity });
+            }
+        });
+
+        await this.updateInventory(user, loots);
+
+        const results: ExpeditionResultDto = {
+            name: expedition.name,
+            loots: loots,
+        }
+        return results;
     }
 }

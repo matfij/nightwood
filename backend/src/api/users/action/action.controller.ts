@@ -1,6 +1,7 @@
 import { Body, Controller, Post, UseGuards, Request } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
+import { ExpeditionResultDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
 import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/start-expedition.dto";
 import { AdoptDragonDto } from "src/api/dragons/dragon/model/dto/adopt-dragon.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
@@ -36,6 +37,12 @@ export class ActionController {
     @ApiOkResponse({ type: DragonActionDto })
     startExpedition(@Request() req: AuthorizedRequest, @Body() dto: StartExpeditionDto): Promise<DragonActionDto> {
       return this.actionEventService.startExpedition(req.user, dto);
+    }
+
+    @Post('endExpedition')
+    @ApiOkResponse({ type: DragonActionDto })
+    endExpedition(@Request() req: AuthorizedRequest, @Body() dto: DragonDto): Promise<ExpeditionResultDto> {
+      return this.actionEventService.endExpedition(req.user, dto);
     }
 
 }

@@ -13,6 +13,14 @@ export class DragonActionDto {
     type: DragonActionType;
 
     @Expose()
+    @ApiPropertyOptional()
+    expeditionId?: number;
+
+    @Expose()
+    @ApiProperty()
+    awardCollected: boolean;
+
+    @Expose()
     @ApiProperty()
     nextAction: number;
 }
