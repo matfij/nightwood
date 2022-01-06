@@ -1,10 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 
-export class ExpeditionResultDto {
+export class ExpeditionReportDto {
 
     @ApiProperty()
-    name: string;
+    dragonName: string;
+
+    @ApiProperty()
+    expeditionName: string;
 
     @ApiProperty({ type: [ItemDto] })
     loots: ItemDto[];

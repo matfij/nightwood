@@ -12,7 +12,7 @@ export const ANDREW_FOREST: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 3 * 60 * 60 * 1000,
+    minimumActionTime: 3 * 60 * 60 * 1000/ 1000,
 }
 
 export const CARRANGA_SANDS: ExpeditionDto = {

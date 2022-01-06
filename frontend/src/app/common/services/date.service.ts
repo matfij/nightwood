@@ -5,8 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class DateService {
 
+  get date() {
+    return Date.now();
+  }
+
   checkIfEventAvailable(nextEvent: number): boolean {
-    const todayMillis = Date.now();
+    const todayMillis = this.date;
 
     return todayMillis > nextEvent;
   }

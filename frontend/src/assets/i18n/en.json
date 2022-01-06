@@ -45,7 +45,9 @@
     "maxDragonsExceeded": "Maximum number of dragons exceeded",
     "dragonTooYoung": "Selected dragon is not mature enough",
     "dragonBusy": "Selected dragon is busy",
-    "expeditionNotFound": "Location not found"
+    "expeditionNotFound": "Location not found",
+    "expeditionNotFinished": "Expedition is not finished",
+    "expeditionAwardCollected": "Awards were already collected"
   },
   "game": {
     "home": "Home",

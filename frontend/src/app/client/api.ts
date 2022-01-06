@@ -18,6 +18,7 @@ export interface IActionController {
     adoptDragon(body: AdoptDragonDto): Observable<DragonDto>;
     feedDragon(body: FeedDragonDto): Observable<DragonDto>;
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
+    endExpedition(body: DragonDto): Observable<ExpeditionReportDto>;
 }
 
 @Injectable({
@@ -184,6 +185,57 @@ export class ActionController implements IActionController {
             }));
         }
         return _observableOf<DragonActionDto>(<any>null);
+    }
+
+    endExpedition(body: DragonDto) : Observable<ExpeditionReportDto> {
+        let url_ = this.baseUrl + "/api/v1/action/endExpedition";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEndExpedition(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEndExpedition(<any>response_);
+                } catch (e) {
+                    return <Observable<ExpeditionReportDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ExpeditionReportDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEndExpedition(response: HttpResponseBase): Observable<ExpeditionReportDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <ExpeditionReportDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ExpeditionReportDto>(<any>null);
     }
 }
 
@@ -910,11 +962,13 @@ export enum DragonActionType {
 export interface DragonActionDto {
     id?: number;
     type: DragonActionType;
+    expeditionId?: number;
+    awardCollected: boolean;
     nextAction: number;
 }
 
 export interface DragonDto {
-    id?: number;
+    id: number;
     name: string;
     ownerId?: number;
     action: DragonActionDto;
@@ -936,6 +990,44 @@ export interface FeedDragonDto {
 export interface StartExpeditionDto {
     dragonId: number;
     expeditionId: number;
+}
+
+export enum ItemType {
+    Food = "Food",
+    Ingredient = "Ingredient",
+    Equipment = "Equipment",
+}
+
+export enum FoodType {
+    Strength = "Strength",
+    Dexterity = "Dexterity",
+    Endurance = "Endurance",
+    Will = "Will",
+    Luck = "Luck",
+    Special = "Special",
+}
+
+export enum EquipmentType {
+    Armor = "Armor",
+    Charm = "Charm",
+}
+
+export interface ItemDto {
+    id?: number;
+    name: string;
+    level: number;
+    quantity?: number;
+    position?: number;
+    type: ItemType;
+    foodType?: FoodType;
+    equipmentType?: EquipmentType;
+    userId?: number;
+}
+
+export interface ExpeditionReportDto {
+    dragonName: string;
+    expeditionName: string;
+    loots: ItemDto[];
 }
 
 export interface CreateUserDto {
@@ -1000,38 +1092,6 @@ export interface RegisterUserDto {
     email: string;
     password: string;
     nickname: string;
-}
-
-export enum ItemType {
-    Food = "Food",
-    Ingredient = "Ingredient",
-    Equipment = "Equipment",
-}
-
-export enum FoodType {
-    Strength = "Strength",
-    Dexterity = "Dexterity",
-    Endurance = "Endurance",
-    Will = "Will",
-    Luck = "Luck",
-    Special = "Special",
-}
-
-export enum EquipmentType {
-    Armor = "Armor",
-    Charm = "Charm",
-}
-
-export interface ItemDto {
-    id?: number;
-    name: string;
-    level: number;
-    quantity?: number;
-    position?: number;
-    type: ItemType;
-    foodType?: FoodType;
-    equipmentType?: EquipmentType;
-    userId?: number;
 }
 
 export interface PageItemDto {

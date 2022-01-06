@@ -7,7 +7,7 @@ import { StartingItems } from "../model/definitions/item-blueprints";
 import { ItemDto } from "../model/dto/item.dto";
 import { PageItemDto } from "../model/dto/page-item.dto";
 import { Item } from "../model/item.entity";
-import { ExpeditionResultDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
+import { ExpeditionReportDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
 import { IHON_BERRY } from "../model/data/food";
@@ -70,7 +70,7 @@ export class ItemService {
         await this.itemRepository.save([...items, ...newItems]);
     }
 
-    async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ExpeditionResultDto> {
+    async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ExpeditionReportDto> {
         const loots: ItemDto[] = [];
         expedition.loots.forEach(loot => {
             const presence = Math.random() + (dragon.luck / (2*dragon.level + 10)) > 0.5;
@@ -82,8 +82,9 @@ export class ItemService {
 
         await this.updateInventory(user, loots);
 
-        const results: ExpeditionResultDto = {
-            name: expedition.name,
+        const results: ExpeditionReportDto = {
+            dragonName: dragon.name,
+            expeditionName: expedition.name,
             loots: loots,
         }
         return results;

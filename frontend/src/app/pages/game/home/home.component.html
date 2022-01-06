@@ -3,15 +3,13 @@
 
   <div class="wrapper-content">
 
-
-
-    <h1>DEMO HOME PAGE</h1>
-
-    <h2>TOP USERS</h2>
-
-    <div *ngFor="let user of users">
-      ID: {{ user.id }}
-      USER: {{ user.nickname }}
+    <!-- TODO - report component -->
+    <div *ngFor="let report of reports">
+      {{ report.dragonName }} has finished exploring {{ report.expeditionName }}
+      Obtained items:
+      <div *ngFor="let loot of report.loots" class="loot">
+        {{ loot.name}} x ({{ loot.quantity }})
+      </div>
     </div>
 
   </div>
