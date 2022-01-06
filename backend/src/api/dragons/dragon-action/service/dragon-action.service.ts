@@ -66,8 +66,8 @@ export class DragonActionService {
   }
 
   async checkExpedition(dragon: DragonDto): Promise<ExpeditionDto> {
-    if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) this.errorService.throw('errors.expeditionNotFinished');
-    if (dragon.action.awardCollected) this.errorService.throw('errors.expeditionAwardCollected');
+    if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) return null;
+    if (dragon.action.awardCollected) return null;
 
     dragon.action.awardCollected = true;
     await this.dragonActionRepository.save(dragon.action);

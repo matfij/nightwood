@@ -18,7 +18,7 @@ export interface IActionController {
     adoptDragon(body: AdoptDragonDto): Observable<DragonDto>;
     feedDragon(body: FeedDragonDto): Observable<DragonDto>;
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
-    endExpedition(body: DragonDto): Observable<ExpeditionReportDto>;
+    checkExpeditions(): Observable<ExpeditionReportDto[]>;
 }
 
 @Injectable({
@@ -187,37 +187,33 @@ export class ActionController implements IActionController {
         return _observableOf<DragonActionDto>(<any>null);
     }
 
-    endExpedition(body: DragonDto) : Observable<ExpeditionReportDto> {
-        let url_ = this.baseUrl + "/api/v1/action/endExpedition";
+    checkExpeditions() : Observable<ExpeditionReportDto[]> {
+        let url_ = this.baseUrl + "/api/v1/action/checkExpeditions";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEndExpedition(response_);
+            return this.processCheckExpeditions(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processEndExpedition(<any>response_);
+                    return this.processCheckExpeditions(<any>response_);
                 } catch (e) {
-                    return <Observable<ExpeditionReportDto>><any>_observableThrow(e);
+                    return <Observable<ExpeditionReportDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ExpeditionReportDto>><any>_observableThrow(response_);
+                return <Observable<ExpeditionReportDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processEndExpedition(response: HttpResponseBase): Observable<ExpeditionReportDto> {
+    protected processCheckExpeditions(response: HttpResponseBase): Observable<ExpeditionReportDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -227,7 +223,7 @@ export class ActionController implements IActionController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <ExpeditionReportDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <ExpeditionReportDto[]>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -235,7 +231,7 @@ export class ActionController implements IActionController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ExpeditionReportDto>(<any>null);
+        return _observableOf<ExpeditionReportDto[]>(<any>null);
     }
 }
 

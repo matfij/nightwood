@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Observable, of, zip } from "rxjs";
-import { switchMap, map } from "rxjs/operators";
-import { ActionController, DragonController, ExpeditionReportDto, GetDragonDto, PageDragonDto } from "src/app/client/api";
+import { TranslateService } from "@ngx-translate/core";
+import { Observable } from "rxjs";
+import { map, tap } from "rxjs/operators";
+import { ActionController, ExpeditionReportDto } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
-import { RepositoryService } from "src/app/common/services/repository.service";
-import { StoreService } from "src/app/common/services/store.service";
+import { EXPEDITION_REPORTS, StoreService } from "src/app/common/services/store.service";
+import { ToastService } from "src/app/common/services/toast.service";
 import { DisplayExpeditionReport, DisplayExpeditionLoot } from "../definitions/expeditions";
 
 @Injectable({
@@ -13,40 +14,43 @@ import { DisplayExpeditionReport, DisplayExpeditionLoot } from "../definitions/e
 export class EngineService {
 
   constructor(
+    private translateService: TranslateService,
     private actionController: ActionController,
-    private dragonController: DragonController,
     private dateService: DateService,
-    private repositoryService: RepositoryService,
     private storeService: StoreService,
+    private toastService: ToastService,
   ) {}
 
   getExpeditionReports(): Observable<DisplayExpeditionReport[]> {
-    const dto: GetDragonDto = {
-      ownerId: this.repositoryService.getUserData().id,
-    };
-    return this.dragonController.getAll(dto).pipe(
-      switchMap((page: PageDragonDto) => {
-        const reports$: Observable<ExpeditionReportDto>[] = [];
-        page.data.forEach(dragon => {
-          if (this.dateService.checkIfEventAvailable(dragon.action.nextAction) && !dragon.action.awardCollected) {
-            reports$.push(this.actionController.endExpedition(dragon));
-          }
-        });
-        if (reports$.length > 0) return zip(...reports$);
-        else return of([]);
-      }),
-      map(reports => reports.map(x => this.mapExpeditionReport(x)))
+    return this.actionController.checkExpeditions().pipe(
+      map(reports => this.mapExpeditionReport(reports)),
+      tap(reports => this.saveExpeditionReports(reports))
     );
   }
 
-  mapExpeditionReport(report: ExpeditionReportDto): DisplayExpeditionReport {
-    const loots: DisplayExpeditionLoot[] = report.loots.map(x => { return { name: x.name, quantity: x.quantity! } });
-    const displayReport: DisplayExpeditionReport = {
-      generationDate: this.dateService.date,
-      dragonName: report.dragonName,
-      expeditionName: report.expeditionName,
-      loots: loots,
-    };
-    return displayReport;
+  mapExpeditionReport(reports: ExpeditionReportDto[]): DisplayExpeditionReport[] {
+    return reports.map(report => {
+      const loots: DisplayExpeditionLoot[] = report.loots.map(x => {
+        return { name: x.name, quantity: x.quantity! }
+      });
+      const displayReport: DisplayExpeditionReport = {
+        generationDate: this.dateService.date,
+        dragonName: report.dragonName,
+        expeditionName: report.expeditionName,
+        loots: loots,
+      };
+      return displayReport;
+    });
+  }
+
+  saveExpeditionReports(reports: DisplayExpeditionReport[]): void {
+    if (reports.length) {
+      this.storeService.setComplexItem(EXPEDITION_REPORTS, reports);
+
+      reports.forEach(report => {
+        const message = this.translateService.instant('explore.dragonFinishedExpedition', { dragon: report.dragonName });
+        this.toastService.showSuccess('common.information', message);
+      });
+    }
   }
 }

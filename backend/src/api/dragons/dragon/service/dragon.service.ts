@@ -60,6 +60,16 @@ export class DragonService {
         return savedDragon;
     }
 
+    async getOwnedDragons(ownerId: number): Promise<DragonDto[]> {
+        const dragons = this.dragonRepository
+            .createQueryBuilder('dragon')
+            .leftJoinAndSelect('dragon.action', 'action')
+            .where('dragon.ownerId = :ownerId')
+            .setParameters({ ownerId: ownerId })
+            .getMany()
+        return await dragons;
+    }
+
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.dragonRepository.findOne(dragonId, { relations: GET_ALL_RELATIONS });
 

@@ -39,10 +39,10 @@ export class ActionController {
       return this.actionEventService.startExpedition(req.user, dto);
     }
 
-    @Post('endExpedition')
-    @ApiOkResponse({ type: ExpeditionReportDto })
-    endExpedition(@Request() req: AuthorizedRequest, @Body() dto: DragonDto): Promise<ExpeditionReportDto> {
-      return this.actionEventService.endExpedition(req.user, dto);
+    @Post('checkExpeditions')
+    @ApiOkResponse({ type: [ExpeditionReportDto] })
+    checkExpeditions(@Request() req: AuthorizedRequest): Promise<ExpeditionReportDto[]> {
+      return this.actionEventService.checkExpeditions(req.user);
     }
 
 }

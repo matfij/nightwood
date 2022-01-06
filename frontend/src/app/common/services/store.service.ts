@@ -20,6 +20,16 @@ export class StoreService {
     localStorage.setItem(this.keyPrefix + key, item);
   }
 
+  public getComplexItem<T>(key: string): T {
+    const stringItem = localStorage.getItem(this.keyPrefix + key) || '{}';
+    return JSON.parse(stringItem);
+  }
+
+  public setComplexItem<T>(key: string, item: T) {
+    const stringItem = JSON.stringify(item);
+    localStorage.setItem(this.keyPrefix + key, stringItem);
+  }
+
   public removeItem(key: string) {
     localStorage.removeItem(this.keyPrefix + key);
   }

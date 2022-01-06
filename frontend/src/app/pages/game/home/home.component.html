@@ -3,12 +3,31 @@
 
   <div class="wrapper-content">
 
-    <!-- TODO - report component -->
-    <div *ngFor="let report of reports">
-      {{ report.dragonName }} has finished exploring {{ report.expeditionName }}
-      Obtained items:
-      <div *ngFor="let loot of report.loots" class="loot">
-        {{ loot.name}} x ({{ loot.quantity }})
+    <div class="wrapper-news">
+      <div class="title">{{ 'game.recentChanges' | translate }}</div>
+
+      <div class="news">
+        <img src="assets/img/news/dragon.png" alt="dragon">
+        <p><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</b></p>
+        Quisque viverra tortor eu felis molestie consequat. Vivamus vulputate, eros vitae tristique volutpat, quam odio rutrum dui, vitae vulputate nisl mauris at tortor. Cras euismod id tellus sit amet efficitur. Sed ac est sit amet eros aliquet vestibulum ac nec tortor. Maecenas sollicitudin pharetra varius. In consequat pellentesque est, non auctor metus malesuada in. Morbi arcu nisi, consequat non elit ullamcorper, dictum accumsan nibh. Donec mauris lectus, sollicitudin vitae interdum id, condimentum quis ex. Nulla venenatis tristique egestas. Maecenas sodales pretium lacus, ut ornare orci efficitur quis.
+      </div>
+    </div>
+
+    <div class="wrapper-reports">
+      <div class="title">{{ 'explore.expeditionReports' | translate }}</div>
+      <div *ngIf="reportsLoading" class="mt-5">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+      <div *ngFor="let report of reports" class="report">
+        {{ report.generationDate | date:"HH:mm dd.MM.yyyy" }}
+        <div
+          [innerHtml]="'explore.expeditionReportDescription' | translate:{ dragon: report.dragonName, expedition: report.expeditionName}">
+        </div>
+        <ul>
+          <li *ngFor="let loot of report.loots" class="loot">
+            {{ loot.name}} ({{ loot.quantity }})
+          </li>
+        </ul>
       </div>
     </div>
 

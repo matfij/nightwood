@@ -25,13 +25,16 @@ export class ActionEventService {
         return action;
     }
 
-    async endExpedition(user: UserDto, dto: DragonDto): Promise<ExpeditionReportDto> {
-        const dragon = await this.dragonService.checkDragon(user.id, dto.id);
+    async checkExpeditions(user: UserDto): Promise<ExpeditionReportDto[]> {
+        const dragons = await this.dragonService.getOwnedDragons(user.id);
 
-        const expedition = await this.dragonActionService.checkExpedition(dragon);
+        const results = await Promise.all(dragons.map(async (dragon) => {
+            const expedition = await this.dragonActionService.checkExpedition(dragon);
+            if (expedition) {
+                return await this.itemService.awardExpeditionItems(user, dragon, expedition);
+            }
+        }));
         
-        const result = this.itemService.awardExpeditionItems(user, dragon, expedition);
-
-        return result;
+        return results.filter(result => result != null);
     }
 }

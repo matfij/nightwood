@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, zip } from 'rxjs';
-import { zipAll } from 'rxjs/operators';
-import { ActionController, DragonController, GetDragonDto, GetUserDto, PageDragonDto, UserController, UserDto, ExpeditionReportDto } from 'src/app/client/api';
+import { ActionController, DragonController, GetUserDto, UserController, UserDto } from 'src/app/client/api';
 import { DateService } from 'src/app/common/services/date.service';
 import { RepositoryService } from 'src/app/common/services/repository.service';
-import { StoreService } from 'src/app/common/services/store.service';
-import { DisplayExpeditionLoot, DisplayExpeditionReport } from 'src/app/core/definitions/expeditions';
-import { DragonService } from 'src/app/core/services/dragons.service';
+import { EXPEDITION_REPORTS, StoreService } from 'src/app/common/services/store.service';
+import { DisplayExpeditionReport } from 'src/app/core/definitions/expeditions';
 import { EngineService } from 'src/app/core/services/engine.service';
-import { DisplayExpedition } from '../expeditions/expeditions.component';
 
 @Component({
   selector: 'app-home',
@@ -23,13 +19,8 @@ export class HomeComponent implements OnInit {
   reportsLoading!: boolean;
 
   constructor(
-    private actionController: ActionController,
-    private dragonController: DragonController,
     private userController: UserController,
-    private dateService: DateService,
-    private repositoryService: RepositoryService,
     private storeService: StoreService,
-    private engineService: EngineService,
   ) {}
 
   ngOnInit(): void {
@@ -48,13 +39,8 @@ export class HomeComponent implements OnInit {
   }
 
   checkExpeditionsFinished() {
-    this.reportsLoading = true;
-    this.engineService.getExpeditionReports().subscribe(reports => {
-      this.reportsLoading = false;
-      this.reports = reports;
-    }, () => this.reportsLoading = false);
+    const savedReports = this.storeService.getComplexItem<DisplayExpeditionReport[]>(EXPEDITION_REPORTS);
+    if (savedReports && savedReports.length > 0) this.reports = savedReports;
   }
-
-
 
 }

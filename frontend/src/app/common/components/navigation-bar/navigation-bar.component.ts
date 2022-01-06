@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserDto } from 'src/app/client/api';
+import { EngineService } from 'src/app/core/services/engine.service';
 import { NavigationItem } from '../../definitions/navigaion';
 import { RepositoryService } from '../../services/repository.service';
 
@@ -26,7 +27,8 @@ export class NavigationBarComponent {
 
   constructor(
     private router: Router,
-    private repositoryService: RepositoryService
+    private repositoryService: RepositoryService,
+    private engineService: EngineService,
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +38,8 @@ export class NavigationBarComponent {
   }
 
   navigate(path: string) {
+    this.engineService.getExpeditionReports().subscribe();
+
     this.router.navigate(['game', path]);
   }
 
