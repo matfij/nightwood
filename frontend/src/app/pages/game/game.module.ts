@@ -7,6 +7,7 @@ import { AdoptDragonComponent } from './adopt-dragon/adopt-dragon.component';
 import { MyDragonsComponent } from './my-dragons/my-dragons.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { ExpeditionsComponent } from './expeditions/expeditions.component';
+import { ArenaComponent } from './arena/arena.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { ExpeditionsComponent } from './expeditions/expeditions.component';
     MyDragonsComponent,
     InventoryComponent,
     ExpeditionsComponent,
+    ArenaComponent,
   ],
   imports: [
     CommonModule,
