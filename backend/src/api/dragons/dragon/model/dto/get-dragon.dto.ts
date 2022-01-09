@@ -6,7 +6,12 @@ export class GetDragonDto {
     @IsNumber()
     @IsOptional()
     @ApiPropertyOptional()
-    ownerId?: number;
+    minLevel?: number;
+
+    @IsNumber()
+    @IsOptional()
+    @ApiPropertyOptional()
+    maxLevel?: number;
 
     @IsNumber()
     @IsOptional()

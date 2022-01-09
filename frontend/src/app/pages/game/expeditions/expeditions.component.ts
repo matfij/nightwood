@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionController, DragonActionController, DragonController, DragonDto, ExpeditionDto, GetDragonDto, StartExpeditionDto } from 'src/app/client/api';
-import { RepositoryService } from 'src/app/common/services/repository.service';
+import { ActionController, DragonActionController, DragonController, DragonDto, ExpeditionDto, StartExpeditionDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
@@ -29,7 +28,6 @@ export class ExpeditionsComponent implements OnInit {
     private actionController: ActionController,
     private dragonController: DragonController,
     private dragonActionController: DragonActionController,
-    private repositoryService: RepositoryService,
     private toastService: ToastService,
   ) {}
 
@@ -39,30 +37,27 @@ export class ExpeditionsComponent implements OnInit {
     this.ownedDragons = [];
     this.showDragonChoiceModal = false;
     this.getExpeditions();
-    this.getDragons();
+    this.getOwnedDragons();
   }
 
   getExpeditions() {
     this.expeditionsLoading = true;
-    this.dragonActionController.getExpeditions().subscribe(x => {
+    this.dragonActionController.getExpeditions().subscribe(expeditionsPage => {
       this.expeditionsLoading = false;
-      this.expeditions = x.data.map(y => {
+      this.expeditions = expeditionsPage.data.map(expedition => {
         return {
-          ...y,
-          name: `${this.BASE_NAME_PATH}.${y.name}`,
-          hint: `${this.BASE_NAME_PATH}.${y.name}Hint`,
-          image: `${this.BASE_IMG_PATH}/${y.name}.png`
+          ...expedition,
+          name: `${this.BASE_NAME_PATH}.${expedition.name}`,
+          hint: `${this.BASE_NAME_PATH}.${expedition.name}Hint`,
+          image: `${this.BASE_IMG_PATH}/${expedition.name}.png`
         }
       });
     }, () => this.expeditionsLoading = false);
   }
 
-  getDragons() {
-    const dto: GetDragonDto = {
-      ownerId: this.repositoryService.getUserData().id,
-    };
-    this.dragonController.getAll(dto).subscribe(x => {
-      this.ownedDragons = x.data;
+  getOwnedDragons() {
+    this.dragonController.getOwned().subscribe(dragons => {
+      this.ownedDragons = dragons;
     })
   }
 
@@ -89,10 +84,10 @@ export class ExpeditionsComponent implements OnInit {
       expeditionId: expedition.id,
     };
     this.expeditionsLoading = true;
-    this.actionController.startExpedition(dto).subscribe(x => {
+    this.actionController.startExpedition(dto).subscribe(() => {
       this.expeditionsLoading = false;
       this.toastService.showSuccess('explore.expeditionStarted', 'explore.expeditionStartedHint');
-      this.getDragons();
+      this.getOwnedDragons();
     }, () => this.expeditionsLoading = false);
   }
 }

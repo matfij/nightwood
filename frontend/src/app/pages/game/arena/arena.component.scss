@@ -1,0 +1,84 @@
+@import '../../../core/theme/variables.scss';
+
+.wrapper-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+
+.wrapper-dragons-owned {
+  margin: 10px auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-dragon-owned {
+  height: 80px;
+  width: 240px;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  img {
+    width: 100px;
+    height: auto !important;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: darken($color: $app-dark, $amount: 5);
+  }
+}
+
+.item-selected {
+  box-shadow: inset 1px 1px 12px 1px $app-primary;
+  background-color: transparentize($color: $app-primary, $amount: 0.95);
+}
+
+.wrapper-dragons {
+  max-width: 400px;
+  margin: 10px auto;
+
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-dragon {
+  height: 30px;
+
+  display: grid;
+  grid-template-columns: 160px 100px 95px;
+  align-self: center;
+  text-align: left;
+  border-bottom: 1px solid $app-light;
+  padding: 0px 10px;
+
+  &:first-child {
+    border-bottom: 2px solid $app-light;
+  }
+
+  &:last-child {
+    border: none;
+  }
+}
+
+.item-dragon-info {
+  height: 36px;
+
+  font-size: 20px;
+}
+
+.btn-battle {
+  height: 24px;
+  margin: 0px;
+
+  text-align: center;
+}

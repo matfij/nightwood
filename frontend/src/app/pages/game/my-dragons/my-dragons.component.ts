@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DragonController, DragonDto, GetDragonDto } from 'src/app/client/api';
-import { RepositoryService } from 'src/app/common/services/repository.service';
+import { DragonController, DragonDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-my-dragons',
@@ -16,7 +15,6 @@ export class MyDragonsComponent implements OnInit {
   constructor(
     private router: Router,
     private dragonController: DragonController,
-    private repositoryService: RepositoryService,
   ) {}
 
   ngOnInit(): void {
@@ -26,14 +24,11 @@ export class MyDragonsComponent implements OnInit {
   }
 
   getOwnedDragons(): void {
-    const params: GetDragonDto = {
-      ownerId: this.repositoryService.getUserData().id,
-    };
     this.dragonsLoading = true;
-    this.dragonController.getAll(params).subscribe(x => {
+    this.dragonController.getOwned().subscribe(dragons => {
       this.dragonsLoading = false;
 
-      this.ownedDragons = x.data;
+      this.ownedDragons = dragons;
     }, () => this.dragonsLoading = false)
   }
 

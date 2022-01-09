@@ -105,6 +105,13 @@
     "actionExpedition": "Expedition",
     "actionTraining": "Training"
   },
+  "arena": {
+    "dragon": "Dragon",
+    "nature": "Nature",
+    "action": "Action",
+    "battle": "Battle",
+    "selectDragon": "Select dragon"
+  },
   "inventory": {
     "type": "Type",
     "level": "Required level",

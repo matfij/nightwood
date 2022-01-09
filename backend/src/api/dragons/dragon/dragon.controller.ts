@@ -1,11 +1,14 @@
-import { Body, Controller, Get, Param, Post, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, UseInterceptors, Request } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
+import { AuthorizedRequest } from "src/common/definitions/requests";
 import { PaginationInterceptor } from "src/common/interceptors/pagination.interceptor";
+import { BattleResultDto } from "./model/dto/battle-result.dto";
 import { CreateDragonDto } from "./model/dto/create-dragon.dto";
 import { DragonDto } from "./model/dto/dragon.dto";
 import { GetDragonDto } from "./model/dto/get-dragon.dto";
 import { PageDragonDto } from "./model/dto/page-dragon.dto";
+import { StartBattleDto } from "./model/dto/start-battle.dto";
 import { DragonService } from "./service/dragon.service";
 
 @Controller('dragon')
@@ -34,5 +37,19 @@ export class DragonController {
     @ApiOkResponse({ type: PageDragonDto })
     getAll(@Body() dto: GetDragonDto): Promise<PageDragonDto> {
         return this.dragonService.getAll(dto);
+    }
+
+    @Post('getOwned')
+    @UseInterceptors(PaginationInterceptor)
+    @ApiOkResponse({ type: [DragonDto] })
+    getOwned(@Request() req: AuthorizedRequest): Promise<DragonDto[]> {
+        return this.dragonService.getOwnedDragons(req.user.id!);
+    }
+
+    @Post('startBattle')
+    @UseInterceptors(PaginationInterceptor)
+    @ApiOkResponse({ type: BattleResultDto })
+    startBattle(@Request() req: AuthorizedRequest, @Body() dto: StartBattleDto): Promise<BattleResultDto> {
+        return this.dragonService.startBattle(req.user.id!, dto);
     }
 }

@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'inventory', component: InventoryComponent },
   { path: 'expeditions', component: ExpeditionsComponent },
   { path: 'arena', component: ArenaComponent },
+  { path: 'arena/:id', component: ArenaComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 

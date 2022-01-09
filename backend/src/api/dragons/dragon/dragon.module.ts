@@ -6,6 +6,7 @@ import { DragonActionModule } from '../dragon-action/dragon-action.module';
 import { DragonController } from './dragon.controller';
 import { Dragon } from './model/dragon.entity';
 import { DragonService } from './service/dragon.service';
+import { DragonBattleService } from './service/dragon-battle.service';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { DragonService } from './service/dragon.service';
   ],
   providers: [
     DragonService,
+    DragonBattleService,
     ErrorService,
     DateService,
   ],

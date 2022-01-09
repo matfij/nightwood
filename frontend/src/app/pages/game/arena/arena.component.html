@@ -3,13 +3,47 @@
 
   <div class="wrapper-content">
 
-    <div *ngIf="dragonsLoading" class="mt-5">
+    <div *ngIf="ownedDragonsLoading" class="mt-5">
       <app-loading-indicator></app-loading-indicator>
     </div>
+    <div *ngIf="!ownedDragonsLoading" class="wrapper-dragons-owned">
+      <div *ngIf="!ownedDragonsLoading && !ownedDragons.length" class="wrapper-adopt">
+        <div class="item-dragon-info">
+          {{ 'dragon.noOwnedDragons' | translate }}
+        </div>
+        <button (click)="navigateAdopt()" class="btn-base btn-adopt mt-4">
+          {{ 'dragon.adoptFirstDragon' | translate }}
+        </button>
+      </div>
 
-    <div *ngIf="!dragonsLoading" class="wrapper-dragons">
-      <div *ngFor="let dragon of enemyDragons">
-        {{ dragon.name }}
+      <div *ngIf="ownedDragons.length" class="item-dragon-info">
+        {{ 'arena.selectDragon' | translate }}
+      </div>
+      <div
+        *ngFor="let dragon of ownedDragons; index as ind"
+        [ngClass]="{'item-selected': dragon.id === selectedDragonId}"
+        (click)="selectedDragonId = dragon.id"
+        class="item-dragon-owned">
+          <img [src]="dragon.image" [alt]="dragon.name">
+          {{ dragon.name }} [{{ dragon.level }}]
+      </div>
+    </div>
+
+    <div *ngIf="enemyDragonsLoading" class="mt-5">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+    <div *ngIf="!enemyDragonsLoading" class="wrapper-dragons">
+      <div class="item-dragon item-dragon-info">
+        <div>{{ 'arena.dragon' | translate }}</div>
+        <div>{{ 'arena.nature' | translate }}</div>
+        <div>{{ 'arena.action' | translate }}</div>
+      </div>
+      <div *ngFor="let dragon of enemyDragons" class="item-dragon">
+        <div>{{ dragon.name }} [{{ dragon.level }}]</div>
+        <div>{{ dragon.nature }}</div>
+        <button (click)="startBattle(dragon.id)" [disabled]="!selectedDragonId" class="btn-base btn-battle">
+          {{ 'arena.battle' | translate }}
+        </button>
       </div>
     </div>
 

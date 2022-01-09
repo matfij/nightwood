@@ -79,13 +79,11 @@ export class DragonPreviewComponent implements OnInit {
   }
 
   navigateExplore() {
-    // todo - select current dragon
     this.router.navigate(['game', 'expeditions']);
   }
 
-  navigateArena() {
-    // todo - select current dragon
-    this.router.navigate(['game', 'arena']);
+  navigateArena(dragonId: number) {
+    this.router.navigate(['game', 'arena', dragonId]);
   }
 
 }

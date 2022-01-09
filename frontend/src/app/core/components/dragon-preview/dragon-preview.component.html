@@ -51,7 +51,7 @@
     <button (click)="navigateExplore()" class="btn-base action">
       {{ 'dragon.explore' | translate }}
     </button>
-    <button (click)="navigateArena()" class="btn-base action">
+    <button (click)="navigateArena(dragon.id)" class="btn-base action">
       {{ 'dragon.battle' | translate }}
     </button>
   </div>

@@ -14,6 +14,9 @@ import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
 import { CreateDragonDto } from '../model/dto/create-dragon.dto';
 import { ErrorService } from 'src/common/services/error.service';
+import { StartBattleDto } from '../model/dto/start-battle.dto';
+import { BattleResultDto } from '../model/dto/battle-result.dto';
+import { DragonBattleService } from './dragon-battle.service';
 
 @Injectable()
 export class DragonService {
@@ -21,6 +24,7 @@ export class DragonService {
     constructor(
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
+        private dragonBattleService: DragonBattleService,
         private dragonActionService: DragonActionService,
         private errorService: ErrorService,
         private dateService: DateService,
@@ -34,20 +38,30 @@ export class DragonService {
         return savedDragon;
     }
 
-    async getOne(id: string): Promise<DragonDto> {
+    async getOne(id: string | number): Promise<DragonDto> {
         return this.dragonRepository.findOne(id, { relations: GET_ONE_RELATIONS });
     }
 
     async getAll(dto: GetDragonDto): Promise<PageDragonDto> {
-        const page = await paginate<DragonDto>(
-            this.dragonRepository, 
-            { page: dto.page, limit: dto.limit }, 
-            { relations: GET_ALL_RELATIONS },
-        );
+        dto.page = dto.page ?? 0;
+        dto.limit = dto.limit ?? 20;
+        dto.minLevel = dto.minLevel ?? 0;
+        dto.maxLevel = dto.maxLevel ?? 999;
+
+        const dragons = await this.dragonRepository
+            .createQueryBuilder('dragon')
+            .where('dragon.level >= :minLevel')
+            .andWhere('dragon.level <= :maxLevel')
+            .setParameters({ minLevel: dto.minLevel, maxLevel: dto.maxLevel })
+            .orderBy('level')
+            .skip(dto.page * dto.limit)
+            .take(dto.limit)
+            .getMany();
+
 
         const dragonPage: PageDragonDto = {
-            data: page.items.filter(x => x.ownerId === dto.ownerId),
-            meta: page.meta,
+            data: dragons,
+            meta: { totalItems: dragons.length },
         };
         return dragonPage;
     }
@@ -61,13 +75,14 @@ export class DragonService {
     }
 
     async getOwnedDragons(ownerId: number): Promise<DragonDto[]> {
-        const dragons = this.dragonRepository
+        const dragons = await this.dragonRepository
             .createQueryBuilder('dragon')
             .leftJoinAndSelect('dragon.action', 'action')
             .where('dragon.ownerId = :ownerId')
             .setParameters({ ownerId: ownerId })
-            .getMany()
-        return await dragons;
+            .getMany();
+
+        return dragons;
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
@@ -116,6 +131,24 @@ export class DragonService {
         if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) this.errorService.throw('errors.dragonBusy');
 
         return dragon;
+    }
+
+    async startBattle(ownerId: number, dto: StartBattleDto): Promise<BattleResultDto> {
+        if (dto.ownedDragonId === dto.enemyDragonId) this.errorService.throw('errors.battleItself');
+
+        const ownedDragon = await this.checkIfEventAvailable(ownerId, dto.ownedDragonId);
+        ownedDragon.action = null;
+        const enemyDragon = await this.getOne(dto.enemyDragonId);
+        enemyDragon.action = null;
+
+        const partialResult = await this.dragonBattleService.executeBattle(ownedDragon, enemyDragon);
+
+        const battleResult: BattleResultDto = {
+            ownedDragon: ownedDragon,
+            enemyDragon: enemyDragon,
+            result: partialResult.result,
+        }
+        return battleResult;
     }
 
 }
