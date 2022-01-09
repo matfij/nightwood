@@ -17,16 +17,24 @@ export class DragonBattleComponent implements OnInit {
   ownedDisplayDragon!: DisplayDragon;
   enemyDisplayDragon!: DisplayDragon;
 
+  battleLoading?: boolean;
+  battleLogs?: string[];
+  battleResult?: string;
+
   constructor(
     private dragonController: DragonController,
     private dragonService: DragonService,
   ) {}
 
   ngOnInit(): void {
+    this.battleLoading = false;
+
     if (!this.ownedDragon || !this.enemyDragon) { this.closeModal(); return; }
 
     this.ownedDisplayDragon = this.dragonService.toDisplayDragon(this.ownedDragon);
-    this.enemyDisplayDragon = this.dragonService.toDisplayDragon(this.ownedDragon);
+    this.enemyDisplayDragon = this.dragonService.toDisplayDragon(this.enemyDragon);
+
+    this.startBattle();
   }
 
   closeModal() {
@@ -40,9 +48,12 @@ export class DragonBattleComponent implements OnInit {
       ownedDragonId: this.ownedDragon.id,
       enemyDragonId: this.enemyDragon.id,
     };
+    this.battleLoading = true;
     this.dragonController.startBattle(dto).subscribe(result => {
-      console.log(result);
-    });
+      this.battleLoading = false;
+      this.battleLogs = result.logs;
+      this.battleResult = result.result;
+    }, () => this.battleLoading = false);
   }
 
 }

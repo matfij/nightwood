@@ -144,8 +144,9 @@ export class DragonService {
         const partialResult = await this.dragonBattleService.executeBattle(ownedDragon, enemyDragon);
 
         const battleResult: BattleResultDto = {
-            ownedDragon: ownedDragon,
-            enemyDragon: enemyDragon,
+            ownedDragon: partialResult.ownedDragon,
+            enemyDragon: partialResult.enemyDragon,
+            logs: partialResult.logs,
             result: partialResult.result,
         }
         return battleResult;

@@ -36,7 +36,7 @@ export class DragonService {
 
     const image = `${this.BASE_IMG_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;
 
-    const currentAction = !this.dateService.checkIfEventAvailable(dragon.action.nextAction)
+    const currentAction = (dragon.action && !this.dateService.checkIfEventAvailable(dragon.action.nextAction))
       ? this.getDragonActionName(dragon.action.type)
       : '---';
 

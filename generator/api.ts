@@ -1222,16 +1222,32 @@ export interface StartBattleDto {
     enemyDragonId: number;
 }
 
-export enum BattleResult {
-    Win = "Win",
-    Draw = "Draw",
-    Lose = "Lose",
+export interface BattleDragon {
+    id: number;
+    name: string;
+    ownerId?: number;
+    action: DragonActionDto;
+    nextFeed: number;
+    nature: DragonNature;
+    level: number;
+    strength: number;
+    dexterity: number;
+    endurance: number;
+    will: number;
+    luck: number;
+    health: number;
+    mana: number;
+    damage: number;
+    armor: number;
+    speed: number;
+    initiative: number;
 }
 
 export interface BattleResultDto {
-    ownedDragon: DragonDto;
-    enemyDragon: DragonDto;
-    result: BattleResult;
+    ownedDragon: BattleDragon;
+    enemyDragon: BattleDragon;
+    logs: string[];
+    result: string;
 }
 
 export interface ExpeditionDto {

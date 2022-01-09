@@ -47,12 +47,12 @@
       </div>
     </div>
 
-    <app-dragon-battle
-      *ngIf="displayBattle"
-      [ownedDragon]="selectedOwnedDragon!"
-      [enemyDragon]="selectedEnemyDragon!"
-      (close)="displayBattle = false">
-    </app-dragon-battle>
-
   </div>
+
+  <app-dragon-battle
+    *ngIf="displayBattle"
+    [ownedDragon]="selectedOwnedDragon!"
+    [enemyDragon]="selectedEnemyDragon!"
+    (close)="displayBattle = false">
+  </app-dragon-battle>
 </div>

@@ -47,10 +47,8 @@
 }
 
 .wrapper-battle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
 .owned {
@@ -60,24 +58,13 @@
   color: $app-red;
 }
 
-.dragon {
-  height: 40px;
-  width: 240px;
-  margin-bottom: 10px;
-
+.wrapper-dragon {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 10px;
 
   img {
-    width: 60px;
-    height: auto !important;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  &:hover {
-    cursor: pointer;
-    background: darken($color: $app-dark, $amount: 5);
+    width: 100%;
+    max-width: 200px;
   }
 }
