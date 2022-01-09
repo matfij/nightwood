@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DragonPreviewComponent } from './components/dragon-preview/dragon-preview.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
 import { DragonChoiceModalComponent } from './components/dragon-choice-modal/dragon-choice-modal.component';
+import { DragonBattleComponent } from './components/dragon-battle/dragon-battle.component';
 
 const COMPONENTS = [
   NavigationBarComponent,
@@ -17,6 +18,7 @@ const COMPONENTS = [
   InputBaseComponent,
   DragonPreviewComponent,
   DragonChoiceModalComponent,
+  DragonBattleComponent,
   ItemDisplayComponent,
 ];
 const MODULES = [

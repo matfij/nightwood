@@ -21,8 +21,8 @@
       </div>
       <div
         *ngFor="let dragon of ownedDragons; index as ind"
-        [ngClass]="{'item-selected': dragon.id === selectedDragonId}"
-        (click)="selectedDragonId = dragon.id"
+        [ngClass]="{'item-selected': dragon.id === selectedOwnedDragon!.id}"
+        (click)="selectedOwnedDragon = dragon"
         class="item-dragon-owned">
           <img [src]="dragon.image" [alt]="dragon.name">
           {{ dragon.name }} [{{ dragon.level }}]
@@ -41,11 +41,18 @@
       <div *ngFor="let dragon of enemyDragons" class="item-dragon">
         <div>{{ dragon.name }} [{{ dragon.level }}]</div>
         <div>{{ dragon.nature }}</div>
-        <button (click)="startBattle(dragon.id)" [disabled]="!selectedDragonId" class="btn-base btn-battle">
+        <button (click)="startBattle(dragon.id)" [disabled]="!selectedOwnedDragon" class="btn-base btn-battle">
           {{ 'arena.battle' | translate }}
         </button>
       </div>
     </div>
+
+    <app-dragon-battle
+      *ngIf="displayBattle"
+      [ownedDragon]="selectedOwnedDragon!"
+      [enemyDragon]="selectedEnemyDragon!"
+      (close)="displayBattle = false">
+    </app-dragon-battle>
 
   </div>
 </div>

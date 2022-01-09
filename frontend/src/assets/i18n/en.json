@@ -5,6 +5,7 @@
     "back": "Back",
     "success": "Success",
     "cancel": "Cancel",
+    "close": "Close",
     "information": "Information"
   },
   "start": {
@@ -48,7 +49,8 @@
     "dragonBusy": "Selected dragon is busy",
     "expeditionNotFound": "Location not found",
     "expeditionNotFinished": "Expedition is not finished",
-    "expeditionAwardCollected": "Awards were already collected"
+    "expeditionAwardCollected": "Awards were already collected",
+    "battleItself": "The dragon cannot fight itself"
   },
   "game": {
     "home": "Home",
@@ -110,7 +112,8 @@
     "nature": "Nature",
     "action": "Action",
     "battle": "Battle",
-    "selectDragon": "Select dragon"
+    "selectDragon": "Select dragon",
+    "vs": "vs"
   },
   "inventory": {
     "type": "Type",

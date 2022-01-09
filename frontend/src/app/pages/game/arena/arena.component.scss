@@ -16,7 +16,7 @@
 
 .item-dragon-owned {
   height: 80px;
-  width: 240px;
+  width: 300px;
   margin-bottom: 10px;
 
   display: flex;
@@ -32,7 +32,8 @@
 
   &:hover {
     cursor: pointer;
-    background: darken($color: $app-dark, $amount: 5);
+    box-shadow: inset 1px 1px 12px 1px darken($color: $app-dark, $amount: 10);
+    background: darken($color: $app-dark, $amount: 3);
   }
 }
 

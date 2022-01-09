@@ -1,0 +1,83 @@
+@import "../../theme/mixins.scss";
+@import "../../theme/variables.scss";
+
+.container-modal {
+  width: 100vw;
+  min-height: 100vh;
+
+  z-index: 100;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: transparentize($color: $app-dark, $amount: 0.04);
+
+  p {
+    width: 95%;
+    max-width: 800px;
+    margin: 12px auto;
+
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .btn-base {
+    margin: 20px auto;
+  }
+
+}
+
+.title {
+  font-size: 20px;
+  text-align: center;
+}
+
+.title-sub {
+  width: 100%;
+  max-width: 400px;
+  margin: 4px auto;
+
+  font-size: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper-battle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.owned {
+  color: $app-green;
+}
+.enemy {
+  color: $app-red;
+}
+
+.dragon {
+  height: 40px;
+  width: 240px;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  img {
+    width: 60px;
+    height: auto !important;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: darken($color: $app-dark, $amount: 5);
+  }
+}

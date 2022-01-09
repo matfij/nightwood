@@ -1,0 +1,22 @@
+<div *ngIf="ownedDragon && enemyDragon" class="container-modal">
+
+  <div class="title">Battle started</div>
+  <div class="title-sub">
+    <div class="owned">{{ ownedDragon.name }}</div>
+    <b>{{ 'arena.vs' | translate }}</b>
+    <div class="enemy">{{ enemyDragon.name }}</div>
+  </div>
+
+  <div class="wrapper-battle">
+    Battle logs ...
+    Battle logs ...
+    Battle logs ...
+
+    <b>Battle result</b>
+  </div>
+
+  <button (click)="closeModal()" class="btn-base">
+    {{ 'common.close' | translate }}
+  </button>
+
+</div>
