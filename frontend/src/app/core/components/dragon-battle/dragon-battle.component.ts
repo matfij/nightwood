@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { DragonController, DragonDto, StartBattleDto } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
@@ -6,7 +6,8 @@ import { DragonService } from '../../services/dragons.service';
 @Component({
   selector: 'app-dragon-battle',
   templateUrl: './dragon-battle.component.html',
-  styleUrls: ['./dragon-battle.component.scss']
+  styleUrls: ['./dragon-battle.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class DragonBattleComponent implements OnInit {
 
