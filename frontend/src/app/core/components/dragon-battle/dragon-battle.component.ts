@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { timer } from 'rxjs';
 import { DragonController, DragonDto, StartBattleDto } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
@@ -7,7 +8,6 @@ import { DragonService } from '../../services/dragons.service';
   selector: 'app-dragon-battle',
   templateUrl: './dragon-battle.component.html',
   styleUrls: ['./dragon-battle.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class DragonBattleComponent implements OnInit {
 
@@ -21,6 +21,8 @@ export class DragonBattleComponent implements OnInit {
   battleLoading?: boolean;
   battleLogs?: string[];
   battleResult?: string;
+
+  @ViewChild('battleLogsWrapper') battleLogsWrapper?: ElementRef;
 
   constructor(
     private dragonController: DragonController,
@@ -54,6 +56,12 @@ export class DragonBattleComponent implements OnInit {
       this.battleLoading = false;
       this.battleLogs = result.logs;
       this.battleResult = result.result;
+
+      timer(0).subscribe(() => {
+        if (this.battleLogsWrapper) {
+          this.battleLogsWrapper.nativeElement.scrollTop = this.battleLogsWrapper.nativeElement.scrollHeight;
+        }
+      });
     }, () => this.battleLoading = false);
   }
 

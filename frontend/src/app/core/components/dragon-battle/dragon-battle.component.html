@@ -16,7 +16,7 @@
     <div *ngIf="battleLoading" class="m-5">
       <app-loading-indicator></app-loading-indicator>
     </div>
-    <div *ngIf="!battleLoading" class="wrapper-logs mt-4">
+    <div *ngIf="!battleLoading" #battleLogsWrapper class="wrapper-logs mt-4">
       <div *ngFor="let log of battleLogs" class="item-log" >
         <div [innerHTML]="log"></div>
       </div>
@@ -24,7 +24,7 @@
       <b [innerHtml]="battleResult"></b>
     </div>
 
-    <div class="wrapper-dragon">
+    <div class="wrapper-dragon dragon-enemy">
       <img [src]="enemyDisplayDragon.image" [alt]="enemyDisplayDragon.name">
       {{ enemyDisplayDragon.name }} [{{ enemyDisplayDragon.level }}]
     </div>

@@ -48,7 +48,12 @@
 
 .wrapper-battle {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.wrapper-logs {
+  max-height: 400px;
+  overflow-y: scroll;
 }
 
 .owned {
@@ -67,5 +72,12 @@
   img {
     width: 100%;
     max-width: 200px;
+  }
+}
+
+@media screen and (max-width: $mobile-threshold) {
+
+  .wrapper-dragon {
+    display: none;
   }
 }

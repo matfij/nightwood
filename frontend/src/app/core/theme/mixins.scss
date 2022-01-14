@@ -36,3 +36,8 @@
     }
   }
 }
+
+@mixin tile($color: $app-primary, $transparency: 0.95) {
+  box-shadow: inset 1px 1px 12px 1px $color;
+  background-color: transparentize($color: $color, $amount: $transparency);
+}

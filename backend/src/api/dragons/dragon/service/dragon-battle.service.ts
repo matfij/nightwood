@@ -69,7 +69,7 @@ export class DragonBattleService {
     }
 
     private performMovement(attacker: BattleDragon, defender: BattleDragon, ownedTurn: boolean): TurnResult {
-        let cssClasses = ownedTurn ? 'item-log owned' : 'item-log enemy';
+        let cssClasses = ownedTurn ? 'item-log log-owned' : 'item-log log-enemy';
 
         defender.initiative += defender.speed;
 
