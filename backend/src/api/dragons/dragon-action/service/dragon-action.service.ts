@@ -30,8 +30,8 @@ export class DragonActionService {
 
   async create() {
     const action: DragonActionDto = { 
-      type: DragonActionType.None, 
-      nextAction: Date.now(), 
+      type: DragonActionType.None,
+      nextAction: Date.now(),
       awardCollected: false,
     };
     const dragonAction = this.dragonActionRepository.create(action);
@@ -67,6 +67,7 @@ export class DragonActionService {
 
   async checkExpedition(dragon: DragonDto): Promise<ExpeditionDto> {
     if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) return null;
+    if (dragon.action.type === DragonActionType.None) return null;
     if (dragon.action.awardCollected) return null;
 
     dragon.action.awardCollected = true;
