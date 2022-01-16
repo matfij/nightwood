@@ -1,9 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
 import { ExpeditionReportDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
 import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/start-expedition.dto";
 import { DragonActionService } from "src/api/dragons/dragon-action/service/dragon-action.service";
-import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
 import { UserDto } from "../../user/model/dto/user.dto";
@@ -31,7 +30,15 @@ export class ActionEventService {
         const results = await Promise.all(dragons.map(async (dragon) => {
             const expedition = await this.dragonActionService.checkExpedition(dragon);
             if (expedition) {
-                return await this.itemService.awardExpeditionItems(user, dragon, expedition);
+                const gainedExperience = await this.dragonService.awardExpeditionExperience(dragon, expedition);
+                const loots = await this.itemService.awardExpeditionItems(user, dragon, expedition);
+
+                return {
+                    dragonName: dragon.name,
+                    expeditionName: expedition.name,
+                    gainedExperience: gainedExperience,
+                    loots: loots,
+                };
             }
         }));
         

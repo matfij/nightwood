@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { randomInt } from 'crypto';
 import { DateService } from 'src/common/services/date.service';
 import { ErrorService } from 'src/common/services/error.service';
+import { MathService } from 'src/common/services/math.service';
 import { Repository } from 'typeorm';
 import { DragonDto } from '../../dragon/model/dto/dragon.dto';
 import { CARRANGA_SANDS, HARNA_PEAKS, ANDREW_FOREST } from '../model/data/expeditions';
@@ -26,6 +27,7 @@ export class DragonActionService {
     private dragonActionRepository: Repository<DragonAction>,
     private errorService: ErrorService,
     private dateService: DateService,
+    private mathService: MathService,
   ) {}
 
   async create() {
@@ -54,7 +56,7 @@ export class DragonActionService {
     const expedition = this.EXPEDITIONS.find(x => x.id === expeditionId);
     if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
-    if (expedition.level > dragon.level) this.errorService.throw('dragonTooYoung');
+    if (expedition.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
 
     dragon.action.nextAction = Date.now() + expedition.minimumActionTime - randomInt(30 * 60 * 1000);
     dragon.action.type = DragonActionType.Expedition;
@@ -73,7 +75,8 @@ export class DragonActionService {
     dragon.action.awardCollected = true;
     await this.dragonActionRepository.save(dragon.action);
 
-    return ANDREW_FOREST;
+    const expedition = this.EXPEDITIONS.find(x => x.id === dragon.action.expeditionId);
+    return expedition;
   }
 
 }

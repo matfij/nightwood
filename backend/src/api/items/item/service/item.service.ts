@@ -70,7 +70,7 @@ export class ItemService {
         await this.itemRepository.save([...items, ...newItems]);
     }
 
-    async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ExpeditionReportDto> {
+    async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ItemDto[]> {
         const loots: ItemDto[] = [];
         expedition.loots.forEach(loot => {
             const presence = Math.random() + (dragon.luck / (2*dragon.level + 10)) > 0.5;
@@ -82,11 +82,6 @@ export class ItemService {
 
         await this.updateInventory(user, loots);
 
-        const results: ExpeditionReportDto = {
-            dragonName: dragon.name,
-            expeditionName: expedition.name,
-            loots: loots,
-        }
-        return results;
+        return loots;
     }
 }

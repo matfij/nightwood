@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { MathService } from "src/common/services/math.service";
+import { Repository } from "typeorm";
 import { BattleDragon, TurnResult } from "../model/definitions/dragon-battle";
+import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
 
@@ -14,7 +17,9 @@ export class DragonBattleService {
     private readonly BASE_SPEED = 10;
 
     constructor (
-        private mathService: MathService
+        @InjectRepository(Dragon)
+        private dragonRepository: Repository<Dragon>,
+        private mathService: MathService,
     ) {}
 
     async executeBattle(ownedDragon: DragonDto, enemyDragon: DragonDto): Promise<Partial<BattleResultDto>> {
@@ -40,9 +45,11 @@ export class DragonBattleService {
         }
 
         if (owned.health > enemy.health) {
-            result = `<div class="owned">${owned.name} won, gained ${(1000 * Math.random()).toFixed()} experience.</div>`;
+            owned = await this.saveBattleResults(true, owned, enemy);
+            result = `<div class="owned">${owned.name} won and gained new experience.</div>`;
         } else {
-            result =`<div class="enemy">${enemy.name} won</div>` ;
+            owned = await this.saveBattleResults(false, owned, enemy);
+            result =`<div class="enemy">${enemy.name} won.</div>` ;
         }
 
         return {
@@ -136,5 +143,19 @@ export class DragonBattleService {
             </div>`;
 
         return { attacker: attacker, defender: defender, log: log };
+    }
+
+    private async saveBattleResults(ownedWin: boolean, owned: BattleDragon, enemy: BattleDragon): Promise<BattleDragon> {
+        if (ownedWin) {
+            let gainedExperience = 10 + this.mathService.randRange(0.7, 1.2) * (enemy.level - owned.level);
+            gainedExperience = Math.round(this.mathService.limit(10, gainedExperience, 1000));
+
+            owned.experience += gainedExperience;
+            await this.dragonRepository.update(owned.id, { experience: owned.experience });
+        }
+
+        // todo - reduce dragon stamina
+
+        return owned;
     }
 }

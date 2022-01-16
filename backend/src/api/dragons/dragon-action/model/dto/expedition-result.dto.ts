@@ -9,6 +9,9 @@ export class ExpeditionReportDto {
     @ApiProperty()
     expeditionName: string;
 
+    @ApiProperty()
+    gainedExperience: number;
+
     @ApiProperty({ type: [ItemDto] })
     loots: ItemDto[];
 }

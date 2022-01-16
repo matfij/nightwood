@@ -13,6 +13,9 @@ export class ExpeditionDto {
     @ApiProperty()
     level: number;
 
+    @ApiProperty()
+    experience: number;
+
     @Exclude()
     @ApiProperty({ type: [ItemDto] })
     loots: ItemDto[];

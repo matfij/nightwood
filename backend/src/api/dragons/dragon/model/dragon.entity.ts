@@ -25,6 +25,9 @@ export class Dragon {
     @Column()
     nature: DragonNature;
 
+    @Column({ default: 0 })
+    experience: number;
+
     @Column({ default: DEFAULT_LEVEL})
     level: number;
 

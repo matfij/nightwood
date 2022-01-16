@@ -17,6 +17,8 @@ import { ErrorService } from 'src/common/services/error.service';
 import { StartBattleDto } from '../model/dto/start-battle.dto';
 import { BattleResultDto } from '../model/dto/battle-result.dto';
 import { DragonBattleService } from './dragon-battle.service';
+import { MathService } from 'src/common/services/math.service';
+import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 
 @Injectable()
 export class DragonService {
@@ -28,6 +30,7 @@ export class DragonService {
         private dragonActionService: DragonActionService,
         private errorService: ErrorService,
         private dateService: DateService,
+        private mathService: MathService,
     ) {}
 
     async create(dto: CreateDragonDto): Promise<DragonDto> {
@@ -131,6 +134,14 @@ export class DragonService {
         if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) this.errorService.throw('errors.dragonBusy');
 
         return dragon;
+    }
+
+    async awardExpeditionExperience(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
+        const gainedExperience = Math.round(this.mathService.randRange(0.8, 1.1) * expedition.experience);
+        dragon.experience += gainedExperience;
+    
+        await this.dragonRepository.update(dragon.id, { experience: dragon.experience });
+        return gainedExperience;
     }
 
     async startBattle(ownerId: number, dto: StartBattleDto): Promise<BattleResultDto> {
