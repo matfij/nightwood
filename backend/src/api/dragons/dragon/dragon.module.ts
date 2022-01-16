@@ -7,6 +7,7 @@ import { DragonController } from './dragon.controller';
 import { Dragon } from './model/dragon.entity';
 import { DragonService } from './service/dragon.service';
 import { DragonBattleService } from './service/dragon-battle.service';
+import { MathService } from 'src/common/services/math.service';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DragonBattleService } from './service/dragon-battle.service';
     DragonBattleService,
     ErrorService,
     DateService,
+    MathService,
   ],
   exports: [
     DragonService,

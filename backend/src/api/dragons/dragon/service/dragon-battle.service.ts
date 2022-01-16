@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { MathService } from "src/common/services/math.service";
 import { BattleDragon, TurnResult } from "../model/definitions/dragon-battle";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
@@ -11,6 +12,10 @@ export class DragonBattleService {
     private readonly BASE_DAMAGE = 10;
     private readonly BASE_ARMOR = 5;
     private readonly BASE_SPEED = 10;
+
+    constructor (
+        private mathService: MathService
+    ) {}
 
     async executeBattle(ownedDragon: DragonDto, enemyDragon: DragonDto): Promise<Partial<BattleResultDto>> {
         let owned = this.calculateBattleStats(ownedDragon);
@@ -73,11 +78,53 @@ export class DragonBattleService {
 
         defender.initiative += defender.speed;
 
-        // check if hit
+        /**
+         * Dodge chance
+         */
+        const hitChance = 0.5 + Math.random();
+        let dodgeChance = Math.random() + 0.5 * Math.min(1, (defender.dexterity - 0.5 * attacker.dexterity) / defender.level);
+        dodgeChance = this.mathService.limit(0.6, dodgeChance, 1.1);
 
-        // check if critical
+        if (dodgeChance > hitChance) {
+            const log = `
+                <div class="${cssClasses}">
+                    ${attacker.name} (${attacker.health.toFixed(1)}) 
+                    missess.
+                </div>`;
 
-        const baseHit = attacker.damage - defender.armor;
+            return { attacker: attacker, defender: defender, log: log };
+        }
+
+        /**
+         * Critical chance
+         */
+        const nocritChance = 0.5 + Math.random();
+        let critChance = Math.random() + 0.5 * Math.min(0.5, attacker.luck / attacker.level);
+        critChance = this.mathService.limit(0.6, critChance, 1);
+
+        if (critChance > nocritChance) {
+            const baseHit = 
+                this.mathService.randRange(0.9, 1.2) 
+                * (1.25 + (attacker.strength / attacker.level)) 
+                * attacker.damage - defender.armor;
+            defender.health -= baseHit;
+
+            cssClasses += ' log-crit';
+            const log = `
+                <div class="${cssClasses}">
+                    ${attacker.name} (${attacker.health.toFixed(1)}) 
+                    critically strikes 
+                    ${defender.name} (${defender.health.toFixed(1)}) 
+                    for ${baseHit.toFixed(1)}.
+                </div>`;
+
+            return { attacker: attacker, defender: defender, log: log };
+        }
+
+        /**
+         * Regular hit
+         */
+        const baseHit = this.mathService.randRange(0.9, 1.2) * attacker.damage - defender.armor;
         defender.health -= baseHit;
 
         const log = `
@@ -88,10 +135,6 @@ export class DragonBattleService {
                 for ${baseHit.toFixed(1)}.
             </div>`;
 
-        return {
-            attacker: attacker,
-            defender: defender,
-            log: log,
-        };
+        return { attacker: attacker, defender: defender, log: log };
     }
 }
