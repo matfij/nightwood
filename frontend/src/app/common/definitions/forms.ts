@@ -5,4 +5,6 @@ export interface FormInputOptions {
   key: string;
   label: string;
   type: string;
+
+  hint?: string;
 }

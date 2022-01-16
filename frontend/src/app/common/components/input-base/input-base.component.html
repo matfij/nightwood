@@ -1,6 +1,20 @@
+
+
 <form class="wrapper" [formGroup]="options.form">
-  <div class="label">{{ options.label | translate }}</div>
+  <div class="label">
+    <div *ngIf="options.hint" [ngbTooltip]="tipContent" class="hint">
+      <ng-template #tipContent>
+        <p>{{ options.hint }}</p>
+      </ng-template>
+      <img src="assets/img/icons/info.svg" alt="info" srcset="">
+    </div>
+
+    {{ options.label | translate }}
+  </div>
+
   <input class="input" [type]="options.type" [formControlName]="options.key"><br>
+
   <div *ngIf="field && (field.touched || field.dirty) && !field.valid" class="error">
-    {{ 'errors.incorrectFieldsValue' | translate:{ value: fieldName } }}</div>
+    {{ 'errors.incorrectFieldsValue' | translate:{ value: fieldName } }}
+  </div>
 </form>

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthController, RegisterUserDto } from 'src/app/client/api';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { RepositoryService } from 'src/app/common/services/repository.service';
@@ -12,7 +13,7 @@ import { MIN_NICKNAME_LENGTH, MAX_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH, MAX_PASS
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     email: new FormControl(
@@ -47,10 +48,19 @@ export class RegisterComponent {
 
   constructor(
     private router: Router,
+    private translateService: TranslateService,
     private authController: AuthController,
     private repositoryService: RepositoryService,
     private toastService: ToastService,
   ) {}
+
+  ngOnInit(): void {
+    const nickname = this.fields.filter(field => field.key === 'nickname')[0];
+    const password = this.fields.filter(field => field.key === 'password')[0];
+
+    nickname.hint = this.translateService.instant('start.nicknameHint', { min: MIN_NICKNAME_LENGTH, max: MAX_NICKNAME_LENGTH });
+    password.hint = this.translateService.instant('start.passwordHint', { min: MIN_PASSWORD_LENGTH, max: MAX_PASSWORD_LENGTH });
+  }
 
   private validatePasswords() {
     return this.password.value === this.passwordConfirm.value;

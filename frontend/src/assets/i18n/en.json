@@ -23,7 +23,9 @@
     "loginSuccess": "Login successful",
     "loginSuccessHint": "Welcome back trainer",
     "registerSuccess": "Registration successful",
-    "registerSuccessHint": "Welcome to Nightwood"
+    "registerSuccessHint": "Welcome to Nightwood",
+    "nicknameHint": "Your nickname must be unique and contain between {{ min }} and {{ max }} characters",
+    "passwordHint": "Your password should be strong and contain between {{ min }} and {{ max }} characters"
   },
   "errors": {
     "error": "Error",
