@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { timer } from 'rxjs';
-import { DragonController, DragonDto, StartBattleDto } from 'src/app/client/api';
+import { BattleResultDto, DragonController, DragonDto, StartBattleDto } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 
@@ -13,14 +13,13 @@ export class DragonBattleComponent implements OnInit {
 
   @Input() ownedDragon!: DragonDto;
   @Input() enemyDragon!: DragonDto;
-  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() updatedDragon: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
   ownedDisplayDragon!: DisplayDragon;
   enemyDisplayDragon!: DisplayDragon;
 
   battleLoading?: boolean;
-  battleLogs?: string[];
-  battleResult?: string;
+  battleResult?: BattleResultDto;
 
   @ViewChild('battleLogsWrapper') battleLogsWrapper?: ElementRef;
 
@@ -41,7 +40,7 @@ export class DragonBattleComponent implements OnInit {
   }
 
   closeModal() {
-    this.close.next(true);
+    this.updatedDragon.next(this.battleResult?.ownedDragon);
   }
 
   startBattle() {
@@ -54,8 +53,7 @@ export class DragonBattleComponent implements OnInit {
     this.battleLoading = true;
     this.dragonController.startBattle(dto).subscribe(result => {
       this.battleLoading = false;
-      this.battleLogs = result.logs;
-      this.battleResult = result.result;
+      this.battleResult = result;
 
       timer(0).subscribe(() => {
         if (this.battleLogsWrapper) {

@@ -1071,6 +1071,7 @@ export interface DragonDto {
     nextFeed: number;
     nature: DragonNature;
     level: number;
+    stamina: number;
     experience: number;
     strength: number;
     dexterity: number;
@@ -1232,6 +1233,7 @@ export interface BattleDragon {
     nextFeed: number;
     nature: DragonNature;
     level: number;
+    stamina: number;
     experience: number;
     strength: number;
     dexterity: number;

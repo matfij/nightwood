@@ -1,7 +1,9 @@
 /**
  * Statistics
  */
+export const DEFAULT_STAMINA = 50;
 export const DEFAULT_LEVEL = 1;
+export const DEFAULT_EXPERIENCE = 0;
 export const DEFAULT_ATTRIBUTE_POINTS = 1;
 
 /**

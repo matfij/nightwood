@@ -52,7 +52,8 @@
     "expeditionNotFound": "Location not found",
     "expeditionNotFinished": "Expedition is not finished",
     "expeditionAwardCollected": "Awards were already collected",
-    "battleItself": "The dragon cannot fight itself"
+    "battleItself": "Dragon cannot fight itself",
+    "noStamina": "Selected dragon is too tired"
   },
   "game": {
     "home": "Home",
@@ -86,6 +87,7 @@
     "adopt": "Adopt",
     "adoptSuccess": "You have adopted a new dragon!",
     "nature": "Nature",
+    "stamina": "Stamina",
     "experience": "Experience",
     "strength": "Strength",
     "strengthHint": "Strength has impact on the dragon's physical capabilities",
@@ -105,7 +107,7 @@
     "adoptFirstDragon": "Adopt your first dragon",
     "chooseFoodHint": "The choice of a meal can influence the development of dragon attributes",
     "feedSuccess": "The dragon was fed",
-    "feedSuccessHint": "Some attributes have changed",
+    "feedSuccessHint": "Stamina restored, some attributes have changed",
     "actionNone": "---",
     "actionExpedition": "Expedition",
     "actionTraining": "Training"

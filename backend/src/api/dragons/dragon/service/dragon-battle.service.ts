@@ -45,11 +45,11 @@ export class DragonBattleService {
         }
 
         if (owned.health > enemy.health) {
-            owned = await this.saveBattleResults(true, owned, enemy);
+            owned = await this.saveBattleResults(true, owned, enemy, logs.length);
             const gainedExperience = owned.experience - ownedDragon.experience;
             result = `<div class="owned">${owned.name} won and gained ${gainedExperience} experience.</div>`;
         } else {
-            owned = await this.saveBattleResults(false, owned, enemy);
+            owned = await this.saveBattleResults(false, owned, enemy, logs.length);
             result =`<div class="enemy">${enemy.name} won.</div>` ;
         }
 
@@ -146,17 +146,20 @@ export class DragonBattleService {
         return { attacker: attacker, defender: defender, log: log };
     }
 
-    private async saveBattleResults(ownedWin: boolean, owned: BattleDragon, enemy: BattleDragon): Promise<BattleDragon> {
+    private async saveBattleResults(ownedWin: boolean, owned: BattleDragon, enemy: BattleDragon, battleLength: number): Promise<BattleDragon> {
         if (ownedWin) {
-            let gainedExperience = 10 + this.mathService.randRange(0.7, 1.2) * (enemy.level - owned.level);
+            let gainedExperience = 10 
+                + this.mathService.randRange(0.7, 1.2) * (enemy.level - owned.level)
+                + this.mathService.randRange(0.05, 0.12) * battleLength;
             gainedExperience = Math.round(this.mathService.limit(10, gainedExperience, 1000));
-
+            
             owned.experience += gainedExperience;
-            await this.dragonRepository.update(owned.id, { experience: owned.experience });
         }
-
-        // todo - reduce dragon stamina
-
+        
+        owned.stamina -= 1 + Math.floor(battleLength / 10);
+        if (owned.stamina < 0) owned.stamina = 0;
+        
+        await this.dragonRepository.update(owned.id, { experience: owned.experience, stamina: owned.stamina });
         return owned;
     }
 }

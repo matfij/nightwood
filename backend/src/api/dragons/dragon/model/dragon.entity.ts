@@ -1,4 +1,4 @@
-import { DEFAULT_ATTRIBUTE_POINTS, DEFAULT_LEVEL } from "src/configuration/dragon.config";
+import { DEFAULT_ATTRIBUTE_POINTS, DEFAULT_EXPERIENCE, DEFAULT_LEVEL, DEFAULT_STAMINA } from "src/configuration/dragon.config";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
 import { DragonNature } from "./definitions/dragon-nature";
@@ -25,7 +25,10 @@ export class Dragon {
     @Column()
     nature: DragonNature;
 
-    @Column({ default: 0 })
+    @Column({ default: DEFAULT_STAMINA })
+    stamina: number;
+
+    @Column({ default: DEFAULT_EXPERIENCE })
     experience: number;
 
     @Column({ default: DEFAULT_LEVEL})

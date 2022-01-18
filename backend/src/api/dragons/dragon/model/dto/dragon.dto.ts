@@ -35,6 +35,10 @@ export class DragonDto {
 
     @Expose()
     @ApiProperty()
+    stamina: number;
+
+    @Expose()
+    @ApiProperty()
     experience: number;
 
     @Expose()

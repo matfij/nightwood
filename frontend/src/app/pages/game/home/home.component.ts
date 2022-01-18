@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ActionController, DragonController, GetUserDto, UserController, UserDto } from 'src/app/client/api';
 import { DateService } from 'src/app/common/services/date.service';
 import { RepositoryService } from 'src/app/common/services/repository.service';
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit {
   reportsLoading!: boolean;
 
   constructor(
+    private translateService: TranslateService,
     private userController: UserController,
     private engineService: EngineService,
     private storeService: StoreService,
@@ -44,7 +46,14 @@ export class HomeComponent implements OnInit {
     this.engineService.getExpeditionReports().subscribe(() => {
       this.reportsLoading = false;
       const savedReports = this.storeService.getComplexItem<DisplayExpeditionReport[]>(EXPEDITION_REPORTS);
-      if (savedReports && savedReports.length > 0) this.reports = savedReports;
+      if (savedReports && savedReports.length > 0) {
+        this.reports = savedReports.map(r => {
+          return {
+            ...r,
+            expeditionName: this.translateService.instant(`expeditions.${r.expeditionName!}`),
+          };
+        });
+      }
     }, () => this.reportsLoading = false);
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DragonController, DragonDto, GetDragonDto, StartBattleDto } from 'src/app/client/api';
+import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragon } from 'src/app/core/definitions/dragons';
 import { DragonService } from 'src/app/core/services/dragons.service';
@@ -26,6 +27,7 @@ export class ArenaComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dragonController: DragonController,
+    private dateService: DateService,
     private toastService: ToastService,
     private dragonService: DragonService,
   ) {}
@@ -76,6 +78,8 @@ export class ArenaComponent implements OnInit {
   startBattle(enemyDragonId: number) {
     if (!this.selectedOwnedDragon && !enemyDragonId) return;
     if (this.selectedOwnedDragon!.id === enemyDragonId) { this.toastService.showError('errors.error', 'errors.battleItself'); return; }
+    if (this.selectedOwnedDragon!.stamina < 1) { this.toastService.showError('errors.error', 'errors.noStamina'); return; }
+    if (!this.dateService.checkIfEventAvailable(this.selectedOwnedDragon!.action.nextAction)) { this.toastService.showError('errors.error', 'errors.dragonBusy'); return; }
 
     this.selectedEnemyDragon = this.enemyDragons.find(dragon => dragon.id === enemyDragonId);
     if (!this.selectedEnemyDragon) return;
@@ -83,4 +87,10 @@ export class ArenaComponent implements OnInit {
     this.displayBattle = true;
   }
 
+  handleModalClose(dragon?: DragonDto) {
+    if (dragon && this.selectedOwnedDragon) {
+      this.selectedOwnedDragon.stamina = dragon.stamina;
+    }
+    this.displayBattle = false;
+  }
 }

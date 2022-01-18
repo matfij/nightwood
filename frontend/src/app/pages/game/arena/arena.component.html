@@ -25,7 +25,12 @@
         (click)="selectedOwnedDragon = dragon"
         class="item-dragon-owned">
           <img [src]="dragon.image" [alt]="dragon.name">
-          {{ dragon.name }} [{{ dragon.level }}]
+          <div style="text-align: left;">
+            {{ dragon.name }} [{{ dragon.level }}]
+            <div style="font-size: 14px;">
+              <b>{{ dragon.stamina }}</b> {{ 'dragon.stamina' | translate }}
+            </div>
+          </div>
       </div>
     </div>
 
@@ -53,6 +58,6 @@
     *ngIf="displayBattle"
     [ownedDragon]="selectedOwnedDragon!"
     [enemyDragon]="selectedEnemyDragon!"
-    (close)="displayBattle = false">
+    (updatedDragon)="handleModalClose($event)">
   </app-dragon-battle>
 </div>

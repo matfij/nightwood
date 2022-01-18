@@ -8,7 +8,7 @@ import { DragonDto } from '../model/dto/dragon.dto';
 import { GetDragonDto } from '../model/dto/get-dragon.dto';
 import { PageDragonDto } from '../model/dto/page-dragon.dto';
 import { paginate } from 'nestjs-typeorm-paginate';
-import { FEED_INTERVAL, GET_ALL_RELATIONS, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
+import { DEFAULT_STAMINA, FEED_INTERVAL, GET_ALL_RELATIONS, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
 import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
@@ -124,6 +124,8 @@ export class DragonService {
         dragon.level += 1;
         dragon.nextFeed = Date.now() + FEED_INTERVAL;
 
+        dragon.stamina = DEFAULT_STAMINA;
+
         const fedDragon = await this.dragonRepository.save(dragon);
         return fedDragon;
     }
@@ -149,6 +151,8 @@ export class DragonService {
 
         const ownedDragon = await this.checkIfEventAvailable(ownerId, dto.ownedDragonId);
         ownedDragon.action = null;
+        if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
+
         const enemyDragon = await this.getOne(dto.enemyDragonId);
         enemyDragon.action = null;
 
