@@ -86,6 +86,7 @@
     "adopt": "Adopt",
     "adoptSuccess": "You have adopted a new dragon!",
     "nature": "Nature",
+    "experience": "Experience",
     "strength": "Strength",
     "strengthHint": "Strength has impact on the dragon's physical capabilities",
     "dexterity": "Dexterity",
@@ -140,7 +141,7 @@
     "expeditionStarted": "Expedition started",
     "expeditionStartedHint": "Your dragon will be busy for a while",
     "expeditionReports": "Expedition reports",
-    "expeditionReportDescription": "<b>{{ dragon }}</b> finished exploring the <b>{{ expedition }}</b> and found:",
+    "expeditionReportDescription": "<b>{{ dragon }}</b> finished exploring the <b>{{ expedition }}</b> gained <b>{{ experience }}</b> experience and found:",
     "dragonFinishedExpedition": "{{ dragon }} has just finished expedition."
   },
   "expeditions": {

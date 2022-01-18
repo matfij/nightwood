@@ -38,7 +38,7 @@ export class NavigationBarComponent {
   }
 
   navigate(path: string) {
-    this.engineService.getExpeditionReports().subscribe();
+    if (path !== 'home') this.engineService.getExpeditionReports().subscribe();
 
     this.router.navigate(['game', path]);
   }

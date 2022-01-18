@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 import { AuthController } from 'src/app/client/api';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { MIN_NICKNAME_LENGTH, MAX_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from 'src/app/core/configuration';
+import { EngineService } from 'src/app/core/services/engine.service';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +36,7 @@ export class LoginComponent {
     private router: Router,
     private authController: AuthController,
     private toastService: ToastService,
+    private engineService: EngineService,
     private repositoryService: RepositoryService,
   ) {}
 
@@ -41,14 +44,18 @@ export class LoginComponent {
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
     this.submitLoading = true;
-    this.authController.login(this.form.value).subscribe(x => {
-      this.submitLoading = false;
-      this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
+    this.authController.login(this.form.value)
+      .pipe(switchMap(user => {
+          this.repositoryService.clearUserData();
+          this.repositoryService.setAccessToken(user.accessToken);
+          this.repositoryService.setUserData(user);
 
-      this.repositoryService.setAccessToken(x.accessToken);
-      this.repositoryService.setUserData(x);
-      this.router.navigate(['../game/home']);
-    }, _ => {
+          return this.engineService.getExpeditionReports();
+        })).subscribe(() => {
+          this.submitLoading = false;
+          this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
+          this.router.navigate(['../game/home']);
+    }, () => {
       this.submitLoading = false;
     });
   }

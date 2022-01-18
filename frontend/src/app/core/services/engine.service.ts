@@ -24,11 +24,11 @@ export class EngineService {
   getExpeditionReports(): Observable<DisplayExpeditionReport[]> {
     return this.actionController.checkExpeditions().pipe(
       map(reports => this.mapExpeditionReport(reports)),
-      tap(reports => this.saveExpeditionReports(reports))
+      tap(reports => this.saveExpeditionReports(reports)),
     );
   }
 
-  mapExpeditionReport(reports: ExpeditionReportDto[]): DisplayExpeditionReport[] {
+  private mapExpeditionReport(reports: ExpeditionReportDto[]): DisplayExpeditionReport[] {
     return reports.map(report => {
       const loots: DisplayExpeditionLoot[] = report.loots.map(x => {
         return { name: x.name, quantity: x.quantity! }
@@ -37,13 +37,14 @@ export class EngineService {
         generationDate: this.dateService.date,
         dragonName: report.dragonName,
         expeditionName: report.expeditionName,
+        experience: report.gainedExperience,
         loots: loots,
       };
       return displayReport;
     });
   }
 
-  saveExpeditionReports(reports: DisplayExpeditionReport[]): void {
+  private saveExpeditionReports(reports: DisplayExpeditionReport[]): void {
     if (reports.length) {
       this.storeService.setComplexItem(EXPEDITION_REPORTS, reports);
 

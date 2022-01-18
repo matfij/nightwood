@@ -34,4 +34,8 @@ export class RepositoryService {
     this.storeService.clear();
     this.router.navigate(['start/login']);
   }
+
+  clearUserData() {
+    this.storeService.clear();
+  }
 }

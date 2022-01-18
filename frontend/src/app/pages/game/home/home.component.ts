@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private userController: UserController,
+    private engineService: EngineService,
     private storeService: StoreService,
   ) {}
 
@@ -39,8 +40,12 @@ export class HomeComponent implements OnInit {
   }
 
   checkExpeditionsFinished() {
-    const savedReports = this.storeService.getComplexItem<DisplayExpeditionReport[]>(EXPEDITION_REPORTS);
-    if (savedReports && savedReports.length > 0) this.reports = savedReports;
+    this.reportsLoading = true;
+    this.engineService.getExpeditionReports().subscribe(() => {
+      this.reportsLoading = false;
+      const savedReports = this.storeService.getComplexItem<DisplayExpeditionReport[]>(EXPEDITION_REPORTS);
+      if (savedReports && savedReports.length > 0) this.reports = savedReports;
+    }, () => this.reportsLoading = false);
   }
 
 }

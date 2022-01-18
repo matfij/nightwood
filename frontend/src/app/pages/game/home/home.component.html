@@ -21,7 +21,8 @@
       <div *ngFor="let report of reports" class="report">
         {{ report.generationDate | date:"HH:mm dd.MM.yyyy" }}
         <div
-          [innerHtml]="'explore.expeditionReportDescription' | translate:{ dragon: report.dragonName, expedition: report.expeditionName}">
+          [innerHtml]="'explore.expeditionReportDescription' | translate
+            :{ dragon: report.dragonName, expedition: report.expeditionName, experience: report.experience }">
         </div>
         <ul>
           <li *ngFor="let loot of report.loots" class="loot">

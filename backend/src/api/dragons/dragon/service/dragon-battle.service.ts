@@ -46,7 +46,8 @@ export class DragonBattleService {
 
         if (owned.health > enemy.health) {
             owned = await this.saveBattleResults(true, owned, enemy);
-            result = `<div class="owned">${owned.name} won and gained new experience.</div>`;
+            const gainedExperience = owned.experience - ownedDragon.experience;
+            result = `<div class="owned">${owned.name} won and gained ${gainedExperience} experience.</div>`;
         } else {
             owned = await this.saveBattleResults(false, owned, enemy);
             result =`<div class="enemy">${enemy.name} won.</div>` ;
@@ -89,7 +90,7 @@ export class DragonBattleService {
          * Dodge chance
          */
         const hitChance = 0.5 + Math.random();
-        let dodgeChance = Math.random() + 0.5 * Math.min(1, (defender.dexterity - 0.5 * attacker.dexterity) / defender.level);
+        let dodgeChance = Math.random() + 0.5 * Math.min(1, (defender.dexterity - 0.4 * attacker.dexterity) / (defender.level + 5));
         dodgeChance = this.mathService.limit(0.6, dodgeChance, 1.1);
 
         if (dodgeChance > hitChance) {

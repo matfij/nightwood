@@ -1071,6 +1071,7 @@ export interface DragonDto {
     nextFeed: number;
     nature: DragonNature;
     level: number;
+    experience: number;
     strength: number;
     dexterity: number;
     endurance: number;
@@ -1123,6 +1124,7 @@ export interface ItemDto {
 export interface ExpeditionReportDto {
     dragonName: string;
     expeditionName: string;
+    gainedExperience: number;
     loots: ItemDto[];
 }
 
@@ -1230,6 +1232,7 @@ export interface BattleDragon {
     nextFeed: number;
     nature: DragonNature;
     level: number;
+    experience: number;
     strength: number;
     dexterity: number;
     endurance: number;
@@ -1254,6 +1257,7 @@ export interface ExpeditionDto {
     id: number;
     name: string;
     level: number;
+    experience: number;
     loots: ItemDto[];
     minimumActionTime: number;
 }
