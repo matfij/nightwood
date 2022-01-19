@@ -121,6 +121,7 @@
     "vs": "vs"
   },
   "inventory": {
+    "gold": "Gold",
     "type": "Type",
     "level": "Required level",
     "quantity": "Quantity"

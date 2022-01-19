@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemController, ItemDto } from 'src/app/client/api';
+import { RepositoryService } from 'src/app/common/services/repository.service';
 import { DisplayItem } from 'src/app/core/definitions/items';
 
 @Component({
@@ -9,16 +10,19 @@ import { DisplayItem } from 'src/app/core/definitions/items';
 })
 export class InventoryComponent implements OnInit {
 
-  ownedItems!: DisplayItem[];
-  itemsLoading!: boolean;
+  gold: number = 0;
+  ownedItems: DisplayItem[] = [];
+  itemsLoading: boolean = false;
 
   constructor(
     private itemController: ItemController,
+    private repositoryService: RepositoryService,
   ) {}
 
   ngOnInit(): void {
-    this.itemsLoading = false;
     this.getOwnedItems();
+
+    this.gold = this.repositoryService.getUserData().gold;
   }
 
   getOwnedItems(): void {

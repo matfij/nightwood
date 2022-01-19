@@ -23,6 +23,10 @@ export class AuthUserDto {
     @IsDateString()
     @ApiPropertyOptional({ type: Date })
     expires?: string;
+    
+    @IsNumber()
+    @ApiProperty()
+    gold?: number;
 
     @IsNumber()
     @ApiProperty()

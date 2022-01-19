@@ -2,6 +2,9 @@
   <app-navigation-bar currentLocation="inventory"></app-navigation-bar>
 
   <div class="wrapper-content">
+    <div class="label-gold">
+      {{ 'inventory.gold' | translate }}: {{ gold }}
+    </div>
 
     <div *ngIf="itemsLoading" class="mt-5">
       <app-loading-indicator></app-loading-indicator>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { timer } from 'rxjs';
 import { BattleResultDto, DragonController, DragonDto, StartBattleDto } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';

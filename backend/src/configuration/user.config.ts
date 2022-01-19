@@ -21,4 +21,5 @@ export const DEFAULT_LIMIT = 100;
 /**
  * Gameplay
  */
+export const STARTING_GOLD = 500;
 export const MAX_OWNED_DRAGONS = 3;

@@ -15,6 +15,9 @@ export class UserDto {
     nickname?: string;
 
     @ApiProperty()
+    gold?: number;
+
+    @ApiProperty()
     ownedDragons?: number;
 
     @ApiProperty()

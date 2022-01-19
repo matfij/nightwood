@@ -1140,6 +1140,7 @@ export interface UserDto {
     email: string;
     password?: string;
     nickname: string;
+    gold: number;
     ownedDragons: number;
     maxOwnedDragons: number;
 }
@@ -1183,6 +1184,7 @@ export interface AuthUserDto {
     nickname: string;
     accessToken: string;
     expires?: string;
+    gold: number;
     ownedDragons: number;
     maxOwnedDragons: number;
 }

@@ -2,14 +2,23 @@
 
 
 .wrapper-items {
-  margin: 10px;
+  margin: 10px 1rem;
 
   display: grid;
   gap: 5px;
-  grid-template-columns: repeat(auto-fill, 75px);
+  grid-template-columns: repeat(auto-fit, 75px);
   grid-template-rows: repeat(75px, min);
-  justify-content: center;
+  justify-content: left;
   padding: auto;
+}
+
+.label-gold {
+  margin: 5px 0px 15px 1rem;
+
+  font-size: 18px;
+  text-align: left;
+  letter-spacing: 0.7px;
+  color: lighten($app-primary, 10);
 }
 
 .item {
