@@ -8,5 +8,6 @@ export interface DisplayExpeditionReport {
   dragonName: string;
   expeditionName?: string;
   experience: number;
+  gold: number;
   loots?: DisplayExpeditionLoot[];
 }

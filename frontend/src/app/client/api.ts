@@ -1126,6 +1126,7 @@ export interface ExpeditionReportDto {
     dragonName: string;
     expeditionName: string;
     gainedExperience: number;
+    gainedGold: number;
     loots: ItemDto[];
 }
 
@@ -1261,7 +1262,8 @@ export interface ExpeditionDto {
     id: number;
     name: string;
     level: number;
-    experience: number;
+    experienceAward: number;
+    goldAward: number;
     loots: ItemDto[];
     minimumActionTime: number;
 }

@@ -5,7 +5,8 @@ export const ANDREW_FOREST: ExpeditionDto = {
     id: 1,
     name: 'AndrewForest',
     level: 1,
-    experience: 100,
+    experienceAward: 150,
+    goldAward: 50,
     loots: [
         BUBULAE_STEAK,
         IHON_BERRY,
@@ -20,7 +21,8 @@ export const CARRANGA_SANDS: ExpeditionDto = {
     id: 2,
     name: 'RangaSands',
     level: 10,
-    experience: 500,
+    experienceAward: 300,
+    goldAward: 100,
     loots: [
         BUBULAE_STEAK,
         IHON_BERRY,
@@ -35,7 +37,8 @@ export const HARNA_PEAKS: ExpeditionDto = {
     id: 3,
     name: 'HarnaPeaks',
     level: 25,
-    experience: 700,
+    experienceAward: 400,
+    goldAward: 125,
     loots: [
         BUBULAE_STEAK,
         IHON_BERRY,

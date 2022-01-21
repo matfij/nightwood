@@ -43,7 +43,9 @@ export class DragonActionService {
   }
 
   async getExpeditions(): Promise<PageExpeditionDto> {
-    const expeditions = this.EXPEDITIONS.map(x => { return { ...x, loots: [] } });
+    const expeditions = this.EXPEDITIONS.map(x => { 
+      return { ...x, loots: [], goldAward: null, experienceAward: null };
+    });
 
     const page: PageExpeditionDto = {
       data: expeditions,

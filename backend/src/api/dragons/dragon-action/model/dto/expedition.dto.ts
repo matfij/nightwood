@@ -14,7 +14,10 @@ export class ExpeditionDto {
     level: number;
 
     @ApiProperty()
-    experience: number;
+    experienceAward: number;
+
+    @ApiProperty()
+    goldAward: number;
 
     @Exclude()
     @ApiProperty({ type: [ItemDto] })
