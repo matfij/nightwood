@@ -1,10 +1,12 @@
 import { DEFAULT_STARTING_FOOD_QUANTITY } from "src/configuration/item.config";
+import { ItemRarity } from "../definitions/item-rarity";
 import { FoodType, ItemType } from "../definitions/item-type";
 import { ItemDto } from "../dto/item.dto"
 
 export const BUBULAE_STEAK: ItemDto = {
     name: 'BubulaeSteak',
-    level: 0,
+    level: 1,
+    rarity: ItemRarity.Common,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
     foodType: FoodType.Strength,
@@ -12,7 +14,8 @@ export const BUBULAE_STEAK: ItemDto = {
 
 export const IHON_BERRY: ItemDto = {
     name: 'IhonBerry',
-    level: 0,
+    level: 1,
+    rarity: ItemRarity.Common,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
     foodType: FoodType.Dexterity,
@@ -20,7 +23,8 @@ export const IHON_BERRY: ItemDto = {
 
 export const RELIQUM_EGG: ItemDto = {
     name: 'ReliqumEgg',
-    level: 0,
+    level: 1,
+    rarity: ItemRarity.Common,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
     foodType: FoodType.Endurance,
@@ -28,7 +32,8 @@ export const RELIQUM_EGG: ItemDto = {
 
 export const SPIRAL_NUT: ItemDto = {
     name: 'SpirialNut',
-    level: 0,
+    level: 1,
+    rarity: ItemRarity.Common,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
     foodType: FoodType.Will,
@@ -36,8 +41,17 @@ export const SPIRAL_NUT: ItemDto = {
 
 export const RORIS_LEEFS: ItemDto = {
     name: 'RorisLeefs',
-    level: 0,
+    level: 1,
+    rarity: ItemRarity.Common,
     quantity: DEFAULT_STARTING_FOOD_QUANTITY,
     type: ItemType.Food,
     foodType: FoodType.Luck,
+};
+
+export const MIRACLE_FRUIT: ItemDto = {
+    name: 'MiracleFruit',
+    level: 1,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Food,
+    foodType: FoodType.Complete,
 };

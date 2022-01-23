@@ -10,7 +10,7 @@ export enum FoodType {
     Endurance = 'Endurance',
     Will = 'Will',
     Luck = 'Luck',
-    Special = 'Special',
+    Complete = 'Complete',
 }
 
 export enum EquipmentType {

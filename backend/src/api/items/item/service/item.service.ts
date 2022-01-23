@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ErrorService } from "src/common/services/error.service";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { Repository } from "typeorm";
-import { StartingItems } from "../model/definitions/item-blueprints";
+import { StartingItems } from "../model/data/item-blueprints";
 import { ItemDto } from "../model/dto/item.dto";
 import { PageItemDto } from "../model/dto/page-item.dto";
 import { Item } from "../model/item.entity";
@@ -12,6 +12,7 @@ import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
 import { IHON_BERRY } from "../model/data/food";
 import { ItemType } from "../model/definitions/item-type";
+import { LootChance } from "../model/definitions/item-rarity";
 
 @Injectable()
 export class ItemService {
@@ -73,10 +74,13 @@ export class ItemService {
     async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ItemDto[]> {
         const loots: ItemDto[] = [];
         expedition.loots.forEach(loot => {
-            const presence = Math.random() + (dragon.luck / (2*dragon.level + 10)) > 0.5;
-            if (presence) {
-                const quantity = Math.floor(1 + ((dragon.luck + dragon.level) / dragon.level));
-                loots.push({ ...loot, quantity: quantity });
+
+            const dragonChance = Math.random() * (1 + (dragon.luck / (2*dragon.level + 5)));
+            const requiredChance = Math.random() * LootChance[loot.rarity];
+
+            if (dragonChance > requiredChance) {
+                if (loots.map(x => x.name).includes(loot.name)) loots.find(x => x.name === loot.name).quantity += 1;
+                else loots.push({ ...loot, quantity: 1 });
             }
         });
 

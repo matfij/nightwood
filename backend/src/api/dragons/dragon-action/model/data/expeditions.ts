@@ -1,4 +1,4 @@
-import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT } from "src/api/items/item/model/data/food";
+import { BUBULAE_STEAK, IHON_BERRY, MIRACLE_FRUIT, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT } from "src/api/items/item/model/data/food";
 import { ExpeditionDto } from "../dto/expedition.dto";
 
 export const ANDREW_FOREST: ExpeditionDto = {
@@ -8,11 +8,12 @@ export const ANDREW_FOREST: ExpeditionDto = {
     experienceAward: 150,
     goldAward: 50,
     loots: [
-        BUBULAE_STEAK,
-        IHON_BERRY,
-        RELIQUM_EGG,
-        SPIRAL_NUT,
-        RORIS_LEEFS,
+        BUBULAE_STEAK, BUBULAE_STEAK, BUBULAE_STEAK,
+        IHON_BERRY, IHON_BERRY, IHON_BERRY,
+        RELIQUM_EGG, RELIQUM_EGG, RELIQUM_EGG,
+        SPIRAL_NUT, SPIRAL_NUT, SPIRAL_NUT,
+        RORIS_LEEFS, RORIS_LEEFS, RORIS_LEEFS,
+        MIRACLE_FRUIT, MIRACLE_FRUIT,
     ],
     minimumActionTime: 3 * 60 * 60 * 1000 / 1000,
 }

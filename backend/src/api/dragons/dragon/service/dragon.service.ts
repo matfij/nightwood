@@ -115,7 +115,7 @@ export class DragonService {
             case FoodType.Endurance: { dragon.endurance += 1; break; }
             case FoodType.Will: { dragon.will += 1; break; }
             case FoodType.Luck: { dragon.luck += 1; break; }
-            case FoodType.Special: { 
+            case FoodType.Complete: { 
                 dragon.strength += 1; 
                 dragon.dexterity += 1; 
                 dragon.endurance += 1; 

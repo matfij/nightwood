@@ -1,4 +1,7 @@
+import { ItemRarity } from "src/api/items/item/model/definitions/item-rarity";
+
 export const DEFAULT_LEVEL = 0;
+export const DEFAULT_RARITY = ItemRarity.Common;
 export const DEFAULT_QUANTITY = 1;
 export const DEFAULT_POSITION = 0;
 

@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose, Transform } from "class-transformer";
+import { ItemRarity } from "../definitions/item-rarity";
 import { EquipmentType, FoodType, ItemType } from "../definitions/item-type";
 
 export class ItemDto {
@@ -15,6 +16,10 @@ export class ItemDto {
     @Expose()
     @ApiProperty()
     level: number;
+
+    @Expose()
+    @ApiProperty({ enum: ItemRarity, enumName: 'ItemRarity' })
+    rarity?: ItemRarity;
 
     @Expose()
     @ApiPropertyOptional()
