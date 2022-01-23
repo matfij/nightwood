@@ -23,7 +23,5 @@
 
 .item {
   display: flex;
-  border: 2px solid darken($color: $app-dark, $amount: 10);
   border-radius: 4px;
-  box-shadow: inset 1px 1px 24px 12px $app-dark;
 }

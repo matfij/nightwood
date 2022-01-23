@@ -56,7 +56,7 @@ export class DragonPreviewComponent implements OnInit {
     this.itemController.getOwnedFoods().subscribe(foodsPage => {
       this.foodLoading = false;
       this.availableFood = foodsPage.data
-        .map(item => this.itemService.setItemImage(item))
+        .map(item => this.itemService.toDisplayItem(item))
         .filter(item => item.quantity! > 0);
     }, () => this.foodLoading = false);
   }

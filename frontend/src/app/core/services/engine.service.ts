@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
-import { ActionController, ExpeditionReportDto } from "src/app/client/api";
+import { ActionController, ExpeditionReportDto, ItemRarity } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { EXPEDITION_REPORTS, StoreService } from "src/app/common/services/store.service";
 import { ToastService } from "src/app/common/services/toast.service";
 import { DisplayExpeditionReport, DisplayExpeditionLoot } from "../definitions/expeditions";
+import { ItemsService } from "./items.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class EngineService {
     private storeService: StoreService,
     private toastService: ToastService,
     private repositoryService: RepositoryService,
+    private itemsService: ItemsService,
   ) {}
 
   getExpeditionReports(): Observable<DisplayExpeditionReport[]> {
@@ -33,8 +35,10 @@ export class EngineService {
   private mapExpeditionReport(reports: ExpeditionReportDto[]): DisplayExpeditionReport[] {
     return reports.map(report => {
       const loots: DisplayExpeditionLoot[] = [
-        { name: this.translateService.instant('inventory.gold'), quantity: report.gainedGold },
-        ...report.loots.map(x => { return { name: x.name, quantity: x.quantity! }})
+        { name: this.translateService.instant('inventory.gold'), quantity: report.gainedGold, rarity: ItemRarity.Common },
+        ...report.loots.map(loot =>
+          { return { name: this.itemsService.getItemName(loot.name), rarity: loot.rarity, quantity: loot.quantity! }
+        })
       ];
       const displayReport: DisplayExpeditionReport = {
         generationDate: this.dateService.date,

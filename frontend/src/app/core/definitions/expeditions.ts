@@ -1,6 +1,7 @@
 export interface DisplayExpeditionLoot {
   name: string;
   quantity: number;
+  rarity: string;
 }
 
 export interface DisplayExpeditionReport {

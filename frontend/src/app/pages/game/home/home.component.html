@@ -25,8 +25,8 @@
             :{ dragon: report.dragonName, expedition: report.expeditionName, experience: report.experience }">
         </div>
         <ul>
-          <li *ngFor="let loot of report.loots" class="loot">
-            {{ loot.name}} ({{ loot.quantity }})
+          <li *ngFor="let loot of report.loots" class="loot color-{{loot.rarity}}">
+            {{ loot.name | translate }} ({{ loot.quantity }})
           </li>
         </ul>
       </div>

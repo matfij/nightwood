@@ -19,7 +19,7 @@ export class ItemDisplayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.displayItem = this.itemsService.setItemImage(this.item);
+    this.displayItem = this.itemsService.toDisplayItem(this.item);
   }
 
 }

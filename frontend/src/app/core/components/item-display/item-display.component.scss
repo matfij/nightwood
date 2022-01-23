@@ -1,4 +1,5 @@
 @import '../../theme/mixins.scss';
+@import '../../theme/variables.scss';
 
 .container {
   @include size(75px);
@@ -7,8 +8,43 @@
   align-items: center;
   justify-content: center;
   padding: 0px;
+  border-radius: 4px;
 
   img {
     width: 50px;
   }
+}
+
+.item-Common {
+  border: 2px solid darken($color: $app-common, $amount: 30);
+  box-shadow: inset 1px 1px 22px 1px darken($color: $app-common, $amount: 20);
+}
+.item-Scarce {
+  border: 2px solid darken($color: $app-scarce, $amount: 30);
+  box-shadow: inset 1px 1px 22px 1px darken($color: $app-scarce, $amount: 20);
+}
+.item-Rare {
+  border: 2px solid darken($color: $app-rare, $amount: 30);
+  box-shadow: inset 1px 1px 22px 1px darken($color: $app-rare, $amount: 20);
+}
+.item-Mythical {
+  border: 2px solid darken($color: $app-mythical, $amount: 30);
+  box-shadow: inset 1px 1px 22px 1px darken($color: $app-mythical, $amount: 20);
+}
+
+.item-hint {
+  text-align: left;
+}
+
+.hint-Common {
+  color: $app-common;
+}
+.hint-Scarce {
+  color: $app-scarce;
+}
+.hint-Rare {
+  color: $app-rare;
+}
+.hint-Mythical {
+  color: $app-mythical;
 }

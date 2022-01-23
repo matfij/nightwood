@@ -1090,6 +1090,13 @@ export interface StartExpeditionDto {
     expeditionId: number;
 }
 
+export enum ItemRarity {
+    Common = "Common",
+    Scarce = "Scarce",
+    Rare = "Rare",
+    Mythical = "Mythical",
+}
+
 export enum ItemType {
     Food = "Food",
     Ingredient = "Ingredient",
@@ -1102,7 +1109,7 @@ export enum FoodType {
     Endurance = "Endurance",
     Will = "Will",
     Luck = "Luck",
-    Special = "Special",
+    Complete = "Complete",
 }
 
 export enum EquipmentType {
@@ -1114,6 +1121,7 @@ export interface ItemDto {
     id?: number;
     name: string;
     level: number;
+    rarity: ItemRarity;
     quantity?: number;
     position?: number;
     type: ItemType;

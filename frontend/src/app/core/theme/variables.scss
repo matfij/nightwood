@@ -5,4 +5,23 @@ $app-light: #FFEECA;
 $app-red: #ff544c;
 $app-green: #d5ff80;
 
+$app-common: #abc;
+$app-scarce: #6E91CE;
+$app-rare: #75E6DA;
+$app-mythical: #E36273;
+
 $mobile-threshold: 990px;
+
+
+.color-Common {
+  color: $app-common;
+}
+.color-Scarce {
+  color: $app-scarce;
+}
+.color-Rare {
+  color: $app-rare;
+}
+.color-Mythical {
+  color: $app-mythical;
+}

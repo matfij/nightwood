@@ -10,6 +10,19 @@
     "next": "Next",
     "prev": "Prev"
   },
+  "enums": {
+    "itemType": {
+      "Food": "Food",
+      "Ingredient": "Ingredient",
+      "Equipment": "Equipment"
+    },
+    "itemRarity": {
+      "Common": "Common",
+      "Scarce": "Scarce",
+      "Rare": "Rare",
+      "Mythical": "Mythical"
+    }
+  },
   "start": {
     "login": "Login",
     "register": "Register",
@@ -125,6 +138,7 @@
   "inventory": {
     "gold": "Gold",
     "type": "Type",
+    "rarity": "Rarity",
     "level": "Required level",
     "quantity": "Quantity"
   },
