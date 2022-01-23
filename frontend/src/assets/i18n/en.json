@@ -6,7 +6,9 @@
     "success": "Success",
     "cancel": "Cancel",
     "close": "Close",
-    "information": "Information"
+    "information": "Information",
+    "next": "Next",
+    "prev": "Prev"
   },
   "start": {
     "login": "Login",

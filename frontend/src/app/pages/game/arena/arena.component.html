@@ -16,7 +16,7 @@
         </button>
       </div>
 
-      <div *ngIf="ownedDragons.length" class="item-dragon-info">
+      <div *ngIf="ownedDragons.length" class="item-select-info">
         {{ 'arena.selectDragon' | translate }}
       </div>
       <div
@@ -34,22 +34,35 @@
       </div>
     </div>
 
-    <div *ngIf="enemyDragonsLoading" class="mt-5">
-      <app-loading-indicator></app-loading-indicator>
-    </div>
-    <div *ngIf="!enemyDragonsLoading" class="wrapper-dragons">
-      <div class="item-dragon item-dragon-info">
+    <div class="wrapper-table">
+      <div class="item-dragon-info">
         <div>{{ 'arena.dragon' | translate }}</div>
         <div>{{ 'arena.nature' | translate }}</div>
         <div>{{ 'arena.action' | translate }}</div>
       </div>
-      <div *ngFor="let dragon of enemyDragons" class="item-dragon">
-        <div>{{ dragon.name }} [{{ dragon.level }}]</div>
-        <div>{{ dragon.nature }}</div>
-        <button (click)="startBattle(dragon.id)" [disabled]="!selectedOwnedDragon" class="btn-base btn-battle">
-          {{ 'arena.battle' | translate }}
+
+      <div *ngIf="enemyDragonsLoading" class="m-5">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+      <div *ngIf="!enemyDragonsLoading" class="wrapper-dragons">
+        <div *ngFor="let dragon of enemyDragons" class="item-dragon">
+          <div>{{ dragon.name }} [{{ dragon.level }}]</div>
+          <div>{{ dragon.nature }}</div>
+          <button (click)="startBattle(dragon.id)" [disabled]="!selectedOwnedDragon" class="btn-base btn-battle">
+            {{ 'arena.battle' | translate }}
+          </button>
+        </div>
+      </div>
+
+      <div class="wrapper-table-btns">
+        <button (click)="getEnemyDragons(false)" [disabled]="!canGetPrev" class="btn-base btn-table">
+          {{ 'common.prev' | translate }}
+        </button>
+        <button (click)="getEnemyDragons(true)" [disabled]="!canGetNext" class="btn-base btn-table">
+          {{ 'common.next' | translate }}
         </button>
       </div>
+
     </div>
 
   </div>

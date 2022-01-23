@@ -5,13 +5,25 @@
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
-
 .wrapper-dragons-owned {
   margin: 10px auto;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.item-select-info {
+  width: 100%;
+  height: 36px;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  text-align: center;
+  border-bottom: 2px solid $app-light;
+  padding: 0px 10px;
 }
 
 .item-dragon-owned {
@@ -42,9 +54,14 @@
   background-color: transparentize($color: $app-primary, $amount: 0.95);
 }
 
-.wrapper-dragons {
+.wrapper-table {
   max-width: 400px;
   margin: 10px auto;
+}
+
+.wrapper-dragons {
+  max-width: 400px;
+  margin: 5px auto 10px auto;
 
   display: flex;
   gap: 5px;
@@ -55,26 +72,25 @@
 .item-dragon {
   height: 30px;
 
+  padding-bottom: 5px;
   display: grid;
   grid-template-columns: 160px 100px 95px;
   align-self: center;
   text-align: left;
   border-bottom: 1px solid $app-light;
   padding: 0px 10px;
-
-  &:first-child {
-    border-bottom: 2px solid $app-light;
-  }
-
-  &:last-child {
-    border: none;
-  }
 }
 
 .item-dragon-info {
   height: 36px;
 
+  display: grid;
+  grid-template-columns: 160px 100px 95px;
+  align-self: center;
   font-size: 20px;
+  text-align: left;
+  border-bottom: 2px solid $app-light;
+  padding: 0px 10px;
 }
 
 .btn-battle {
@@ -82,4 +98,16 @@
   margin: 0px;
 
   text-align: center;
+}
+
+.wrapper-table-btns {
+  width: 100%;
+  margin-top: 10px;
+
+  display: flex;
+}
+
+.btn-table {
+  width: 40%;
+  height: 24px;
 }

@@ -46,8 +46,8 @@ export class DragonService {
     }
 
     async getAll(dto: GetDragonDto): Promise<PageDragonDto> {
-        dto.page = dto.page ?? 0;
-        dto.limit = dto.limit ?? 20;
+        dto.page = Math.max(0, dto.page ?? 0);
+        dto.limit = Math.max(1, dto.limit ?? 20);
         dto.minLevel = dto.minLevel ?? 0;
         dto.maxLevel = dto.maxLevel ?? 999;
 
@@ -60,11 +60,14 @@ export class DragonService {
             .skip(dto.page * dto.limit)
             .take(dto.limit)
             .getMany();
-
+            
+        const totalDragons = await this.dragonRepository
+            .createQueryBuilder('dragon')
+            .getCount();
 
         const dragonPage: PageDragonDto = {
             data: dragons,
-            meta: { totalItems: dragons.length },
+            meta: { totalItems: totalDragons },
         };
         return dragonPage;
     }

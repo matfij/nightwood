@@ -13,15 +13,20 @@ import { DragonService } from 'src/app/core/services/dragons.service';
 })
 export class ArenaComponent implements OnInit {
 
-  enemyDragonsLoading!: boolean;
-  ownedDragonsLoading!: boolean;
-  ownedDragons!: DisplayDragon[];
-  enemyDragons!: DragonDto[];
+  enemyDragonsLoading: boolean = false;
+  ownedDragonsLoading: boolean = false;
+  ownedDragons: DisplayDragon[] = [];
+  enemyDragons: DragonDto[] = [];
   selectedOwnedDragon?: DragonDto;
   selectedEnemyDragon?: DragonDto;
 
-  battleLoading!: boolean;
-  displayBattle!: boolean;
+  enemyDragonPage: number = 0;
+  enemyDragonLimit: number = 12;
+  canGetPrev: boolean = false;
+  canGetNext: boolean = true;
+
+  battleLoading: boolean = false;
+  displayBattle: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -33,13 +38,6 @@ export class ArenaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.ownedDragonsLoading = false;
-    this.enemyDragonsLoading = false;
-    this.battleLoading = false;
-    this.displayBattle = false;
-    this.ownedDragons = [];
-    this.enemyDragons = [];
-
     this.activatedRoute.params.subscribe(params => {
       this.getOwnedDragons(+params['id']);
       this.getEnemyDragons();
@@ -57,10 +55,14 @@ export class ArenaComponent implements OnInit {
     }, () => this.ownedDragonsLoading = false);
   }
 
-  getEnemyDragons(page?: number, limit?: number, minLevel?: number, maxLevel?: number) {
+  getEnemyDragons(next?: boolean, minLevel?: number, maxLevel?: number) {
+    if (next) this.enemyDragonPage += 1;
+    if (next === false) this.enemyDragonPage -= 1;
+    if (this.enemyDragonPage < 0) this.enemyDragonPage = 0;
+
     const dto: GetDragonDto = {
-      page: page ?? 0,
-      limit: limit ?? 20,
+      page: this.enemyDragonPage,
+      limit: this.enemyDragonLimit,
       minLevel: minLevel,
       maxLevel: maxLevel,
     };
@@ -68,6 +70,9 @@ export class ArenaComponent implements OnInit {
     this.dragonController.getAll(dto).subscribe(dragonPage => {
       this.enemyDragonsLoading = false;
       this.enemyDragons = dragonPage.data;
+
+      this.canGetPrev = this.enemyDragonPage !== 0;
+      this.canGetNext = (this.enemyDragonPage + 1) * this.enemyDragonLimit <= dragonPage.meta.totalItems!;
     }, () => this.enemyDragonsLoading = false);
   }
 
