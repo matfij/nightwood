@@ -7,6 +7,7 @@ import { UserModule } from './api/users/user/user.module';
 import { DragonActionModule } from './api/dragons/dragon-action/dragon-action.module';
 import { ItemModule } from './api/items/item/item.module';
 import { ActionModule } from './api/users/action/action.module';
+import { ChatModule } from './api/users/chat/chat.module';
 
 const API_MODULES = [
   ActionModule,
@@ -29,6 +30,7 @@ const API_MODULES = [
       autoLoadEntities: true,
       synchronize: true,
     }),
+    ChatModule,
   ],
   controllers: [],
 })

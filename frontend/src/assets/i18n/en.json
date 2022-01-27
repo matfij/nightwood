@@ -118,7 +118,7 @@
     "feed": "Feed",
     "explore": "Explore",
     "battle": "Battle",
-    "noOwnedDragons": "You don't own any dragon yet",
+    "noOwnedDragons": "You don't own any dragon",
     "adoptFirstDragon": "Adopt your first dragon",
     "chooseFoodHint": "The choice of a meal can influence the development of dragon attributes",
     "feedSuccess": "The dragon was fed",

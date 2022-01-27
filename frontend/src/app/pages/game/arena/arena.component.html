@@ -8,7 +8,7 @@
     </div>
     <div *ngIf="!ownedDragonsLoading" class="wrapper-dragons-owned">
       <div *ngIf="!ownedDragonsLoading && !ownedDragons.length" class="wrapper-adopt">
-        <div class="item-dragon-info">
+        <div class="item-select-info">
           {{ 'dragon.noOwnedDragons' | translate }}
         </div>
         <button (click)="navigateAdopt()" class="btn-base btn-adopt mt-4">
