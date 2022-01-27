@@ -21,6 +21,7 @@ export class NavigationBarComponent {
     { label: 'game.inventory', path: 'inventory', icon: '', isActive: false },
     { label: 'game.expeditions', path: 'expeditions', icon: '', isActive: false },
     { label: 'game.arena', path: 'arena', icon: '', isActive: false },
+    { label: 'game.shoutbox', path: 'shoutbox', icon: '', isActive: false },
   ];
   isCollapsed: boolean = true;
   user?: UserDto;

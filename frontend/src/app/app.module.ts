@@ -13,6 +13,7 @@ import { AuthInterceptor } from './client/interceptors/auth.interceptor';
 import { environment } from 'src/environments/environment';
 import { API_BASE_URL } from './client/api';
 import { ErrorInterceptor } from './client/interceptors/error.interceptor';
+import { SocketIoModule } from 'ngx-socket-io';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -36,6 +37,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    SocketIoModule.forRoot({
+      url: environment.apiUrl,
+    })
   ],
   providers: [
     { provide: API_BASE_URL, useFactory: () => environment.apiUrl },

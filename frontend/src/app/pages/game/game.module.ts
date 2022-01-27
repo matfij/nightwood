@@ -8,6 +8,7 @@ import { MyDragonsComponent } from './my-dragons/my-dragons.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { ExpeditionsComponent } from './expeditions/expeditions.component';
 import { ArenaComponent } from './arena/arena.component';
+import { ShoutboxComponent } from './shoutbox/shoutbox.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ArenaComponent } from './arena/arena.component';
     InventoryComponent,
     ExpeditionsComponent,
     ArenaComponent,
+    ShoutboxComponent,
   ],
   imports: [
     CommonModule,

@@ -6,6 +6,7 @@ import { ExpeditionsComponent } from './expeditions/expeditions.component';
 import { HomeComponent } from './home/home.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { MyDragonsComponent } from './my-dragons/my-dragons.component';
+import { ShoutboxComponent } from './shoutbox/shoutbox.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'expeditions', component: ExpeditionsComponent },
   { path: 'arena', component: ArenaComponent },
   { path: 'arena/:id', component: ArenaComponent },
+  { path: 'shoutbox', component: ShoutboxComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
