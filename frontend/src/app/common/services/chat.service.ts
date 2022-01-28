@@ -16,6 +16,7 @@ export class ChatService {
   }
 
   getMessage(): Observable<string> {
-   return this.socket.fromEvent<string>('message');
+   return this.socket.fromEvent('message');
+  //  return this.socket.fromEvent<string>('message');
   }
 }

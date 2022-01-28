@@ -2,17 +2,17 @@
 # Development
 #
 
-FROM node:14-alpine AS development
+FROM node:16-alpine AS development
 
 ARG BACKEND_SRC=/dh/src/app/backend
 
 WORKDIR ${BACKEND_SRC}
 
-COPY package*.json ./
+COPY package.json ./
+COPY yarn.lock ./
 
-RUN npm install
-
-RUN npm run build
+RUN yarn install
+RUN yarn run build
 
 EXPOSE ${PORT}
 

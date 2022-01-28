@@ -1,15 +1,27 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { UseGuards } from '@nestjs/common';
+import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
+import { JwtAuthGuard } from '../../auth/util/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @WebSocketGateway({ cors: { origin: '*' } })
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
-  handleConnection() {
+  @WebSocketServer()
+  wsServer;
+
+  async handleConnection(socket: Socket) {
     console.log('Chat connected')
+    this.wsServer.emit('message', 'server message')
   }
 
   @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
+  async handleMessage(client: any, payload: any) {
     console.log('Message received')
-    return 'Received: ' + payload.toString();
+    this.wsServer.emit('message', 'server message')
+  }
+
+  async handleDisconnect(client: any) {
+      console.log('Chat disconected')
   }
 }

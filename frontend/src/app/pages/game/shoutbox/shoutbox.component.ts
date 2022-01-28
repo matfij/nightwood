@@ -9,7 +9,7 @@ import { ChatService } from 'src/app/common/services/chat.service';
 })
 export class ShoutboxComponent implements OnInit {
 
-  message$?: Observable<string>;
+  message$: any;//?: Observable<string>;
 
   constructor(
     private chatService: ChatService,
@@ -20,7 +20,8 @@ export class ShoutboxComponent implements OnInit {
   }
 
   initializeChat() {
-    this.message$ = this.chatService.getMessage();
+    console.log('chat init')
+    this.message$ = this.chatService.getMessage().subscribe(x => console.log(x));
   }
 
 }
