@@ -20,10 +20,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 
-export function getAccessToken() {
-  return localStorage.getItem(STORAGE_PREFIX + ACCESS_TOKEN);
-}
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +40,7 @@ export function getAccessToken() {
     }),
     SocketIoModule.forRoot({
       url: environment.apiUrl,
-      options: { transportOptions: { polling: { extraHeaders: { Authorization: getAccessToken() } } } },
+      options: {},
     })
   ],
   providers: [

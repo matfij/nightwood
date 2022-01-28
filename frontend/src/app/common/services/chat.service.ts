@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+import { AuthSocket } from '../utils/auth-socket';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 export class ChatService {
 
   constructor(
-    private socket: Socket,
+    private socket: AuthSocket,
   ) {}
 
   sendMessage(message: string) {
