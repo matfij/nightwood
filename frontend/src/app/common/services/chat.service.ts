@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ChatService {
 
   constructor(
-    private socket: Socket
+    private socket: Socket,
   ) {}
 
   sendMessage(message: string) {
@@ -20,3 +20,5 @@ export class ChatService {
   //  return this.socket.fromEvent<string>('message');
   }
 }
+
+
