@@ -32,7 +32,7 @@ export class AuthService {
         const match: boolean = await this.validatePassword(dto.password, user.password);
         if (!match) this.errorService.throw('errors.passwordIncorrect');
 
-        const token = await this.generateJwt({ ...user, password: '' });
+        const token = await this.generateJwt(user);
         return {
             id: user.id,
             email: user.email,
@@ -59,7 +59,7 @@ export class AuthService {
 
         this.itemService.createStartingItems(savedUser);
 
-        const token = await this.generateJwt( {...createdUser, password: '' });
+        const token = await this.generateJwt(createdUser);
         return {
             id: savedUser.id,
             email: createdUser.email,
@@ -72,13 +72,13 @@ export class AuthService {
     async refreshToken(dto: AuthUserDto) {
         try { this.jwtService.verify(dto.accessToken) } catch (_) { this.errorService.throw('errors.tokenInvalid'); };
 
-        dto.accessToken = await this.generateJwt({ ...dto, password: '' });
+        dto.accessToken = await this.generateJwt(dto);
 
         return dto;
     }
 
     async getUser(accessToken: string): Promise<UserDto> {
-        try { this.jwtService.verify(accessToken) } catch (_) { this.errorService.throw('errors.tokenInvalid'); };
+        try { this.jwtService.verify(accessToken) } catch (_) { return null; };
 
         const decodedToken = this.jwtService.decode(accessToken);
 
@@ -86,7 +86,8 @@ export class AuthService {
     }
 
     async generateJwt(user: UserDto): Promise<string> {
-        return this.jwtService.signAsync({ user });
+        user.password = '';
+        return this.jwtService.signAsync({user});
     }
 
     async hashPassword(password: string): Promise<string> {

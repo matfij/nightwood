@@ -1,7 +1,8 @@
 export interface ChatMessage {
-    date: string;
+    date: number;
     nickname: string;
     data: string;
+    mode: ChatMode;
 }
 
 export enum ChatMode {

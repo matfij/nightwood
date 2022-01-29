@@ -30,8 +30,23 @@
   height: 600px;
   margin: auto;
 
+  overflow-y: scroll;
+  padding-bottom: 4px;
   background: $app-dark;
   border-radius: 2px;
+}
+
+.item-message {
+  margin: 2px;
+
+  letter-spacing: 0.5px;
+  text-align: left;
+  overflow: hidden;
+  background: lighten($color: $app-dark, $amount: 4);
+}
+
+.message-own {
+  background: lighten($color: $app-dark, $amount: 8);
 }
 
 .wrapper-form {

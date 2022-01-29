@@ -40,7 +40,7 @@ export class ActionEventService {
                 const loots = await this.itemService.awardExpeditionItems(user, dragon, expedition);
 
                 user.gold += gainedGold;
-                await this.userRepository.save(user);
+                await this.userRepository.update(user.id, { gold: user.gold });
 
                 return {
                     dragonName: dragon.name,

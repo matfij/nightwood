@@ -2,8 +2,6 @@ import { Request, Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
 import { AuthorizedRequest } from "src/common/definitions/requests";
-import { CreateItemDto } from "./model/dto/create-item.dto";
-import { ItemDto } from "./model/dto/item.dto";
 import { PageItemDto } from "./model/dto/page-item.dto";
 import { ItemService } from "./service/item.service";
 

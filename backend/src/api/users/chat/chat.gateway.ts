@@ -1,16 +1,16 @@
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
-import { JwtAuthGuard } from '../auth/util/jwt.guard';
-import { ChatMode } from './chat.definitions';
+import { ChatMessage, ChatMode } from './chat.definitions';
 
-@UseGuards(JwtAuthGuard)
 @WebSocketGateway({ cors: { origin: '*' } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
+  SAVED_MESSAGES_LIMIT = 100;
+
   chatMode: ChatMode = ChatMode.General;
-  activeUsers: string[] = [];
+  savedMessages: ChatMessage[] = [];
 
   @WebSocketServer()
   wsServer: Server;
@@ -20,22 +20,28 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {}
 
   async handleConnection(socket: Socket) {
-    const user = await this.authService.getUser(socket.handshake.headers.authorization);
-    if (!user) this.disconnect(socket);
-    
-    this.activeUsers.push(user.nickname);
-    this.wsServer.emit(this.chatMode, `${this.activeUsers} are online.`);
-    console.log(this.activeUsers)
+    if (!await this.authorize(socket)) return;
+  
+    socket.emit(this.chatMode, this.savedMessages);
   }
 
-  @SubscribeMessage(ChatMode)
-  async handleMessage(client: any, payload: any) {
-    console.log('Message received')
-    this.wsServer.emit(this.chatMode, 'server message')
+  @SubscribeMessage(ChatMode.General)
+  async handleMessage(client: Socket, message: any) {
+    if (!await this.authorize(client)) return;
+
+    this.savedMessages.push(message);
+    if (this.savedMessages.length > this.SAVED_MESSAGES_LIMIT) this.savedMessages.shift();
+    this.wsServer.emit(this.chatMode, [message]);
   }
 
-  async handleDisconnect(client: any) {
+  async handleDisconnect(client: Socket) {
     this.disconnect(client);
+  }
+
+  private async authorize(socket: Socket): Promise<boolean> {
+    const user = await this.authService.getUser(socket.handshake.headers.authorization);
+    if (!user) { this.disconnect(socket); return false; };
+    return true;
   }
 
   private disconnect(socket: Socket) {
