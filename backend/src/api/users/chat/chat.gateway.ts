@@ -3,12 +3,13 @@ import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGa
 import { Socket, Server } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
-import { UserService } from '../user/service/user.service';
+import { ChatMode } from './chat.definitions';
 
 @UseGuards(JwtAuthGuard)
 @WebSocketGateway({ cors: { origin: '*' } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
+  chatMode: ChatMode = ChatMode.General;
   activeUsers: string[] = [];
 
   @WebSocketServer()
@@ -23,14 +24,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (!user) this.disconnect(socket);
     
     this.activeUsers.push(user.nickname);
-    this.wsServer.emit('message', `${this.activeUsers} are online.`);
+    this.wsServer.emit(this.chatMode, `${this.activeUsers} are online.`);
     console.log(this.activeUsers)
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage(ChatMode)
   async handleMessage(client: any, payload: any) {
     console.log('Message received')
-    this.wsServer.emit('message', 'server message')
+    this.wsServer.emit(this.chatMode, 'server message')
   }
 
   async handleDisconnect(client: any) {
@@ -38,7 +39,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private disconnect(socket: Socket) {
-    socket.emit('error', new UnauthorizedException());
+    socket.emit(ChatMode.Error, new UnauthorizedException());
     socket.disconnect();
   }
 }

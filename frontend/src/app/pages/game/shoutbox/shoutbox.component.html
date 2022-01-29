@@ -2,8 +2,30 @@
   <app-navigation-bar currentLocation="shoutbox"></app-navigation-bar>
 
   <div class="wrapper-content">
-    PLAYER MESSAGES
 
-    <!-- {{ message$ | async }} -->
+    <div class="wrapper-chat">
+      <div class="wrapper-topics">
+        <div class="btn-base btn-chat-topic">
+          {{ 'shoutbox.general' | translate }}
+        </div>
+        <div class="btn-base btn-chat-topic">
+          {{ 'shoutbox.offtopic' | translate }}
+        </div>
+      </div>
+
+      <div class="wrapper-messages">
+        <div *ngFor="let message of message$ | async">
+          {{ message }}
+        </div>
+      </div>
+
+      <div class="wrapper-form">
+        <input [(ngModel)]="message" type="text" class="input-chat">
+        <div (click)="sendMessage()" class="btn-base btn-send">
+          {{ 'shoutbox.send' | translate }}
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

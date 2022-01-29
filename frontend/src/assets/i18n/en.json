@@ -172,5 +172,11 @@
     "RangaSandsHint": "A faraway land, covered with sand and rocks where the wind is strong and the temperature is scorching. The desert is a place of great danger, but it is also a place of great treasure.",
     "HarnaPeaks": "Harna Peaks",
     "HarnaPeaksHint": "Mysterious and unexplored place filled with magical particles. Exploration requires an exceptional amount of power therefore it is accessible only for matured dragons."
+  },
+  "shoutbox": {
+    "chats": "Chats",
+    "general": "General",
+    "offtopic": "Off-topic",
+    "send": "Send"
   }
 }

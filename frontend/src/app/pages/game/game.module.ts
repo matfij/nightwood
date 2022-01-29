@@ -9,6 +9,7 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { ExpeditionsComponent } from './expeditions/expeditions.component';
 import { ArenaComponent } from './arena/arena.component';
 import { ShoutboxComponent } from './shoutbox/shoutbox.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ShoutboxComponent } from './shoutbox/shoutbox.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     GameRoutingModule,
     CoreModule.forChild(),
   ]

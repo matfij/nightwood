@@ -13,11 +13,11 @@ export class ChatService {
   ) {}
 
   sendMessage(message: string) {
-
+    this.socket.emit('General', message)
   }
 
   getMessage(): Observable<string> {
-   return this.socket.fromEvent('message');
+   return this.socket.fromEvent('General');
   //  return this.socket.fromEvent<string>('message');
   }
 }
