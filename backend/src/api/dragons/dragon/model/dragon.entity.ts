@@ -1,6 +1,7 @@
 import { DEFAULT_ATTRIBUTE_POINTS, DEFAULT_EXPERIENCE, DEFAULT_LEVEL, DEFAULT_STAMINA } from "src/configuration/dragon.config";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
+import { DragonSkills } from "../../dragon-skills/model/dragon-skills.entity";
 import { DragonNature } from "./definitions/dragon-nature";
 
 @Entity()
@@ -18,6 +19,10 @@ export class Dragon {
     @OneToOne(_ => DragonAction)
     @JoinColumn()
     action: DragonAction;
+
+    @OneToOne(_ => DragonSkills)
+    @JoinColumn()
+    skills: DragonSkills;
 
     @Column({ default: 0, type: 'int8' })
     nextFeed: number;

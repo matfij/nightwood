@@ -8,6 +8,7 @@ import { DragonActionModule } from './api/dragons/dragon-action/dragon-action.mo
 import { ItemModule } from './api/items/item/item.module';
 import { ActionModule } from './api/users/action/action.module';
 import { ChatModule } from './api/users/chat/chat.module';
+import { DragonSkillsModule } from './api/dragons/dragon-skills/dragon-skills.module';
 
 const API_MODULES = [
   ActionModule,
@@ -15,6 +16,7 @@ const API_MODULES = [
   UserModule,
   DragonModule,
   DragonActionModule,
+  DragonSkillsModule,
   ItemModule,
 ];
 

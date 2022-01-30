@@ -9,6 +9,6 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Dragon feeding & base stats [100%]
  - Items & expeditions [90%]
  - Combat system [80%]
- - Breed-specific skills [5%]
+ - Breed-specific skills [40%]
  - Players messaging & live chat [80%]
  - Auction house [20%]

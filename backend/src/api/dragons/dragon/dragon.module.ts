@@ -8,11 +8,13 @@ import { Dragon } from './model/dragon.entity';
 import { DragonService } from './service/dragon.service';
 import { DragonBattleService } from './service/dragon-battle.service';
 import { MathService } from 'src/common/services/math.service';
+import { DragonSkillsModule } from '../dragon-skills/dragon-skills.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Dragon]),
     DragonActionModule,
+    DragonSkillsModule,
   ],
   controllers: [
     DragonController,

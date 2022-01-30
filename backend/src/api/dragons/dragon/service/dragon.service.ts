@@ -7,7 +7,6 @@ import { AdoptDragonDto } from '../model/dto/adopt-dragon.dto';
 import { DragonDto } from '../model/dto/dragon.dto';
 import { GetDragonDto } from '../model/dto/get-dragon.dto';
 import { PageDragonDto } from '../model/dto/page-dragon.dto';
-import { paginate } from 'nestjs-typeorm-paginate';
 import { DEFAULT_STAMINA, FEED_INTERVAL, GET_ALL_RELATIONS, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
 import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
@@ -19,6 +18,7 @@ import { BattleResultDto } from '../model/dto/battle-result.dto';
 import { DragonBattleService } from './dragon-battle.service';
 import { MathService } from 'src/common/services/math.service';
 import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
+import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 
 @Injectable()
 export class DragonService {
@@ -28,6 +28,7 @@ export class DragonService {
         private dragonRepository: Repository<Dragon>,
         private dragonBattleService: DragonBattleService,
         private dragonActionService: DragonActionService,
+        private dragonSkillsService: DragonSkillsService,
         private errorService: ErrorService,
         private dateService: DateService,
         private mathService: MathService,
@@ -36,6 +37,7 @@ export class DragonService {
     async create(dto: CreateDragonDto): Promise<DragonDto> {
         const dragon = this.dragonRepository.create({ ...dto });
         dragon.action = await this.dragonActionService.create();
+        dragon.skills = await this.dragonSkillsService.create();
         const savedDragon = await this.dragonRepository.save(dragon);
 
         return savedDragon;
@@ -75,6 +77,7 @@ export class DragonService {
     async adopt(ownerId: number, dto: AdoptDragonDto): Promise<DragonDto> {
         const dragon = this.dragonRepository.create({ ...dto, ownerId: ownerId });
         dragon.action = await this.dragonActionService.create();
+        dragon.skills = await this.dragonSkillsService.create();
         const savedDragon = await this.dragonRepository.save(dragon);
 
         return savedDragon;
@@ -84,6 +87,7 @@ export class DragonService {
         const dragons = await this.dragonRepository
             .createQueryBuilder('dragon')
             .leftJoinAndSelect('dragon.action', 'action')
+            .leftJoinAndSelect('dragon.skills', 'skills')
             .where('dragon.ownerId = :ownerId')
             .setParameters({ ownerId: ownerId })
             .getMany();
