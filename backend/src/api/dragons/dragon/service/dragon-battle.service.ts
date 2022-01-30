@@ -152,13 +152,13 @@ export class DragonBattleService {
                 + this.mathService.randRange(0.7, 1.2) * (enemy.level - owned.level)
                 + this.mathService.randRange(0.05, 0.12) * battleLength;
             gainedExperience = Math.round(this.mathService.limit(10, gainedExperience, 1000));
-            
+
             owned.experience += gainedExperience;
         }
-        
+
         owned.stamina -= 1 + Math.floor(battleLength / 10);
         if (owned.stamina < 0) owned.stamina = 0;
-        
+
         await this.dragonRepository.update(owned.id, { experience: owned.experience, stamina: owned.stamina });
         return owned;
     }
