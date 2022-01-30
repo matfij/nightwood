@@ -5,28 +5,18 @@
 
     <div class="wrapper-chat">
       <div class="wrapper-topics">
-        <div (click)="chatMode = ChatMode.General" class="btn-base btn-chat-topic">
+        <div (click)="changeMode(ChatMode.General)" class="btn-base btn-chat-topic">
           {{ 'shoutbox.general' | translate }}
         </div>
-        <div (click)="chatMode = ChatMode.OffTopic" class="btn-base btn-chat-topic">
+        <div (click)="changeMode(ChatMode.OffTopic)" class="btn-base btn-chat-topic">
           {{ 'shoutbox.offtopic' | translate }}
         </div>
       </div>
 
       <div #messagesWrapper class="wrapper-messages">
-        <div *ngIf="chatMode === ChatMode.General">
-          <div *ngFor="let message of messages">
-            <div *ngIf="message.mode === ChatMode.General" class="item-message" [ngClass]="{'message-own': message.nickname === user.nickname}">
-              {{ message.nickname }} | {{ message.data }}
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="chatMode === ChatMode.OffTopic">
-          <div *ngFor="let message of messages">
-            <div *ngIf="message.mode === ChatMode.OffTopic" class="item-message" [ngClass]="{'message-own': message.nickname === user.nickname}">
-              {{ message.nickname }} | {{ message.data }}
-            </div>
+        <div *ngFor="let message of messages">
+          <div *ngIf="message.mode === chatMode" class="item-message" [ngClass]="{'message-own': message.nickname === user.nickname}">
+            {{ message.nickname }} | {{ message.data }}
           </div>
         </div>
       </div>

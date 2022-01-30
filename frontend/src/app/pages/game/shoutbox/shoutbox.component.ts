@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { UserDto } from 'src/app/client/api';
 import { ChatMessage, ChatMode } from 'src/app/common/definitions/chat';
 import { ChatService } from 'src/app/common/services/chat.service';
@@ -14,9 +14,9 @@ import { RepositoryService } from 'src/app/common/services/repository.service';
 export class ShoutboxComponent implements OnInit, OnDestroy {
 
   user!: UserDto;
+  message: string = '';
   message$!: Subscription;
   messages: ChatMessage[] = [];
-  message: string = '';
   chatMode: ChatMode = ChatMode.General;
 
   @ViewChild('messagesWrapper') messagesWrapper?: ElementRef;
@@ -46,8 +46,18 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
     });
   }
 
+  changeMode(mode: ChatMode) {
+    this.chatMode = mode;
+    timer(0).subscribe(() => {
+      if (this.messagesWrapper) {
+        this.messagesWrapper.nativeElement.scrollTop = this.messagesWrapper.nativeElement.scrollHeight;
+      }
+    });
+  }
+
   sendMessage() {
     if (this.message.length === 0) return;
+
     const chatMessage: ChatMessage = {
       date: Date.now(),
       nickname: this.user.nickname,

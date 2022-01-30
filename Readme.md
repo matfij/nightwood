@@ -10,5 +10,5 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Items & expeditions [90%]
  - Combat system [80%]
  - Breed-specific skills [5%]
- - Players messaging & live chat [0%]
+ - Players messaging & live chat [80%]
  - Auction house [20%]
