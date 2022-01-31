@@ -9,8 +9,8 @@ import { DragonController, DragonDto } from 'src/app/client/api';
 })
 export class MyDragonsComponent implements OnInit {
 
-  ownedDragons!: DragonDto[];
-  dragonsLoading!: boolean;
+  ownedDragons: DragonDto[] = [];
+  dragonsLoading: boolean = false;
 
   constructor(
     private router: Router,
@@ -18,8 +18,6 @@ export class MyDragonsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dragonsLoading = true;
-    this.ownedDragons = [];
     this.getOwnedDragons();
   }
 

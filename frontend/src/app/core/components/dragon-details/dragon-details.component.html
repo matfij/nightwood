@@ -1,0 +1,21 @@
+<div *ngIf="dragon" class="container-modal">
+
+  <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
+  <div>{{ dragon.experience }} {{ 'dragon.experience' | translate }}</div>
+  <div>{{ dragon.stamina }} {{ 'dragon.stamina' | translate }}</div>
+
+  <img [src]="dragon.image" [alt]="dragon.name">
+
+
+  <div class="wrapper-skills">
+    <div *ngFor="let skill of obtainableSkills" class="item-skill">
+      <img [src]="skill.image" [alt]="skill.displayName">
+      {{ skill.displayName }}
+    </div>
+  </div>
+
+  <button (click)="closeModal()" class="btn-base">
+    {{ 'common.close' | translate }}
+  </button>
+
+</div>

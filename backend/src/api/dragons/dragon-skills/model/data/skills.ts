@@ -7,7 +7,7 @@ import { Skill } from "../definitions/dragon-skills";
 export const InnateSpeed: Skill = {
     name: 'InnateSpeed',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Wind],
+    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
 }
 
 /**
@@ -16,7 +16,7 @@ export const InnateSpeed: Skill = {
 export const InnerFlow: Skill = {
     name: 'InnerFlow',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Wind],
+    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
 }
 
 /**
@@ -25,7 +25,7 @@ export const InnerFlow: Skill = {
 export const LuckyStrike: Skill = {
     name: 'LuckyStrike',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Wind],
+    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
 }
 
 /**
@@ -34,7 +34,7 @@ export const LuckyStrike: Skill = {
 export const GreatVigor: Skill = {
     name: 'GreatVigor',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Wind],
+    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
 }
 
 /** 
@@ -42,9 +42,18 @@ export const GreatVigor: Skill = {
  */
 export const ThoughtfulStrike: Skill = {
    name: 'ThoughtfulStrike',
-   level: 1,
-   nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Wind],
+   level: 10,
+   nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
 }
+
+/** 
+ * Increases expedition loots
+ */
+ export const BeginnersLuck: Skill = {
+    name: 'BeginnersLuck',
+    level: 10,
+    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
+ }
 
 /**
  * Attack has additional damage component

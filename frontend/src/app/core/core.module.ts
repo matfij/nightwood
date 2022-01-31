@@ -11,12 +11,14 @@ import { DragonPreviewComponent } from './components/dragon-preview/dragon-previ
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
 import { DragonChoiceModalComponent } from './components/dragon-choice-modal/dragon-choice-modal.component';
 import { DragonBattleComponent } from './components/dragon-battle/dragon-battle.component';
+import { DragonDetailsComponent } from './components/dragon-details/dragon-details.component';
 
 const COMPONENTS = [
   NavigationBarComponent,
   LoadingIndicatorComponent,
   InputBaseComponent,
   DragonPreviewComponent,
+  DragonDetailsComponent,
   DragonChoiceModalComponent,
   DragonBattleComponent,
   ItemDisplayComponent,

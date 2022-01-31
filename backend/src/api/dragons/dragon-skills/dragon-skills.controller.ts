@@ -6,7 +6,7 @@ import { SkillDto } from "./model/dto/skill.dto";
 import { DragonSkillsService } from "./service/dragon-skills.service";
 
 @Controller('dragonSkills')
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('DragonSkillsController')
 export class DragonSkillsController {
 

@@ -46,15 +46,24 @@
   </div>
 
   <div class="wrapper-actions">
-    <button (click)="prepareFeedModal()" [disabled]="!feedAvailable" class="btn-base action">
+    <button (click)="prepareFeedModal()" [disabled]="!feedAvailable" class="btn-base btn-action">
       {{ 'dragon.feed' | translate }}
     </button>
-    <button (click)="navigateExplore()" class="btn-base action">
+    <button (click)="navigateExplore()" class="btn-base btn-action no-mobile">
       {{ 'dragon.explore' | translate }}
     </button>
-    <button (click)="navigateArena(dragon.id)" class="btn-base action">
+    <button (click)="navigateArena(dragon.id)" class="btn-base btn-action no-mobile">
       {{ 'dragon.battle' | translate }}
+    </button>
+    <button (click)="displayDetails = true" class="btn-base btn-action">
+      {{ 'common.details' | translate }}
     </button>
   </div>
 
 </div>
+
+<app-dragon-details
+  *ngIf="displayDetails && dragon"
+  [dragon]="dragon"
+  (close)="displayDetails = false">
+</app-dragon-details>

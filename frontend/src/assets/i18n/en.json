@@ -8,7 +8,8 @@
     "close": "Close",
     "information": "Information",
     "next": "Next",
-    "prev": "Prev"
+    "prev": "Prev",
+    "details": "Details"
   },
   "enums": {
     "itemType": {
@@ -127,6 +128,17 @@
     "actionNone": "---",
     "actionExpedition": "Expedition",
     "actionTraining": "Training"
+  },
+  "dragonSkills": {
+    "InnateSpeed": "Innate speed",
+    "InnerFlow": "Inner flow",
+    "LuckyStrike": "Lucky strike",
+    "GreatVigor": "Great vigor",
+    "ThoughtfulStrike": "Thoughtful strike",
+    "FireBreath": "Fire breath",
+    "SoundBody": "Sound body",
+    "PugnaciousStrike": "Pugnacious strike",
+    "RoughSkin": "Rough skin"
   },
   "arena": {
     "dragon": "Dragon",

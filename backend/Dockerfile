@@ -20,7 +20,7 @@ EXPOSE ${PORT}
 # Production
 #
 
-FROM node:14-alpine AS production
+FROM node:16-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}

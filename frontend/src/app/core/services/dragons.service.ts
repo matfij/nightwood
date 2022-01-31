@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { DragonActionType, DragonDto, DragonNature } from "src/app/client/api";
+import { DragonActionType, DragonDto, DragonNature, SkillDto } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
 import { DRAGON_MAX_ADULT_LEVEL, DRAGON_MAX_EGG_LEVEL, DRAGON_MAX_KID_LEVEL, DRAGON_MAX_SAGE_LEVEL } from "../configuration";
-import { DisplayDragon } from "../definitions/dragons";
+import { DisplayDragon, DisplaySkill } from "../definitions/dragons";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,7 @@ import { DisplayDragon } from "../definitions/dragons";
 export class DragonService {
 
   private readonly BASE_IMG_PATH = 'assets/img/dragons';
+  private readonly BASE_SKILL_IMG_PATH = 'assets/img/skills';
   private readonly EXTENSION = 'png';
 
   constructor(
@@ -55,6 +56,17 @@ export class DragonService {
       case DragonActionType.Training: { name = 'dragon.actionTraining'; break; }
     }
     return this.translateService.instant(name);
+  }
+
+  toDisplaySkill(skill: SkillDto): DisplaySkill {
+    const image = `${this.BASE_SKILL_IMG_PATH}/${skill.name}.${this.EXTENSION}`;
+    const displayName = this.translateService.instant(`dragonSkills.${skill.name}`);
+
+    return {
+      ...skill,
+      image: image,
+      displayName: displayName,
+    };
   }
 
 }

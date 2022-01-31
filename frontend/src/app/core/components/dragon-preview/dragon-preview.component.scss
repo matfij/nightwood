@@ -52,7 +52,7 @@
   align-content: space-evenly;
   text-align: left;
 
-  .action {
+  .btn-action {
     width: 100px;
     height: 27px;
     margin: 0px 0px 10px 0px;
@@ -64,33 +64,6 @@
     font-weight: 500;
     background-color: $app-dark;
     border-radius: 4px;
-  }
-}
-
-@media screen and (max-width: $mobile-threshold) {
-  .container {
-    padding: 0%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2%;
-  }
-
-  .wrapper-image {
-    margin: 0px;
-  }
-
-  .wrapper-stats {
-    display: none;
-  }
-
-  .wrapper-actions {
-    flex-direction: row;
-
-    .action {
-      margin: 5px;
-    }
   }
 }
 
@@ -146,5 +119,32 @@
   &:hover {
     cursor: pointer;
     background: darken($color: $app-dark, $amount: 5);
+  }
+}
+
+@media screen and (max-width: $mobile-threshold) {
+  .container {
+    padding: 0%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2%;
+  }
+
+  .wrapper-image {
+    margin: 0px;
+  }
+
+  .wrapper-stats {
+    display: none;
+  }
+
+  .wrapper-actions {
+    flex-direction: row;
+
+    .btn-action {
+      margin: 5px;
+    }
   }
 }

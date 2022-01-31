@@ -22,6 +22,7 @@ export class DragonPreviewComponent implements OnInit {
   foodLoading: boolean = false;
   availableFood: DisplayItem[] = [];
   feedLoading: boolean = false;
+  displayDetails: boolean = false;
 
   constructor(
     private router: Router,
@@ -38,10 +39,6 @@ export class DragonPreviewComponent implements OnInit {
       this.dragon = this.dragonService.toDisplayDragon(this.dragon);
       this.feedAvailable = this.dateService.checkIfEventAvailable(this.dragon.nextFeed);
     }
-    this.showFeedModal = false;
-    this.foodLoading = false;
-    this.availableFood = [];
-    this.feedLoading = false;
   }
 
   prepareFeedModal() {
