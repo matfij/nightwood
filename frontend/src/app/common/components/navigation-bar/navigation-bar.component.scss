@@ -51,3 +51,10 @@
     transition: all ease-in-out 0.33s;
   }
 }
+
+@media all and (max-width: $mobile-threshold) {
+
+  .navbar-brand {
+    border: none;
+  }
+}

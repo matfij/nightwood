@@ -21,6 +21,19 @@ html, body {
   border: none;
 }
 
+::selection {
+  color: $app-dark;
+  background-color: $app-primary;
+}
+
+img {
+  max-width: 100%;
+}
+img::selection {
+  color: none;
+  background: none;
+}
+
 /**
  * Scrollbar
  */

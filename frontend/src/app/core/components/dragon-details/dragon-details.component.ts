@@ -1,17 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DragonSkillsController, GetSkillsDto, SkillDto } from 'src/app/client/api';
+import { Component, Input, OnInit } from '@angular/core';
+import { DragonSkillsController, GetSkillsDto } from 'src/app/client/api';
 import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
+import { AbstractModalComponent } from '../abstract-modal/abstract-modal.component';
 
 @Component({
   selector: 'app-dragon-details',
   templateUrl: './dragon-details.component.html',
-  styleUrls: ['./dragon-details.component.scss']
+  styleUrls: [
+    './dragon-details.component.scss',
+    '../abstract-modal/abstract-modal.component.scss'
+  ],
 })
-export class DragonDetailsComponent implements OnInit {
+export class DragonDetailsComponent extends AbstractModalComponent implements OnInit {
 
   @Input() dragon!: DisplayDragon;
-  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   obtainableSkills: DisplaySkill[] = [];
   skillsLoading: boolean = false;
@@ -19,7 +22,9 @@ export class DragonDetailsComponent implements OnInit {
   constructor(
     private dragonSkillsController: DragonSkillsController,
     private dragonService: DragonService,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.getObtainableSkills();
@@ -35,9 +40,4 @@ export class DragonDetailsComponent implements OnInit {
       this.obtainableSkills = skills.map(skill => this.dragonService.toDisplaySkill(skill));
     }, () => this.skillsLoading = false);
   }
-
-  closeModal() {
-    this.close.next(true);
-  }
-
 }

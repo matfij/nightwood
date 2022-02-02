@@ -61,9 +61,9 @@ $delay: 5000ms;
   .answer:nth-child(#{$ind}) {
     grid-area: $area;
     animation-delay: calc(#{$ind} * 100ms);
-    background: linear-gradient(rgba($app-dark, 0.8), rgba($app-dark, 0.6)), url('/assets/img/adopt-dragon/#{$img}.jpg');
+    background: linear-gradient(rgba($app-dark, 0.5), rgba($app-dark, 0.6)), url('/assets/img/adopt-dragon/#{$img}.jpg');
 
-    :hover {
+    &:hover {
       background:  linear-gradient(rgba($app-dark, 0.5), rgba($app-dark, 0.6)), url('/assets/img/adopt-dragon/#{$img}.jpg');
     }
   }
@@ -71,19 +71,20 @@ $delay: 5000ms;
 
 .answer {
   color: $app-light;
+  text-shadow: 1px 1px $app-dark;
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
-  background-color: black;
   animation: answerEntrance 700ms ease-in-out;
   animation-fill-mode: backwards;
   border-radius: 4px;
   overflow: hidden;
   line-height: 5;
   box-shadow: 0 0 9px $app-light;
+  opacity: 0.8;
 
-  :hover {
-    // TODO - fix transition
-    transition: all 0.5s ease-in-out !important;
+  &:hover {
+    opacity: 1;
+    transition: opacity 1s ease-in-out !important;
   }
 }

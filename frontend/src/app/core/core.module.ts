@@ -12,6 +12,7 @@ import { ItemDisplayComponent } from './components/item-display/item-display.com
 import { DragonChoiceModalComponent } from './components/dragon-choice-modal/dragon-choice-modal.component';
 import { DragonBattleComponent } from './components/dragon-battle/dragon-battle.component';
 import { DragonDetailsComponent } from './components/dragon-details/dragon-details.component';
+import { AbstractModalComponent } from './components/abstract-modal/abstract-modal.component';
 
 const COMPONENTS = [
   NavigationBarComponent,
@@ -38,6 +39,7 @@ const CHILD_PROVIDERS = [
 @NgModule({
   declarations: [
     ...COMPONENTS,
+    AbstractModalComponent,
   ],
   imports: [
     CommonModule,

@@ -3,19 +3,22 @@ import { DragonDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
+import { AbstractModalComponent } from '../abstract-modal/abstract-modal.component';
 
 @Component({
   selector: 'app-dragon-choice-modal',
   templateUrl: './dragon-choice-modal.component.html',
-  styleUrls: ['./dragon-choice-modal.component.scss']
+  styleUrls: [
+    './dragon-choice-modal.component.scss',
+    '../abstract-modal/abstract-modal.component.scss',
+  ],
 })
-export class DragonChoiceModalComponent implements OnInit {
+export class DragonChoiceModalComponent extends AbstractModalComponent implements OnInit {
 
   @Input() title?: string;
   @Input() message?: string;
   @Input() dragons!: DragonDto[];
   @Input() level!: number;
-  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dragonSelected: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
   displayDragons!: DisplayDragon[];
@@ -23,7 +26,9 @@ export class DragonChoiceModalComponent implements OnInit {
   constructor(
     private toastService: ToastService,
     private dragonService: DragonService,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.title = this.title ?? 'explore.selectDragon';
@@ -31,10 +36,6 @@ export class DragonChoiceModalComponent implements OnInit {
     this.level = this.level ?? 0;
 
     this.displayDragons = this.dragons.map(x => this.dragonService.toDisplayDragon(x));
-  }
-
-  closeModal() {
-    this.close.next(true);
   }
 
   chooseDragon(dragon: DragonDto) {

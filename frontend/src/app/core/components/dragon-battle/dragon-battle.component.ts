@@ -7,7 +7,10 @@ import { DragonService } from '../../services/dragons.service';
 @Component({
   selector: 'app-dragon-battle',
   templateUrl: './dragon-battle.component.html',
-  styleUrls: ['./dragon-battle.component.scss'],
+  styleUrls: [
+    './dragon-battle.component.scss',
+    '../abstract-modal/abstract-modal.component.scss',
+  ],
 })
 export class DragonBattleComponent implements OnInit {
 
@@ -17,7 +20,6 @@ export class DragonBattleComponent implements OnInit {
 
   ownedDisplayDragon!: DisplayDragon;
   enemyDisplayDragon!: DisplayDragon;
-
   battleLoading?: boolean;
   battleResult?: BattleResultDto;
 
