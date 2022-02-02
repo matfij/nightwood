@@ -13,11 +13,13 @@ import { DragonChoiceModalComponent } from './components/dragon-choice-modal/dra
 import { DragonBattleComponent } from './components/dragon-battle/dragon-battle.component';
 import { DragonDetailsComponent } from './components/dragon-details/dragon-details.component';
 import { AbstractModalComponent } from './components/abstract-modal/abstract-modal.component';
+import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
 
 const COMPONENTS = [
   NavigationBarComponent,
   LoadingIndicatorComponent,
   InputBaseComponent,
+  ConfirmModalComponent,
   DragonPreviewComponent,
   DragonDetailsComponent,
   DragonChoiceModalComponent,

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DragonController, DragonDto } from 'src/app/client/api';
+import { ActionController, DragonController, DragonDto } from 'src/app/client/api';
+import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
   selector: 'app-my-dragons',
@@ -14,7 +15,9 @@ export class MyDragonsComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private actionController: ActionController,
     private dragonController: DragonController,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +35,15 @@ export class MyDragonsComponent implements OnInit {
 
   navigateAdopt() {
     this.router.navigate(['game', 'adopt-dragon']);
+  }
+
+  release(dragonId: number) {
+    this.dragonsLoading = true;
+    this.actionController.releaseDragon(dragonId.toString()).subscribe(() => {
+      this.dragonsLoading = false;
+      this.toastService.showSuccess('common.success', 'dragon.dragonReleased');
+      this.ownedDragons = this.ownedDragons.filter(dragon => dragon.id !== dragonId);
+    }, () => this.dragonsLoading = false);
   }
 
 }

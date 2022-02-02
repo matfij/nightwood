@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionController, DragonController, FeedDragonDto, ItemController, ItemDto } from 'src/app/client/api';
+import { ActionController, FeedDragonDto, ItemController } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DateService } from '../../../common/services/date.service';
 import { DragonService } from '../../services/dragons.service';
@@ -16,13 +16,15 @@ import { ToastService } from 'src/app/common/services/toast.service';
 export class DragonPreviewComponent implements OnInit {
 
   @Input() dragon?: DisplayDragon;
+  @Output() release: EventEmitter<number> = new EventEmitter<number>();
 
   feedAvailable: boolean = false;
-  showFeedModal: boolean = false;
+  displayFeedModal: boolean = false;
   foodLoading: boolean = false;
   availableFood: DisplayItem[] = [];
   feedLoading: boolean = false;
   displayDetails: boolean = false;
+  displayReleaseModal: boolean = false;
 
   constructor(
     private router: Router,
@@ -44,7 +46,7 @@ export class DragonPreviewComponent implements OnInit {
   prepareFeedModal() {
     if (this.feedAvailable) {
       this.getAvailableFoods();
-      this.showFeedModal = true;
+      this.displayFeedModal = true;
     }
   }
 
@@ -68,7 +70,7 @@ export class DragonPreviewComponent implements OnInit {
     this.feedLoading = true;
     this.actionController.feedDragon(dto).subscribe(fedDragon => {
       this.feedLoading = false;
-      this.showFeedModal = false;
+      this.displayFeedModal = false;
       this.feedAvailable = false;
       this.toastService.showSuccess('dragon.feedSuccess', 'dragon.feedSuccessHint')
       this.dragon = Object.assign(this.dragon, fedDragon);
@@ -81,6 +83,11 @@ export class DragonPreviewComponent implements OnInit {
 
   navigateArena(dragonId: number) {
     this.router.navigate(['game', 'arena', dragonId]);
+  }
+
+  onRelease(dragonId: number) {
+    this.displayReleaseModal = false;
+    this.release.next(dragonId);
   }
 
 }

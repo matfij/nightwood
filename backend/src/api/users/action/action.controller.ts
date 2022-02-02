@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards, Request, Param } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
 import { ExpeditionReportDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
@@ -45,4 +45,9 @@ export class ActionController {
       return this.actionEventService.checkExpeditions(req.user);
     }
 
+    @Post('releaseDragon/:id')
+    @ApiOkResponse()
+    releaseDragon(@Request() req: AuthorizedRequest, @Param('id') id: string) {
+      return this.actionDragonService.release(req.user, +id);
+    }
 }

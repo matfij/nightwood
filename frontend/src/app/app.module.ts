@@ -8,13 +8,12 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-import { DEFAULT_LANG, STORAGE_PREFIX } from './core/configuration';
+import { DEFAULT_LANG } from './core/configuration';
 import { AuthInterceptor } from './client/interceptors/auth.interceptor';
 import { environment } from 'src/environments/environment';
 import { API_BASE_URL } from './client/api';
 import { ErrorInterceptor } from './client/interceptors/error.interceptor';
 import { SocketIoModule } from 'ngx-socket-io';
-import { ACCESS_TOKEN } from './common/services/store.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);

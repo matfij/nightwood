@@ -1,4 +1,4 @@
-<div *ngIf="showFeedModal && dragon" class="container-modal">
+<div *ngIf="displayFeedModal && dragon" class="container-modal">
   <div *ngIf="feedLoading" class="mb-5">
     <app-loading-indicator></app-loading-indicator>
   </div>
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <button (click)="showFeedModal = false" class="btn-base">
+    <button (click)="displayFeedModal = false" class="btn-base">
       {{ 'common.cancel' | translate }}
     </button>
   </div>
@@ -58,6 +58,9 @@
     <button (click)="displayDetails = true" class="btn-base btn-action">
       {{ 'common.details' | translate }}
     </button>
+    <button (click)="displayReleaseModal = true" class="btn-base btn-action no-mobile">
+      {{ 'dragon.release' | translate }}
+    </button>
   </div>
 
 </div>
@@ -67,3 +70,11 @@
   [dragon]="dragon"
   (close)="displayDetails = false">
 </app-dragon-details>
+
+<app-confirm-modal
+  *ngIf="displayReleaseModal && dragon"
+  [title]="'dragon.releaseTitle' | translate:{dragon: dragon.name}"
+  message="dragon.releaseMessage"
+  (confirm)="onRelease(dragon.id)"
+  (close)="displayReleaseModal = false">
+</app-confirm-modal>

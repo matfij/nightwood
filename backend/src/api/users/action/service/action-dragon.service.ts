@@ -1,16 +1,21 @@
 import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { AdoptDragonDto } from "src/api/dragons/dragon/model/dto/adopt-dragon.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { FeedDragonDto } from "src/api/dragons/dragon/model/dto/feed-dragon.dto";
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
+import { Repository } from "typeorm";
 import { UserDto } from "../../user/model/dto/user.dto";
+import { User } from "../../user/model/user.entity";
 import { UserService } from "../../user/service/user.service";
 
 @Injectable()
 export class ActionDragonService {
 
     constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
         private userService: UserService,
         private dragonService: DragonService,
         private itemService: ItemService,
@@ -32,5 +37,12 @@ export class ActionDragonService {
         const fedDragon = await this.dragonService.feedDragon(item, dragon);
 
         return fedDragon;
+    }
+
+    async release(user: UserDto, dragonId: number): Promise<void> {
+        this.dragonService.release(user.id, dragonId);
+
+        user.ownedDragons -= 1;
+        this.userRepository.update(user.id, { ownedDragons: user.ownedDragons });
     }
 }

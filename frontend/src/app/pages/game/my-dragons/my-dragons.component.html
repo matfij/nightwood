@@ -9,7 +9,10 @@
 
     <div *ngIf="!dragonsLoading" class="wrapper-dragons">
       <div *ngFor="let dragon of ownedDragons">
-        <app-dragon-preview [dragon]="dragon"></app-dragon-preview>
+        <app-dragon-preview
+          [dragon]="dragon"
+          (release)="release($event)">
+        </app-dragon-preview>
       </div>
     </div>
 

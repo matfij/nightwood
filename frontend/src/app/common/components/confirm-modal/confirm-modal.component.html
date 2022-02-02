@@ -1,0 +1,13 @@
+<div class="container-modal">
+
+  <div class="title">{{ title | translate}}</div>
+  <div>{{ message | translate }}</div>
+
+  <button (click)="onConfirm()" class="btn-base">
+    {{ confirmText | translate }}
+  </button>
+  <button (click)="closeModal()" class="btn-base">
+    {{ cancelText | translate }}
+  </button>
+
+</div>

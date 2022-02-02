@@ -7,7 +7,7 @@ import { AdoptDragonDto } from '../model/dto/adopt-dragon.dto';
 import { DragonDto } from '../model/dto/dragon.dto';
 import { GetDragonDto } from '../model/dto/get-dragon.dto';
 import { PageDragonDto } from '../model/dto/page-dragon.dto';
-import { DEFAULT_STAMINA, FEED_INTERVAL, GET_ALL_RELATIONS, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
+import { DEFAULT_STAMINA, FEED_INTERVAL, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
 import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
@@ -180,6 +180,12 @@ export class DragonService {
             result: partialResult.result,
         }
         return battleResult;
+    }
+
+    async release(ownerId: number, dragonId: number | string): Promise<void> {
+        const dragon = await this.checkDragon(ownerId, +dragonId);
+
+        await this.dragonRepository.update(dragon.id, { ownerId: null });
     }
 
 }

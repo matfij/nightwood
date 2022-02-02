@@ -9,7 +9,8 @@
     "information": "Information",
     "next": "Next",
     "prev": "Prev",
-    "details": "Details"
+    "details": "Details",
+    "confirm": "Confirm"
   },
   "enums": {
     "itemType": {
@@ -120,6 +121,10 @@
     "feed": "Feed",
     "explore": "Explore",
     "battle": "Battle",
+    "release": "Release",
+    "releaseTitle": "Release {{ dragon }}",
+    "releaseMessage": "Do you really ant to release your dragon? This decision is permanent.",
+    "dragonReleased": "Dragon released.",
     "noOwnedDragons": "You don't own any dragon",
     "adoptFirstDragon": "Adopt your first dragon",
     "chooseFoodHint": "The choice of a meal can influence the development of dragon attributes",
