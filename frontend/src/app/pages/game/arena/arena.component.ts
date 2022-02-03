@@ -63,8 +63,8 @@ export class ArenaComponent implements OnInit {
     const dto: GetDragonDto = {
       page: this.enemyDragonPage,
       limit: this.enemyDragonLimit,
-      minLevel: minLevel,
-      maxLevel: maxLevel,
+      minLevel: minLevel ?? 1,
+      maxLevel: maxLevel ?? 9999,
     };
     this.enemyDragonsLoading = true;
     this.dragonController.getAll(dto).subscribe(dragonPage => {

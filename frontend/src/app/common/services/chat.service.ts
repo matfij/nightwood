@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { ChatMessage, ChatMode } from '../definitions/chat';
 import { AuthSocket } from '../utils/auth-socket';
@@ -26,5 +25,3 @@ export class ChatService {
     this.socket.disconnect();
   }
 }
-
-

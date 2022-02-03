@@ -10,7 +10,8 @@
     "next": "Next",
     "prev": "Prev",
     "details": "Details",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "auto": "Auto"
   },
   "enums": {
     "itemType": {

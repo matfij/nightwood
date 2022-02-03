@@ -16,12 +16,12 @@
     <div *ngIf="battleLoading" class="m-5">
       <app-loading-indicator></app-loading-indicator>
     </div>
-    <div *ngIf="!battleLoading && battleResult" #battleLogsWrapper class="wrapper-logs mt-4">
-      <div *ngFor="let log of battleResult.logs" class="item-log" >
-        <div [innerHTML]="log"></div>
+    <div *ngIf="!battleLoading && battleLogs" #battleLogsWrapper class="wrapper-logs mt-4">
+      <div *ngFor="let log of battleLogs" class="item-log">
+        <div @fadeIn [innerHTML]="log"></div>
       </div>
       <br>
-      <b [innerHtml]="battleResult.result"></b>
+      <b *ngIf="battleResult" [innerHtml]="battleResult"></b>
     </div>
 
     <div class="wrapper-dragon dragon-enemy">
@@ -30,8 +30,13 @@
     </div>
   </div>
 
-  <button (click)="closeModal()" class="btn-base mt-5">
-    {{ 'common.close' | translate }}
-  </button>
+  <div>
+    <button *ngIf="!battleResult" (click)="onAuto()" class="btn-base mt-5">
+      {{ 'common.auto' | translate }}
+    </button>
+    <button *ngIf="battleResult" (click)="closeModal()" class="btn-base mt-5">
+      {{ 'common.close' | translate }}
+    </button>
+  </div>
 
 </div>

@@ -1,6 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { timer } from 'rxjs';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Subject, timer } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { BattleResultDto, DragonController, DragonDto, StartBattleDto } from 'src/app/client/api';
+import { FADE_IN } from 'src/app/common/utils/animations';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 
@@ -11,8 +13,9 @@ import { DragonService } from '../../services/dragons.service';
     './dragon-battle.component.scss',
     '../abstract-modal/abstract-modal.component.scss',
   ],
+  animations: [FADE_IN],
 })
-export class DragonBattleComponent implements OnInit {
+export class DragonBattleComponent implements OnInit, OnDestroy {
 
   @Input() ownedDragon!: DragonDto;
   @Input() enemyDragon!: DragonDto;
@@ -20,19 +23,21 @@ export class DragonBattleComponent implements OnInit {
 
   ownedDisplayDragon!: DisplayDragon;
   enemyDisplayDragon!: DisplayDragon;
-  battleLoading?: boolean;
-  battleResult?: BattleResultDto;
+  battleLoading: boolean = false;
+  battleData?: BattleResultDto;
+  battleLogs: string[] = [];
+  battleResult?: string;
+  isAutoBattle: Subject<boolean> = new Subject<boolean>();
 
   @ViewChild('battleLogsWrapper') battleLogsWrapper?: ElementRef;
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private dragonController: DragonController,
     private dragonService: DragonService,
   ) {}
 
   ngOnInit(): void {
-    this.battleLoading = false;
-
     if (!this.ownedDragon || !this.enemyDragon) { this.closeModal(); return; }
 
     this.ownedDisplayDragon = this.dragonService.toDisplayDragon(this.ownedDragon);
@@ -42,7 +47,7 @@ export class DragonBattleComponent implements OnInit {
   }
 
   closeModal() {
-    this.updatedDragon.next(this.battleResult?.ownedDragon);
+    this.updatedDragon.next(this.battleData?.ownedDragon);
   }
 
   startBattle() {
@@ -55,14 +60,38 @@ export class DragonBattleComponent implements OnInit {
     this.battleLoading = true;
     this.dragonController.startBattle(dto).subscribe(result => {
       this.battleLoading = false;
-      this.battleResult = result;
+      this.battleData = result;
 
-      timer(0).subscribe(() => {
-        if (this.battleLogsWrapper) {
-          this.battleLogsWrapper.nativeElement.scrollTop = this.battleLogsWrapper.nativeElement.scrollHeight;
+      timer(0, 500).pipe(take(result.logs.length), takeUntil(this.isAutoBattle)).subscribe(ind => {
+        this.battleLogs?.push(result.logs[ind]);
+        this.changeDetectorRef.detectChanges();
+        if (ind === result.logs.length - 1) {
+          this.battleResult = result.result;
         }
+        this.scrollLogs();
       });
     }, () => this.battleLoading = false);
+  }
+
+  onAuto() {
+    if (this.battleData) {
+      this.isAutoBattle.next(true);
+      this.battleLogs = this.battleData.logs;
+      this.battleResult = this.battleData.result;
+      this.scrollLogs();
+    }
+  }
+
+  scrollLogs() {
+    timer(0).subscribe(() => {
+      if (this.battleLogsWrapper) {
+        this.battleLogsWrapper.nativeElement.scrollTop = this.battleLogsWrapper.nativeElement.scrollHeight;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.isAutoBattle.complete();
   }
 
 }
