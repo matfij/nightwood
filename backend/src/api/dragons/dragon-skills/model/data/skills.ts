@@ -20,7 +20,7 @@ export const InnerFlow: Skill = {
 }
 
 /**
- * Increase creitical strike chance
+ * Increase critical strike chance
  */
 export const LuckyStrike: Skill = {
     name: 'LuckyStrike',

@@ -1087,6 +1087,7 @@ export class DragonActionController implements IDragonActionController {
 
 export interface IDragonSkillsController {
     getSkills(body: GetSkillsDto): Observable<SkillDto[]>;
+    learnSkill(): Observable<DragonSkillsDto>;
 }
 
 @Injectable({
@@ -1152,6 +1153,53 @@ export class DragonSkillsController implements IDragonSkillsController {
         }
         return _observableOf<SkillDto[]>(<any>null);
     }
+
+    learnSkill(): Observable<DragonSkillsDto> {
+        let url_ = this.baseUrl + "/api/v1/dragonSkills/learnSkill";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLearnSkill(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLearnSkill(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonSkillsDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonSkillsDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processLearnSkill(response: HttpResponseBase): Observable<DragonSkillsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonSkillsDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonSkillsDto>(<any>null);
+    }
 }
 
 export enum DragonNature {
@@ -1182,6 +1230,15 @@ export interface DragonActionDto {
 
 export interface DragonSkillsDto {
     id: number;
+    innateSpeed: number;
+    innerFlow: number;
+    luckyStrike: number;
+    greatVigor: number;
+    thoughtfulStrike: number;
+    fireBreath: number;
+    soundBody: number;
+    pugnaciousStrike: number;
+    roughSkin: number;
 }
 
 export interface DragonDto {

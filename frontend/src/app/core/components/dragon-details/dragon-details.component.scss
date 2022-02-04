@@ -1,10 +1,50 @@
 @import "../../theme/mixins.scss";
 @import "../../theme/variables.scss";
 
+[tooltip] {
+  position: relative;
+}
+
+.item-tooltip {
+  @include tile($app-primary);
+
+  width: clamp(200px, 100%, 400px);
+  position: absolute;
+  bottom: 110%;
+  left: -50%;
+
+  padding: 8px;
+  z-index: 1000;
+  color: $app-light;
+  background: darken($app-dark, 10);
+}
+
+.container-modal {
+  display: block;
+}
+
+.wrapper-skills {
+  width: 90%;
+  max-width: 800px;
+  margin: 0px auto;
+
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
 
 .item-skill {
+  letter-spacing: 1px;
 
   img {
     max-width: 50px;
+  }
+}
+
+.item-skill-hint {
+
+  p {
+    line-height: 1;
+    font-size: 16px !important;
   }
 }

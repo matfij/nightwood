@@ -14,6 +14,7 @@ import { DragonBattleComponent } from './components/dragon-battle/dragon-battle.
 import { DragonDetailsComponent } from './components/dragon-details/dragon-details.component';
 import { AbstractModalComponent } from './components/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
+import { TooltipDirective } from '../common/utils/tooltip.directive';
 
 const COMPONENTS = [
   NavigationBarComponent,
@@ -34,6 +35,9 @@ const MODULES = [
   TranslateModule.forChild(),
   NgbModule,
 ];
+const UTILS = [
+  TooltipDirective,
+];
 const CHILD_PROVIDERS = [
   ...(TranslateModule.forChild().providers ?? []),
 ];
@@ -41,6 +45,7 @@ const CHILD_PROVIDERS = [
 @NgModule({
   declarations: [
     ...COMPONENTS,
+    ...UTILS,
     AbstractModalComponent,
   ],
   imports: [
@@ -51,6 +56,7 @@ const CHILD_PROVIDERS = [
   exports: [
     MODULES,
     ...COMPONENTS,
+    ...UTILS,
   ],
 })
 export class CoreModule {

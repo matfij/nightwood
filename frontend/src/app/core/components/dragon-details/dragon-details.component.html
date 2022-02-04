@@ -9,8 +9,20 @@
 
   <div class="wrapper-skills">
     <div *ngFor="let skill of obtainableSkills" class="item-skill">
-      <img [src]="skill.image" [alt]="skill.displayName">
-      {{ skill.displayName }}
+      <div tooltip>
+        <ng-template #tooltipTemplate>
+          <div (click)="skill.displayHint = !skill.displayHint" (mouseout)="skill.displayHint = false" class="item-tooltip item-skill-hint">
+            <h5>{{ skill.displayName | translate }}</h5>
+            <p>{{ skill.hint }}</p>
+            <p>{{ 'dragon.requiredLevel' | translate }}: {{ skill.level }}</p>
+          </div>
+        </ng-template>
+
+        <img [src]="skill.image" [alt]="skill.displayName">
+      </div>
+
+      <div>{{ getSkillProgress(skill.name) }}</div>
+      <div class="primary">➕</div>
     </div>
   </div>
 

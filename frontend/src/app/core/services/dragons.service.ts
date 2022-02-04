@@ -60,12 +60,15 @@ export class DragonService {
 
   toDisplaySkill(skill: SkillDto): DisplaySkill {
     const image = `${this.BASE_SKILL_IMG_PATH}/${skill.name}.${this.EXTENSION}`;
-    const displayName = this.translateService.instant(`dragonSkills.${skill.name}`);
+    const name = this.translateService.instant(`dragonSkills.${skill.name}`);
+    const hint = this.translateService.instant(`dragonSkills.${skill.name}Hint`);
 
     return {
       ...skill,
       image: image,
-      displayName: displayName,
+      displayName: name,
+      hint: hint,
+      displayHint: false,
     };
   }
 

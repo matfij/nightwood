@@ -133,18 +133,30 @@
     "feedSuccessHint": "Stamina restored, some attributes have changed",
     "actionNone": "---",
     "actionExpedition": "Expedition",
-    "actionTraining": "Training"
+    "actionTraining": "Training",
+    "requiredLevel": "Required level"
   },
   "dragonSkills": {
     "InnateSpeed": "Innate speed",
+    "InnateSpeedHint": "Increases dragon speed",
     "InnerFlow": "Inner flow",
+    "InnerFlowHint": "Increases maximum mana and mana regenerations",
     "LuckyStrike": "Lucky strike",
+    "LuckyStrikeHint": "Increases critical strike chance",
     "GreatVigor": "Great vigor",
+    "GreatVigorHint": "Increases maximum health",
     "ThoughtfulStrike": "Thoughtful strike",
+    "ThoughtfulStrikeHint": "Decreases enemy dodge chance",
+    "BeginnersLuck": "Beginner's luck",
+    "BeginnersLuckHint": "Increases expedition loots",
     "FireBreath": "Fire breath",
+    "FireBreathHint": "Attack has additional damage component",
     "SoundBody": "Sound body",
+    "SoundBodyHint": "Grants consecutive health regeneration",
     "PugnaciousStrike": "Pugnacious strike",
-    "RoughSkin": "Rough skin"
+    "PugnaciousStrikeHint": "Attacks breaks enemy's armor",
+    "RoughSkin": "Rough skin",
+    "RoughSkinHint": "Reflect part of the received damage back to the attacker"
   },
   "arena": {
     "dragon": "Dragon",

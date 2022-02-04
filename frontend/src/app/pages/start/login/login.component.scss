@@ -18,10 +18,17 @@
   img {
     @include size(100%);
 
-    &:hover {
-      transform: rotate(360deg);
-      transition: transform 0.76s;
-    }
+    animation: color-rotate 3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes color-rotate {
+  from {
+    filter: hue-rotate(0deg);
+  } to {
+    filter: hue-rotate(360deg);
   }
 }
 
