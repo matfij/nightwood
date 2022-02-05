@@ -19,6 +19,7 @@ import { DragonBattleService } from './dragon-battle.service';
 import { MathService } from 'src/common/services/math.service';
 import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
+import { LearnskillDto } from '../../dragon-skills/model/dto/learn-skill.dto';
 
 @Injectable()
 export class DragonService {
@@ -129,6 +130,7 @@ export class DragonService {
             }
         };
         dragon.level += 1;
+        dragon.skillPoints += 1;
         dragon.nextFeed = Date.now() + FEED_INTERVAL;
 
         dragon.stamina = DEFAULT_STAMINA;
@@ -187,5 +189,13 @@ export class DragonService {
 
         await this.dragonRepository.update(dragon.id, { ownerId: null });
     }
+
+    async learnSkill(ownerId: number, dto: LearnskillDto): Promise<DragonDto> {
+        const dragon = await this.checkDragon(ownerId, dto.dragonId);
+
+        const updatedDragon = await this.dragonSkillsService.learnSkill(dto.skillName, dragon);
+        await this.dragonRepository.update(dragon.id, { skillPoints: updatedDragon.skillPoints });
+        return updatedDragon;
+    } 
 
 }

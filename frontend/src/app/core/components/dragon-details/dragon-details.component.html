@@ -1,8 +1,7 @@
-<div *ngIf="dragon" class="container-modal">
+<div *ngIf="dragon && !skillsLoading" class="container-modal">
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
-  <div>{{ dragon.experience }} {{ 'dragon.experience' | translate }}</div>
-  <div>{{ dragon.stamina }} {{ 'dragon.stamina' | translate }}</div>
+  <div>{{ dragon.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
 
   <img [src]="dragon.image" [alt]="dragon.name">
 
@@ -21,13 +20,25 @@
         <img [src]="skill.image" [alt]="skill.displayName">
       </div>
 
-      <div>{{ getSkillProgress(skill.name) }}</div>
-      <div class="primary">➕</div>
+      <div class="item-skill-info">
+        {{ getSkillProgress(skill.name) }}
+        <button
+          *ngIf="dragon.skillPoints > 0 && canLearn(skill.name)"
+          (click)="learnSkill(skill.name)"
+          [disabled]="learnSkillLoading"
+          class="btn-learn-skill">
+          +
+        </button>
+      </div>
     </div>
   </div>
 
-  <button (click)="closeModal()" class="btn-base">
+  <button (click)="closeModal()" [disabled]="learnSkillLoading" class="btn-base mt-5">
     {{ 'common.close' | translate }}
   </button>
 
+</div>
+
+<div *ngIf="skillsLoading" class="container-modal">
+  <app-loading-indicator></app-loading-indicator>
 </div>

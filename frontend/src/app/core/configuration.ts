@@ -33,3 +33,5 @@ export const DRAGON_MAX_EGG_LEVEL = 5;
 export const DRAGON_MAX_KID_LEVEL = 15;
 export const DRAGON_MAX_ADULT_LEVEL = 50;
 export const DRAGON_MAX_SAGE_LEVEL = Infinity;
+
+export const DRAGON_SKILL_LIMIT = 25;

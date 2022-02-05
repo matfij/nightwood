@@ -71,7 +71,11 @@
     "expeditionNotFinished": "Expedition is not finished",
     "expeditionAwardCollected": "Awards were already collected",
     "battleItself": "Dragon cannot fight itself",
-    "noStamina": "Selected dragon is too tired"
+    "noStamina": "Selected dragon is too tired",
+    "insufficientSkillPoints": "Insufficient skill points",
+    "natureMismatch": "Selected dragon ha a non-matching nature",
+    "skillNotFound": "Skill not found",
+    "skillLimitReached": "Skill limit reached"
   },
   "game": {
     "home": "Home",
@@ -108,6 +112,7 @@
     "nature": "Nature",
     "stamina": "Stamina",
     "experience": "Experience",
+    "skillPoints": "Skill points",
     "strength": "Strength",
     "strengthHint": "Strength has impact on the dragon's physical capabilities",
     "dexterity": "Dexterity",

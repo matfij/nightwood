@@ -1,24 +1,6 @@
 @import "../../theme/mixins.scss";
 @import "../../theme/variables.scss";
 
-[tooltip] {
-  position: relative;
-}
-
-.item-tooltip {
-  @include tile($app-primary);
-
-  width: clamp(200px, 100%, 400px);
-  position: absolute;
-  bottom: 110%;
-  left: -50%;
-
-  padding: 8px;
-  z-index: 1000;
-  color: $app-light;
-  background: darken($app-dark, 10);
-}
-
 .container-modal {
   display: block;
 }
@@ -29,16 +11,27 @@
   margin: 0px auto;
 
   display: flex;
-  gap: 10px;
+  gap: 20px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .item-skill {
+  width: 80px;
   letter-spacing: 1px;
 
   img {
-    max-width: 50px;
+    max-width: 60px;
   }
+}
+
+.item-skill-info {
+  width: 80px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .item-skill-hint {
@@ -46,5 +39,21 @@
   p {
     line-height: 1;
     font-size: 16px !important;
+  }
+}
+
+.btn-learn-skill {
+  height: 20px;
+  width: 25px;
+  margin-top: -45px;
+
+  color: $app-primary;
+  font-size: 36px;
+  font-weight: 700;
+  border: none;
+  background: none;
+
+  &:hover {
+    color: lighten($app-primary, 10);
   }
 }

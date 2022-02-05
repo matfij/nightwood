@@ -754,6 +754,7 @@ export interface IDragonController {
     getAll(body: GetDragonDto): Observable<PageDragonDto>;
     getOwned(): Observable<DragonDto[]>;
     startBattle(body: StartBattleDto): Observable<BattleResultDto>;
+    learnSkill(body: LearnskillDto): Observable<DragonDto>;
 }
 
 @Injectable({
@@ -1018,6 +1019,57 @@ export class DragonController implements IDragonController {
         }
         return _observableOf<BattleResultDto>(<any>null);
     }
+
+    learnSkill(body: LearnskillDto): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/dragon/learnSkill";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLearnSkill(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLearnSkill(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processLearnSkill(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
 }
 
 export interface IDragonActionController {
@@ -1087,7 +1139,6 @@ export class DragonActionController implements IDragonActionController {
 
 export interface IDragonSkillsController {
     getSkills(body: GetSkillsDto): Observable<SkillDto[]>;
-    learnSkill(): Observable<DragonSkillsDto>;
 }
 
 @Injectable({
@@ -1153,53 +1204,6 @@ export class DragonSkillsController implements IDragonSkillsController {
         }
         return _observableOf<SkillDto[]>(<any>null);
     }
-
-    learnSkill(): Observable<DragonSkillsDto> {
-        let url_ = this.baseUrl + "/api/v1/dragonSkills/learnSkill";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processLearnSkill(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processLearnSkill(<any>response_);
-                } catch (e) {
-                    return <Observable<DragonSkillsDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<DragonSkillsDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processLearnSkill(response: HttpResponseBase): Observable<DragonSkillsDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <DragonSkillsDto>JSON.parse(_responseText, this.jsonParseReviver);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<DragonSkillsDto>(<any>null);
-    }
 }
 
 export enum DragonNature {
@@ -1247,6 +1251,7 @@ export interface DragonDto {
     ownerId?: number;
     action: DragonActionDto;
     skills: DragonSkillsDto;
+    skillPoints: number;
     nextFeed: number;
     nature: DragonNature;
     level: number;
@@ -1421,6 +1426,7 @@ export interface BattleDragon {
     ownerId?: number;
     action: DragonActionDto;
     skills: DragonSkillsDto;
+    skillPoints: number;
     nextFeed: number;
     nature: DragonNature;
     level: number;
@@ -1444,6 +1450,11 @@ export interface BattleResultDto {
     enemyDragon: BattleDragon;
     logs: string[];
     result: string;
+}
+
+export interface LearnskillDto {
+    dragonId: number;
+    skillName: string;
 }
 
 export interface ExpeditionDto {

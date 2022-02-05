@@ -6,6 +6,8 @@ export const DEFAULT_LEVEL = 1;
 export const DEFAULT_EXPERIENCE = 0;
 export const DEFAULT_ATTRIBUTE_POINTS = 1;
 
+export const SKILL_POINTS_LIMIT = 25;
+
 /**
  * DB Operations
  */

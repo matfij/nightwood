@@ -20,10 +20,4 @@ export class DragonSkillsController {
     getSkills(@Body() dto: GetSkillsDto): Promise<SkillDto[]> {
       return this.dragonSkillsService.getSkills(dto);
     }
-
-    @Post('learnSkill')
-    @ApiOkResponse({ type: DragonSkillsDto })
-    learnSkill(): Promise<DragonSkillsDto> {
-      return null;
-    }
 }

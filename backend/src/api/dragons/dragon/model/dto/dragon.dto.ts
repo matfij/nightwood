@@ -28,6 +28,10 @@ export class DragonDto {
 
     @Expose()
     @ApiProperty()
+    skillPoints: number;
+
+    @Expose()
+    @ApiProperty()
     nextFeed: number;
 
     @Expose()

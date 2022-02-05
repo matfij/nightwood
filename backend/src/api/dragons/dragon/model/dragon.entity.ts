@@ -24,6 +24,9 @@ export class Dragon {
     @JoinColumn()
     skills: DragonSkills;
 
+    @Column({ default: 0 })
+    skillPoints: number;
+
     @Column({ default: 0, type: 'int8' })
     nextFeed: number;
 

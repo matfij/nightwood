@@ -131,6 +131,24 @@ img::selection {
   color: $app-dark;
 }
 
+[tooltip] {
+  position: relative;
+}
+
+.item-tooltip {
+  @include tile($app-primary);
+
+  width: clamp(200px, 100%, 400px);
+  position: absolute;
+  bottom: 110%;
+  left: -50%;
+
+  padding: 8px;
+  z-index: 1000;
+  color: $app-light;
+  background: darken($app-dark, 10);
+}
+
 
 /**
  * Mobile version
