@@ -4,7 +4,13 @@ import { DragonDto } from "../dto/dragon.dto"
 export class BattleDragon extends DragonDto {
 
     @ApiProperty()
+    maxHealth: number;
+
+    @ApiProperty()
     health: number;
+
+    @ApiProperty()
+    maxMana: number;
 
     @ApiProperty()
     mana: number;
