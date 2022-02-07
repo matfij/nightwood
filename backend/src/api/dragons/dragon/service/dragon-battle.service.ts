@@ -96,16 +96,10 @@ export class DragonBattleService {
         let isCrit = false;
 
         /**
-         * Restore effects
+         * Preamptive restore effects
          */
         defender.mana += defender.skills.innerFlow;
         defender.initiative += defender.speed;
-
-        if (defender.skills.soundBody > 0 && defender.health < defender.maxHealth) {
-            let restoredHealth = 0.1 * defender.maxHealth * (1 + defender.skills.soundBody / 30);
-            defender.health += restoredHealth;
-            independentLogs.push(`<div class="log-status">${defender.name} restored ${restoredHealth.toFixed(1)} health.</div>`);
-        }
 
         /**
          * Dodge chance
@@ -169,6 +163,7 @@ export class DragonBattleService {
         /**
          * Defensive skills
          */
+
         if (defender.skills.roughSkin > 0) {
             const reflectedHit = baseHit * defender.skills.roughSkin / 60;
             attacker.health -= reflectedHit;
@@ -183,6 +178,16 @@ export class DragonBattleService {
                 for ${baseHit.toFixed(1)}`;
         extraLogs.forEach(extraLog => log += extraLog);
         log += `</div>`;
+
+        /**
+         * Post-movement effects
+         */
+        if (defender.skills.soundBody > 0 && defender.health < defender.maxHealth && defender.health > 0) {
+            let restoredHealth = 0.05 * defender.maxHealth * (1 + defender.skills.soundBody / 20);
+            defender.health += restoredHealth;
+            independentLogs.push(`<div class="item-log log-status">${defender.name} restored ${restoredHealth.toFixed(1)} health.</div>`);
+        }
+
         independentLogs.forEach(independentLog => log += independentLog);
 
         return { attacker: attacker, defender: defender, log: log };

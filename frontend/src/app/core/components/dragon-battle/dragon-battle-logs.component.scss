@@ -24,3 +24,16 @@
 .log-crit {
   font-weight: 500;
 }
+
+.log-extra {
+  padding-left: 8px;
+  font-size: 12px;
+}
+
+.log-status {
+  @include tile($app-secondary);
+
+  margin-top: 3px;
+  padding: 3px 18px;
+  font-size: 12px;
+}
