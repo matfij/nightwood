@@ -16,7 +16,7 @@
       <div #messagesWrapper class="wrapper-messages">
         <div *ngFor="let message of messages">
           <div *ngIf="message.mode === chatMode" class="item-message" [ngClass]="{'message-own': message.nickname === user.nickname}">
-            {{ message.nickname }} | {{ message.data }}
+            <b>{{ message.nickname }}</b> | {{ message.data }}
           </div>
         </div>
       </div>

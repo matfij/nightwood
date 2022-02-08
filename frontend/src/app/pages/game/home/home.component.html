@@ -18,17 +18,19 @@
       <div *ngIf="reportsLoading" class="mt-5">
         <app-loading-indicator></app-loading-indicator>
       </div>
-      <div *ngFor="let report of reports" class="report">
-        {{ report.generationDate | date:"HH:mm dd.MM.yyyy" }}
-        <div
-          [innerHtml]="'explore.expeditionReportDescription' | translate
-            :{ dragon: report.dragonName, expedition: report.expeditionName, experience: report.experience }">
+      <div class="reports-scroll">
+        <div *ngFor="let report of reports" class="report">
+          {{ report.generationDate | date:"HH:mm dd.MM.yyyy" }}
+          <div
+            [innerHtml]="'explore.expeditionReportDescription' | translate
+              :{ dragon: report.dragonName, expedition: report.expeditionName, experience: report.experience }">
+          </div>
+          <ul>
+            <li *ngFor="let loot of report.loots" class="loot color-{{loot.rarity}}">
+              {{ loot.name | translate }} ({{ loot.quantity }})
+            </li>
+          </ul>
         </div>
-        <ul>
-          <li *ngFor="let loot of report.loots" class="loot color-{{loot.rarity}}">
-            {{ loot.name | translate }} ({{ loot.quantity }})
-          </li>
-        </ul>
       </div>
     </div>
 

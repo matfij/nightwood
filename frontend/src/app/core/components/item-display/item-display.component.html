@@ -1,14 +1,13 @@
-<ng-template #tipContent>
-  <div class="{{ 'item-hint hint-'+displayItem.rarity }}">
-    <h5>{{ displayItem.displayName | translate }}</h5>
-    {{ 'inventory.type' | translate }}: {{ displayItem.typeName | translate }} <br>
-    {{ 'inventory.level' | translate }}: {{ displayItem.level }} <br>
-    {{ 'inventory.rarity' | translate }}: {{ displayItem.rarityName | translate }} <br>
-    {{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br>
-  </div>
-</ng-template>
+<div tooltip class="{{ 'container item-'+displayItem.rarity }}">
+  <ng-template #tooltipTemplate>
+    <div class="{{ 'item-tooltip item-hint hint-'+displayItem.rarity }}">
+      <h5>{{ displayItem.displayName | translate }}</h5>
+      {{ displayItem.rarityName | translate }} {{ displayItem.typeName | translate }}<br>
+      {{ 'inventory.level' | translate }}: {{ displayItem.level }} <br>
+      {{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br>
+    </div>
+  </ng-template>
 
-<div [ngbTooltip]="tipContent" class="{{ 'container item-'+displayItem.rarity }}">
   <div class="item">
     <img [src]="displayItem.image" [alt]="item.name">
   </div>

@@ -25,12 +25,15 @@
   }
 }
 
-.wrapper-reports {
+.reports-scroll {
+  max-height: 600px;
+  margin-top: 10px;
 
+  overflow: auto;
 }
 
 .report {
-  margin-top: 10px;
+  margin-bottom: 10px;
 
   padding: 10px;
   box-shadow: inset 1px 1px 12px 1px $app-primary;

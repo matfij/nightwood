@@ -1,6 +1,10 @@
 @import '../../../core/theme/variables.scss';
 
 
+.wrapper-content {
+  overflow-x: visible;
+}
+
 .wrapper-items {
   margin: 10px 1rem;
 

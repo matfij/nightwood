@@ -15,25 +15,23 @@
   }
 }
 
-.item-Common {
-  border: 2px solid darken($color: $app-common, $amount: 30);
-  box-shadow: inset 1px 1px 22px 1px darken($color: $app-common, $amount: 20);
+.item-Common, .hint-Common {
+  @include tile($app-common);
 }
-.item-Scarce {
-  border: 2px solid darken($color: $app-scarce, $amount: 30);
-  box-shadow: inset 1px 1px 22px 1px darken($color: $app-scarce, $amount: 20);
+.item-Scarce, .hint-Scarce {
+  @include tile($app-scarce);
 }
-.item-Rare {
-  border: 2px solid darken($color: $app-rare, $amount: 30);
-  box-shadow: inset 1px 1px 22px 1px darken($color: $app-rare, $amount: 20);
+.item-Rare, .hint-Rare {
+  @include tile($app-rare);
 }
-.item-Mythical {
-  border: 2px solid darken($color: $app-mythical, $amount: 30);
-  box-shadow: inset 1px 1px 22px 1px darken($color: $app-mythical, $amount: 20);
+.item-Mythical, .hint-Mythical {
+  @include tile($app-mythical);
 }
 
 .item-hint {
   text-align: left;
+  background: $app-dark;
+  border-radius: 4px;
 }
 
 .hint-Common {

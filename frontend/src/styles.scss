@@ -145,6 +145,7 @@ img::selection {
 
   padding: 8px;
   z-index: 1000;
+  overflow: visible;
   color: $app-light;
   background: darken($app-dark, 10);
 }

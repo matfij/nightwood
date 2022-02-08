@@ -10,7 +10,7 @@
     <div *ngFor="let skill of obtainableSkills" class="item-skill">
       <div tooltip>
         <ng-template #tooltipTemplate>
-          <div (click)="skill.displayHint = !skill.displayHint" (mouseout)="skill.displayHint = false" class="item-tooltip item-skill-hint">
+          <div class="item-tooltip item-skill-hint">
             <h5>{{ skill.displayName | translate }}</h5>
             <p>{{ skill.hint }}</p>
             <p>{{ 'dragon.requiredLevel' | translate }}: {{ skill.level }}</p>
