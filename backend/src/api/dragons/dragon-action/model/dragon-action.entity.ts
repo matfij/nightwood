@@ -1,3 +1,4 @@
+import { LONG_NUMBER_TYPE } from "src/configuration/app.config";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { DragonActionType } from "./definitions/dragon-action";
 
@@ -16,6 +17,6 @@ export class DragonAction {
     @Column({ default: false })
     awardCollected: boolean;
 
-    @Column({ default: 0, type: 'int8' })
+    @Column({ default: 0, type: LONG_NUMBER_TYPE })
     nextAction: number;
 }

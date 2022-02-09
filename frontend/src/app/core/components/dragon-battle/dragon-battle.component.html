@@ -9,7 +9,7 @@
 
   <div class="wrapper-battle">
     <div class="wrapper-dragon">
-      <img [src]="ownedDisplayDragon.image" [alt]="ownedDisplayDragon.name">
+      <img [src]="ownedDisplayDragon.image" [alt]="ownedDisplayDragon.name" draggable="false">
       {{ ownedDisplayDragon.name }} [{{ ownedDisplayDragon.level }}]
     </div>
 
@@ -25,7 +25,7 @@
     </div>
 
     <div class="wrapper-dragon dragon-enemy">
-      <img [src]="enemyDisplayDragon.image" [alt]="enemyDisplayDragon.name">
+      <img [src]="enemyDisplayDragon.image" [alt]="enemyDisplayDragon.name" draggable="false">
       {{ enemyDisplayDragon.name }} [{{ enemyDisplayDragon.level }}]
     </div>
   </div>

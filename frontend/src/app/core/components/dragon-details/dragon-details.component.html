@@ -3,7 +3,7 @@
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
   <div>{{ dragon.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
 
-  <img [src]="dragon.image" [alt]="dragon.name">
+  <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
 
 
   <div class="wrapper-skills">
@@ -17,7 +17,7 @@
           </div>
         </ng-template>
 
-        <img [src]="skill.image" [alt]="skill.displayName">
+        <img [src]="skill.image" [alt]="skill.displayName" draggable="false">
       </div>
 
       <div class="item-skill-info">

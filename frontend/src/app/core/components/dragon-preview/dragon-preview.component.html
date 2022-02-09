@@ -31,7 +31,7 @@
     <div style="font-size: 14px; font-weight: 300;">{{ 'dragon.experience' | translate }}: {{ dragon.experience }}</div>
 
     <div class="wrapper-image">
-      <img [src]="dragon.image" alt="fire dragon">
+      <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
     </div>
   </div>
 

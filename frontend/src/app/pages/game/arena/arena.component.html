@@ -24,7 +24,7 @@
         [ngClass]="{'item-selected': dragon.id === selectedOwnedDragon!.id}"
         (click)="selectedOwnedDragon = dragon"
         class="item-dragon-owned">
-          <img [src]="dragon.image" [alt]="dragon.name">
+          <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
           <div style="text-align: left;">
             {{ dragon.name }} [{{ dragon.level }}]
             <div style="font-size: 14px;">

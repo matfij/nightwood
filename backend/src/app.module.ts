@@ -9,6 +9,7 @@ import { ItemModule } from './api/items/item/item.module';
 import { ActionModule } from './api/users/action/action.module';
 import { ChatModule } from './api/users/chat/chat.module';
 import { DragonSkillsModule } from './api/dragons/dragon-skills/dragon-skills.module';
+import { AuctionModule } from './api/items/auction/auction.module';
 
 const API_MODULES = [
   ActionModule,
@@ -33,6 +34,7 @@ const API_MODULES = [
       synchronize: true,
     }),
     ChatModule,
+    AuctionModule,
   ],
   controllers: [],
 })
