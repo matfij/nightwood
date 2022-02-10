@@ -4,8 +4,16 @@ import { Injectable } from "@nestjs/common";
 export class DateService {
 
     checkIfEventAvailable(nextEvent: number): boolean {
-        const todayMillis = Date.now();
+        const currentMillis = Date.now();
 
-        return todayMillis > nextEvent;
+        return currentMillis > nextEvent;
+    }
+
+    getFutureDate(days: number = 0, hours: number = 0, minutes: number = 0) {
+        const currentMillis = Date.now();
+        
+        const futureMillis = days * 24 * 60 * 60 * 1000 + hours * 60 * 60 * 1000 + minutes * 60 * 1000;
+        
+        return currentMillis + futureMillis;
     }
 }

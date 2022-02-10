@@ -5,8 +5,8 @@ import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 export class AuctionDto {
 
     @Expose()
-    @ApiPropertyOptional()
-    id: number;
+    @ApiProperty()
+    id?: number;
 
     @Expose()
     @ApiProperty()

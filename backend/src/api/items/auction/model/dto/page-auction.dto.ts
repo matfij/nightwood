@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray } from "class-validator";
 import { PaginationBaseDto } from "src/common/definitions/pagination";
-import { DragonDto } from "./dragon.dto";
+import { AuctionDto } from "./auction.dto";
 
-export class PageDragonDto extends PaginationBaseDto {
+export class PageAuctionDto extends PaginationBaseDto {
 
     @IsArray()
-    @ApiProperty({ type: [DragonDto] })
-    data: Partial<DragonDto>[];
+    @ApiProperty({ type: [AuctionDto] })
+    data: Partial<AuctionDto>[];
 }

@@ -12,7 +12,7 @@ import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
 import { IHON_BERRY } from "../model/data/food";
 import { ItemType } from "../model/definitions/item-type";
-import { LootChance } from "../model/definitions/item-rarity";
+import { ItemRarity, LootChance } from "../model/definitions/item-rarity";
 
 @Injectable()
 export class ItemService {
@@ -39,7 +39,7 @@ export class ItemService {
         return itemsPage;
     }
 
-    async checkFeedingItem(ownerId: number, itemId: number): Promise<ItemDto> {
+    async checkItem(ownerId: number, itemId: number): Promise<ItemDto> {
         const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
         
         if (!item) this.errorService.throw('errors.itemNotFound');
@@ -49,8 +49,19 @@ export class ItemService {
         return item;
     }
 
-    async consumeFeedingItem(item: ItemDto): Promise<void> {
-        item.quantity -= 1;
+    async checkFeedingItem(ownerId: number, itemId: number): Promise<ItemDto> {
+        const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
+        
+        if (!item) this.errorService.throw('errors.itemNotFound');
+        if (item.user.id !== ownerId) this.errorService.throw('errors.itemNotFound');
+        if (item.type !== ItemType.Food) this.errorService.throw('errors.itemNotFound');
+        if (item.quantity < 1) this.errorService.throw('errors.insufficientQuantity');
+        
+        return item;
+    }
+
+    async consumeItem(item: ItemDto, quantity: number = 1): Promise<void> {
+        item.quantity -= quantity;
         this.itemRepository.save(item);
     }
 
@@ -87,5 +98,15 @@ export class ItemService {
         await this.updateInventory(user, loots);
 
         return loots;
+    }
+
+    getRarityValue(rarity: ItemRarity): number {
+        switch (rarity) {
+            case ItemRarity.Common: return 1;
+            case ItemRarity.Scarce: return 2;
+            case ItemRarity.Rare: return 4;
+            case ItemRarity.Mythical: return 8;
+            default: return 1;
+        }
     }
 }

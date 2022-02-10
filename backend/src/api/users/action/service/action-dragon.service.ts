@@ -33,7 +33,7 @@ export class ActionDragonService {
         const item = await this.itemService.checkFeedingItem(owner.id, dto.itemId);
         const dragon = await this.dragonService.checkFeedingDragon(owner.id, dto.dragonId);
 
-        await this.itemService.consumeFeedingItem(item);
+        await this.itemService.consumeItem(item);
         const fedDragon = await this.dragonService.feedDragon(item, dragon);
 
         return fedDragon;

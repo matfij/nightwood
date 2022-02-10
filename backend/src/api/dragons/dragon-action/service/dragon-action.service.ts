@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { randomInt } from 'crypto';
 import { DateService } from 'src/common/services/date.service';
 import { ErrorService } from 'src/common/services/error.service';
-import { MathService } from 'src/common/services/math.service';
 import { Repository } from 'typeorm';
 import { DragonDto } from '../../dragon/model/dto/dragon.dto';
 import { CARRANGA_SANDS, HARNA_PEAKS, ANDREW_FOREST } from '../model/data/expeditions';
@@ -27,7 +26,6 @@ export class DragonActionService {
     private dragonActionRepository: Repository<DragonAction>,
     private errorService: ErrorService,
     private dateService: DateService,
-    private mathService: MathService,
   ) {}
 
   async create() {
