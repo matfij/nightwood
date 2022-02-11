@@ -1,0 +1,16 @@
+<div class="wrapper-main">
+  <app-navigation-bar currentLocation="auctions"></app-navigation-bar>
+
+  <div class="wrapper-content">
+    <div class="label-gold">
+      Auction house
+      <!-- {{ 'inventory.gold' | translate }}: {{ gold }} -->
+    </div>
+
+    <div *ngFor="let auction of (auctions$ | async)?.data">
+      {{ auction.item.name }} ({{ auction.quantity }})
+      gross price: {{ auction.totalGoldPrice }}
+    </div>
+
+  </div>
+</div>

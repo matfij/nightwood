@@ -10,6 +10,7 @@ import { ExpeditionsComponent } from './expeditions/expeditions.component';
 import { ArenaComponent } from './arena/arena.component';
 import { ShoutboxComponent } from './shoutbox/shoutbox.component';
 import { FormsModule } from '@angular/forms';
+import { AuctionsComponent } from './auctions/auctions.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FormsModule } from '@angular/forms';
     ExpeditionsComponent,
     ArenaComponent,
     ShoutboxComponent,
+    AuctionsComponent,
   ],
   imports: [
     CommonModule,

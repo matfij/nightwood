@@ -57,17 +57,14 @@ export class AuctionService {
                 active: true,
                 item: { 
                     level: Between(dto.minLevel, dto.maxLevel),
-                    type: dto.type ? dto.type : Any(Object.values(ItemType)),
+                    type: dto.type ?? Any(Object.values(ItemType)),
+                    rarity: dto.requiredRarity ?? Any(Object.values(ItemRarity)),
                 },
             },
             order: { endTime: 'ASC' },
             skip: dto.page * dto.limit,
             take: dto.limit,
         });
-
-        auctions = auctions.filter(auction => 
-            this.itemService.getRarityValue(auction.item.rarity) >= this.itemService.getRarityValue(dto.requiredRarity)
-        );
 
         const total = await this.auctionRepository
             .createQueryBuilder('auction')

@@ -1206,6 +1206,127 @@ export class DragonSkillsController implements IDragonSkillsController {
     }
 }
 
+export interface IAuctionController {
+    create(body: CreateAuctionDto): Observable<AuctionDto>;
+    getAll(body: GetAuctionDto): Observable<PageAuctionDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AuctionController implements IAuctionController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    create(body: CreateAuctionDto): Observable<AuctionDto> {
+        let url_ = this.baseUrl + "/api/v1/auction/create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<AuctionDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AuctionDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<AuctionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <AuctionDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AuctionDto>(<any>null);
+    }
+
+    getAll(body: GetAuctionDto): Observable<PageAuctionDto> {
+        let url_ = this.baseUrl + "/api/v1/auction/getAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PageAuctionDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PageAuctionDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<PageAuctionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PageAuctionDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PageAuctionDto>(<any>null);
+    }
+}
+
 export enum DragonNature {
     Fire = "Fire",
     Water = "Water",
@@ -1437,7 +1558,9 @@ export interface BattleDragon {
     endurance: number;
     will: number;
     luck: number;
+    maxHealth: number;
     health: number;
+    maxMana: number;
     mana: number;
     damage: number;
     armor: number;
@@ -1482,6 +1605,37 @@ export interface SkillDto {
     name: string;
     level: number;
     nature: DragonNature[];
+}
+
+export interface CreateAuctionDto {
+    duration: number;
+    unitGoldPrice: number;
+    itemId: number;
+    quantity: number;
+}
+
+export interface AuctionDto {
+    id: number;
+    sellerId: number;
+    endTime: number;
+    totalGoldPrice: number;
+    item: ItemDto;
+    quantity: number;
+    active: boolean;
+}
+
+export interface GetAuctionDto {
+    type?: string;
+    requiredRarity?: string;
+    minLevel?: number;
+    maxLevel?: number;
+    page?: number;
+    limit?: number;
+}
+
+export interface PageAuctionDto {
+    meta: PageMetaDto;
+    data: AuctionDto[];
 }
 
 export class SwaggerException extends Error {
