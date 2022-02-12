@@ -2,15 +2,41 @@
   <app-navigation-bar currentLocation="auctions"></app-navigation-bar>
 
   <div class="wrapper-content">
-    <div class="label-gold">
-      Auction house
+    <div class="wrapper-menu">
+      {{ 'auctions.availableOffers' | translate }}
       <!-- {{ 'inventory.gold' | translate }}: {{ gold }} -->
     </div>
 
-    <div *ngFor="let auction of (auctions$ | async)?.data">
-      {{ auction.item.name }} ({{ auction.quantity }})
-      gross price: {{ auction.totalGoldPrice }}
+    <div class="wrapper-table">
+      <div *ngIf="auctionsLoading" class="m-5">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+      <div *ngIf="!auctionsLoading" class="wrapper-auctions">
+        <div *ngFor="let auction of auctions" class="item-auction">
+          <div style="display: flex;">
+            <app-item-display [item]="auction.item" [simplified]="true" style="width: 45px; height: 45px;"></app-item-display>
+            <div class="ml-4">
+              {{ 'auctions.quantity' | translate }}: {{ auction.quantity }} <br>
+              {{ 'auctions.price' | translate }}: {{ auction.totalGoldPrice }}
+            </div>
+          </div>
+          <button (click)="buyAuction(auction.id)" class="btn-base btn-auction">
+            {{ 'auctions.buy' | translate }}
+          </button>
+        </div>
+      </div>
+
+      <div class="wrapper-table-btns">
+        <button (click)="getAuctions(false)" [disabled]="!canGetPrev" class="btn-base btn-table">
+          {{ 'common.prev' | translate }}
+        </button>
+        <button (click)="getAuctions(true)" [disabled]="!canGetNext" class="btn-base btn-table">
+          {{ 'common.next' | translate }}
+        </button>
+      </div>
     </div>
 
   </div>
 </div>
+
+<app-auction-create></app-auction-create>

@@ -15,8 +15,11 @@ import { DragonDetailsComponent } from './components/dragon-details/dragon-detai
 import { AbstractModalComponent } from './components/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
 import { TooltipDirective } from '../common/utils/tooltip.directive';
+import { AuctionCreateComponent } from './components/auction-create/auction-create.component';
 
 const COMPONENTS = [
+  AbstractModalComponent,
+  AuctionCreateComponent,
   NavigationBarComponent,
   LoadingIndicatorComponent,
   InputBaseComponent,
@@ -46,7 +49,6 @@ const CHILD_PROVIDERS = [
   declarations: [
     ...COMPONENTS,
     ...UTILS,
-    AbstractModalComponent,
   ],
   imports: [
     CommonModule,

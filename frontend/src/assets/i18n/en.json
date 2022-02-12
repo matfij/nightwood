@@ -84,7 +84,7 @@
     "inventory": "Inventory",
     "expeditions": "Expeditions",
     "arena": "Arena",
-    "auctions": "Auction house",
+    "auctions": "Market",
     "shoutbox": "Shoutbox",
     "logout": "Logout",
     "recentChanges": "Recent changes"
@@ -178,6 +178,16 @@
     "rarity": "Rarity",
     "level": "Required level",
     "quantity": "Quantity"
+  },
+  "auctions": {
+    "availableOffers": "Available offers",
+    "item": "Item",
+    "quantity": "Quantity",
+    "price": "Price",
+    "buy": "Buy",
+    "addOffer": "Add offer",
+    "addOfferLong": "Add a new offer",
+    "selectItem": "Select item"
   },
   "items": {
     "BubulaeSteak": "Bubulae steak",

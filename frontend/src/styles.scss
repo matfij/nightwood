@@ -3,8 +3,10 @@
 
 @import 'app/core/theme/mixins.scss';
 @import 'app/core/theme/variables.scss';
+@import 'app/core/theme/inputs.scss';
 
 @import 'app/core/components/dragon-battle/dragon-battle-logs.component.scss';
+
 
 html, body {
   height: 100%;
@@ -130,6 +132,10 @@ img::selection {
   background-color: $app-red;
   color: $app-dark;
 }
+
+/**
+ * Tooltip
+ */
 
 [tooltip] {
   position: relative;

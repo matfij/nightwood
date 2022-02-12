@@ -2,7 +2,7 @@
 @import '../../theme/variables.scss';
 
 .container {
-  @include size(75px);
+  @include size(100%);
 
   display: flex;
   align-items: center;
@@ -11,7 +11,7 @@
   border-radius: 4px;
 
   img {
-    width: 50px;
+    @include size(90%);
   }
 }
 

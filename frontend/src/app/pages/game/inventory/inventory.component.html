@@ -11,7 +11,7 @@
     </div>
     <div *ngIf="!itemsLoading" class="wrapper-items">
       <div *ngFor="let item of ownedItems" class="item">
-        <app-item-display [item]="item"></app-item-display>
+        <app-item-display [item]="item" style="width: 55px; height: 55px;"></app-item-display>
       </div>
     </div>
 

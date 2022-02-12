@@ -11,6 +11,7 @@ import { ItemsService } from '../../services/items.service';
 export class ItemDisplayComponent implements OnInit {
 
   @Input() item!: ItemDto;
+  @Input() simplified: boolean = false;
 
   displayItem!: DisplayItem;
 

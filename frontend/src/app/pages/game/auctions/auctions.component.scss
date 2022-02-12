@@ -1,0 +1,56 @@
+@import '../../../core/theme/variables.scss';
+@import '../../../core/theme/mixins.scss';
+
+
+.wrapper-content {
+  overflow-x: visible;
+}
+
+.wrapper-table {
+  max-width: 400px;
+  margin: 10px auto;
+}
+
+.wrapper-auctions {
+  max-width: 400px;
+  margin: 5px auto 10px auto;
+
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-auction {
+  @include tile($app-dark);
+
+  width: 100%;
+  height: 60px;
+
+  padding-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 0px 10px;
+}
+
+.btn-auction {
+  height: 24px;
+  width: 60px;
+  margin: 0px;
+
+  text-align: center;
+}
+
+.wrapper-table-btns {
+  width: 100%;
+  margin-top: 10px;
+
+  display: flex;
+}
+
+.btn-table {
+  width: 40%;
+  height: 24px;
+}

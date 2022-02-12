@@ -4,7 +4,7 @@
       <h5>{{ displayItem.displayName | translate }}</h5>
       {{ displayItem.rarityName | translate }} {{ displayItem.typeName | translate }}<br>
       {{ 'inventory.level' | translate }}: {{ displayItem.level }} <br>
-      {{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br>
+      <div *ngIf="!simplified">{{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br></div>
     </div>
   </ng-template>
 

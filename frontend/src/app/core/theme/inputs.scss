@@ -1,0 +1,26 @@
+@import 'variables.scss';
+
+
+.input-label {
+  width: clamp(0px, 100%, 240px);
+  margin: 0px;
+
+  color: $app-light;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 0.25px;
+}
+
+.input-select {
+  width: clamp(0px, 100%, 240px);
+  margin: 2px auto 10px auto;
+
+  padding: 2px;
+  border: none;
+  border-radius: 4px;
+  color: $app-dark;
+  background-color: $app-light;
+  font-size: 14px;
+  font-weight: 500;
+}

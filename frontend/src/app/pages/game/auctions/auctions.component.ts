@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuctionController, GetAuctionDto, PageAuctionDto } from 'src/app/client/api';
+import { AuctionController, AuctionDto, GetAuctionDto, PageAuctionDto } from 'src/app/client/api';
+import { DisplayAuction } from 'src/app/core/definitions/items';
+import { ItemsService } from 'src/app/core/services/items.service';
 
 @Component({
   selector: 'app-auctions',
@@ -9,21 +11,37 @@ import { AuctionController, GetAuctionDto, PageAuctionDto } from 'src/app/client
 })
 export class AuctionsComponent implements OnInit {
 
-  auctions$?: Observable<PageAuctionDto>;
+  auctions: AuctionDto[] = [];
+  auctionsLoading: boolean = false;
+  canGetPrev: boolean = false;
+  canGetNext: boolean = true;
 
   constructor(
     private auctionController: AuctionController,
+    private itemService: ItemsService,
   ) {}
 
   ngOnInit(): void {
     this.getAuctions();
   }
 
-  getAuctions() {
+  getAuctions(next?: boolean, minLevel?: number, maxLevel?: number) {
     const params: GetAuctionDto = {
 
     };
-    this.auctions$ = this.auctionController.getAll(params);
+    this.auctionsLoading = true;
+    this.auctionController.getAll(params).subscribe(auctionPage => {
+      this.auctionsLoading = false;
+      this.auctions = auctionPage.data;
+    }, () => this.auctionsLoading = false);
+  }
+
+  createAuction() {
+
+  }
+
+  buyAuction(id: number) {
+
   }
 
 }

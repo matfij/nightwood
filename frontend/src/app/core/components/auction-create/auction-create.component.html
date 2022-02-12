@@ -1,0 +1,21 @@
+<div class="container-modal">
+
+  <div class="title">{{ 'auctions.addOfferLong' | translate }}</div>
+
+  <div class="input-label">{{ 'auctions.selectItem' | translate }}</div>
+  <select class="input-select">
+    <option class="input-select-option" *ngFor="let item of (tradableItems$ | async)?.data"
+      [value]="item.id">
+      {{ item.name }} ({{ item.quantity }})
+    </option>
+  </select>
+
+  <button (click)="closeModal()" class="btn-base">
+    {{ 'common.confirm' | translate }}
+  </button>
+
+  <button (click)="closeModal()" class="btn-base">
+    {{ 'common.cancel' | translate }}
+  </button>
+
+</div>
