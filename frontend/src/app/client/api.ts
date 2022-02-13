@@ -1625,8 +1625,9 @@ export interface AuctionDto {
 }
 
 export interface GetAuctionDto {
-    type?: string;
     ownedByUser?: boolean;
+    name?: string;
+    type?: string;
     requiredRarity?: string;
     minLevel?: number;
     maxLevel?: number;

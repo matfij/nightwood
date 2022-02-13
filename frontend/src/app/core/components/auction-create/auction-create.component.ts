@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { AuctionController, CreateAuctionDto, ItemController, ItemDto, PageItemDto } from 'src/app/client/api';
+import { AuctionController, CreateAuctionDto, ItemController, PageItemDto } from 'src/app/client/api';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { MAX_AUCTION_DURATION, MAX_AUCTION_PRICE, MAX_AUCTION_QUANTITY, MIN_AUCTION_DURATION, MIN_AUCTION_PRICE, MIN_AUCTION_QUANTITY } from '../../configuration';
@@ -23,7 +23,7 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
   form: FormGroup = new FormGroup({
     duration: new FormControl(
       null,
-      [Validators.required, Validators.min(MIN_AUCTION_DURATION), Validators.max(MAX_AUCTION_QUANTITY)],
+      [Validators.required, Validators.min(MIN_AUCTION_DURATION), Validators.max(MAX_AUCTION_DURATION)],
     ),
     quantity: new FormControl(
       null,

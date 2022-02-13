@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DateService } from 'src/common/services/date.service';
 import { ErrorService } from 'src/common/services/error.service';
-import { Any, Between, Repository } from 'typeorm';
+import { Any, Between, Like, Repository } from 'typeorm';
 import { ItemRarity } from '../../item/model/definitions/item-rarity';
 import { ItemType } from '../../item/model/definitions/item-type';
 import { ItemService } from '../../item/service/item.service';
@@ -49,29 +49,37 @@ export class AuctionService {
         dto.minLevel = dto.minLevel ?? 0;
         dto.maxLevel = dto.maxLevel ?? 999;
 
-        let auctions = await this.auctionRepository.find({ 
+        const filterOptions = {
             relations: ['item'],
             where: {
                 active: true,
                 ...(dto.ownedByUser && { sellerId: userId }),
-                item: { 
+                item: {
+                    ...(dto.name && { name: Like(`%${dto.name}%`) }),
                     level: Between(dto.minLevel, dto.maxLevel),
                     type: dto.type ?? Any(Object.values(ItemType)),
-                    rarity: dto.requiredRarity ?? Any(Object.values(ItemRarity)),
+                    ...(dto.requiredRarity == ItemRarity.Common && { rarity: Any(Object.values(ItemRarity)) }),
+                    ...(dto.requiredRarity == ItemRarity.Scarce && { rarity: Any([ItemRarity.Scarce, ItemRarity.Rare, ItemRarity.Mythical]) }),
+                    ...(dto.requiredRarity == ItemRarity.Rare && { rarity: Any([ItemRarity.Rare, ItemRarity.Mythical]) }),
+                    ...(dto.requiredRarity == ItemRarity.Mythical && { rarity: Any([ItemRarity.Mythical]) }),
                 },
             },
+        };
+
+        const auctions = await this.auctionRepository.find({ 
+            ...filterOptions,
             order: { endTime: 'ASC' },
             skip: dto.page * dto.limit,
             take: dto.limit,
         });
 
-        const total = dto.ownedByUser 
-            ? await this.auctionRepository.createQueryBuilder('auction').where('auction.sellerId = :userId', { userId }).getCount()
-            : await this.auctionRepository.createQueryBuilder('auction').getCount();
+        const count = await this.auctionRepository.count({
+            ...filterOptions,
+        });
 
         const page: PageAuctionDto = {
             data: auctions,
-            meta: { totalItems: total },
+            meta: { totalItems: count },
         };
         return page;
     }

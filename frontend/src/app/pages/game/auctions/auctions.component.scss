@@ -3,7 +3,7 @@
 
 
 .wrapper-content {
-  overflow-x: visible;
+  overflow-x: auto;
 }
 
 .wrapper-auctions {
@@ -16,18 +16,41 @@
   width: clamp(200px, 95%, 800px);
   margin: auto;
   display: flex;
-  gap: 1px;
+  gap: 2px;
 
   .btn-mode {
     width: 50%;
+    margin: 0px;
+
     line-height: 2;
     border-radius: 2px;
   }
 }
 
+.wrapper-search {
+  margin-top: -2px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: repeat(30px);
+  justify-items: stretch;
+  align-items: stretch;
+  gap: 0px 2px;
+
+  input, select, div {
+    width: auto;
+    margin: 3px 0px 0px 0px;
+  }
+
+  .btn-search {
+    max-width: none;
+    height: 25px;
+  }
+}
+
 .wrapper-table {
   width: clamp(200px, 95%, 800px);
-  height: 600px;
+  height: 590px;
   margin: auto;
 
   padding-bottom: 4px;

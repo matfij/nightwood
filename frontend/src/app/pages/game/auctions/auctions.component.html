@@ -11,9 +11,28 @@
         <div (click)="changeMode(true)" class="btn-base btn-mode">
           {{ 'auctions.owned' | translate }}
         </div>
-        <button (click)="displayCreateForm = true" class="btn-base btn-mode">
+        <div (click)="displayCreateForm = true" class="btn-base btn-mode">
           {{ 'auctions.addOffer' | translate }}
-        </button>
+        </div>
+      </div>
+      <div class="wrapper-menu wrapper-search">
+        <input #searchName class="input-text" placeholder="{{ 'auctions.name' | translate }}"/>
+        <input #searchMinLevel class="input-text" type="number" placeholder="{{ 'auctions.minLevel' | translate }}"/>
+        <input #searchMaxLevel class="input-text" type="number" placeholder="{{ 'auctions.maxLevel' | translate }}"/>
+        <select #searchRarity class="input-select" placeholder="auctions.rarity">
+          <option [value]="ItemRarity.Common">{{ 'enums.itemRarity.Common' | translate }}</option>
+          <option [value]="ItemRarity.Scarce">{{ 'enums.itemRarity.Scarce' | translate }}</option>
+          <option [value]="ItemRarity.Rare">{{ 'enums.itemRarity.Rare' | translate }}</option>
+          <option [value]="ItemRarity.Mythical">{{ 'enums.itemRarity.Mythical' | translate }}</option>
+        </select>
+        <select #searchType class="input-select" placeholder="auctions.rarity">
+          <option [value]="ItemType.Food">{{ 'enums.itemType.Food' | translate }}</option>
+          <option [value]="ItemType.Ingredient">{{ 'enums.itemType.Ingredient' | translate }}</option>
+          <option [value]="ItemType.Equipment">{{ 'enums.itemType.Equipment' | translate }}</option>
+        </select>
+        <div (click)="getAuctions()" class="btn-base btn-search">
+          {{ 'common.search' | translate }}
+        </div>
       </div>
 
       <div class="wrapper-table">

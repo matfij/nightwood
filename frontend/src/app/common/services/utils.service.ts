@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { take } from "rxjs/operators";
+import { SelectOption } from "../definitions/common";
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,19 @@ export class UtilsService {
         reader.readAsText(blob);
       }
     }).pipe(take(1));
+  }
+
+  enumToConst(enumObj: any, namePrepend: string): SelectOption[] {
+    namePrepend = namePrepend ? namePrepend : '';
+    if (!namePrepend.endsWith('.')) {
+      namePrepend = namePrepend + '.';
+    }
+
+    return Object.keys(enumObj).filter(item => isNaN(Number(item))).map(item => {
+      return {
+        value: enumObj[item],
+        name: namePrepend + item,
+      };
+    });
   }
 }

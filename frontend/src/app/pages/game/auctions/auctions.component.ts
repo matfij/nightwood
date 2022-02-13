@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AuctionController, AuctionDto, AuthUserDto, GetAuctionDto, PageAuctionDto, UserDto } from 'src/app/client/api';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AuctionController, AuctionDto, AuthUserDto, GetAuctionDto, ItemRarity, ItemType } from 'src/app/client/api';
 import { RepositoryService } from 'src/app/common/services/repository.service';
-import { DisplayAuction } from 'src/app/core/definitions/items';
-import { ItemsService } from 'src/app/core/services/items.service';
+import { UtilsService } from 'src/app/common/services/utils.service';
 
 @Component({
   selector: 'app-auctions',
   templateUrl: './auctions.component.html',
-  styleUrls: ['./auctions.component.scss']
+  styleUrls: ['./auctions.component.scss'],
 })
 export class AuctionsComponent implements OnInit {
+
+  @ViewChild('searchName') searchName?: ElementRef;
+  @ViewChild('searchMinLevel') searchMinLevel?: ElementRef;
+  @ViewChild('searchMaxLevel') searchMaxLevel?: ElementRef;
+  @ViewChild('searchRarity') searchRarity?: ElementRef;
+  @ViewChild('searchType') searchType?: ElementRef;
 
   user!: AuthUserDto;
   auctions: AuctionDto[] = [];
@@ -25,16 +29,19 @@ export class AuctionsComponent implements OnInit {
 
   constructor(
     private auctionController: AuctionController,
-    private itemService: ItemsService,
     private repositoryService: RepositoryService,
+    private utilsService: UtilsService,
   ) {}
+
+  ItemType = ItemType;
+  ItemRarity = ItemRarity;
 
   ngOnInit(): void {
     this.user = this.repositoryService.getUserData();
     this.getAuctions();
   }
 
-  getAuctions(next?: boolean, minLevel?: number, maxLevel?: number) {
+  getAuctions(next?: boolean) {
     if (next) this.currentPage += 1;
     if (next === false) this.currentPage -= 1;
     if (this.currentPage < 0) this.currentPage = 0;
@@ -43,6 +50,11 @@ export class AuctionsComponent implements OnInit {
       page: this.currentPage,
       limit: this.pageLimit,
       ownedByUser: this.displayOwned,
+      name: this.searchName?.nativeElement.value,
+      type: this.searchType?.nativeElement.value,
+      requiredRarity: this.searchRarity?.nativeElement.value,
+      minLevel: this.searchMinLevel?.nativeElement.value ? +this.searchMinLevel.nativeElement.value : 1,
+      maxLevel: this.searchMaxLevel?.nativeElement.value ? +this.searchMaxLevel.nativeElement.value : 9999,
     };
     this.auctionsLoading = true;
     this.auctionController.getAll(params).subscribe(auctionPage => {

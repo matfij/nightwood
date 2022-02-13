@@ -11,7 +11,8 @@
     "prev": "Prev",
     "details": "Details",
     "confirm": "Confirm",
-    "auto": "Auto"
+    "auto": "Auto",
+    "search": "Search"
   },
   "enums": {
     "itemType": {
