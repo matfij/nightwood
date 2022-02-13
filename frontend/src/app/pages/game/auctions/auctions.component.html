@@ -2,43 +2,68 @@
   <app-navigation-bar currentLocation="auctions"></app-navigation-bar>
 
   <div class="wrapper-content">
-    <div class="wrapper-menu">
-      {{ 'auctions.availableOffers' | translate }}
-      <!-- {{ 'inventory.gold' | translate }}: {{ gold }} -->
-    </div>
+    <div class="wrapper-auctions">
 
-    <div class="wrapper-table">
-      <div *ngIf="auctionsLoading" class="m-5">
-        <app-loading-indicator></app-loading-indicator>
+      <div class="wrapper-menu">
+        <div (click)="changeMode(false)" class="btn-base btn-mode">
+          {{ 'auctions.all' | translate }}
+        </div>
+        <div (click)="changeMode(true)" class="btn-base btn-mode">
+          {{ 'auctions.owned' | translate }}
+        </div>
+        <button (click)="displayCreateForm = true" class="btn-base btn-mode">
+          {{ 'auctions.addOffer' | translate }}
+        </button>
       </div>
-      <div *ngIf="!auctionsLoading" class="wrapper-auctions">
-        <div *ngFor="let auction of auctions" class="item-auction">
-          <div style="display: flex;">
-            <app-item-display [item]="auction.item" [simplified]="true" style="width: 45px; height: 45px;"></app-item-display>
-            <div class="ml-4">
-              {{ 'auctions.quantity' | translate }}: {{ auction.quantity }} <br>
-              {{ 'auctions.price' | translate }}: {{ auction.totalGoldPrice }}
+
+      <div class="wrapper-table">
+        <div *ngIf="auctionsLoading" class="m-5">
+          <app-loading-indicator></app-loading-indicator>
+        </div>
+
+        <div *ngIf="!auctionsLoading" class="wrapper-auctions">
+          <div *ngFor="let auction of auctions" style="width: 100%;">
+
+            <div class="item-auction">
+              <div style="width: 100%; display: flex; align-items: center;">
+                <div class="item-auction-data">
+                  <app-item-display [item]="auction.item" [simplified]="true" style="width: 45px; height: 45px;"></app-item-display>
+                  <div class="ml-4">
+                    {{ 'auctions.quantity' | translate }}: {{ auction.quantity }} <br>
+                    {{ 'auctions.price' | translate }}: {{ auction.totalGoldPrice }}
+                    <div class="inline no-mobile">
+                      ({{ 'auctions.unitPriceCalculated' | translate:{price: auction.totalGoldPrice/auction.quantity} }})
+                    </div>
+                  </div>
+                </div>
+
+                <div class="no-mobile">
+                  {{ 'auctions.endTime' | translate }}: {{ auction.endTime | date:'short' }}
+                </div>
+              </div>
+
+              <button *ngIf="auction.sellerId !== user.id" (click)="buyAuction(auction.id)" class="btn-base btn-auction">
+                {{ 'auctions.buy' | translate }}
+              </button>
+              <button *ngIf="auction.sellerId === user.id" (click)="cancelAuction(auction.id)" class="btn-base btn-auction">
+                {{ 'common.cancel' | translate }}
+              </button>
             </div>
+
           </div>
-          <button (click)="buyAuction(auction.id)" class="btn-base btn-auction">
-            {{ 'auctions.buy' | translate }}
-          </button>
         </div>
       </div>
 
-      <div class="wrapper-table-btns">
-        <button (click)="getAuctions(false)" [disabled]="!canGetPrev" class="btn-base btn-table">
+      <div *ngIf="canGetPrev || canGetNext" class="wrapper-menu">
+        <button (click)="getAuctions(false)" [disabled]="!canGetPrev" class="btn-base btn-mode">
           {{ 'common.prev' | translate }}
         </button>
-        <button (click)="getAuctions(true)" [disabled]="!canGetNext" class="btn-base btn-table">
+        <button (click)="getAuctions(true)" [disabled]="!canGetNext" class="btn-base btn-mode">
           {{ 'common.next' | translate }}
         </button>
       </div>
-    </div>
 
-    <button (click)="displayCreateForm = true" class="btn-base btn-table">
-      {{ 'auctions.addOffer' | translate}}
-    </button>
+    </div>
 
   </div>
 </div>

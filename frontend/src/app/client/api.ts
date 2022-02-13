@@ -1608,9 +1608,9 @@ export interface SkillDto {
 }
 
 export interface CreateAuctionDto {
+    itemId: number;
     duration: number;
     unitGoldPrice: number;
-    itemId: number;
     quantity: number;
 }
 
@@ -1626,6 +1626,7 @@ export interface AuctionDto {
 
 export interface GetAuctionDto {
     type?: string;
+    ownedByUser?: boolean;
     requiredRarity?: string;
     minLevel?: number;
     maxLevel?: number;

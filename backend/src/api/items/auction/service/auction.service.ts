@@ -5,7 +5,6 @@ import { ErrorService } from 'src/common/services/error.service';
 import { Any, Between, Repository } from 'typeorm';
 import { ItemRarity } from '../../item/model/definitions/item-rarity';
 import { ItemType } from '../../item/model/definitions/item-type';
-import { Item } from '../../item/model/item.entity';
 import { ItemService } from '../../item/service/item.service';
 import { Auction } from '../model/auction.entity';
 import { AuctionDto } from '../model/dto/auction.dto';
@@ -44,17 +43,17 @@ export class AuctionService {
         return newAuction;
     }
 
-    async getAll(dto: GetAuctionDto): Promise<PageAuctionDto> {
+    async getAll(userId: number, dto: GetAuctionDto): Promise<PageAuctionDto> {
         dto.page = Math.max(0, dto.page ?? 0);
         dto.limit = Math.max(1, dto.limit ?? 20);
         dto.minLevel = dto.minLevel ?? 0;
         dto.maxLevel = dto.maxLevel ?? 999;
-        dto.requiredRarity = dto.requiredRarity ?? ItemRarity.Common;
 
         let auctions = await this.auctionRepository.find({ 
             relations: ['item'],
             where: {
                 active: true,
+                ...(dto.ownedByUser && { sellerId: userId }),
                 item: { 
                     level: Between(dto.minLevel, dto.maxLevel),
                     type: dto.type ?? Any(Object.values(ItemType)),
@@ -66,9 +65,9 @@ export class AuctionService {
             take: dto.limit,
         });
 
-        const total = await this.auctionRepository
-            .createQueryBuilder('auction')
-            .getCount();
+        const total = dto.ownedByUser 
+            ? await this.auctionRepository.createQueryBuilder('auction').where('auction.sellerId = :userId', { userId }).getCount()
+            : await this.auctionRepository.createQueryBuilder('auction').getCount();
 
         const page: PageAuctionDto = {
             data: auctions,

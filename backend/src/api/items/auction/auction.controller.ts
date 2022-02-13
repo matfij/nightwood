@@ -25,7 +25,7 @@ export class AuctionController {
 
     @Post('getAll')
     @ApiOkResponse({ type: PageAuctionDto })
-    async getAll(@Body() dto: GetAuctionDto): Promise<PageAuctionDto> {
-        return this.auctionService.getAll(dto);
+    async getAll(@Request() req: AuthorizedRequest, @Body() dto: GetAuctionDto): Promise<PageAuctionDto> {
+        return this.auctionService.getAll(req.user.id, dto);
     }
 }
