@@ -182,12 +182,18 @@
   "auctions": {
     "availableOffers": "Available offers",
     "item": "Item",
+    "duration": "Duration (hours)",
+    "durationHint": "Auction must last from {{ min }} to {{ max }} houts",
     "quantity": "Quantity",
+    "quantityHint": "Quantity must be between {{ min }} and {{ max }} pieces",
     "price": "Price",
+    "priceHint": "Price must be between {{ min }} and {{ max }} gold",
     "buy": "Buy",
     "addOffer": "Add offer",
     "addOfferLong": "Add a new offer",
-    "selectItem": "Select item"
+    "selectItem": "Select item",
+    "unitPrice": "Unit price (gold)",
+    "offerCreated": "Offer created"
   },
   "items": {
     "BubulaeSteak": "Bubulae steak",

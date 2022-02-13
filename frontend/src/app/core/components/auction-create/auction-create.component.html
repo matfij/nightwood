@@ -1,21 +1,30 @@
 <div class="container-modal">
+  <div class="wrapper-form">
 
-  <div class="title">{{ 'auctions.addOfferLong' | translate }}</div>
+  <div class="title mb-4">{{ 'auctions.addOfferLong' | translate }}</div>
 
   <div class="input-label">{{ 'auctions.selectItem' | translate }}</div>
-  <select class="input-select">
+  <select #itemSelect class="input-select">
     <option class="input-select-option" *ngFor="let item of (tradableItems$ | async)?.data"
       [value]="item.id">
       {{ item.name }} ({{ item.quantity }})
     </option>
   </select>
 
-  <button (click)="closeModal()" class="btn-base">
-    {{ 'common.confirm' | translate }}
-  </button>
+    <form [formGroup]="form" (ngSubmit)="createAuction()">
+      <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
-  <button (click)="closeModal()" class="btn-base">
-    {{ 'common.cancel' | translate }}
-  </button>
+      <button *ngIf="!submitLoading" [disabled]="!form.valid" class="btn-base">
+        {{ 'common.confirm' | translate }}
+      </button>
+      <div *ngIf="submitLoading" class="spinner">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+    </form>
 
+    <button (click)="closeModal()" class="btn-base mt-5">
+      {{ 'common.cancel' | translate }}
+    </button>
+
+  </div>
 </div>

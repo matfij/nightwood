@@ -36,7 +36,11 @@
       </div>
     </div>
 
+    <button (click)="displayCreateForm = true" class="btn-base btn-table">
+      {{ 'auctions.addOffer' | translate}}
+    </button>
+
   </div>
 </div>
 
-<app-auction-create></app-auction-create>
+<app-auction-create *ngIf="displayCreateForm" (close)="displayCreateForm = false"></app-auction-create>

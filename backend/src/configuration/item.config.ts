@@ -13,3 +13,5 @@ export const MIN_AUCTION_TIME = 1;  // 1 hour
 export const MAX_AUCTION_TIME = 72;  // 72 hours
 export const MIN_AUCTION_PRICE = 10;
 export const MAX_AUCTION_PRICE = 1000000;
+export const MIN_AUCTION_QUANTITY = 1;
+export const MAX_AUCTION_QUANTITY = 10000;

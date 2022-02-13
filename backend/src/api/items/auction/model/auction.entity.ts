@@ -1,5 +1,5 @@
 import { LONG_NUMBER_TYPE } from "src/configuration/app.config";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Item } from "../../item/model/item.entity";
 
 @Entity()
@@ -17,7 +17,7 @@ export class Auction {
     @Column()
     totalGoldPrice: number;
 
-    @OneToOne(_ => Item)
+    @ManyToOne(_ => Item)
     @JoinColumn()
     item: Item;
 

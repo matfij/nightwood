@@ -15,6 +15,7 @@ export class AuctionsComponent implements OnInit {
   auctionsLoading: boolean = false;
   canGetPrev: boolean = false;
   canGetNext: boolean = true;
+  displayCreateForm: boolean = false;
 
   constructor(
     private auctionController: AuctionController,
