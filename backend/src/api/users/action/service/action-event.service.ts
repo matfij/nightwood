@@ -29,17 +29,20 @@ export class ActionEventService {
         return action;
     }
 
-    async checkExpeditions(user: UserDto): Promise<ExpeditionReportDto[]> {
-        const dragons = await this.dragonService.getOwnedDragons(user.id);
+    async checkExpeditions(userId: number): Promise<ExpeditionReportDto[]> {
+        const dragons = await this.dragonService.getOwnedDragons(userId);
 
         const results = await Promise.all(dragons.map(async (dragon) => {
             const expedition = await this.dragonActionService.checkExpedition(dragon);
             if (expedition) {
+                const user = await this.userRepository.findOne(userId);
+
                 const gainedExperience = await this.dragonService.awardExpeditionExperience(dragon, expedition);
                 const gainedGold = await this.dragonService.awardExpeditionGold(dragon, expedition);
                 const loots = await this.itemService.awardExpeditionItems(user, dragon, expedition);
 
                 user.gold += gainedGold;
+                console.log(user.gold)
                 await this.userRepository.update(user.id, { gold: user.gold });
 
                 return {

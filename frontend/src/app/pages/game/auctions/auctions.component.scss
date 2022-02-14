@@ -87,17 +87,17 @@
   .item-auction-data {
     width: 50%;
     display: flex;
+    align-items: center;
+  }
+
+  .btn-auction {
+    height: 24px;
+    width: 60px;
+    margin: 0px;
+
+    text-align: center;
   }
 }
-
-.btn-auction {
-  height: 24px;
-  width: 60px;
-  margin: 0px;
-
-  text-align: center;
-}
-
 
 @media screen and (max-width: $mobile-threshold) {
 

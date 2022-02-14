@@ -60,6 +60,11 @@ export class ItemService {
         return item;
     }
 
+    async refillItem(item: ItemDto, quantity: number = 1): Promise<void> {
+        item.quantity += quantity;
+        this.itemRepository.save(item);
+    }
+
     async consumeItem(item: ItemDto, quantity: number = 1): Promise<void> {
         item.quantity -= quantity;
         this.itemRepository.save(item);
@@ -98,6 +103,10 @@ export class ItemService {
         await this.updateInventory(user, loots);
 
         return loots;
+    }
+
+    getIdentifierName(name: string): string {
+        return name.split(' ').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join('');
     }
 
     getRarityValue(rarity: ItemRarity): number {

@@ -76,7 +76,9 @@
     "insufficientSkillPoints": "Insufficient skill points",
     "natureMismatch": "Selected dragon ha a non-matching nature",
     "skillNotFound": "Skill not found",
-    "skillLimitReached": "Skill limit reached"
+    "skillLimitReached": "Skill limit reached",
+    "auctionNotFound": "Auction not found",
+    "insufficientsFound": "Insufficient founds"
   },
   "game": {
     "home": "Home",

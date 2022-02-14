@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DateService } from 'src/common/services/date.service';
 import { ErrorService } from 'src/common/services/error.service';
-import { Any, Between, Like, Repository } from 'typeorm';
+import { Any, Between, FindOperator, Like, MoreThan, Repository } from 'typeorm';
 import { ItemRarity } from '../../item/model/definitions/item-rarity';
 import { ItemType } from '../../item/model/definitions/item-type';
 import { ItemService } from '../../item/service/item.service';
@@ -43,6 +43,31 @@ export class AuctionService {
         return newAuction;
     }
 
+    async checkAuction(auctionId: number): Promise<AuctionDto> {
+        const auction = await this.auctionRepository.findOne({
+            relations: ['item'],
+            where: {
+                id: auctionId,
+                active: true,
+                endTime: MoreThan(this.dateService.getCurrentDate()),
+            },
+        });
+        if(!auction) this.errorService.throw('errors.auctionNotFound');
+        return auction;
+    }
+
+    async checkOwnedAuction(auctionId: number, userId: number) {
+        const auction = await this.auctionRepository.findOne({
+            relations: ['item'],
+            where: {
+                id: auctionId,
+                sellerId: userId,
+            },
+        });
+        if(!auction) this.errorService.throw('errors.auctionNotFound');
+        return auction;
+    }
+
     async getAll(userId: number, dto: GetAuctionDto): Promise<PageAuctionDto> {
         dto.page = Math.max(0, dto.page ?? 0);
         dto.limit = Math.max(1, dto.limit ?? 20);
@@ -53,11 +78,12 @@ export class AuctionService {
             relations: ['item'],
             where: {
                 active: true,
+                endTime: MoreThan(this.dateService.getCurrentDate()),
                 ...(dto.ownedByUser && { sellerId: userId }),
                 item: {
-                    ...(dto.name && { name: Like(`%${dto.name}%`) }),
                     level: Between(dto.minLevel, dto.maxLevel),
                     type: dto.type ?? Any(Object.values(ItemType)),
+                    ...(dto.name && { name: Like(`%${this.itemService.getIdentifierName(dto.name)}%`) }),
                     ...(dto.requiredRarity == ItemRarity.Common && { rarity: Any(Object.values(ItemRarity)) }),
                     ...(dto.requiredRarity == ItemRarity.Scarce && { rarity: Any([ItemRarity.Scarce, ItemRarity.Rare, ItemRarity.Mythical]) }),
                     ...(dto.requiredRarity == ItemRarity.Rare && { rarity: Any([ItemRarity.Rare, ItemRarity.Mythical]) }),
@@ -82,5 +108,14 @@ export class AuctionService {
             meta: { totalItems: count },
         };
         return page;
+    }
+
+    async cancel(userId: number, auctionId: number): Promise<void> {
+        const auction = await this.checkOwnedAuction(auctionId, userId);
+
+        this.itemService.refillItem(auction.item, auction.item.quantity);
+
+        auction.active = false;
+        await this.auctionRepository.save(auction);
     }
 }

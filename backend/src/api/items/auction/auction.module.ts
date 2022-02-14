@@ -19,6 +19,9 @@ import { AuctionService } from './service/auction.service';
     AuctionService,
     DateService,
     ErrorService,
+  ],
+  exports: [
+    AuctionService,
   ]
 })
 export class AuctionModule {}

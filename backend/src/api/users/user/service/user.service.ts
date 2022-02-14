@@ -58,7 +58,7 @@ export class UserService {
         return this.userRepository.save(user);
     }
 
-    async getOne(id: string): Promise<UserDto> {
+    async getOne(id: number | string): Promise<UserDto> {
         return this.userRepository.findOne(id);
     }
 
@@ -80,6 +80,17 @@ export class UserService {
         user.ownedDragons += 1;
 
         return this.userRepository.save(user);
+    }
+
+    async updateGold(userId: number, gold: number): Promise<UserDto> {
+        const user = await this.getOne(userId);
+
+        if (gold < 0 && user.gold < gold) this.errorService.throw('errors.insufficientsFound');
+        
+        user.gold += gold;
+        await this.userRepository.update(userId, { gold: user.gold });
+
+        return user;
     }
 
     private async emailExists(email: string): Promise<boolean> {

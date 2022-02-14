@@ -3,6 +3,10 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class DateService {
 
+    getCurrentDate() {
+        return Date.now();
+    }
+
     checkIfEventAvailable(nextEvent: number): boolean {
         const currentMillis = Date.now();
 

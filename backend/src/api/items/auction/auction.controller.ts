@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/api/users/auth/util/jwt.guard';
 import { AuthorizedRequest } from 'src/common/definitions/requests';
@@ -27,5 +27,11 @@ export class AuctionController {
     @ApiOkResponse({ type: PageAuctionDto })
     async getAll(@Request() req: AuthorizedRequest, @Body() dto: GetAuctionDto): Promise<PageAuctionDto> {
         return this.auctionService.getAll(req.user.id, dto);
+    }
+
+    @Post('cancel/:id')
+    @ApiOkResponse()
+    async cancel(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<void> {
+        return this.auctionService.cancel(req.user.id, +id);
     }
 }

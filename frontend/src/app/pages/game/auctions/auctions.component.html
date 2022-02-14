@@ -87,4 +87,7 @@
   </div>
 </div>
 
-<app-auction-create *ngIf="displayCreateForm" (close)="displayCreateForm = false"></app-auction-create>
+<app-auction-create
+  *ngIf="displayCreateForm"
+  (close)="getAuctions(false); displayCreateForm = false;">
+</app-auction-create>
