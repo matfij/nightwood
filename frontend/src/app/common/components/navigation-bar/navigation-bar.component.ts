@@ -40,7 +40,7 @@ export class NavigationBarComponent {
   }
 
   navigate(path: string) {
-    if (path !== 'home') this.engineService.getExpeditionReports().subscribe();
+    if (path !== 'home') this.engineService.tick();
 
     this.router.navigate(['game', path]);
   }

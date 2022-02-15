@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AuctionController, AuctionDto, AuthUserDto, GetAuctionDto, ItemRarity, ItemType } from 'src/app/client/api';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActionController, AuctionController, AuctionDto, AuthUserDto, GetAuctionDto, ItemRarity, ItemType } from 'src/app/client/api';
 import { RepositoryService } from 'src/app/common/services/repository.service';
-import { UtilsService } from 'src/app/common/services/utils.service';
+import { ToastService } from 'src/app/common/services/toast.service';
+import { DisplayAuction } from 'src/app/core/definitions/items';
+import { ItemsService } from 'src/app/core/services/items.service';
 
 @Component({
   selector: 'app-auctions',
@@ -21,6 +23,8 @@ export class AuctionsComponent implements OnInit {
   auctionsLoading: boolean = false;
   displayOwned: boolean = false;
   displayCreateForm: boolean = false;
+  selectedAuction?: DisplayAuction;
+  displayBuyAuctionModal: boolean = false;
 
   currentPage: number = 0;
   pageLimit: number = 9;
@@ -28,9 +32,11 @@ export class AuctionsComponent implements OnInit {
   canGetNext: boolean = true;
 
   constructor(
+    private actionController: ActionController,
     private auctionController: AuctionController,
     private repositoryService: RepositoryService,
-    private utilsService: UtilsService,
+    private toastService: ToastService,
+    private itemsService: ItemsService,
   ) {}
 
   ItemType = ItemType;
@@ -73,12 +79,30 @@ export class AuctionsComponent implements OnInit {
     this.getAuctions();
   }
 
-  buyAuction(id: number) {
+  confirmBuyAuction(auction: AuctionDto) {
+    this.selectedAuction = this.itemsService.toDisplayAuction(auction);
+    this.displayBuyAuctionModal = true;
+  }
 
+  buyAuction(id: number) {
+    this.displayBuyAuctionModal = false;
+    this.auctionsLoading = true;
+    this.actionController.buyAuction(id.toString()).subscribe(buyAuctionResult => {
+      this.auctionsLoading = false;
+      this.toastService.showSuccess('common.success', 'auctions.purchaseCompleted');
+      this.getAuctions();
+      this.user = { ...this.user, gold: this.user.gold - buyAuctionResult.consumedGold };
+      this.repositoryService.setUserData(this.user);
+    }, () => this.auctionsLoading = false);
   }
 
   cancelAuction(id: number) {
-
+    this.auctionsLoading = true;
+    this.auctionController.cancel(id.toString()).subscribe(() => {
+      this.auctionsLoading = false;
+      this.toastService.showSuccess('common.success', 'auctions.offerCancelled');
+      this.getAuctions();
+    }, () => this.auctionsLoading = false);
   }
 
 }

@@ -31,4 +31,8 @@ export class AuctionDto {
     @Expose()
     @ApiProperty()
     active: boolean;
+
+    @Expose()
+    @ApiProperty()
+    finalized: boolean;
 }

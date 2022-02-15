@@ -25,7 +25,8 @@ export class ActionItemService {
         user = await this.userService.updateGold(userId, -auction.totalGoldPrice);
         seller = await this.userService.updateGold(seller.id, auction.totalGoldPrice);
 
-        await this.itemService.updateInventory(user, [auction.item]);
+        await this.auctionService.finalizeAuction(auctionId);
+        await this.itemService.updateInventory(user, [{...auction.item, quantity: auction.quantity}]);
 
         return { consumedGold: auction.totalGoldPrice };
     }

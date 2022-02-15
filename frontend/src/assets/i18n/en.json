@@ -204,7 +204,11 @@
     "minLevel": "Min level",
     "maxLevel": "Max level",
     "rarity": "Rarity",
-    "name": "Name"
+    "name": "Name",
+    "offerCancelled": "Offer cancelled",
+    "confirmPurchase": "Confirm purchase",
+    "confirmPurchaseMessage": "Buy {{ quantity }} {{ name }} for {{ gold }} gold.",
+    "purchaseCompleted": "Purchase completed"
   },
   "items": {
     "BubulaeSteak": "Bubulae steak",

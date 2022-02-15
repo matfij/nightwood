@@ -5,15 +5,15 @@
     <div class="wrapper-auctions">
 
       <div class="wrapper-menu">
-        <div (click)="changeMode(false)" class="btn-base btn-mode">
+        <button (click)="changeMode(false)" [disabled]="auctionsLoading" class="btn-base btn-mode">
           {{ 'auctions.all' | translate }}
-        </div>
-        <div (click)="changeMode(true)" class="btn-base btn-mode">
+        </button>
+        <button (click)="changeMode(true)" [disabled]="auctionsLoading" class="btn-base btn-mode">
           {{ 'auctions.owned' | translate }}
-        </div>
-        <div (click)="displayCreateForm = true" class="btn-base btn-mode">
+        </button>
+        <button (click)="displayCreateForm = true" [disabled]="auctionsLoading" class="btn-base btn-mode">
           {{ 'auctions.addOffer' | translate }}
-        </div>
+        </button>
       </div>
       <div class="wrapper-menu wrapper-search">
         <input #searchName class="input-text" placeholder="{{ 'auctions.name' | translate }}"/>
@@ -30,9 +30,9 @@
           <option [value]="ItemType.Ingredient">{{ 'enums.itemType.Ingredient' | translate }}</option>
           <option [value]="ItemType.Equipment">{{ 'enums.itemType.Equipment' | translate }}</option>
         </select>
-        <div (click)="getAuctions()" class="btn-base btn-search">
+        <button (click)="getAuctions()" [disabled]="auctionsLoading" class="btn-base btn-search">
           {{ 'common.search' | translate }}
-        </div>
+        </button>
       </div>
 
       <div class="wrapper-table">
@@ -61,7 +61,7 @@
                 </div>
               </div>
 
-              <button *ngIf="auction.sellerId !== user.id" (click)="buyAuction(auction.id)" class="btn-base btn-auction">
+              <button *ngIf="auction.sellerId !== user.id" (click)="confirmBuyAuction(auction)" class="btn-base btn-auction">
                 {{ 'auctions.buy' | translate }}
               </button>
               <button *ngIf="auction.sellerId === user.id" (click)="cancelAuction(auction.id)" class="btn-base btn-auction">
@@ -73,7 +73,7 @@
         </div>
       </div>
 
-      <div *ngIf="canGetPrev || canGetNext" class="wrapper-menu">
+      <div *ngIf="!auctionsLoading && (canGetPrev || canGetNext)" class="wrapper-menu">
         <button (click)="getAuctions(false)" [disabled]="!canGetPrev" class="btn-base btn-mode">
           {{ 'common.prev' | translate }}
         </button>
@@ -91,3 +91,12 @@
   *ngIf="displayCreateForm"
   (close)="getAuctions(false); displayCreateForm = false;">
 </app-auction-create>
+
+<app-confirm-modal
+  *ngIf="selectedAuction && displayBuyAuctionModal"
+  title="auctions.confirmPurchase"
+  [message]="'auctions.confirmPurchaseMessage'
+    | translate:{quantity: selectedAuction.quantity, name: (selectedAuction.displayItem.displayName | translate), gold: selectedAuction.totalGoldPrice}"
+  (confirm)="buyAuction(selectedAuction.id)"
+  (close)="displayBuyAuctionModal = false">
+</app-confirm-modal>

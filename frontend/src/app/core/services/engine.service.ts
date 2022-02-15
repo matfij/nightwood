@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
-import { ActionController, ExpeditionReportDto, ItemRarity } from "src/app/client/api";
+import { ActionController, AuthController, ExpeditionReportDto, ItemRarity, UserController } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { EXPEDITION_REPORTS, StoreService } from "src/app/common/services/store.service";
@@ -16,14 +16,26 @@ import { ItemsService } from "./items.service";
 export class EngineService {
 
   constructor(
-    private translateService: TranslateService,
     private actionController: ActionController,
+    private authController: AuthController,
+    private translateService: TranslateService,
     private dateService: DateService,
     private storeService: StoreService,
     private toastService: ToastService,
     private repositoryService: RepositoryService,
     private itemsService: ItemsService,
   ) {}
+
+  tick() {
+    this.updateUserData();
+    this.getExpeditionReports().subscribe();
+  }
+
+  private updateUserData() {
+    this.authController.getUserData().subscribe(data => {
+      this.repositoryService.setUserData(data);
+    });
+  }
 
   getExpeditionReports(): Observable<DisplayExpeditionReport[]> {
     return this.actionController.checkExpeditions().pipe(
@@ -65,6 +77,8 @@ export class EngineService {
         const message = this.translateService.instant('explore.dragonFinishedExpedition', { dragon: report.dragonName });
         this.toastService.showSuccess('common.information', message);
       });
+
+      this.updateUserData();
     }
   }
 }

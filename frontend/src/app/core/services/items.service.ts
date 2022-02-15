@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { ItemDto } from "src/app/client/api";
-import { DisplayItem } from "../definitions/items";
+import { AuctionDto, ItemDto } from "src/app/client/api";
+import { DisplayAuction, DisplayItem } from "../definitions/items";
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,12 @@ export class ItemsService {
 
   getItemName(rawName: string): string {
     return `${this.BASE_NAME_PATH}.${rawName}`;
+  }
+
+  toDisplayAuction(auction: AuctionDto): DisplayAuction {
+    return {
+      ...auction,
+      displayItem: this.toDisplayItem(auction.item),
+    };
   }
 }

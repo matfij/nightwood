@@ -56,7 +56,7 @@ export class ActionController {
 
     @Post('buyAuction/:id')
     @ApiOkResponse({ type: BuyAuctionResultDto })
-    async cancel(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<BuyAuctionResultDto> {
-        return this.actionItemService.buyAuction(req.user.id, +id);
+    async buyAuction(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<BuyAuctionResultDto> {
+      return this.actionItemService.buyAuction(req.user.id, +id);
     }
 }

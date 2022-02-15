@@ -85,6 +85,12 @@ export class AuthService {
         return decodedToken['user'];
     }
 
+    async getUserData(userId: number): Promise<UserDto> {
+        const user = await this.userRepository.findOne(userId);
+        user.password = null;
+        return user;
+    }
+
     async generateJwt(user: UserDto): Promise<string> {
         user.password = '';
         return this.jwtService.signAsync({user});

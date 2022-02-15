@@ -26,4 +26,7 @@ export class Auction {
 
     @Column()
     active: boolean;
+
+    @Column({ default: false })
+    finalized: boolean;
 }

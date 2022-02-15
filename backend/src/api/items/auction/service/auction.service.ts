@@ -35,6 +35,7 @@ export class AuctionService {
             totalGoldPrice: dto.quantity * dto.unitGoldPrice,
             item: item,
             active: true,
+            finalized: false,
         };
         this.itemService.consumeItem(item, dto.quantity);
 
@@ -49,6 +50,7 @@ export class AuctionService {
             where: {
                 id: auctionId,
                 active: true,
+                finalized: false,
                 endTime: MoreThan(this.dateService.getCurrentDate()),
             },
         });
@@ -62,6 +64,7 @@ export class AuctionService {
             where: {
                 id: auctionId,
                 sellerId: userId,
+                finalized: false,
             },
         });
         if(!auction) this.errorService.throw('errors.auctionNotFound');
@@ -78,6 +81,7 @@ export class AuctionService {
             relations: ['item'],
             where: {
                 active: true,
+                finalized: false,
                 endTime: MoreThan(this.dateService.getCurrentDate()),
                 ...(dto.ownedByUser && { sellerId: userId }),
                 item: {
@@ -113,9 +117,17 @@ export class AuctionService {
     async cancel(userId: number, auctionId: number): Promise<void> {
         const auction = await this.checkOwnedAuction(userId, auctionId);
 
-        this.itemService.refillItem(auction.item, auction.item.quantity);
+        this.itemService.refillItem(auction.item, auction.quantity);
 
         auction.active = false;
+        await this.auctionRepository.save(auction);
+    }
+
+    async finalizeAuction(auctionId: number) {
+        const auction = await this.checkAuction(auctionId);
+
+        auction.active = false;
+        auction.finalized = true;
         await this.auctionRepository.save(auction);
     }
 }
