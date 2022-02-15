@@ -11,4 +11,23 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Combat system [100%]
  - Breed-specific skills [90%]
  - Players messaging & live chat [80%]
- - Auction house [80%]
+ - Auction house [90%]
+
+## Refactoring 1
+ - Defined data management [20%]
+ - Controllers & repositories information flow [30%]
+ - Unify frontend components [50%]
+ - Navigation bar & user state [10%]
+ - Smart tooltips [30%]
+ - Data generators [0%]
+
+## Stage 1
+ - Special dragons [0%]
+ - Dragon equipment [0%]
+ - Alchemy - cooking, extracting [0%]
+ - Guilds [0%]
+ - Player roles [0%]
+ - Expedition guardians & progress [0%]
+
+## Stage 2
+ - Mini games
