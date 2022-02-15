@@ -56,7 +56,7 @@ export class AuctionService {
         return auction;
     }
 
-    async checkOwnedAuction(auctionId: number, userId: number) {
+    async checkOwnedAuction(userId: number, auctionId: number) {
         const auction = await this.auctionRepository.findOne({
             relations: ['item'],
             where: {
@@ -111,7 +111,7 @@ export class AuctionService {
     }
 
     async cancel(userId: number, auctionId: number): Promise<void> {
-        const auction = await this.checkOwnedAuction(auctionId, userId);
+        const auction = await this.checkOwnedAuction(userId, auctionId);
 
         this.itemService.refillItem(auction.item, auction.item.quantity);
 

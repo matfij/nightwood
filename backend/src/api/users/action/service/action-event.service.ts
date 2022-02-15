@@ -21,8 +21,8 @@ export class ActionEventService {
         private itemService: ItemService,
     ) {}
 
-    async startExpedition(user: UserDto, dto: StartExpeditionDto): Promise<DragonActionDto> {
-        const dragon = await this.dragonService.checkIfEventAvailable(user.id, dto.dragonId);
+    async startExpedition(userId: number, dto: StartExpeditionDto): Promise<DragonActionDto> {
+        const dragon = await this.dragonService.checkIfEventAvailable(userId, dto.dragonId);
 
         const action = await this.dragonActionService.startExpedition(dto.expeditionId, dragon);
 
@@ -32,7 +32,8 @@ export class ActionEventService {
     async checkExpeditions(userId: number): Promise<ExpeditionReportDto[]> {
         const dragons = await this.dragonService.getOwnedDragons(userId);
 
-        const results = await Promise.all(dragons.map(async (dragon) => {
+        let results: ExpeditionReportDto[] = [];
+        for (const dragon of dragons) {
             const expedition = await this.dragonActionService.checkExpedition(dragon);
             if (expedition) {
                 const user = await this.userRepository.findOne(userId);
@@ -42,19 +43,18 @@ export class ActionEventService {
                 const loots = await this.itemService.awardExpeditionItems(user, dragon, expedition);
 
                 user.gold += gainedGold;
-                console.log(user.gold)
                 await this.userRepository.update(user.id, { gold: user.gold });
 
-                return {
+                results.push ({
                     dragonName: dragon.name,
                     expeditionName: expedition.name,
                     gainedExperience: gainedExperience,
                     gainedGold: gainedGold,
                     loots: loots,
-                };
+                });
             }
-        }));
-        
+        }
+
         return results.filter(result => result != null);
     }
 }

@@ -21,17 +21,17 @@ export class ActionDragonService {
         private itemService: ItemService,
     ) {}
 
-    async adopt(owner: UserDto, dto: AdoptDragonDto): Promise<DragonDto> {
-        await this.userService.incrementOwnedDragons(owner.id);
+    async adopt(userId: number, dto: AdoptDragonDto): Promise<DragonDto> {
+        await this.userService.incrementOwnedDragons(userId);
         
-        const dragon = await this.dragonService.adopt(owner.id, dto);
+        const dragon = await this.dragonService.adopt(userId, dto);
 
         return dragon;
     }
 
-    async feed(owner: UserDto, dto: FeedDragonDto): Promise<DragonDto> {
-        const item = await this.itemService.checkFeedingItem(owner.id, dto.itemId);
-        const dragon = await this.dragonService.checkFeedingDragon(owner.id, dto.dragonId);
+    async feed(userId: number, dto: FeedDragonDto): Promise<DragonDto> {
+        const item = await this.itemService.checkFeedingItem(userId, dto.itemId);
+        const dragon = await this.dragonService.checkFeedingDragon(userId, dto.dragonId);
 
         await this.itemService.consumeItem(item);
         const fedDragon = await this.dragonService.feedDragon(item, dragon);
@@ -39,10 +39,12 @@ export class ActionDragonService {
         return fedDragon;
     }
 
-    async release(user: UserDto, dragonId: number): Promise<void> {
-        this.dragonService.release(user.id, dragonId);
+    async release(userId: number, dragonId: number): Promise<void> {
+        const user = await this.userRepository.findOne(userId);
+
+        this.dragonService.release(userId, dragonId);
 
         user.ownedDragons -= 1;
-        this.userRepository.update(user.id, { ownedDragons: user.ownedDragons });
+        await this.userRepository.update(userId, { ownedDragons: user.ownedDragons });
     }
 }

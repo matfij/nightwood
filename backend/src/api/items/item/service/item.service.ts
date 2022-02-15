@@ -39,21 +39,21 @@ export class ItemService {
         return itemsPage;
     }
 
-    async checkItem(ownerId: number, itemId: number): Promise<ItemDto> {
+    async checkItem(userId: number, itemId: number): Promise<ItemDto> {
         const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
         
         if (!item) this.errorService.throw('errors.itemNotFound');
-        if (item.user.id !== ownerId) this.errorService.throw('errors.itemNotFound');
+        if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
         if (item.quantity < 1) this.errorService.throw('errors.insufficientQuantity');
         
         return item;
     }
 
-    async checkFeedingItem(ownerId: number, itemId: number): Promise<ItemDto> {
+    async checkFeedingItem(userId: number, itemId: number): Promise<ItemDto> {
         const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
         
         if (!item) this.errorService.throw('errors.itemNotFound');
-        if (item.user.id !== ownerId) this.errorService.throw('errors.itemNotFound');
+        if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
         if (item.type !== ItemType.Food) this.errorService.throw('errors.itemNotFound');
         if (item.quantity < 1) this.errorService.throw('errors.insufficientQuantity');
         

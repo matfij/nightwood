@@ -27,19 +27,19 @@ export class ActionController {
     @Post('adoptDragon')
     @ApiOkResponse({ type: DragonDto })
     adoptDragon(@Request() req: AuthorizedRequest, @Body() dto: AdoptDragonDto): Promise<DragonDto> {
-        return this.actionDragonService.adopt(req.user, dto);
+        return this.actionDragonService.adopt(req.user.id, dto);
     }
 
     @Post('feedDragon')
     @ApiOkResponse({ type: DragonDto })
     feedDragon(@Request() req: AuthorizedRequest, @Body() dto: FeedDragonDto): Promise<DragonDto> {
-        return this.actionDragonService.feed(req.user, dto);
+        return this.actionDragonService.feed(req.user.id, dto);
     }
 
     @Post('startExpedition')
     @ApiOkResponse({ type: DragonActionDto })
     startExpedition(@Request() req: AuthorizedRequest, @Body() dto: StartExpeditionDto): Promise<DragonActionDto> {
-      return this.actionEventService.startExpedition(req.user, dto);
+      return this.actionEventService.startExpedition(req.user.id, dto);
     }
 
     @Post('checkExpeditions')
@@ -51,7 +51,7 @@ export class ActionController {
     @Post('releaseDragon/:id')
     @ApiOkResponse()
     releaseDragon(@Request() req: AuthorizedRequest, @Param('id') id: string) {
-      return this.actionDragonService.release(req.user, +id);
+      return this.actionDragonService.release(req.user.id, +id);
     }
 
     @Post('buyAuction/:id')
