@@ -9,10 +9,9 @@ export class AbstractModalComponent implements OnInit {
 
   @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   closeModal() {
     this.close.next(true);

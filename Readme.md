@@ -9,14 +9,14 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Dragon feeding & base stats [100%]
  - Items & expeditions [90%]
  - Combat system [100%]
- - Breed-specific skills [90%]
+ - Breed-specific skills [100%]
  - Players messaging & live chat [80%]
- - Auction house [90%]
+ - Auction house [100%]
 
 ## Refactoring 1
  - Defined data management [20%]
  - Controllers & repositories information flow [30%]
- - Unify frontend components [50%]
+ - Common configuration source [0%]
  - Navigation bar & user state [10%]
  - Smart tooltips [30%]
  - Data generators [0%]
@@ -31,3 +31,4 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 
 ## Stage 2
  - Mini games
+ - Achievements

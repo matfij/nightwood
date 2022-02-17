@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UserDto } from 'src/app/client/api';
 import { EXPEDITION_REPORTS, StoreService } from 'src/app/common/services/store.service';
 import { DisplayExpeditionReport } from 'src/app/core/definitions/expeditions';
 import { EngineService } from 'src/app/core/services/engine.service';
@@ -11,8 +10,6 @@ import { EngineService } from 'src/app/core/services/engine.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
-  users: UserDto[] = [];
 
   reports: DisplayExpeditionReport[] = [];
   reportsLoading: boolean = false;

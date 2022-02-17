@@ -18,19 +18,17 @@ export class LoginComponent {
 
   form: FormGroup = new FormGroup({
     nickname: new FormControl(
-      null,
-      [Validators.required, Validators.minLength(MIN_NICKNAME_LENGTH), Validators.maxLength(MAX_NICKNAME_LENGTH)],
+      null, [Validators.required, Validators.minLength(MIN_NICKNAME_LENGTH), Validators.maxLength(MAX_NICKNAME_LENGTH)],
     ),
     password: new FormControl(
-      null,
-      [Validators.required, Validators.minLength(MIN_PASSWORD_LENGTH), Validators.maxLength(MAX_PASSWORD_LENGTH)],
+      null, [Validators.required, Validators.minLength(MIN_PASSWORD_LENGTH), Validators.maxLength(MAX_PASSWORD_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
     { form: this.form, key: 'nickname', label: 'start.nickname', type: 'text' },
     { form: this.form, key: 'password', label: 'start.password', type: 'password' },
   ];
-  submitLoading?: boolean;
+  submitLoading: boolean = false;
 
   constructor(
     private router: Router,
@@ -46,15 +44,14 @@ export class LoginComponent {
     this.submitLoading = true;
     this.authController.login(this.form.value)
       .pipe(switchMap(user => {
-          this.repositoryService.clearUserData();
-          this.repositoryService.setAccessToken(user.accessToken);
-          this.repositoryService.setUserData(user);
-
-          return this.engineService.getExpeditionReports();
-        })).subscribe(() => {
-          this.submitLoading = false;
-          this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
-          this.router.navigate(['../game/home']);
+        this.repositoryService.clearUserData();
+        this.repositoryService.setAccessToken(user.accessToken);
+        this.repositoryService.setUserData(user);
+        return this.engineService.getExpeditionReports();
+      })).subscribe(() => {
+        this.submitLoading = false;
+        this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
+        this.router.navigate(['../game/home']);
     }, () => {
       this.submitLoading = false;
     });

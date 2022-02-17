@@ -1,5 +1,5 @@
-@import "../../theme/mixins.scss";
-@import "../../theme/variables.scss";
+@import '../../theme/mixins.scss';
+@import '../../theme/variables.scss';
 
 
 .title {
@@ -23,7 +23,7 @@
   padding: 10px;
 
   img {
-    width: 60px;
+    width: 50px;
     height: auto !important;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -31,6 +31,6 @@
 
   &:hover {
     cursor: pointer;
-    background: darken($color: $app-dark, $amount: 5);
+    background: darken($color: $app-dark, $amount: 8);
   }
 }

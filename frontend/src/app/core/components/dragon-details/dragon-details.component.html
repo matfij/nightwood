@@ -5,7 +5,6 @@
 
   <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
 
-
   <div class="wrapper-skills">
     <div *ngFor="let skill of obtainableSkills" class="item-skill">
       <div tooltip>
@@ -23,8 +22,8 @@
       <div class="item-skill-info">
         {{ getSkillProgress(skill.name) }}
         <button
-          *ngIf="dragon.skillPoints > 0 && canLearn(skill.name)"
-          (click)="learnSkill(skill.name)"
+          *ngIf="canLearn(skill)"
+          (click)="learnSkill(skill)"
           [disabled]="learnSkillLoading"
           class="btn-learn-skill">
           +

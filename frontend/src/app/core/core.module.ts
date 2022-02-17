@@ -12,7 +12,7 @@ import { ItemDisplayComponent } from './components/item-display/item-display.com
 import { DragonChoiceModalComponent } from './components/dragon-choice-modal/dragon-choice-modal.component';
 import { DragonBattleComponent } from './components/dragon-battle/dragon-battle.component';
 import { DragonDetailsComponent } from './components/dragon-details/dragon-details.component';
-import { AbstractModalComponent } from './components/abstract-modal/abstract-modal.component';
+import { AbstractModalComponent } from '../common/components/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
 import { TooltipDirective } from '../common/utils/tooltip.directive';
 import { AuctionCreateComponent } from './components/auction-create/auction-create.component';

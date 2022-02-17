@@ -56,7 +56,7 @@ export class ArenaComponent implements OnInit {
   }
 
   getEnemyDragons(next?: boolean, minLevel?: number, maxLevel?: number) {
-    if (next) this.enemyDragonPage += 1;
+    if (next === true) this.enemyDragonPage += 1;
     if (next === false) this.enemyDragonPage -= 1;
     if (this.enemyDragonPage < 0) this.enemyDragonPage = 0;
 

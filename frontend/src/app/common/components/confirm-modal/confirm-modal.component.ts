@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractModalComponent } from 'src/app/core/components/abstract-modal/abstract-modal.component';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
 
 @Component({
   selector: 'app-confirm-modal',
   templateUrl: './confirm-modal.component.html',
   styleUrls: [
-    '../../../core/components/abstract-modal/abstract-modal.component.scss',
+    '../abstract-modal/abstract-modal.component.scss',
     './confirm-modal.component.scss',
   ],
 })

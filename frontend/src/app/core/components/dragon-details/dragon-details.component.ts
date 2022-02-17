@@ -1,17 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { retryWhen } from 'rxjs/operators';
 import { DragonController, DragonSkillsController, DragonSkillsDto, GetSkillsDto, LearnskillDto } from 'src/app/client/api';
 import { DRAGON_SKILL_LIMIT } from '../../configuration';
 import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
-import { AbstractModalComponent } from '../abstract-modal/abstract-modal.component';
+import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
 
 @Component({
   selector: 'app-dragon-details',
   templateUrl: './dragon-details.component.html',
   styleUrls: [
+    '../../../common/components/abstract-modal/abstract-modal.component.scss',
     './dragon-details.component.scss',
-    '../abstract-modal/abstract-modal.component.scss'
   ],
 })
 export class DragonDetailsComponent extends AbstractModalComponent implements OnInit {
@@ -53,16 +52,16 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
     return this.dragon.skills[this.getSkillName(skill)] + `/${DRAGON_SKILL_LIMIT}`;
   }
 
-  canLearn(skill: string): boolean {
-    const progress = this.dragon.skills[this.getSkillName(skill)];
-    return progress < DRAGON_SKILL_LIMIT;
+  canLearn(skill: DisplaySkill): boolean {
+    const progress = this.dragon.skills[this.getSkillName(skill.name)];
+    return this.dragon.skillPoints > 0 && progress < DRAGON_SKILL_LIMIT && this.dragon.level >= skill.level;
   }
 
-  learnSkill(skillName: string) {
-    if (this.dragon.skillPoints < 1 || !this.canLearn(skillName)) return;
+  learnSkill(skill: DisplaySkill) {
+    if (this.dragon.skillPoints < 1 || !this.canLearn(skill)) return;
 
     const params: LearnskillDto = {
-      skillName: skillName,
+      skillName: skill.name,
       dragonId: this.dragon.id,
     };
     this.learnSkillLoading = true;

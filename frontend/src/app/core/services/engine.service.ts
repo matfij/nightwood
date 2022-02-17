@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
-import { ActionController, AuthController, ExpeditionReportDto, ItemRarity, UserController } from "src/app/client/api";
+import { ActionController, AuthController, ExpeditionReportDto, ItemRarity } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { EXPEDITION_REPORTS, StoreService } from "src/app/common/services/store.service";

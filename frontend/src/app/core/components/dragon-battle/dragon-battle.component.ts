@@ -10,8 +10,8 @@ import { DragonService } from '../../services/dragons.service';
   selector: 'app-dragon-battle',
   templateUrl: './dragon-battle.component.html',
   styleUrls: [
+    '../../../common/components/abstract-modal/abstract-modal.component.scss',
     './dragon-battle.component.scss',
-    '../abstract-modal/abstract-modal.component.scss',
   ],
   animations: [FADE_IN],
 })

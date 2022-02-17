@@ -6,14 +6,14 @@ import { AuctionController, CreateAuctionDto, ItemController, PageItemDto } from
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { MAX_AUCTION_DURATION, MAX_AUCTION_PRICE, MAX_AUCTION_QUANTITY, MIN_AUCTION_DURATION, MIN_AUCTION_PRICE, MIN_AUCTION_QUANTITY } from '../../configuration';
-import { AbstractModalComponent } from '../abstract-modal/abstract-modal.component';
+import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
 
 @Component({
   selector: 'app-auction-create',
   templateUrl: './auction-create.component.html',
   styleUrls: [
+    '../../../common/components/abstract-modal/abstract-modal.component.scss',
     './auction-create.component.scss',
-    '../abstract-modal/abstract-modal.component.scss',
   ]
 })
 export class AuctionCreateComponent extends AbstractModalComponent implements OnInit {
@@ -22,16 +22,13 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
 
   form: FormGroup = new FormGroup({
     duration: new FormControl(
-      null,
-      [Validators.required, Validators.min(MIN_AUCTION_DURATION), Validators.max(MAX_AUCTION_DURATION)],
+      null, [Validators.required, Validators.min(MIN_AUCTION_DURATION), Validators.max(MAX_AUCTION_DURATION)],
     ),
     quantity: new FormControl(
-      null,
-      [Validators.required, Validators.min(MIN_AUCTION_QUANTITY), Validators.max(MAX_AUCTION_QUANTITY)],
+      null, [Validators.required, Validators.min(MIN_AUCTION_QUANTITY), Validators.max(MAX_AUCTION_QUANTITY)],
     ),
     unitPrice: new FormControl(
-      null,
-      [Validators.required, Validators.min(MIN_AUCTION_PRICE), Validators.max(MAX_AUCTION_PRICE)],
+      null, [Validators.required, Validators.min(MIN_AUCTION_PRICE), Validators.max(MAX_AUCTION_PRICE)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -75,7 +72,6 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
     const selectedItem = this.itemSelect.nativeElement.value;
 
-    console.log('data', selectedItem, this.duration.value, this.quantity.value, this.unitPrice.value)
     const params: CreateAuctionDto = {
       itemId: selectedItem,
       duration: this.duration.value,
@@ -83,7 +79,7 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
       unitGoldPrice: this.unitPrice.value,
     };
     this.submitLoading = true;
-    this.auctionController.create(params).subscribe(auction => {
+    this.auctionController.create(params).subscribe(() => {
       this.submitLoading = false;
       this.toastService.showSuccess('common.success', 'auctions.offerCreated');
       this.closeModal();

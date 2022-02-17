@@ -3,14 +3,14 @@ import { DragonDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
-import { AbstractModalComponent } from '../abstract-modal/abstract-modal.component';
+import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
 
 @Component({
   selector: 'app-dragon-choice-modal',
   templateUrl: './dragon-choice-modal.component.html',
   styleUrls: [
+    '../../../common/components/abstract-modal/abstract-modal.component.scss',
     './dragon-choice-modal.component.scss',
-    '../abstract-modal/abstract-modal.component.scss',
   ],
 })
 export class DragonChoiceModalComponent extends AbstractModalComponent implements OnInit {
@@ -21,7 +21,7 @@ export class DragonChoiceModalComponent extends AbstractModalComponent implement
   @Input() level!: number;
   @Output() dragonSelected: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
-  displayDragons!: DisplayDragon[];
+  displayDragons: DisplayDragon[] = [];
 
   constructor(
     private toastService: ToastService,

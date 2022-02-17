@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionController, DragonActionController, DragonController, DragonDto, ExpeditionDto, StartExpeditionDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
+import { DisplayExpedition } from 'src/app/core/definitions/events';
 
 @Component({
   selector: 'app-expeditions',
@@ -15,10 +16,10 @@ export class ExpeditionsComponent implements OnInit {
 
   @ViewChild('selectDragon') selectDragon?: ElementRef;
 
-  expeditionsLoading!: boolean;
-  expeditions!: DisplayExpedition[];
-  ownedDragons!: DragonDto[];
-  showDragonChoiceModal!: boolean;
+  expeditionsLoading: boolean = false;
+  expeditions: DisplayExpedition[] = [];
+  ownedDragons: DragonDto[] = [];
+  showDragonChoiceModal: boolean = false;
   modalTitle?: string;
   modalMessage?: string;
   selectedExpedition?: string;
@@ -32,10 +33,6 @@ export class ExpeditionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.expeditionsLoading = false;
-    this.expeditions = [];
-    this.ownedDragons = [];
-    this.showDragonChoiceModal = false;
     this.getExpeditions();
     this.getOwnedDragons();
   }
@@ -90,9 +87,4 @@ export class ExpeditionsComponent implements OnInit {
       this.getOwnedDragons();
     }, () => this.expeditionsLoading = false);
   }
-}
-
-export interface DisplayExpedition extends ExpeditionDto {
-  hint: string;
-  image: string;
 }

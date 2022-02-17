@@ -1,15 +1,15 @@
 <div class="container-modal">
   <div class="wrapper-form">
 
-  <div class="title mb-4">{{ 'auctions.addOfferLong' | translate }}</div>
+    <div class="title mb-4">{{ 'auctions.addOfferLong' | translate }}</div>
 
-  <div class="input-label">{{ 'auctions.selectItem' | translate }}</div>
-  <select #itemSelect class="input-select">
-    <option class="input-select-option" *ngFor="let item of (tradableItems$ | async)?.data"
-      [value]="item.id">
-      {{ item.name }} ({{ item.quantity }})
-    </option>
-  </select>
+    <div class="input-label">{{ 'auctions.selectItem' | translate }}</div>
+    <select #itemSelect class="input-select">
+      <option class="input-select-option" *ngFor="let item of (tradableItems$ | async)?.data"
+        [value]="item.id">
+        {{ item.name }} ({{ item.quantity }})
+      </option>
+    </select>
 
     <form [formGroup]="form" (ngSubmit)="createAuction()">
       <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>

@@ -1,5 +1,6 @@
-@import "../../theme/mixins.scss";
-@import "../../theme/variables.scss";
+@import '../../theme/mixins.scss';
+@import '../../theme/variables.scss';
+
 
 .container {
   max-width: 98%;
@@ -91,7 +92,6 @@
   .btn-base {
     margin: 20px auto;
   }
-
 }
 
 .wrapper-foods {

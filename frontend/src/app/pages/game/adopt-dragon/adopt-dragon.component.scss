@@ -1,5 +1,6 @@
-@import "../../../core/theme/mixins.scss";
-@import "../../../core/theme/variables.scss";
+@import '../../../core/theme/mixins.scss';
+@import '../../../core/theme/variables.scss';
+
 
 .title {
   margin-top: 10px;
@@ -17,9 +18,9 @@
 }
 
 .wrapper-stage {
-  width: 95%;
-  max-width: 800px;
+  width: clamp(0px, 95%, 800px);
   margin: 20px auto;
+
   letter-spacing: 0.5px;
 }
 
@@ -29,7 +30,7 @@
 }
 
 .answers-wrapper {
-  max-width: 600px;
+  width: clamp(0px, 100%, 600px);
   margin: 20px auto;
 
   padding: 10px;

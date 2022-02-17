@@ -17,20 +17,16 @@ export class RegisterComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     email: new FormControl(
-      null,
-      [Validators.required, Validators.email],
+      null, [Validators.required, Validators.email],
     ),
     nickname: new FormControl(
-      null,
-      [Validators.required, Validators.minLength(MIN_NICKNAME_LENGTH), Validators.maxLength(MAX_NICKNAME_LENGTH)],
+      null, [Validators.required, Validators.minLength(MIN_NICKNAME_LENGTH), Validators.maxLength(MAX_NICKNAME_LENGTH)],
     ),
     password: new FormControl(
-      null,
-      [Validators.required, Validators.minLength(MIN_PASSWORD_LENGTH), Validators.maxLength(MAX_PASSWORD_LENGTH)],
+      null, [Validators.required, Validators.minLength(MIN_PASSWORD_LENGTH), Validators.maxLength(MAX_PASSWORD_LENGTH)],
     ),
     passwordConfirm: new FormControl(
-      null,
-      [Validators.required, Validators.minLength(MIN_PASSWORD_LENGTH), Validators.maxLength(MAX_PASSWORD_LENGTH)],
+      null, [Validators.required, Validators.minLength(MIN_PASSWORD_LENGTH), Validators.maxLength(MAX_PASSWORD_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -39,7 +35,7 @@ export class RegisterComponent implements OnInit {
     { form: this.form, key: 'password', label: 'start.password', type: 'password' },
     { form: this.form, key: 'passwordConfirm', label: 'start.passwordConfirm', type: 'password' },
   ];
-  submitLoading?: boolean;
+  submitLoading: boolean = false;
 
   get email(): FormControl { return this.form.get('email') as FormControl; }
   get nickname(): FormControl { return this.form.get('nickname') as FormControl; }
