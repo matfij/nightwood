@@ -10,15 +10,18 @@ import { ActionModule } from './api/users/action/action.module';
 import { ChatModule } from './api/users/chat/chat.module';
 import { DragonSkillsModule } from './api/dragons/dragon-skills/dragon-skills.module';
 import { AuctionModule } from './api/items/auction/auction.module';
+import { MailModule } from './api/users/mail/mail.module';
 
 const API_MODULES = [
   ActionModule,
   AuthModule,
   UserModule,
+  MailModule,
   DragonModule,
   DragonActionModule,
   DragonSkillsModule,
   ItemModule,
+  AuctionModule,
 ];
 
 @Module({
