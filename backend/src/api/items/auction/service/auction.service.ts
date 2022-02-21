@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DateService } from 'src/common/services/date.service';
 import { ErrorService } from 'src/common/services/error.service';
-import { Any, Between, FindOperator, Like, MoreThan, Repository } from 'typeorm';
+import { Any, Between, FindManyOptions, FindOperator, Like, MoreThan, Repository } from 'typeorm';
 import { ItemRarity } from '../../item/model/definitions/item-rarity';
 import { ItemType } from '../../item/model/definitions/item-type';
 import { ItemService } from '../../item/service/item.service';
@@ -58,7 +58,7 @@ export class AuctionService {
         return auction;
     }
 
-    async checkOwnedAuction(userId: number, auctionId: number) {
+    async checkOwnedAuction(userId: number, auctionId: number): Promise<AuctionDto> {
         const auction = await this.auctionRepository.findOne({
             relations: ['item'],
             where: {
@@ -77,7 +77,7 @@ export class AuctionService {
         dto.minLevel = dto.minLevel ?? 0;
         dto.maxLevel = dto.maxLevel ?? 999;
 
-        const filterOptions = {
+        const filterOptions: FindManyOptions<Auction> = {
             relations: ['item'],
             where: {
                 active: true,
@@ -102,7 +102,6 @@ export class AuctionService {
             skip: dto.page * dto.limit,
             take: dto.limit,
         });
-
         const count = await this.auctionRepository.count({
             ...filterOptions,
         });

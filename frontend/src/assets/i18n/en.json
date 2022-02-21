@@ -53,6 +53,7 @@
     "formInvalid": "Form invalid",
     "formInvalidHint": "Please check entered values",
 
+    "userNotFound": "User not found",
     "emailNotUnique": "Email occupied",
     "emailIncorrectLength": "Email must be between {min} and {max} characters",
     "nicknameNotUnique": "Nickname occupied",
@@ -78,7 +79,8 @@
     "skillNotFound": "Skill not found",
     "skillLimitReached": "Skill limit reached",
     "auctionNotFound": "Auction not found",
-    "insufficientsFound": "Insufficient founds"
+    "insufficientsFound": "Insufficient founds",
+    "mailNotFound": "Mail not found"
   },
   "game": {
     "home": "Home",

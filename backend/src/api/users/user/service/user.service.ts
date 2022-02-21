@@ -59,7 +59,11 @@ export class UserService {
     }
 
     async getOne(id: number | string): Promise<UserDto> {
-        return this.userRepository.findOne(id);
+        const user = this.userRepository.findOne(id);
+
+        if (!user) this.errorService.throw('errors.userNotFound');
+
+        return user;
     }
 
     async getAll(dto: GetUserDto): Promise<PageUserDto> {

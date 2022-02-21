@@ -1,3 +1,4 @@
+import { LONG_NUMBER_TYPE } from "src/configuration/app.config";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -6,11 +7,14 @@ export class Mail {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ type: LONG_NUMBER_TYPE })
+    sentDate: number;
+
     @Column({ nullable: true })
     senderId: number;
 
     @Column({ nullable: true })
-    senderName: number;
+    senderName: string;
 
     @Column()
     receiverId: number;
@@ -22,5 +26,5 @@ export class Mail {
     message: string;
 
     @Column({ default: false })
-    read: boolean;
+    isRead: boolean;
 }
