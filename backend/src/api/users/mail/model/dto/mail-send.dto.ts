@@ -21,3 +21,9 @@ export class MailSendDto {
     @MaxLength(5000)
     message: string;
 }
+
+export interface MailSendSystemParams {
+    receiverId: number;
+    topic: string;
+    message: string;
+}

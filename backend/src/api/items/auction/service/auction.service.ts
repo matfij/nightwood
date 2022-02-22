@@ -116,7 +116,7 @@ export class AuctionService {
     async cancel(userId: number, auctionId: number): Promise<void> {
         const auction = await this.checkOwnedAuction(userId, auctionId);
 
-        this.itemService.refillItem(auction.item, auction.quantity);
+        await this.itemService.refillItem(auction.item, auction.quantity);
 
         auction.active = false;
         await this.auctionRepository.save(auction);

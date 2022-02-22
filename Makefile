@@ -10,8 +10,9 @@ restart:
 build:
 	docker-compose build
 
-down:
+stop:
 	docker-compose down
+
 
 gen.client:
 	rm -rf generator/generated

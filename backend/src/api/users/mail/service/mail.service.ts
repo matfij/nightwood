@@ -6,7 +6,7 @@ import { FindManyOptions, Repository } from "typeorm";
 import { UserService } from "../../user/service/user.service";
 import { MailGetDto } from "../model/dto/mail-get.dto";
 import { MailPageDto } from "../model/dto/mail-page.dto";
-import { MailSendDto } from "../model/dto/mail-send.dto";
+import { MailSendDto, MailSendSystemParams } from "../model/dto/mail-send.dto";
 import { MailDto } from "../model/dto/mail.dto";
 import { Mail } from "../model/mail.entity";
 
@@ -36,6 +36,10 @@ export class MailService {
 
         const newMail = await this.mailRepository.save(mail);
         return newMail;
+    }
+
+    async systemSend(params: MailSendSystemParams): Promise<void> {
+
     }
 
     async read(userId: number, mailId: number): Promise<MailDto> {

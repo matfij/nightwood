@@ -11,12 +11,14 @@ import { ChatModule } from './api/users/chat/chat.module';
 import { DragonSkillsModule } from './api/dragons/dragon-skills/dragon-skills.module';
 import { AuctionModule } from './api/items/auction/auction.module';
 import { MailModule } from './api/users/mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 const API_MODULES = [
   ActionModule,
   AuthModule,
   UserModule,
   MailModule,
+  ChatModule,
   DragonModule,
   DragonActionModule,
   DragonSkillsModule,
@@ -36,8 +38,7 @@ const API_MODULES = [
       autoLoadEntities: true,
       synchronize: true,
     }),
-    ChatModule,
-    AuctionModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [],
 })

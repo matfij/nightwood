@@ -6,7 +6,6 @@ import { FeedDragonDto } from "src/api/dragons/dragon/model/dto/feed-dragon.dto"
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
 import { Repository } from "typeorm";
-import { UserDto } from "../../user/model/dto/user.dto";
 import { User } from "../../user/model/user.entity";
 import { UserService } from "../../user/service/user.service";
 
