@@ -1,9 +1,9 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsBoolean, IsEnum, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
 import { ItemRarity } from "src/api/items/item/model/definitions/item-rarity";
 import { ItemType } from "src/api/items/item/model/definitions/item-type";
 
-export class GetAuctionDto {
+export class AuctionGetDto {
 
     @IsBoolean()
     @ApiPropertyOptional()

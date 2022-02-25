@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DateService } from 'src/common/services/date.service';
 import { ErrorService } from 'src/common/services/error.service';
-import { Any, Between, FindManyOptions, FindOperator, Like, MoreThan, Repository } from 'typeorm';
+import { Any, Between, FindManyOptions, Like, MoreThan, Repository } from 'typeorm';
 import { ItemRarity } from '../../item/model/definitions/item-rarity';
 import { ItemType } from '../../item/model/definitions/item-type';
 import { ItemService } from '../../item/service/item.service';
 import { Auction } from '../model/auction.entity';
 import { AuctionDto } from '../model/dto/auction.dto';
-import { CreateAuctionDto } from '../model/dto/create-auction.dto';
-import { GetAuctionDto } from '../model/dto/get-auction.dto';
-import { PageAuctionDto } from '../model/dto/page-auction.dto';
+import { AuctionCreateDto } from '../model/dto/auction-create.dto';
+import { AuctionGetDto } from '../model/dto/auction-get.dto';
+import { AuctionPageDto } from '../model/dto/auction-page.dto';
 
 @Injectable()
 export class AuctionService {
@@ -23,7 +23,7 @@ export class AuctionService {
         private itemService: ItemService,
     ) {}
 
-    async create(userId: number, dto: CreateAuctionDto): Promise<AuctionDto> {
+    async createAuction(userId: number, dto: AuctionCreateDto): Promise<AuctionDto> {
         const item = await this.itemService.checkItem(userId, dto.itemId);
 
         if(item.quantity < dto.quantity) this.errorService.throw('errors.insufficientQuantity');
@@ -71,7 +71,7 @@ export class AuctionService {
         return auction;
     }
 
-    async getAll(userId: number, dto: GetAuctionDto): Promise<PageAuctionDto> {
+    async getAllAuctions(userId: number, dto: AuctionGetDto): Promise<AuctionPageDto> {
         dto.page = Math.max(0, dto.page ?? 0);
         dto.limit = Math.max(1, dto.limit ?? 20);
         dto.minLevel = dto.minLevel ?? 0;
@@ -106,14 +106,14 @@ export class AuctionService {
             ...filterOptions,
         });
 
-        const page: PageAuctionDto = {
+        const auctionPage: AuctionPageDto = {
             data: auctions,
             meta: { totalItems: count },
         };
-        return page;
+        return auctionPage;
     }
 
-    async cancel(userId: number, auctionId: number): Promise<void> {
+    async cancelAuction(userId: number, auctionId: number): Promise<void> {
         const auction = await this.checkOwnedAuction(userId, auctionId);
 
         await this.itemService.refillItem(auction.item, auction.quantity);
@@ -122,7 +122,7 @@ export class AuctionService {
         await this.auctionRepository.save(auction);
     }
 
-    async finalizeAuction(auctionId: number) {
+    async finalizeAuction(auctionId: number): Promise<void> {
         const auction = await this.checkAuction(auctionId);
 
         auction.active = false;

@@ -3,7 +3,7 @@ import { Expose, Type } from "class-transformer";
 import { IsNumber, IsNumberString, Max, Min } from "class-validator";
 import { MAX_AUCTION_PRICE, MAX_AUCTION_QUANTITY, MAX_AUCTION_TIME, MIN_AUCTION_PRICE, MIN_AUCTION_QUANTITY, MIN_AUCTION_TIME } from "src/configuration/item.config";
 
-export class CreateAuctionDto {
+export class AuctionCreateDto {
 
     @Expose()
     @IsNumberString()

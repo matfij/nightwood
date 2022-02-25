@@ -6,7 +6,7 @@ import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/star
 import { AdoptDragonDto } from "src/api/dragons/dragon/model/dto/adopt-dragon.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { FeedDragonDto } from "src/api/dragons/dragon/model/dto/feed-dragon.dto";
-import { BuyAuctionResultDto } from "src/api/items/auction/model/dto/buy-auction-result.dto";
+import { AuctionBuyResultDto } from "src/api/items/auction/model/dto/auction-buy-result.dto";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { JwtAuthGuard } from "../auth/util/jwt.guard";
 import { ActionDragonService } from "./service/action-dragon.service";
@@ -55,8 +55,8 @@ export class ActionController {
     }
 
     @Post('buyAuction/:id')
-    @ApiOkResponse({ type: BuyAuctionResultDto })
-    async buyAuction(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<BuyAuctionResultDto> {
+    @ApiOkResponse({ type: AuctionBuyResultDto })
+    async buyAuction(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<AuctionBuyResultDto> {
       return this.actionItemService.buyAuction(req.user.id, +id);
     }
 }

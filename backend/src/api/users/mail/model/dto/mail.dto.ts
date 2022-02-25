@@ -9,10 +9,10 @@ export class MailDto {
     sentDate: number;
 
     @ApiProperty()
-    senderId: number;
+    senderId?: number;
 
     @ApiProperty()
-    senderName: string;
+    senderName?: string;
 
     @ApiProperty()
     receiverId: number;

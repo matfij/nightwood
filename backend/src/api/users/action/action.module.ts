@@ -5,6 +5,7 @@ import { DragonModule } from 'src/api/dragons/dragon/dragon.module';
 import { AuctionModule } from 'src/api/items/auction/auction.module';
 import { ItemModule } from 'src/api/items/item/item.module';
 import { ErrorService } from 'src/common/services/error.service';
+import { MailModule } from '../mail/mail.module';
 import { User } from '../user/model/user.entity';
 import { UserModule } from '../user/user.module';
 import { ActionController } from './action.controller';
@@ -16,6 +17,7 @@ import { ActionItemService } from './service/action-item.service';
     imports: [
         TypeOrmModule.forFeature([User]),
         UserModule,
+        MailModule,
         DragonModule, 
         DragonActionModule,
         ItemModule,

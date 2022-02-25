@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
-import { MailSendDto, MailSendSystemParams } from "src/api/users/mail/model/dto/mail-send.dto";
+import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
 import { MailService } from "src/api/users/mail/service/mail.service";
 import { DateService } from "src/common/services/date.service";
 import { LessThan, Repository } from "typeorm";
@@ -49,10 +49,11 @@ export class AuctionJobService {
 
     async sendReportMail(auction: AuctionDto): Promise<void> {
         const params: MailSendSystemParams = {
+            senderName: 'Marketplace',
             receiverId: auction.sellerId,
             topic: 'Auction ended',
-            message: `item ${auction.item.name} (${auction.quantity}) was not sold.`
+            message: `Item ${auction.item.name} (${auction.quantity}) was not sold and returned to your inventory.`
         };
-        await this.mailService.systemSend(params);
+        await this.mailService.sendSystemMail(params);
     }
 }

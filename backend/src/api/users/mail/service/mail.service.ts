@@ -4,9 +4,10 @@ import { DateService } from "src/common/services/date.service";
 import { ErrorService } from "src/common/services/error.service";
 import { FindManyOptions, Repository } from "typeorm";
 import { UserService } from "../../user/service/user.service";
+import { MailSendSystemParams } from "../model/definitions/mail-params";
 import { MailGetDto } from "../model/dto/mail-get.dto";
 import { MailPageDto } from "../model/dto/mail-page.dto";
-import { MailSendDto, MailSendSystemParams } from "../model/dto/mail-send.dto";
+import { MailSendDto } from "../model/dto/mail-send.dto";
 import { MailDto } from "../model/dto/mail.dto";
 import { Mail } from "../model/mail.entity";
 
@@ -21,7 +22,7 @@ export class MailService {
         private errorService: ErrorService,
     ) {}
 
-    async send(userId: number, dto: MailSendDto): Promise<MailDto> {
+    async sendMail(userId: number, dto: MailSendDto): Promise<MailDto> {
         const user = await this.userService.getOne(userId);
         const receiver = await this.userService.getOne(dto.receiverName);
 
@@ -38,11 +39,20 @@ export class MailService {
         return newMail;
     }
 
-    async systemSend(params: MailSendSystemParams): Promise<void> {
+    async sendSystemMail(params: MailSendSystemParams): Promise<MailDto> {
+        const mail: MailDto = {
+            sentDate: this.dateService.getCurrentDate(),
+            senderName: params.senderName,
+            receiverId: params.receiverId,
+            topic: params.topic,
+            message: params.message,
+        };
 
+        const newMail = await this.mailRepository.save(mail);
+        return newMail;
     }
 
-    async read(userId: number, mailId: number): Promise<MailDto> {
+    async readMail(userId: number, mailId: number): Promise<MailDto> {
         let mail = await this.checkOwnedMail(userId, mailId);
 
         mail.isRead = true;
@@ -51,7 +61,7 @@ export class MailService {
         return mail;
     }
 
-    async checkUnread(userId: number): Promise<MailPageDto> {
+    async checkUnreadMails(userId: number): Promise<MailPageDto> {
         const mails = await this.mailRepository.find({
             where: { receiverId: userId, isRead: false },
             order: { sentDate: 'ASC' },
@@ -65,7 +75,7 @@ export class MailService {
         return mailPage;
     }
 
-    async getAll(userId: number, dto: MailGetDto): Promise<MailPageDto> {
+    async getAllMails(userId: number, dto: MailGetDto): Promise<MailPageDto> {
         dto.page = Math.max(0, dto.page ?? 0);
         dto.limit = Math.max(1, dto.limit ?? 20);
 
