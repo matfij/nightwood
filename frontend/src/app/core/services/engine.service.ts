@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable, timer } from "rxjs";
 import { map, tap } from "rxjs/operators";
-import { ActionController, AuthController, ExpeditionReportDto, ItemRarity } from "src/app/client/api";
+import { ActionController, AuthController, AuthUserDto, ExpeditionReportDto, ItemRarity } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { EXPEDITION_REPORTS, StoreService } from "src/app/common/services/store.service";
@@ -15,6 +15,8 @@ import { ItemsService } from "./items.service";
 })
 export class EngineService {
 
+  private user$!: BehaviorSubject<AuthUserDto>;
+
   constructor(
     private actionController: ActionController,
     private authController: AuthController,
@@ -24,16 +26,43 @@ export class EngineService {
     private toastService: ToastService,
     private repositoryService: RepositoryService,
     private itemsService: ItemsService,
-  ) {}
+  ) {
+    timer(0, 5000).subscribe(() => { this.tick(); });
+  }
 
-  tick() {
+  tick(): void {
     this.updateUserData();
     this.getExpeditionReports().subscribe();
+  }
+
+  setInitialState(userData: AuthUserDto): void {
+    this.user$ = new BehaviorSubject<AuthUserDto>(userData);
+  }
+
+  get user(): AuthUserDto {
+    return this.getUser().getValue();
+  }
+
+  getUser(): BehaviorSubject<AuthUserDto> {
+    if (!this.user$) this.user$ = new BehaviorSubject<AuthUserDto>(this.repositoryService.getUserData());
+    else if (!this.user$.getValue()) this.user$.next(this.repositoryService.getUserData());
+
+    return this.user$;
+  }
+
+  updateUser(data: Partial<AuthUserDto>): void {
+    if (!this.user$) this.user$ = new BehaviorSubject<AuthUserDto>(this.repositoryService.getUserData());
+
+    if (data) {
+      this.repositoryService.setUserData({ ...this.user, ...data });
+      this.user$.next({ ...this.user, ...data });
+    }
   }
 
   private updateUserData() {
     this.authController.getUserData().subscribe(data => {
       this.repositoryService.setUserData(data);
+      this.user$.next(data);
     });
   }
 

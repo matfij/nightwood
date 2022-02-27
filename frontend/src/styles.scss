@@ -55,7 +55,7 @@ img::selection {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: lighten($color: $app-dark, $amount: 10) $app-primary;
+  scrollbar-color: $app-dark $app-primary;
 }
 
 *::-webkit-scrollbar {
@@ -68,8 +68,8 @@ img::selection {
 
 *::-webkit-scrollbar-thumb {
   background-color: $app-primary;
-  border-radius: 20px;
-  border: 2px solid lighten($color: $app-dark, $amount: 10);
+  border-radius: 8px;
+  border: 2px solid $app-dark;
 }
 
 /**

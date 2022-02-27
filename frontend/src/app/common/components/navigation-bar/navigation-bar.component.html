@@ -1,6 +1,6 @@
 <div class="no-desktop wrapper-nav-top">
   <div class="item-user">
-    <b>{{ user?.nickname ?? '' }}</b><b>|</b>{{ 'inventory.gold' | translate }}: {{ user?.gold }}<b>|</b>
+    <b>{{ (user$ | async)?.nickname ?? '' }}</b><b>|</b>{{ 'inventory.gold' | translate }}: {{ (user$ | async)?.gold }}<b>|</b>
     <div (click)="displayMenu = !displayMenu" class="item-menu">{{ 'game.menu' | translate }}</div><b>|</b>
     <div (click)="logout()" class="item-logout">{{ 'game.logout' | translate }}</div>
   </div>
@@ -13,8 +13,8 @@
 
 <div class="no-mobile wrapper-nav-side">
   <div class="item-user">
-    <b>{{ user?.nickname }}</b>
-    <p>{{ 'inventory.gold' | translate }}: {{ user?.gold }}</p>
+    <b>{{ (user$ | async)?.nickname }}</b>
+    <p>{{ 'inventory.gold' | translate }}: {{ (user$ | async)?.gold }}</p>
 
     <p (click)="logout()" class="item-logout">
       ⤶ {{ 'game.logout' | translate }}

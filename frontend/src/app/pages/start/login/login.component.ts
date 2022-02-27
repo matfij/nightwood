@@ -47,6 +47,8 @@ export class LoginComponent {
         this.repositoryService.clearUserData();
         this.repositoryService.setAccessToken(user.accessToken);
         this.repositoryService.setUserData(user);
+
+        this.engineService.setInitialState(user);
         return this.engineService.getExpeditionReports();
       })).subscribe(() => {
         this.submitLoading = false;

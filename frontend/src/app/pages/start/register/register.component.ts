@@ -7,6 +7,7 @@ import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { MIN_NICKNAME_LENGTH, MAX_NICKNAME_LENGTH, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from 'src/app/core/configuration';
+import { EngineService } from 'src/app/core/services/engine.service';
 
 @Component({
   selector: 'app-register',
@@ -46,6 +47,7 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private translateService: TranslateService,
     private authController: AuthController,
+    private engineService: EngineService,
     private repositoryService: RepositoryService,
     private toastService: ToastService,
   ) {}
@@ -72,12 +74,13 @@ export class RegisterComponent implements OnInit {
       password: this.password.value,
     };
     this.submitLoading = true;
-    this.authController.register(user).subscribe(x => {
+    this.authController.register(user).subscribe(user => {
       this.submitLoading = false;
       this.toastService.showSuccess('start.registerSuccess', 'start.registerSuccessHint');
 
-      this.repositoryService.setAccessToken(x.accessToken);
-      this.repositoryService.setUserData(x);
+      this.repositoryService.setAccessToken(user.accessToken);
+      this.repositoryService.setUserData(user);
+      this.engineService.setInitialState(user);
       this.router.navigate(['../game/home']);
     }, _ => {
       this.submitLoading = false;

@@ -2,19 +2,22 @@
 @import '../../theme/variables.scss';
 
 
-.container {
-  max-width: 98%;
-  margin-bottom: 3px;
-  padding-left: 10%;
+.container-dragon {
+  @include tile($app-dark);
 
-  display: grid;
-  gap: 2%;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
-  border: 1.5px solid darken($color: $app-dark, $amount: 10);
+  max-width: 100%;
+  margin: 2px;
+
+  padding-left: 10%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10%;
+  // grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
 }
 
 .wrapper-name {
   @include size(200px);
+
   margin-top: 2%;
 
   font-size: 16px;
@@ -123,7 +126,7 @@
 }
 
 @media screen and (max-width: $mobile-threshold) {
-  .container {
+  .container-dragon {
     padding: 0%;
 
     display: flex;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemController, ItemDto } from 'src/app/client/api';
-import { RepositoryService } from 'src/app/common/services/repository.service';
+import { ItemController } from 'src/app/client/api';
 import { DisplayItem } from 'src/app/core/definitions/items';
+import { EngineService } from 'src/app/core/services/engine.service';
 import { ItemsService } from 'src/app/core/services/items.service';
 
 @Component({
@@ -17,21 +17,21 @@ export class InventoryComponent implements OnInit {
 
   constructor(
     private itemController: ItemController,
-    private repositoryService: RepositoryService,
+    private engineSerivce: EngineService,
     private itemsService: ItemsService,
   ) {}
 
   ngOnInit(): void {
     this.getOwnedItems();
 
-    this.gold = this.repositoryService.getUserData().gold;
+    this.gold = this.engineSerivce.user.gold;
   }
 
   getOwnedItems(): void {
     this.itemsLoading = true;
     this.itemController.getOwnedFoods().subscribe(page => {
       this.itemsLoading = false;
-      this.ownedItems = page.data.map(item => { return this.itemsService.toDisplayItem(item) });
+      this.ownedItems = page.data.map(item => this.itemsService.toDisplayItem(item));
     }, () => this.itemsLoading = false);
   }
 

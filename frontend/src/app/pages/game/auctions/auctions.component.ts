@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActionController, AuctionController, AuctionDto, AuthUserDto, GetAuctionDto, ItemRarity, ItemType } from 'src/app/client/api';
-import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayAuction } from 'src/app/core/definitions/items';
+import { EngineService } from 'src/app/core/services/engine.service';
 import { ItemsService } from 'src/app/core/services/items.service';
 
 @Component({
@@ -34,7 +34,7 @@ export class AuctionsComponent implements OnInit {
   constructor(
     private actionController: ActionController,
     private auctionController: AuctionController,
-    private repositoryService: RepositoryService,
+    private engineService: EngineService,
     private toastService: ToastService,
     private itemsService: ItemsService,
   ) {}
@@ -43,7 +43,7 @@ export class AuctionsComponent implements OnInit {
   ItemRarity = ItemRarity;
 
   ngOnInit(): void {
-    this.user = this.repositoryService.getUserData();
+    this.user = this.engineService.user;
     this.getAuctions();
   }
 
@@ -90,9 +90,10 @@ export class AuctionsComponent implements OnInit {
     this.actionController.buyAuction(id.toString()).subscribe(buyAuctionResult => {
       this.auctionsLoading = false;
       this.toastService.showSuccess('common.success', 'auctions.purchaseCompleted');
+
+      this.user.gold = this.user.gold - buyAuctionResult.consumedGold;
+      this.engineService.updateUser({ gold: this.user.gold });
       this.getAuctions();
-      this.user = { ...this.user, gold: this.user.gold - buyAuctionResult.consumedGold };
-      this.repositoryService.setUserData(this.user);
     }, () => this.auctionsLoading = false);
   }
 
@@ -101,6 +102,7 @@ export class AuctionsComponent implements OnInit {
     this.auctionController.cancel(id.toString()).subscribe(() => {
       this.auctionsLoading = false;
       this.toastService.showSuccess('common.success', 'auctions.offerCancelled');
+
       this.getAuctions();
     }, () => this.auctionsLoading = false);
   }

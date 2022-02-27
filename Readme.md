@@ -17,7 +17,7 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Defined data management [20%]
  - Controllers & repositories information flow [30%]
  - Common configuration source (logic, validation) [0%]
- - Navigation bar & user state [50%]
+ - Navigation bar & user state [100%]
  - Smart tooltips [30%]
  - Data generators [0%]
 

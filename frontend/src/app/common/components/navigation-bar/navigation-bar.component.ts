@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserDto } from 'src/app/client/api';
+import { Observable } from 'rxjs';
+import { AuthUserDto } from 'src/app/client/api';
 import { EngineService } from 'src/app/core/services/engine.service';
 import { NavigationItem } from '../../definitions/navigaion';
 import { RepositoryService } from '../../services/repository.service';
@@ -14,6 +15,7 @@ export class NavigationBarComponent {
 
   @Input() currentLocation!: string;
 
+  user$?: Observable<AuthUserDto>;
   displayMenu: boolean = false;
 
   navigationItems: NavigationItem[] = [
@@ -27,7 +29,6 @@ export class NavigationBarComponent {
     { label: 'game.shoutbox', path: 'shoutbox', icon: '', isActive: false },
   ];
   isCollapsed: boolean = true;
-  user?: UserDto;
 
   constructor(
     private router: Router,
@@ -38,7 +39,7 @@ export class NavigationBarComponent {
   ngOnInit(): void {
     this.navigationItems.forEach(x => x.isActive = this.currentLocation === x.path);
 
-    this.user = this.repositoryService.getUserData();
+    this.user$ = this.engineService.getUser();
   }
 
   navigate(path: string) {
