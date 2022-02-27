@@ -1,60 +1,118 @@
 @import '../../../core/theme/variables.scss';
+@import '../../../core/theme/mixins.scss';
 
 
-.bg-light {
-  background-color: $app-primary !important;
+ul, li {
+  list-style-type: none;
 }
 
-.btn-outline {
 
-  &:focus {
-    outline: none;
-    box-shadow: none;
+.wrapper-nav-top {
+  width: 100%;
+  height: 56px;
+  margin: 0px;
+
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  color: darken($app-dark, 10);
+  background: $app-primary;
+  text-align: left;
+
+  .item-user {
+    padding-left: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 400;
   }
 }
 
-.navbar-brand {
+.wrapper-menu {
+  width: 100%;
+  height: calc(100% - 56px);
 
-  border-right: 2px solid $app-dark;
-  padding-right: 1.3125rem;
+  overflow: auto;
+  position: absolute;
+  top: 56px;
+  left: 0px;
+  background: $app-dark;
+  color: $app-primary;
+  z-index: 2000;
 
-  img {
-    margin-right: 10px;
+  .item-menu-nav {
+    @include tile($app-primary);
+
+    margin: 2px 2px 0px 2px;
+    line-height: 60px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 2000;
   }
 }
 
-.navbar-toggler-icon {
-  color: red !important;
+.wrapper-nav-side {
+  width: 200px;
+  height: calc(100% - 8px);
+  margin: 4px;
+
+  overflow: auto;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  color: darken($app-dark, 10);
+  background: $app-primary;
+  border: 2px solid darken($app-primary, 50);
+  border-radius: 4px;
+
+  .item-user {
+    @include tile(darken($app-mythical, 20));
+
+    height: 120px;
+    margin: 2px;
+
+    padding: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 400;
+
+    p {
+      margin-top: 5px;
+      font-size: 15px;
+    }
+  }
 }
 
-.app-nav-link {
-  color: $app-dark !important;
+.item-menu {
   cursor: pointer;
+}
+
+.item-logout {
+  color: darken($app-red, 40);
 
   &:hover {
-    font-weight: 600;
-    transition: all ease-in-out 0.33s;
+    cursor: pointer;
+    color: darken($app-green, 20);
   }
 }
 
-.app-active {
-  font-weight: 600;
-}
+.item-nav {
+  @include tile($app-dark);
 
-.logout {
-  color: $app-dark;
-  cursor: pointer;
-  font-weight: 600;
+  margin: 2px;
+
+  line-height: 45px;
+  padding-left: 20px;
+  text-align: left;
+  font-size: 20px;
+  font-weight: 400;
 
   &:hover {
-    color: darken($color: $app-red, $amount: 20);
-    transition: all ease-in-out 0.33s;
-  }
-}
+    @include tile(darken($app-mythical, 20));
 
-@media all and (max-width: $mobile-threshold) {
-
-  .navbar-brand {
-    border: none;
+    cursor: pointer;
   }
 }

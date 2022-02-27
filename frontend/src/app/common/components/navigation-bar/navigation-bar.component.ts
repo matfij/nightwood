@@ -14,6 +14,8 @@ export class NavigationBarComponent {
 
   @Input() currentLocation!: string;
 
+  displayMenu: boolean = false;
+
   navigationItems: NavigationItem[] = [
     { label: 'game.home', path: 'home', icon: '', isActive: false },
     { label: 'game.adoptDragon', path: 'adopt-dragon', icon: '', isActive: false },

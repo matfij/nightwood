@@ -83,6 +83,7 @@
     "mailNotFound": "Mail not found"
   },
   "game": {
+    "menu": "Menu",
     "home": "Home",
     "adoptDragon": "Adopt dragon",
     "myDragons": "My dragons",

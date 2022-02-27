@@ -40,6 +40,11 @@ img::selection {
  * Shorthands
  */
 
+.no-desktop {
+  display: none;
+  visibility: hidden;
+}
+
 .inline {
   display: inline;
 }
@@ -74,9 +79,11 @@ img::selection {
 .wrapper-main {
   height: 100%;
 
+  padding-top: 50px;
+  padding-left: 200px;
   display: flex;
   flex-direction: column;
-  align-content: center;
+  align-content: flex-start;
   text-align: center;
   overflow: hidden;
   color: $app-light;
@@ -84,11 +91,10 @@ img::selection {
 }
 
 .wrapper-content {
-  width: 95%;
-  max-width: 1200px;
+  width: clamp(0px, 95%, 1200px);
   min-height: 70vh;
   max-height: 90vh;
-  margin: auto;
+  margin: 0px auto;
 
   padding-top: 10px;
   padding: 20px auto;
@@ -169,6 +175,11 @@ img::selection {
  * Mobile version
  */
 @media all and (max-width: $mobile-threshold) {
+
+  .wrapper-main {
+    padding-left: 0px;
+  }
+
   .wrapper-content {
     height: 100%;
     max-height: 100%;
@@ -179,5 +190,11 @@ img::selection {
 
   .no-mobile {
     display: none;
+    visibility: hidden;
+  }
+
+  .no-desktop {
+    display: inherit;
+    visibility: inherit;
   }
 }

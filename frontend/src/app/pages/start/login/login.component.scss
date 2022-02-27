@@ -2,9 +2,17 @@
 @import '../../../core/theme/variables.scss';
 
 
+.wrapper-main {
+  height: 100%;
+
+  padding: 0px;
+  align-content: center;
+}
+
 .wrapper-content {
   max-width: 600px;
   min-height: none;
+  margin: auto;
 }
 
 .title {
