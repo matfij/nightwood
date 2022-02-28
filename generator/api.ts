@@ -20,7 +20,7 @@ export interface IActionController {
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
     checkExpeditions(): Observable<ExpeditionReportDto[]>;
     releaseDragon(id: string): Observable<void>;
-    buyAuction(id: string): Observable<BuyAuctionResultDto>;
+    buyAuction(id: string): Observable<AuctionBuyResultDto>;
 }
 
 @Injectable({
@@ -283,7 +283,7 @@ export class ActionController implements IActionController {
         return _observableOf<void>(<any>null);
     }
 
-    buyAuction(id: string): Observable<BuyAuctionResultDto> {
+    buyAuction(id: string): Observable<AuctionBuyResultDto> {
         let url_ = this.baseUrl + "/api/v1/action/buyAuction/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -305,14 +305,14 @@ export class ActionController implements IActionController {
                 try {
                     return this.processBuyAuction(<any>response_);
                 } catch (e) {
-                    return <Observable<BuyAuctionResultDto>><any>_observableThrow(e);
+                    return <Observable<AuctionBuyResultDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<BuyAuctionResultDto>><any>_observableThrow(response_);
+                return <Observable<AuctionBuyResultDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processBuyAuction(response: HttpResponseBase): Observable<BuyAuctionResultDto> {
+    protected processBuyAuction(response: HttpResponseBase): Observable<AuctionBuyResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -322,7 +322,7 @@ export class ActionController implements IActionController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <BuyAuctionResultDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <AuctionBuyResultDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -330,7 +330,7 @@ export class ActionController implements IActionController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<BuyAuctionResultDto>(<any>null);
+        return _observableOf<AuctionBuyResultDto>(<any>null);
     }
 }
 
@@ -847,6 +847,226 @@ export class ItemController implements IItemController {
     }
 }
 
+export interface IMailController {
+    send(body: MailSendDto): Observable<MailDto>;
+    read(id: string): Observable<MailDto>;
+    checkUnread(): Observable<MailPageDto>;
+    getAll(body: MailGetDto): Observable<MailPageDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class MailController implements IMailController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    send(body: MailSendDto): Observable<MailDto> {
+        let url_ = this.baseUrl + "/api/v1/mail/send";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSend(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSend(<any>response_);
+                } catch (e) {
+                    return <Observable<MailDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MailDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSend(response: HttpResponseBase): Observable<MailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MailDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MailDto>(<any>null);
+    }
+
+    read(id: string): Observable<MailDto> {
+        let url_ = this.baseUrl + "/api/v1/mail/read/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRead(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRead(<any>response_);
+                } catch (e) {
+                    return <Observable<MailDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MailDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRead(response: HttpResponseBase): Observable<MailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MailDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MailDto>(<any>null);
+    }
+
+    checkUnread(): Observable<MailPageDto> {
+        let url_ = this.baseUrl + "/api/v1/mail/checkUnread";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckUnread(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckUnread(<any>response_);
+                } catch (e) {
+                    return <Observable<MailPageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MailPageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCheckUnread(response: HttpResponseBase): Observable<MailPageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MailPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MailPageDto>(<any>null);
+    }
+
+    getAll(body: MailGetDto): Observable<MailPageDto> {
+        let url_ = this.baseUrl + "/api/v1/mail/getAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<MailPageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MailPageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<MailPageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MailPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MailPageDto>(<any>null);
+    }
+}
+
 export interface IDragonController {
     create(body: CreateDragonDto): Observable<DragonDto>;
     getOne(id: string): Observable<DragonDto>;
@@ -1306,8 +1526,8 @@ export class DragonSkillsController implements IDragonSkillsController {
 }
 
 export interface IAuctionController {
-    create(body: CreateAuctionDto): Observable<AuctionDto>;
-    getAll(body: GetAuctionDto): Observable<PageAuctionDto>;
+    create(body: AuctionCreateDto): Observable<AuctionDto>;
+    getAll(body: AuctionGetDto): Observable<AuctionPageDto>;
     cancel(id: string): Observable<void>;
 }
 
@@ -1324,7 +1544,7 @@ export class AuctionController implements IAuctionController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    create(body: CreateAuctionDto): Observable<AuctionDto> {
+    create(body: AuctionCreateDto): Observable<AuctionDto> {
         let url_ = this.baseUrl + "/api/v1/auction/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1375,7 +1595,7 @@ export class AuctionController implements IAuctionController {
         return _observableOf<AuctionDto>(<any>null);
     }
 
-    getAll(body: GetAuctionDto): Observable<PageAuctionDto> {
+    getAll(body: AuctionGetDto): Observable<AuctionPageDto> {
         let url_ = this.baseUrl + "/api/v1/auction/getAll";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1398,14 +1618,14 @@ export class AuctionController implements IAuctionController {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PageAuctionDto>><any>_observableThrow(e);
+                    return <Observable<AuctionPageDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PageAuctionDto>><any>_observableThrow(response_);
+                return <Observable<AuctionPageDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PageAuctionDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<AuctionPageDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1415,7 +1635,7 @@ export class AuctionController implements IAuctionController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <PageAuctionDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <AuctionPageDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1423,7 +1643,7 @@ export class AuctionController implements IAuctionController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PageAuctionDto>(<any>null);
+        return _observableOf<AuctionPageDto>(<any>null);
     }
 
     cancel(id: string): Observable<void> {
@@ -1590,7 +1810,7 @@ export interface ExpeditionReportDto {
     loots: ItemDto[];
 }
 
-export interface BuyAuctionResultDto {
+export interface AuctionBuyResultDto {
     consumedGold: number;
 }
 
@@ -1663,6 +1883,34 @@ export interface RegisterUserDto {
 export interface PageItemDto {
     meta: PageMetaDto;
     data: ItemDto[];
+}
+
+export interface MailSendDto {
+    senderId: number;
+    receiverName: string;
+    topic: string;
+    message: string;
+}
+
+export interface MailDto {
+    id: number;
+    sentDate: number;
+    senderId: number;
+    senderName: string;
+    receiverId: number;
+    topic: string;
+    message: string;
+    isRead: boolean;
+}
+
+export interface MailPageDto {
+    meta: PageMetaDto;
+    data: MailDto[];
+}
+
+export interface MailGetDto {
+    page?: number;
+    limit?: number;
 }
 
 export interface CreateDragonDto {
@@ -1758,7 +2006,7 @@ export interface SkillDto {
     nature: DragonNature[];
 }
 
-export interface CreateAuctionDto {
+export interface AuctionCreateDto {
     itemId: number;
     duration: number;
     unitGoldPrice: number;
@@ -1773,9 +2021,10 @@ export interface AuctionDto {
     item: ItemDto;
     quantity: number;
     active: boolean;
+    finalized: boolean;
 }
 
-export interface GetAuctionDto {
+export interface AuctionGetDto {
     ownedByUser?: boolean;
     name?: string;
     type?: string;
@@ -1786,7 +2035,7 @@ export interface GetAuctionDto {
     limit?: number;
 }
 
-export interface PageAuctionDto {
+export interface AuctionPageDto {
     meta: PageMetaDto;
     data: AuctionDto[];
 }

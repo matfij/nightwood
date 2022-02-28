@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { BehaviorSubject, Observable, timer } from "rxjs";
+import { BehaviorSubject, Observable, Subscription, timer } from "rxjs";
 import { map, tap } from "rxjs/operators";
 import { ActionController, AuthController, AuthUserDto, ExpeditionReportDto, ItemRarity } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
@@ -16,6 +16,7 @@ import { ItemsService } from "./items.service";
 export class EngineService {
 
   private user$!: BehaviorSubject<AuthUserDto>;
+  private tick$?: Subscription;
 
   constructor(
     private actionController: ActionController,
@@ -26,13 +27,19 @@ export class EngineService {
     private toastService: ToastService,
     private repositoryService: RepositoryService,
     private itemsService: ItemsService,
-  ) {
-    timer(0, 5000).subscribe(() => { this.tick(); });
-  }
+  ) {}
 
   tick(): void {
     this.updateUserData();
     this.getExpeditionReports().subscribe();
+  }
+
+  start(): void {
+    this.tick$ = timer(0, 5000).subscribe(() => { this.tick(); });
+  }
+
+  stop(): void {
+    this.tick$?.unsubscribe();
   }
 
   setInitialState(userData: AuthUserDto): void {

@@ -6,6 +6,7 @@ import { AuctionsComponent } from './auctions/auctions.component';
 import { ExpeditionsComponent } from './expeditions/expeditions.component';
 import { HomeComponent } from './home/home.component';
 import { InventoryComponent } from './inventory/inventory.component';
+import { MailComponent } from './mail/mail.component';
 import { MyDragonsComponent } from './my-dragons/my-dragons.component';
 import { ShoutboxComponent } from './shoutbox/shoutbox.component';
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'arena', component: ArenaComponent },
   { path: 'arena/:id', component: ArenaComponent },
   { path: 'auctions', component: AuctionsComponent },
+  { path: 'mail', component: MailComponent },
   { path: 'shoutbox', component: ShoutboxComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

@@ -11,6 +11,7 @@ import { ArenaComponent } from './arena/arena.component';
 import { ShoutboxComponent } from './shoutbox/shoutbox.component';
 import { FormsModule } from '@angular/forms';
 import { AuctionsComponent } from './auctions/auctions.component';
+import { MailComponent } from './mail/mail.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AuctionsComponent } from './auctions/auctions.component';
     ArenaComponent,
     ShoutboxComponent,
     AuctionsComponent,
+    MailComponent,
   ],
   imports: [
     CommonModule,

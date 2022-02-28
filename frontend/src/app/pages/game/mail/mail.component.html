@@ -1,0 +1,12 @@
+<div class="wrapper-main">
+  <app-navigation-bar currentLocation="mail"></app-navigation-bar>
+
+  <div class="wrapper-content">
+
+    <div *ngFor="let mail of (mails$ | async)?.data" class="item-mail">
+      <b>{{ mail.topic }}</b>
+      {{ mail.message }}
+    </div>
+
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActionController, AuctionController, AuctionDto, AuthUserDto, GetAuctionDto, ItemRarity, ItemType } from 'src/app/client/api';
+import { ActionController, AuctionController, AuctionDto, AuthUserDto, AuctionGetDto, ItemRarity, ItemType } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayAuction } from 'src/app/core/definitions/items';
 import { EngineService } from 'src/app/core/services/engine.service';
@@ -52,7 +52,7 @@ export class AuctionsComponent implements OnInit {
     if (next === false) this.currentPage -= 1;
     if (this.currentPage < 0) this.currentPage = 0;
 
-    const params: GetAuctionDto = {
+    const params: AuctionGetDto = {
       page: this.currentPage,
       limit: this.pageLimit,
       ownedByUser: this.displayOwned,

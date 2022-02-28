@@ -81,6 +81,7 @@ export class RegisterComponent implements OnInit {
       this.repositoryService.setAccessToken(user.accessToken);
       this.repositoryService.setUserData(user);
       this.engineService.setInitialState(user);
+      this.engineService.start();
       this.router.navigate(['../game/home']);
     }, _ => {
       this.submitLoading = false;

@@ -21,6 +21,8 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Smart tooltips [30%]
  - Data generators [0%]
 
+## Initial release - 01.04.2022 (prediction)
+
 ## Stage 1
  - Special dragons [0%]
  - Dragon equipment [0%]
