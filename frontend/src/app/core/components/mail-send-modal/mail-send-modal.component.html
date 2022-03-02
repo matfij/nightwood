@@ -1,0 +1,22 @@
+<div class="container-modal">
+  <div class="wrapper-form">
+
+    <div class="title mb-4">{{ 'mails.composeHint' | translate }}</div>
+
+    <form [formGroup]="form" (ngSubmit)="sendMail()">
+      <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
+
+      <button *ngIf="!submitLoading" [disabled]="!form.valid" class="btn-base">
+        {{ 'mails.send' | translate }}
+      </button>
+      <div *ngIf="submitLoading" class="spinner">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+    </form>
+
+    <button (click)="closeModal()" class="btn-base mt-5">
+      {{ 'common.cancel' | translate }}
+    </button>
+
+  </div>
+</div>

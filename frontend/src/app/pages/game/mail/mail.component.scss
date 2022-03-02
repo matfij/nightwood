@@ -1,1 +1,50 @@
 @import '../../../core/theme/variables.scss';
+@import '../../../core/theme/mixins.scss';
+
+
+hr {
+  margin: 0px auto 8px auto;
+  border-top: 1px solid $app-light;
+  border-radius: 8px;
+}
+
+
+.item-mail {
+  @include tile(darken($app-light, 10), 6px);
+
+  width: clamp(0px, 95%, 600px);
+  margin: 8px auto;
+
+  .mail-new {
+    @include tile(darken($app-light, 0), 8px);
+  }
+
+  .mail-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    text-align: left;
+    padding: 8px 8px 4px 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .mail-content {
+    display: block;
+    padding: 8px 8px 8px 12px;
+    text-align: left;
+  }
+
+  .btn-mail {
+    height: 24px;
+    margin: 8px auto;
+
+    display: flex;
+    justify-content: center;
+    line-height: 24px;
+  }
+}

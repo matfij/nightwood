@@ -4,9 +4,32 @@
   <div class="wrapper-content">
 
     <div *ngFor="let mail of (mails$ | async)?.data" class="item-mail">
-      <b>{{ mail.topic }}</b>
-      {{ mail.message }}
+      <div (click)="openMail(mail)" class="mail-meta" [ngClass]="{ 'mail-new': !mail.isRead }">
+        <div>{{ 'mails.sender' | translate }}: <b>{{ mail.senderName }}</b></div>
+        <div>{{ 'mails.topic' | translate }}: <b>{{ mail.topic }}</b></div>
+        <div class="no-mobile">{{ mail.sentDate | date:'short' }}</div>
+      </div>
+
+      <div *ngIf="mail.id === activeMailId" class="mail-content">
+        <hr>
+        {{ mail.message.length ? mail.message : '---' }}
+
+        <div *ngIf="mail.senderId" (click)="displayComposeModal = true; replyName = mail.senderName;" class="btn-base btn-mail">
+          {{ 'mails.reply' | translate }}
+        </div>
+      </div>
+
+    </div>
+
+    <div (click)="displayComposeModal = true; replyName = null;" class="btn-base mt-4">
+      {{ 'mails.compose' | translate }}
     </div>
 
   </div>
 </div>
+
+<app-mail-send-modal
+  *ngIf="displayComposeModal"
+  [replyName]="replyName"
+  (close)="displayComposeModal = false">
+</app-mail-send-modal>

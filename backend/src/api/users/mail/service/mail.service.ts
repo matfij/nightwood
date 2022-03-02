@@ -24,7 +24,7 @@ export class MailService {
 
     async sendMail(userId: number, dto: MailSendDto): Promise<MailDto> {
         const user = await this.userService.getOne(userId);
-        const receiver = await this.userService.getOne(dto.receiverName);
+        const receiver = await this.userService.getByName(dto.receiverName);
 
         const mail: MailDto = {
             sentDate: this.dateService.getCurrentDate(),
@@ -81,7 +81,7 @@ export class MailService {
 
         const filterOptions: FindManyOptions<Mail> = {
             where: { receiverId: userId },
-            order: { sentDate: 'ASC' },
+            order: { sentDate: 'DESC' },
         };
 
         const mails = await this.mailRepository.find({

@@ -66,6 +66,14 @@ export class UserService {
         return user;
     }
 
+    async getByName(name: string): Promise<UserDto> {
+        const user = this.userRepository.findOne({ where: { nickname: name }});
+
+        if (!user) this.errorService.throw('errors.userNotFound');
+
+        return user;
+    }
+
     async getAll(dto: GetUserDto): Promise<PageUserDto> {
         const page = await paginate<UserDto>(this.userRepository, { page: dto.page, limit: dto.limit });
         

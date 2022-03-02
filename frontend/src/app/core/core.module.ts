@@ -16,6 +16,7 @@ import { AbstractModalComponent } from '../common/components/abstract-modal/abst
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
 import { TooltipDirective } from '../common/utils/tooltip.directive';
 import { AuctionCreateComponent } from './components/auction-create/auction-create.component';
+import { MailSendModalComponent } from './components/mail-send-modal/mail-send-modal.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -29,6 +30,7 @@ const COMPONENTS = [
   DragonChoiceModalComponent,
   DragonBattleComponent,
   ItemDisplayComponent,
+  MailSendModalComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

@@ -244,6 +244,17 @@
     "HarnaPeaks": "Harna Peaks",
     "HarnaPeaksHint": "Mysterious and unexplored place filled with magical particles. Exploration requires an exceptional amount of power therefore it is accessible only for matured dragons."
   },
+  "mails": {
+    "topic": "Topic",
+    "sender": "Sender",
+    "receiver": "Receiver",
+    "message": "Message",
+    "reply": "Reply",
+    "compose": "Compose",
+    "composeHint": "Compose new mail",
+    "send": "Send",
+    "mailSent": "Mail sent"
+  },
   "shoutbox": {
     "chats": "Chats",
     "general": "General",

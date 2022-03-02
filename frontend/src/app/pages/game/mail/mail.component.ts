@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MailController, MailGetDto, MailPageDto } from 'src/app/client/api';
+import { MailController, MailDto, MailGetDto, MailPageDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-mail',
@@ -10,6 +10,9 @@ import { MailController, MailGetDto, MailPageDto } from 'src/app/client/api';
 export class MailComponent implements OnInit {
 
   mails$?: Observable<MailPageDto>;
+  activeMailId?: number;
+  displayComposeModal: boolean = false;
+  replyName?: string | null;
 
   constructor(
     private mailController: MailController,
@@ -25,6 +28,14 @@ export class MailComponent implements OnInit {
       page: 0,
     };
     this.mails$ = this.mailController.getAll(params);
+  }
+
+  openMail(mail: MailDto) {
+    this.activeMailId = mail.id;
+
+    if (mail.isRead === false) {
+      this.mailController.read(mail.id.toString()).subscribe();
+    }
   }
 
 }
