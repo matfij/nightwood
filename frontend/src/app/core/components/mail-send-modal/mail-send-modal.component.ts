@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MailController, MailSendDto } from 'src/app/client/api';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
-import { FormInputOptions } from 'src/app/common/definitions/forms';
+import { FieldType, FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { EngineService } from '../../services/engine.service';
 
@@ -32,7 +32,7 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
   fields: FormInputOptions[] = [
     { form: this.form, key: 'receiver', label: 'mails.receiver', type: 'text' },
     { form: this.form, key: 'topic', label: 'mails.topic', type: 'text' },
-    { form: this.form, key: 'message', label: 'mails.message', type: 'text' },
+    { form: this.form, key: 'message', label: 'mails.message', type: 'text', fieldType: FieldType.TEXTARENA },
   ];
   submitLoading: boolean = false;
 

@@ -3,25 +3,39 @@
 
   <div class="wrapper-content">
 
-    <div *ngFor="let mail of (mails$ | async)?.data" class="item-mail">
-      <div (click)="openMail(mail)" class="mail-meta" [ngClass]="{ 'mail-new': !mail.isRead }">
-        <div>{{ 'mails.sender' | translate }}: <b>{{ mail.senderName }}</b></div>
-        <div>{{ 'mails.topic' | translate }}: <b>{{ mail.topic }}</b></div>
-        <div class="no-mobile">{{ mail.sentDate | date:'short' }}</div>
-      </div>
+    <div *ngIf="!mailsLoading" class="wrapper-mails">
+      <div *ngFor="let mail of mails" class="item-mail">
+        <div (click)="openMail(mail)" class="mail-meta" [ngClass]="{ 'mail-new': !mail.isRead }">
+          <div>{{ 'mails.sender' | translate }}: <b>{{ mail.senderName }}</b></div>
+          <div>{{ 'mails.topic' | translate }}: <b>{{ mail.topic }}</b></div>
+          <div class="no-mobile">{{ mail.sentDate | date:'short' }}</div>
+        </div>
 
-      <div *ngIf="mail.id === activeMailId" class="mail-content">
-        <hr>
-        {{ mail.message.length ? mail.message : '---' }}
+        <div *ngIf="mail.id === activeMailId" class="mail-content">
+          <hr>
+          {{ mail.message.length ? mail.message : '---' }}
 
-        <div *ngIf="mail.senderId" (click)="displayComposeModal = true; replyName = mail.senderName;" class="btn-base btn-mail">
-          {{ 'mails.reply' | translate }}
+          <div *ngIf="mail.senderId" (click)="displayComposeModal = true; replyName = mail.senderName;" class="btn-base btn-mail">
+            {{ 'mails.reply' | translate }}
+          </div>
         </div>
       </div>
-
     </div>
 
-    <div (click)="displayComposeModal = true; replyName = null;" class="btn-base mt-4">
+    <div *ngIf="mailsLoading" class="m-5">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+
+    <div *ngIf="!mailsLoading && (canGetPrev || canGetNext)" class="wrapper-menu">
+      <button (click)="getMails(false)" [disabled]="!canGetPrev" class="btn-base btn-mode">
+        {{ 'common.prev' | translate }}
+      </button>
+      <button (click)="getMails(true)" [disabled]="!canGetNext" class="btn-base btn-mode">
+        {{ 'common.next' | translate }}
+      </button>
+    </div>
+
+    <div (click)="displayComposeModal = true; replyName = null;" class="btn-base btn-send mt-4 mb-3">
       {{ 'mails.compose' | translate }}
     </div>
 

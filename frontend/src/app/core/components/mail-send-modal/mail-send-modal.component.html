@@ -9,12 +9,12 @@
       <button *ngIf="!submitLoading" [disabled]="!form.valid" class="btn-base">
         {{ 'mails.send' | translate }}
       </button>
-      <div *ngIf="submitLoading" class="spinner">
+      <div *ngIf="submitLoading" class="mt-3">
         <app-loading-indicator></app-loading-indicator>
       </div>
     </form>
 
-    <button (click)="closeModal()" class="btn-base mt-5">
+    <button [disabled]="submitLoading" (click)="closeModal()" class="btn-base mt-5">
       {{ 'common.cancel' | translate }}
     </button>
 

@@ -7,10 +7,10 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 ## MVP Features
  - Dialog-based dragon adoption [100%]
  - Dragon feeding & base stats [100%]
- - Items & expeditions [90%]
+ - Items & expeditions [100%]
  - Combat system [100%]
  - Breed-specific skills [100%]
- - Players messaging & live chat [90%]
+ - Players messaging & live chat [100%]
  - Auction house [100%]
 
 ## Refactoring 1

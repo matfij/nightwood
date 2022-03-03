@@ -1,5 +1,12 @@
 import { FormGroup } from "@angular/forms";
 
+
+export enum FieldType {
+  SIMPLE,
+  TEXTARENA,
+  SELECT,
+}
+
 export interface FormInputOptions {
   form: FormGroup;
   key: string;
@@ -7,4 +14,5 @@ export interface FormInputOptions {
   type: string;
 
   hint?: string;
+  fieldType?: FieldType;
 }

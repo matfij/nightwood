@@ -6,13 +6,19 @@
       <ng-template #tipContent>
         <p>{{ options.hint }}</p>
       </ng-template>
-      <img src="assets/img/icons/info.svg" alt="info" srcset="">
+      <img src="assets/img/icons/info.svg" alt="info">
     </div>
 
     {{ options.label | translate }}
   </div>
 
-  <input class="input" [type]="options.type" [formControlName]="options.key"><br>
+  <div *ngIf="options.fieldType === FieldType.SIMPLE">
+    <input class="input" [type]="options.type" [formControlName]="options.key">
+  </div>
+
+  <div *ngIf="options.fieldType === FieldType.TEXTARENA">
+    <textarea class="input" [formControlName]="options.key"></textarea>
+  </div>
 
   <div *ngIf="field && (field.touched || field.dirty) && !field.valid" class="error">
     {{ 'errors.incorrectFieldsValue' | translate:{ value: fieldName } }}

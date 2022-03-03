@@ -59,7 +59,7 @@ export class UserService {
     }
 
     async getOne(id: number | string): Promise<UserDto> {
-        const user = this.userRepository.findOne(id);
+        const user = await this.userRepository.findOne(id);
 
         if (!user) this.errorService.throw('errors.userNotFound');
 
@@ -67,7 +67,7 @@ export class UserService {
     }
 
     async getByName(name: string): Promise<UserDto> {
-        const user = this.userRepository.findOne({ where: { nickname: name }});
+        const user = await this.userRepository.findOne({ where: { nickname: name }});
 
         if (!user) this.errorService.throw('errors.userNotFound');
 

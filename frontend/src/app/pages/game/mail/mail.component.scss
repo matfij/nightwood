@@ -16,7 +16,7 @@ hr {
   margin: 8px auto;
 
   .mail-new {
-    @include tile(darken($app-light, 0), 8px);
+    @include tile(darken($app-secondary, 0), 8px);
   }
 
   .mail-meta {
@@ -46,5 +46,26 @@ hr {
     display: flex;
     justify-content: center;
     line-height: 24px;
+  }
+}
+
+.btn-send {
+  width: clamp(0px, 95%, 600px);
+}
+
+.wrapper-menu {
+  width: clamp(0px, 95%, 600px);
+  margin: 8px auto;
+
+  display: flex;
+  gap: 2px;
+
+  .btn-mode {
+    width: 50%;
+    height: 25px;
+    margin: 0px auto;
+
+    line-height: 22px;
+    border-radius: 2px;
   }
 }
