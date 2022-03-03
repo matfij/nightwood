@@ -13,12 +13,12 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Players messaging & live chat [100%]
  - Auction house [100%]
 
-## Refactoring 1
+## Refactoring
  - Defined data management [20%]
  - Controllers & repositories information flow [30%]
  - Common configuration source (logic, validation) [0%]
  - Navigation bar & user state [100%]
- - Smart tooltips [30%]
+ - Smart tooltips [100%]
  - Data generators [0%]
 
 ## Initial release - 01.04.2022 (prediction)
@@ -30,6 +30,10 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Guilds [0%]
  - Player roles [0%]
  - Expedition guardians & progress [0%]
+
+
+## Refactoring 1
+ - Remove dependency - ngBootstrap
 
 ## Stage 2
  - Mini games

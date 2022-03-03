@@ -160,8 +160,8 @@ img::selection {
 
   width: clamp(200px, 100%, 400px);
   position: absolute;
-  bottom: 110%;
-  left: -50%;
+  // bottom: 110%;
+  // left: -50%;
 
   padding: 8px;
   z-index: 1000;
