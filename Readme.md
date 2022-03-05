@@ -16,7 +16,8 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 ## Refactoring
  - Defined data management [20%]
  - Controllers & repositories information flow [30%]
- - Common configuration source (logic, validation) [0%]
+ - Common configuration source (logic, validation) [40%]
+ - Minimize data exposition [20%]
  - Navigation bar & user state [100%]
  - Smart tooltips [100%]
  - Data generators [0%]
@@ -33,8 +34,11 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 
 
 ## Refactoring 1
- - Remove dependency - ngBootstrap
+ - Independent styles - remove ngBootstrap
+ - Independent backend validation - remove 
+ - Independent translations - remove 
 
 ## Stage 2
  - Mini games
  - Achievements
+ 

@@ -1,4 +1,5 @@
 import { BUBULAE_STEAK, IHON_BERRY, MIRACLE_FRUIT, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT } from "src/api/items/item/model/data/food";
+import { EXPEDITION_TIME_SCALE } from "src/configuration/backend.config";
 import { ExpeditionDto } from "../dto/expedition.dto";
 
 export const ANDREW_FOREST: ExpeditionDto = {
@@ -8,14 +9,14 @@ export const ANDREW_FOREST: ExpeditionDto = {
     experienceAward: 150,
     goldAward: 50,
     loots: [
-        BUBULAE_STEAK, BUBULAE_STEAK, BUBULAE_STEAK,
-        IHON_BERRY, IHON_BERRY, IHON_BERRY,
+        BUBULAE_STEAK, BUBULAE_STEAK, 
+        IHON_BERRY, IHON_BERRY, IHON_BERRY, IHON_BERRY, IHON_BERRY,
         RELIQUM_EGG, RELIQUM_EGG, RELIQUM_EGG,
-        SPIRAL_NUT, SPIRAL_NUT, SPIRAL_NUT,
-        RORIS_LEEFS, RORIS_LEEFS, RORIS_LEEFS,
+        SPIRAL_NUT, SPIRAL_NUT, SPIRAL_NUT, SPIRAL_NUT, SPIRAL_NUT,
+        RORIS_LEEFS, RORIS_LEEFS, RORIS_LEEFS, RORIS_LEEFS, RORIS_LEEFS,
         MIRACLE_FRUIT, MIRACLE_FRUIT,
     ],
-    minimumActionTime: 3 * 60 * 60 * 1000 / 1000,
+    minimumActionTime: EXPEDITION_TIME_SCALE * 3 * 60 * 60 * 1000,
 }
 
 export const CARRANGA_SANDS: ExpeditionDto = {
@@ -31,7 +32,7 @@ export const CARRANGA_SANDS: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 6 * 60 * 60 * 1000,
+    minimumActionTime: EXPEDITION_TIME_SCALE * 6 * 60 * 60 * 1000,
 }
 
 export const HARNA_PEAKS: ExpeditionDto = {
@@ -47,5 +48,5 @@ export const HARNA_PEAKS: ExpeditionDto = {
         SPIRAL_NUT,
         RORIS_LEEFS,
     ],
-    minimumActionTime: 12 * 60 * 60 * 1000,
+    minimumActionTime: EXPEDITION_TIME_SCALE * 12 * 60 * 60 * 1000,
 }

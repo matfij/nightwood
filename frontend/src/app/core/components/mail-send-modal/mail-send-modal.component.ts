@@ -32,7 +32,7 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
   fields: FormInputOptions[] = [
     { form: this.form, key: 'receiver', label: 'mails.receiver', type: 'text' },
     { form: this.form, key: 'topic', label: 'mails.topic', type: 'text' },
-    { form: this.form, key: 'message', label: 'mails.message', type: 'text', fieldType: FieldType.TEXTARENA },
+    { form: this.form, key: 'message', label: 'mails.message', type: 'text', fieldType: FieldType.TEXTAREA },
   ];
   submitLoading: boolean = false;
 

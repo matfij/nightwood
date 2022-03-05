@@ -2,9 +2,9 @@ import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT,  } fro
 import { ItemDto } from "../dto/item.dto";
 
 export const StartingItems: ItemDto[] = [
-    BUBULAE_STEAK,
-    IHON_BERRY,
-    RELIQUM_EGG,
-    SPIRAL_NUT,
-    RORIS_LEEFS,
+    { ...BUBULAE_STEAK, quantity: 10 },
+    { ...IHON_BERRY, quantity: 10 },
+    { ...RELIQUM_EGG, quantity: 10 },
+    { ...SPIRAL_NUT, quantity: 10 },
+    { ...RORIS_LEEFS, quantity: 10 },
 ];

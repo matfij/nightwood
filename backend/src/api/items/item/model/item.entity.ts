@@ -1,5 +1,4 @@
 import { User } from "src/api/users/user/model/user.entity";
-import { DEFAULT_LEVEL, DEFAULT_POSITION, DEFAULT_QUANTITY, DEFAULT_RARITY } from "src/configuration/item.config";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ItemRarity } from "./definitions/item-rarity";
 import { EquipmentType, FoodType, ItemType } from "./definitions/item-type";
@@ -13,16 +12,16 @@ export class Item {
     @Column()
     name: string;
 
-    @Column({ default: DEFAULT_LEVEL })
+    @Column({ default: 1 })
     level: number;
 
-    @Column({ default: DEFAULT_RARITY })
+    @Column({ default: ItemRarity.Common })
     rarity: ItemRarity;
 
-    @Column({ default: DEFAULT_QUANTITY })
+    @Column({ default: 1 })
     quantity: number;
 
-    @Column({ default: DEFAULT_POSITION })
+    @Column({ default: 0 })
     position: number;
     
     @Column()

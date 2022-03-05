@@ -1,5 +1,4 @@
 import { Item } from "src/api/items/item/model/item.entity";
-import { MAX_OWNED_DRAGONS, STARTING_GOLD } from "src/configuration/user.config";
 import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -17,13 +16,13 @@ export class User {
     @Column({ unique: true })
     nickname: string;
 
-    @Column({ default: STARTING_GOLD })
+    @Column({ default: 500 })
     gold: number;
 
     @Column({ default: 0 })
     ownedDragons: number;
 
-    @Column({ default: MAX_OWNED_DRAGONS })
+    @Column({ default: 3 })
     maxOwnedDragons: number;
 
     @OneToMany(_ => Item, x => x.user)

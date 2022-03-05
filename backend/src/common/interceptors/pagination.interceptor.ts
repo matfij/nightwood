@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from "src/configuration/user.config";
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "src/configuration/backend.config";
 
 @Injectable()
 export class PaginationInterceptor implements NestInterceptor {

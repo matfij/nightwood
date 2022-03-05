@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ErrorService } from "src/common/services/error.service";
-import { SKILL_POINTS_LIMIT } from "src/configuration/dragon.config";
+import { SKILL_DEVELOPMENT_LIMIT } from "src/configuration/backend.config";
 import { Repository } from "typeorm";
 import { DragonDto } from "../../dragon/model/dto/dragon.dto";
 import { ALL_SKILLS } from "../model/data/skill-groups";
@@ -48,7 +48,7 @@ export class DragonSkillsService {
         if (!skill) this.errorService.throw('errors.skillNotFound');
         if (skill.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
         if (!skill.nature.includes(dragon.nature)) this.errorService.throw('errors.natureMismatch');
-        if (dragon.skills[this.getSkillName(skillName)] >= SKILL_POINTS_LIMIT) this.errorService.throw('errors.skillLimitReached')
+        if (dragon.skills[this.getSkillName(skillName)] >= SKILL_DEVELOPMENT_LIMIT) this.errorService.throw('errors.skillLimitReached');
 
         dragon.skills[this.getSkillName(skillName)] += 1;
         dragon.skillPoints -= 1;

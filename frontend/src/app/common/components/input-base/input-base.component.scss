@@ -49,6 +49,10 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+textarea {
+  resize: none;
+}
+
 .error {
   color: $app-red;
   font-size: 12px;

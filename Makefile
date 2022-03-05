@@ -14,6 +14,10 @@ stop:
 	docker-compose down
 
 
+gen.config:
+	cp backend/src/configuration/frontend.config.ts frontend/src/app/client/frontend.config.ts
+
+
 gen.client:
 	rm -rf generator/generated
 	cp backend/schema.json generator/schema.json

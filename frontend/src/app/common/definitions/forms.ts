@@ -3,7 +3,7 @@ import { FormGroup } from "@angular/forms";
 
 export enum FieldType {
   SIMPLE,
-  TEXTARENA,
+  TEXTAREA,
   SELECT,
 }
 

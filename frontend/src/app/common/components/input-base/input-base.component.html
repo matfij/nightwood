@@ -16,8 +16,8 @@
     <input class="input" [type]="options.type" [formControlName]="options.key">
   </div>
 
-  <div *ngIf="options.fieldType === FieldType.TEXTARENA">
-    <textarea class="input" [formControlName]="options.key"></textarea>
+  <div *ngIf="options.fieldType === FieldType.TEXTAREA">
+    <textarea class="input" [formControlName]="options.key" rows="3"></textarea>
   </div>
 
   <div *ngIf="field && (field.touched || field.dirty) && !field.valid" class="error">

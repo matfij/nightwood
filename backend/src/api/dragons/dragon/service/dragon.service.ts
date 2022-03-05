@@ -7,7 +7,6 @@ import { AdoptDragonDto } from '../model/dto/adopt-dragon.dto';
 import { DragonDto } from '../model/dto/dragon.dto';
 import { GetDragonDto } from '../model/dto/get-dragon.dto';
 import { PageDragonDto } from '../model/dto/page-dragon.dto';
-import { DEFAULT_STAMINA, FEED_INTERVAL, GET_ONE_RELATIONS } from 'src/configuration/dragon.config';
 import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
@@ -20,6 +19,7 @@ import { MathService } from 'src/common/services/math.service';
 import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 import { LearnskillDto } from '../../dragon-skills/model/dto/learn-skill.dto';
+import { FEED_INTERVAL, FOOD_STAMINA_GAIN } from 'src/configuration/backend.config';
 
 @Injectable()
 export class DragonService {
@@ -45,7 +45,7 @@ export class DragonService {
     }
 
     async getOne(id: string | number): Promise<DragonDto> {
-        return this.dragonRepository.findOne(id, { relations: GET_ONE_RELATIONS });
+        return this.dragonRepository.findOne(id, { relations: ['action', 'skills'] });
     }
 
     async getAll(dto: GetDragonDto): Promise<PageDragonDto> {
@@ -97,7 +97,7 @@ export class DragonService {
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(dragonId, { relations: GET_ONE_RELATIONS });
+        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills'] });
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
         if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');
@@ -133,7 +133,7 @@ export class DragonService {
         dragon.skillPoints += 1;
         dragon.nextFeed = Date.now() + FEED_INTERVAL;
 
-        dragon.stamina = DEFAULT_STAMINA;
+        dragon.stamina = FOOD_STAMINA_GAIN;
 
         const fedDragon = await this.dragonRepository.save(dragon);
         return fedDragon;

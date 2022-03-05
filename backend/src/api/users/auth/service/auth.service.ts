@@ -7,7 +7,6 @@ import { LoginUserDto } from '../dto/login-user.dto';
 import { RegisterUserDto } from '../dto/register-user.dto';
 import { GetUserDto } from '../../user/model/dto/get-user.dto';
 import { AuthUserDto } from '../dto/auth-user.dto';
-import { SALT_ROUNDS, STARTING_GOLD } from 'src/configuration/user.config';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { ErrorService } from '../../../../common/services/error.service';
@@ -51,7 +50,6 @@ export class AuthService {
             email: dto.email,
             password: hashedPassword,
             nickname: dto.nickname,
-            gold: STARTING_GOLD,
         };
 
         const createdUser = this.userRepository.create(newUser);
@@ -97,7 +95,7 @@ export class AuthService {
     }
 
     async hashPassword(password: string): Promise<string> {
-        return await bcrypt.hash(password, SALT_ROUNDS);
+        return await bcrypt.hash(password, 12);
     }
 
     async validatePassword(password: string, hashedPassword: string): Promise<any> {
