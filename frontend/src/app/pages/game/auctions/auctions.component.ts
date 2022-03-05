@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActionController, AuctionController, AuctionDto, AuthUserDto, AuctionGetDto, ItemRarity, ItemType } from 'src/app/client/api';
+import { AUCTION_MAX_SEARCH_LEVEL, AUCTION_MAX_SEARCH_NAME_LENGTH, AUCTION_MIN_SEARCH_LEVEL, AUCTION_MIN_SEARCH_NAME_LENGTH } from 'src/app/client/frontend.config';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayAuction } from 'src/app/core/definitions/items';
 import { EngineService } from 'src/app/core/services/engine.service';
@@ -47,7 +48,30 @@ export class AuctionsComponent implements OnInit {
     this.getAuctions();
   }
 
+  validateSearchParams(): boolean {
+    const searchName = this.searchName?.nativeElement.value;
+    if (searchName) {
+      if (searchName.length < AUCTION_MIN_SEARCH_NAME_LENGTH) return false;
+      if (searchName.length > AUCTION_MAX_SEARCH_NAME_LENGTH) return false;
+    }
+    const searchMinLevel = +this.searchMinLevel?.nativeElement.value;
+    if (searchMinLevel) {
+      if (searchMinLevel < AUCTION_MIN_SEARCH_LEVEL) return false;
+      if (searchMinLevel > AUCTION_MAX_SEARCH_LEVEL) return false;
+    }
+    const searchMaxLevel = +this.searchMaxLevel?.nativeElement.value;
+    if (searchMaxLevel) {
+      if (searchMaxLevel < AUCTION_MIN_SEARCH_LEVEL) return false;
+      if (searchMaxLevel > AUCTION_MAX_SEARCH_LEVEL) return false;
+    }
+    if (searchMinLevel && searchMaxLevel && searchMinLevel > searchMaxLevel) return false
+
+    return true;
+  }
+
   getAuctions(next?: boolean) {
+    if (!this.validateSearchParams()) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
+
     if (next) this.currentPage += 1;
     if (next === false) this.currentPage -= 1;
     if (this.currentPage < 0) this.currentPage = 0;
@@ -59,8 +83,8 @@ export class AuctionsComponent implements OnInit {
       name: this.searchName?.nativeElement.value,
       type: this.searchType?.nativeElement.value,
       requiredRarity: this.searchRarity?.nativeElement.value,
-      minLevel: this.searchMinLevel?.nativeElement.value ? +this.searchMinLevel.nativeElement.value : 1,
-      maxLevel: this.searchMaxLevel?.nativeElement.value ? +this.searchMaxLevel.nativeElement.value : 9999,
+      minLevel: this.searchMinLevel?.nativeElement.value ? +this.searchMinLevel.nativeElement.value : AUCTION_MIN_SEARCH_LEVEL,
+      maxLevel: this.searchMaxLevel?.nativeElement.value ? +this.searchMaxLevel.nativeElement.value : AUCTION_MAX_SEARCH_LEVEL,
     };
     this.auctionsLoading = true;
     this.auctionController.getAll(params).subscribe(auctionPage => {

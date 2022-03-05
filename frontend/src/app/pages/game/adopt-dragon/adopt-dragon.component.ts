@@ -5,7 +5,7 @@ import { ActionController, CreateDragonDto, DragonController, DragonNature } fro
 import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/core/definitions/dragons';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
-import { DRAGON_MAX_NAME_LENGTH, DRAGON_MIN_NAME_LENGTH } from 'src/app/core/configuration';
+import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/frontend.config';
 
 @Component({
   selector: 'app-adopt-dragon',
@@ -53,7 +53,7 @@ export class AdoptDragonComponent implements OnInit {
   form: FormGroup = new FormGroup({
     name: new FormControl(
       null,
-      [Validators.required, Validators.minLength(DRAGON_MIN_NAME_LENGTH), Validators.maxLength(DRAGON_MAX_NAME_LENGTH)],
+      [Validators.required, Validators.minLength(DRAGON_NAME_MIN_LENGTH), Validators.maxLength(DRAGON_NAME_MAX_LENGTH)],
     )
   });
   fields: FormInputOptions[] = [
@@ -108,8 +108,17 @@ export class AdoptDragonComponent implements OnInit {
     return chosenNature.nature;
   }
 
+  validateDragonName(name: string): boolean {
+    name = name.replace(' ', '');
+    if (name.length < DRAGON_NAME_MIN_LENGTH) return false;
+    if (name.length > DRAGON_NAME_MAX_LENGTH) return false;
+
+    return true;
+  }
+
   adoptDragon() {
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
+    if (!this.validateDragonName(this.dragonName.value)) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
     const dragon: CreateDragonDto = {
       name: this.dragonName.value,

@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AuctionController, AuctionCreateDto, ItemController, PageItemDto } from 'src/app/client/api';
+import { AUCTION_MAX_DURATION, AUCTION_MAX_PRICE, AUCTION_MAX_QUANTITY, AUCTION_MIN_DURATION, AUCTION_MIN_PRICE, AUCTION_MIN_QUANTITY } from 'src/app/client/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
-import { MAX_AUCTION_DURATION, MAX_AUCTION_PRICE, MAX_AUCTION_QUANTITY, MIN_AUCTION_DURATION, MIN_AUCTION_PRICE, MIN_AUCTION_QUANTITY } from '../../configuration';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
 
 @Component({
@@ -22,13 +22,13 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
 
   form: FormGroup = new FormGroup({
     duration: new FormControl(
-      null, [Validators.required, Validators.min(MIN_AUCTION_DURATION), Validators.max(MAX_AUCTION_DURATION)],
+      null, [Validators.required, Validators.min(AUCTION_MIN_DURATION), Validators.max(AUCTION_MAX_DURATION)],
     ),
     quantity: new FormControl(
-      null, [Validators.required, Validators.min(MIN_AUCTION_QUANTITY), Validators.max(MAX_AUCTION_QUANTITY)],
+      null, [Validators.required, Validators.min(AUCTION_MIN_QUANTITY), Validators.max(AUCTION_MAX_QUANTITY)],
     ),
     unitPrice: new FormControl(
-      null, [Validators.required, Validators.min(MIN_AUCTION_PRICE), Validators.max(MAX_AUCTION_PRICE)],
+      null, [Validators.required, Validators.min(AUCTION_MIN_PRICE), Validators.max(AUCTION_MAX_PRICE)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -55,9 +55,9 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
     const quantity = this.fields.filter(field => field.key === 'quantity')[0];
     const unitPrice = this.fields.filter(field => field.key === 'unitPrice')[0];
 
-    duration.hint = this.translateService.instant('auctions.durationHint', { min: MIN_AUCTION_DURATION, max: MAX_AUCTION_DURATION });
-    quantity.hint = this.translateService.instant('auctions.quantityHint', { min: MIN_AUCTION_QUANTITY, max: MAX_AUCTION_QUANTITY });
-    unitPrice.hint = this.translateService.instant('auctions.priceHint', { min: MIN_AUCTION_PRICE, max: MAX_AUCTION_PRICE });
+    duration.hint = this.translateService.instant('auctions.durationHint', { min: AUCTION_MAX_DURATION, max: AUCTION_MAX_DURATION });
+    quantity.hint = this.translateService.instant('auctions.quantityHint', { min: AUCTION_MIN_QUANTITY, max: AUCTION_MAX_QUANTITY });
+    unitPrice.hint = this.translateService.instant('auctions.priceHint', { min: AUCTION_MIN_PRICE, max: AUCTION_MAX_PRICE });
   }
 
   ngOnInit(): void {

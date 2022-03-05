@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { DragonActionType, DragonDto, DragonNature, SkillDto } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
-import { DRAGON_MAX_ADULT_LEVEL, DRAGON_MAX_EGG_LEVEL, DRAGON_MAX_KID_LEVEL, DRAGON_MAX_SAGE_LEVEL } from "../configuration";
 import { DisplayDragon, DisplaySkill } from "../definitions/dragons";
 
 @Injectable({
@@ -29,10 +28,10 @@ export class DragonService {
     };
 
     let adulthood: number;
-    if (dragon.level < DRAGON_MAX_EGG_LEVEL) adulthood = 1;
-    else if (dragon.level < DRAGON_MAX_KID_LEVEL) adulthood = 2;
-    else if (dragon.level < DRAGON_MAX_ADULT_LEVEL) adulthood = 3;
-    else if (dragon.level < DRAGON_MAX_SAGE_LEVEL) adulthood = 4;
+    if (dragon.level <= 10) adulthood = 1;
+    else if (dragon.level <= 30) adulthood = 2;
+    else if (dragon.level <= 90) adulthood = 3;
+    else if (dragon.level <= 360) adulthood = 4;
     else adulthood = 0;
 
     const image = `${this.BASE_IMG_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;

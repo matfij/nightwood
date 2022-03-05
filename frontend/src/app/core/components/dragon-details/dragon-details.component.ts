@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DragonController, DragonSkillsController, DragonSkillsDto, GetSkillsDto, LearnskillDto } from 'src/app/client/api';
-import { DRAGON_SKILL_LIMIT } from '../../configuration';
 import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
+import { DRAGON_SKILL_DEVELOPMENT_LIMIT } from 'src/app/client/frontend.config';
 
 @Component({
   selector: 'app-dragon-details',
@@ -49,12 +49,12 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
   }
 
   getSkillProgress(skill: string) {
-    return this.dragon.skills[this.getSkillName(skill)] + `/${DRAGON_SKILL_LIMIT}`;
+    return this.dragon.skills[this.getSkillName(skill)] + `/${DRAGON_SKILL_DEVELOPMENT_LIMIT}`;
   }
 
   canLearn(skill: DisplaySkill): boolean {
     const progress = this.dragon.skills[this.getSkillName(skill.name)];
-    return this.dragon.skillPoints > 0 && progress < DRAGON_SKILL_LIMIT && this.dragon.level >= skill.level;
+    return this.dragon.skillPoints > 0 && progress < DRAGON_SKILL_DEVELOPMENT_LIMIT && this.dragon.level >= skill.level;
   }
 
   learnSkill(skill: DisplaySkill) {

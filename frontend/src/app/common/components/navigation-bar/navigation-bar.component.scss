@@ -12,6 +12,7 @@ ul, li {
   height: 56px;
   margin: 0px;
 
+  overflow: hidden;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -28,6 +29,13 @@ ul, li {
     text-align: left;
     font-size: 18px;
     font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .nickname {
+    max-width: 30vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -83,6 +91,11 @@ ul, li {
       margin-top: 5px;
       font-size: 15px;
     }
+  }
+
+  .nickname {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
