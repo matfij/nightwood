@@ -18,6 +18,20 @@ export const NICKNAME_MIN_LENGTH = 4;
 export const NICKNAME_MAX_LENGTH = 16;
 
 /**
+ * Messages
+ */
+
+export const CHAT_MESSAGE_MIN_LENGTH = 1;
+export const CHAT_MESSAGE_MAX_LENGTH = 500;
+
+export const MAIL_RECEIVER_MIN_LENGTH = 4;
+export const MAIL_RECEIVER_MAX_LENGTH = 12;
+export const MAIL_TOPIC_MIN_LENGTH = 1;
+export const MAIL_TOPIC_MAX_LENGTH = 100;
+export const MAIL_MESSAGE_MIN_LENGTH = 3;
+export const MAIL_MESSAGE_MAX_LENGTH = 1000;
+
+/**
  * Dragons
  */
 

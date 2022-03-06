@@ -3,7 +3,7 @@ import { DragonController, DragonSkillsController, DragonSkillsDto, GetSkillsDto
 import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
-import { DRAGON_SKILL_DEVELOPMENT_LIMIT } from 'src/app/client/frontend.config';
+import { DRAGON_SKILL_DEVELOPMENT_LIMIT } from 'src/app/client/config/frontend.config';
 
 @Component({
   selector: 'app-dragon-details',

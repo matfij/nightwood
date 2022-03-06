@@ -3,10 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthController, RegisterUserDto } from 'src/app/client/api';
-import { EMAIL_MAX_LENGTH, NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/frontend.config';
+import { EMAIL_MAX_LENGTH, NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';
+import { ValidatorService } from 'src/app/common/services/validator.service';
 import { EngineService } from 'src/app/core/services/engine.service';
 
 @Component({
@@ -50,6 +51,7 @@ export class RegisterComponent implements OnInit {
     private engineService: EngineService,
     private repositoryService: RepositoryService,
     private toastService: ToastService,
+    private validatorService: ValidatorService,
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +69,7 @@ export class RegisterComponent implements OnInit {
   register() {
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
     if (!this.validatePasswords()) { this.toastService.showError('errors.error', 'start.passwordsMismatch'); return; }
+    if (!this.validatorService.checkBannedWords(this.nickname.value)) return;
 
     const user: RegisterUserDto = {
       email: this.email.value,

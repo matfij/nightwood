@@ -2,8 +2,8 @@
  * General
  */
 
-export const DEFAULT_PAGE = 1;
-export const DEFAULT_LIMIT = 100;
+export const DEFAULT_PAGE = 0;  // skip
+export const DEFAULT_LIMIT = 100;  // take
 
 /**
  * Users
@@ -14,6 +14,20 @@ export const NICKNAME_MAX_LENGTH = 12;
 export const PASSWORD_MIN_LENGTH = 4;
 export const PASSWORD_MAX_LENGTH = 30;
 export const EMAIL_MAX_LENGTH = 40;
+
+/**
+ * Messages
+ */
+
+export const CHAT_MESSAGE_MIN_LENGTH = 1;
+export const CHAT_MESSAGE_MAX_LENGTH = 500;
+
+export const MAIL_RECEIVER_MIN_LENGTH = 4;
+export const MAIL_RECEIVER_MAX_LENGTH = 12;
+export const MAIL_TOPIC_MIN_LENGTH = 1;
+export const MAIL_TOPIC_MAX_LENGTH = 100;
+export const MAIL_MESSAGE_MIN_LENGTH = 3;
+export const MAIL_MESSAGE_MAX_LENGTH = 1000;
 
 /**
  * Dragons

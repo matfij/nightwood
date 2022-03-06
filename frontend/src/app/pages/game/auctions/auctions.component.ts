@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActionController, AuctionController, AuctionDto, AuthUserDto, AuctionGetDto, ItemRarity, ItemType } from 'src/app/client/api';
-import { AUCTION_MAX_SEARCH_LEVEL, AUCTION_MAX_SEARCH_NAME_LENGTH, AUCTION_MIN_SEARCH_LEVEL, AUCTION_MIN_SEARCH_NAME_LENGTH } from 'src/app/client/frontend.config';
+import { AUCTION_MAX_SEARCH_LEVEL, AUCTION_MAX_SEARCH_NAME_LENGTH, AUCTION_MIN_SEARCH_LEVEL, AUCTION_MIN_SEARCH_NAME_LENGTH } from 'src/app/client/config/frontend.config';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayAuction } from 'src/app/core/definitions/items';
 import { EngineService } from 'src/app/core/services/engine.service';

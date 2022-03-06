@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { AuthController } from 'src/app/client/api';
-import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/frontend.config';
+import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';

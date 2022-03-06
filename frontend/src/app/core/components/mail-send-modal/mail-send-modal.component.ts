@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MailController, MailSendDto } from 'src/app/client/api';
+import { MAIL_MESSAGE_MAX_LENGTH, MAIL_MESSAGE_MIN_LENGTH, MAIL_RECEIVER_MAX_LENGTH, MAIL_RECEIVER_MIN_LENGTH, MAIL_TOPIC_MAX_LENGTH, MAIL_TOPIC_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
 import { FieldType, FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
+import { ValidatorService } from 'src/app/common/services/validator.service';
 import { EngineService } from '../../services/engine.service';
 
 @Component({
@@ -20,13 +22,13 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
 
   form: FormGroup = new FormGroup({
     receiver: new FormControl(
-      null, [Validators.required],
+      null, [Validators.minLength(MAIL_RECEIVER_MIN_LENGTH), Validators.maxLength(MAIL_RECEIVER_MAX_LENGTH)],
     ),
     topic: new FormControl(
-      null, [Validators.required],
+      null, [Validators.minLength(MAIL_TOPIC_MIN_LENGTH), Validators.maxLength(MAIL_TOPIC_MAX_LENGTH)],
     ),
     message: new FormControl(
-      null, [Validators.required],
+      null, [Validators.minLength(MAIL_MESSAGE_MIN_LENGTH), Validators.maxLength(MAIL_MESSAGE_MAX_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -44,6 +46,7 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
     private mailController: MailController,
     private engineService: EngineService,
     private toastService: ToastService,
+    private validatorService: ValidatorService,
   ) {
     super();
   }
@@ -53,6 +56,11 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
   }
 
   sendMail() {
+    if (
+      !this.validatorService.checkBannedWords(this.topic.value)
+      || !this.validatorService.checkBannedWords(this.message.value)
+    ) return;
+
     const params: MailSendDto = {
       senderId: this.engineService.user.id,
       receiverName: this.receiver.value,

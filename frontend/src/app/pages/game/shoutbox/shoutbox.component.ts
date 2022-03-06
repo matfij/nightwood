@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { UserDto } from 'src/app/client/api';
+import { CHAT_MESSAGE_MAX_LENGTH, CHAT_MESSAGE_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { ChatMessage, ChatMode } from 'src/app/common/definitions/chat';
 import { ChatService } from 'src/app/common/services/chat.service';
 import { RepositoryService } from 'src/app/common/services/repository.service';
+import { ValidatorService } from 'src/app/common/services/validator.service';
 
 @Component({
   selector: 'app-shoutbox',
@@ -25,6 +27,7 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private chatService: ChatService,
     private repositoryService: RepositoryService,
+    private validatorService: ValidatorService,
   ) {}
 
   get ChatMode() { return ChatMode; }
@@ -56,7 +59,9 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    if (this.message.length === 0) return;
+    if (this.message.length < CHAT_MESSAGE_MIN_LENGTH) return;
+    if (this.message.length > CHAT_MESSAGE_MAX_LENGTH) return;
+    if (!this.validatorService.checkBannedWords(this.message)) return;
 
     const chatMessage: ChatMessage = {
       date: Date.now(),

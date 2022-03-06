@@ -15,7 +15,8 @@ stop:
 
 
 gen.config:
-	cp backend/src/configuration/frontend.config.ts frontend/src/app/client/frontend.config.ts
+	cp backend/src/configuration/frontend.config.ts frontend/src/app/client/config/frontend.config.ts
+	cp backend/src/common/definitions/banned-words.ts frontend/src/app/client/config/banned-words.ts
 
 
 gen.client:

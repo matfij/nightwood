@@ -2,7 +2,8 @@ import { UnauthorizedException } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
-import { ChatMessage, ChatMode } from './chat.definitions';
+import { ChatMessage, ChatMode } from './model/chat.definitions';
+import { ChatService } from './service/chat.service';
 
 @WebSocketGateway({ cors: { origin: '*' } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -16,6 +17,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   wsServer: Server;
 
   constructor(
+    private chatService: ChatService,
     private authService: AuthService,
   ) {}
 
@@ -26,8 +28,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage(ChatMode.General)
-  async handleMessage(client: Socket, message: any) {
+  async handleMessage(client: Socket, message: ChatMessage) {
     if (!await this.authorize(client)) return;
+    if (!this.chatService.validateMessage(message.data)) return;
 
     this.savedMessages.push(message);
     if (this.savedMessages.length > this.SAVED_MESSAGES_LIMIT) this.savedMessages.shift();

@@ -52,7 +52,7 @@
     "incorrectFieldsValue": "Please provide correct {{ value }}",
     "formInvalid": "Form invalid",
     "formInvalidHint": "Please check entered values",
-
+    "bannedWordUse": "Do not use harmful vocabulary",
     "userNotFound": "User not found",
     "emailNotUnique": "Email occupied",
     "emailIncorrectLength": "Email must be between {min} and {max} characters",

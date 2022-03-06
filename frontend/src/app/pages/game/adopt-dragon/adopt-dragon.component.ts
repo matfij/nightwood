@@ -5,7 +5,8 @@ import { ActionController, CreateDragonDto, DragonController, DragonNature } fro
 import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/core/definitions/dragons';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
-import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/frontend.config';
+import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
+import { ValidatorService } from 'src/app/common/services/validator.service';
 
 @Component({
   selector: 'app-adopt-dragon',
@@ -68,6 +69,7 @@ export class AdoptDragonComponent implements OnInit {
     private router: Router,
     private actionController: ActionController,
     private toastService: ToastService,
+    private validatorService: ValidatorService,
   ) {}
 
   ngOnInit(): void {
@@ -112,6 +114,7 @@ export class AdoptDragonComponent implements OnInit {
     name = name.replace(' ', '');
     if (name.length < DRAGON_NAME_MIN_LENGTH) return false;
     if (name.length > DRAGON_NAME_MAX_LENGTH) return false;
+    if (!this.validatorService.checkBannedWords(name)) return false;
 
     return true;
   }

@@ -32,12 +32,12 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Guilds [0%]
  - Player roles [0%]
  - Expedition guardians & progress [0%]
+ - User roles & banning [0%]
 
 
 ## Refactoring 1
- - Independent styles - remove ngBootstrap
- - Independent backend validation - remove 
- - Independent translations - remove 
+ - Minimize dependencies
+ - Optimization - rendering, db operations, throttling
 
 ## Stage 2
  - Mini games
