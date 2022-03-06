@@ -33,7 +33,7 @@ export class AuctionService {
             sellerId: userId,
             endTime: this.dateService.getFutureDate(0, dto.duration, 0),
             quantity: dto.quantity,
-            totalGoldPrice: dto.quantity * dto.unitGoldPrice,
+            totalGoldPrice: dto.quantity * Math.floor(dto.unitGoldPrice),
             item: item,
             active: true,
             finalized: false,

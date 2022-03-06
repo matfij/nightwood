@@ -83,8 +83,8 @@ export class AuctionsComponent implements OnInit {
       name: this.searchName?.nativeElement.value,
       type: this.searchType?.nativeElement.value,
       requiredRarity: this.searchRarity?.nativeElement.value,
-      minLevel: this.searchMinLevel?.nativeElement.value ? +this.searchMinLevel.nativeElement.value : AUCTION_MIN_SEARCH_LEVEL,
-      maxLevel: this.searchMaxLevel?.nativeElement.value ? +this.searchMaxLevel.nativeElement.value : AUCTION_MAX_SEARCH_LEVEL,
+      minLevel: this.searchMinLevel?.nativeElement.value ? Math.floor(+this.searchMinLevel.nativeElement.value) : AUCTION_MIN_SEARCH_LEVEL,
+      maxLevel: this.searchMaxLevel?.nativeElement.value ? Math.floor(+this.searchMaxLevel.nativeElement.value) : AUCTION_MAX_SEARCH_LEVEL,
     };
     this.auctionsLoading = true;
     this.auctionController.getAll(params).subscribe(auctionPage => {

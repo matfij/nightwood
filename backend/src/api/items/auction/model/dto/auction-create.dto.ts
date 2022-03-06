@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose, Type } from "class-transformer";
-import { IsNumber, IsNumberString, Max, Min } from "class-validator";
+import { IsInt, IsNumber, IsNumberString, Max, Min } from "class-validator";
 import { AUCTION_MAX_DURATION, AUCTION_MAX_PRICE, AUCTION_MAX_QUANTITY, AUCTION_MIN_DURATION, AUCTION_MIN_PRICE, AUCTION_MIN_QUANTITY } from "src/configuration/frontend.config";
 
 export class AuctionCreateDto {
@@ -19,7 +19,7 @@ export class AuctionCreateDto {
 
     @Expose()
     @Type(() => Number)
-    @IsNumber()
+    @IsInt()
     @Min(AUCTION_MIN_PRICE) @Max(AUCTION_MAX_PRICE)
     @ApiProperty()
     unitGoldPrice: number;

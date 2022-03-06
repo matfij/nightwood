@@ -1,5 +1,6 @@
 import { Item } from "src/api/items/item/model/item.entity";
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { DB_MONEY_TYPE } from "src/configuration/app.config";
+import { AfterLoad, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -16,7 +17,7 @@ export class User {
     @Column({ unique: true })
     nickname: string;
 
-    @Column({ default: 500 })
+    @Column({ type: DB_MONEY_TYPE, default: 500 })
     gold: number;
 
     @Column({ default: 0 })
@@ -28,8 +29,8 @@ export class User {
     @OneToMany(_ => Item, x => x.user)
     items: Item[];
 
-    @BeforeInsert()
-    normalizeEmail(): string {
-        return this.email.toLowerCase();
+    @AfterLoad() 
+    convertGold() {
+        this.gold = Math.floor(parseFloat(this.gold as any));
     }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { BattleResultDto, DragonController, DragonDto, StartBattleDto } from 'src/app/client/api';
+import { BattleResultDto, BattleStartDto, DragonController, DragonDto } from 'src/app/client/api';
 import { FADE_IN } from 'src/app/common/utils/animations';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
@@ -53,7 +53,7 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
   startBattle() {
     if (!this.ownedDragon || !this.enemyDragon) { this.closeModal(); return; }
 
-    const dto: StartBattleDto = {
+    const dto: BattleStartDto = {
       ownedDragonId: this.ownedDragon.id,
       enemyDragonId: this.enemyDragon.id,
     };

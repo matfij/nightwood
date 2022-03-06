@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DragonController, DragonDto, GetDragonDto, StartBattleDto } from 'src/app/client/api';
+import { DragonController, DragonDto, DragonGetDto } from 'src/app/client/api';
 import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragon } from 'src/app/core/definitions/dragons';
@@ -60,7 +60,7 @@ export class ArenaComponent implements OnInit {
     if (next === false) this.enemyDragonPage -= 1;
     if (this.enemyDragonPage < 0) this.enemyDragonPage = 0;
 
-    const dto: GetDragonDto = {
+    const dto: DragonGetDto = {
       page: this.enemyDragonPage,
       limit: this.enemyDragonLimit,
       minLevel: minLevel ?? 1,

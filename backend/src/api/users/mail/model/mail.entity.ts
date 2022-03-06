@@ -1,4 +1,4 @@
-import { LONG_NUMBER_TYPE } from "src/configuration/app.config";
+import { DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -7,7 +7,7 @@ export class Mail {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: LONG_NUMBER_TYPE })
+    @Column({ type: DB_TIMESTAMP_TYPE })
     sentDate: number;
 
     @Column({ nullable: true })

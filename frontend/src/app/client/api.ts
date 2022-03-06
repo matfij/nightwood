@@ -15,8 +15,8 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IActionController {
-    adoptDragon(body: AdoptDragonDto): Observable<DragonDto>;
-    feedDragon(body: FeedDragonDto): Observable<DragonDto>;
+    adoptDragon(body: DragonAdoptDto): Observable<DragonDto>;
+    feedDragon(body: DragonFeedDto): Observable<DragonDto>;
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
     checkExpeditions(): Observable<ExpeditionReportDto[]>;
     releaseDragon(id: string): Observable<void>;
@@ -36,7 +36,7 @@ export class ActionController implements IActionController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    adoptDragon(body: AdoptDragonDto): Observable<DragonDto> {
+    adoptDragon(body: DragonAdoptDto): Observable<DragonDto> {
         let url_ = this.baseUrl + "/api/v1/action/adoptDragon";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -87,7 +87,7 @@ export class ActionController implements IActionController {
         return _observableOf<DragonDto>(<any>null);
     }
 
-    feedDragon(body: FeedDragonDto): Observable<DragonDto> {
+    feedDragon(body: DragonFeedDto): Observable<DragonDto> {
         let url_ = this.baseUrl + "/api/v1/action/feedDragon";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1068,11 +1068,11 @@ export class MailController implements IMailController {
 }
 
 export interface IDragonController {
-    create(body: CreateDragonDto): Observable<DragonDto>;
+    create(body: DragonCreateDto): Observable<DragonDto>;
     getOne(id: string): Observable<DragonDto>;
-    getAll(body: GetDragonDto): Observable<PageDragonDto>;
+    getAll(body: DragonGetDto): Observable<DragonPageDto>;
     getOwned(): Observable<DragonDto[]>;
-    startBattle(body: StartBattleDto): Observable<BattleResultDto>;
+    startBattle(body: BattleStartDto): Observable<BattleResultDto>;
     learnSkill(body: LearnskillDto): Observable<DragonDto>;
 }
 
@@ -1089,7 +1089,7 @@ export class DragonController implements IDragonController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    create(body: CreateDragonDto): Observable<DragonDto> {
+    create(body: DragonCreateDto): Observable<DragonDto> {
         let url_ = this.baseUrl + "/api/v1/dragon/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1190,7 +1190,7 @@ export class DragonController implements IDragonController {
         return _observableOf<DragonDto>(<any>null);
     }
 
-    getAll(body: GetDragonDto): Observable<PageDragonDto> {
+    getAll(body: DragonGetDto): Observable<DragonPageDto> {
         let url_ = this.baseUrl + "/api/v1/dragon/getAll";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1213,14 +1213,14 @@ export class DragonController implements IDragonController {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PageDragonDto>><any>_observableThrow(e);
+                    return <Observable<DragonPageDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PageDragonDto>><any>_observableThrow(response_);
+                return <Observable<DragonPageDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PageDragonDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<DragonPageDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1230,7 +1230,7 @@ export class DragonController implements IDragonController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <PageDragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <DragonPageDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1238,7 +1238,7 @@ export class DragonController implements IDragonController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PageDragonDto>(<any>null);
+        return _observableOf<DragonPageDto>(<any>null);
     }
 
     getOwned(): Observable<DragonDto[]> {
@@ -1288,7 +1288,7 @@ export class DragonController implements IDragonController {
         return _observableOf<DragonDto[]>(<any>null);
     }
 
-    startBattle(body: StartBattleDto): Observable<BattleResultDto> {
+    startBattle(body: BattleStartDto): Observable<BattleResultDto> {
         let url_ = this.baseUrl + "/api/v1/dragon/startBattle";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1701,7 +1701,7 @@ export enum DragonNature {
     Earth = "Earth",
 }
 
-export interface AdoptDragonDto {
+export interface DragonAdoptDto {
     name: string;
     nature: DragonNature;
 }
@@ -1752,7 +1752,7 @@ export interface DragonDto {
     luck: number;
 }
 
-export interface FeedDragonDto {
+export interface DragonFeedDto {
     dragonId: number;
     itemId: number;
 }
@@ -1913,7 +1913,7 @@ export interface MailGetDto {
     limit?: number;
 }
 
-export interface CreateDragonDto {
+export interface DragonCreateDto {
     name: string;
     nature: DragonNature;
     strength?: number;
@@ -1923,53 +1923,26 @@ export interface CreateDragonDto {
     luck?: number;
 }
 
-export interface GetDragonDto {
+export interface DragonGetDto {
     minLevel?: number;
     maxLevel?: number;
     page?: number;
     limit?: number;
 }
 
-export interface PageDragonDto {
+export interface DragonPageDto {
     meta: PageMetaDto;
     data: DragonDto[];
 }
 
-export interface StartBattleDto {
+export interface BattleStartDto {
     ownedDragonId: number;
     enemyDragonId: number;
 }
 
-export interface BattleDragon {
-    id: number;
-    name: string;
-    ownerId?: number;
-    action: DragonActionDto;
-    skills: DragonSkillsDto;
-    skillPoints: number;
-    nextFeed: number;
-    nature: DragonNature;
-    level: number;
-    stamina: number;
-    experience: number;
-    strength: number;
-    dexterity: number;
-    endurance: number;
-    will: number;
-    luck: number;
-    maxHealth: number;
-    health: number;
-    maxMana: number;
-    mana: number;
-    damage: number;
-    armor: number;
-    speed: number;
-    initiative: number;
-}
-
 export interface BattleResultDto {
-    ownedDragon: BattleDragon;
-    enemyDragon: BattleDragon;
+    ownedDragon: any;
+    enemyDragon: any;
     logs: string[];
     result: string;
 }
@@ -2018,7 +1991,7 @@ export interface AuctionDto {
     sellerId: number;
     endTime: number;
     totalGoldPrice: number;
-    item: ItemDto;
+    item: any;
     quantity: number;
     active: boolean;
     finalized: boolean;

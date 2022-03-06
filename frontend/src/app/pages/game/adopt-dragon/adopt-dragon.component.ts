@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ActionController, CreateDragonDto, DragonController, DragonNature } from 'src/app/client/api';
+import { ActionController, DragonAdoptDto, DragonNature } from 'src/app/client/api';
 import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/core/definitions/dragons';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -123,7 +123,7 @@ export class AdoptDragonComponent implements OnInit {
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
     if (!this.validateDragonName(this.dragonName.value)) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
-    const dragon: CreateDragonDto = {
+    const dragon: DragonAdoptDto = {
       name: this.dragonName.value,
       nature: this.determineNature(),
     };

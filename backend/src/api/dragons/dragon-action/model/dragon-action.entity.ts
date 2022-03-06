@@ -1,4 +1,4 @@
-import { LONG_NUMBER_TYPE } from "src/configuration/app.config";
+import { DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { DragonActionType } from "./definitions/dragon-action";
 
@@ -17,6 +17,6 @@ export class DragonAction {
     @Column({ default: false })
     awardCollected: boolean;
 
-    @Column({ default: 0, type: LONG_NUMBER_TYPE })
+    @Column({ default: 0, type: DB_TIMESTAMP_TYPE })
     nextAction: number;
 }

@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AuctionController, AuctionCreateDto, ItemController, PageItemDto } from 'src/app/client/api';
 import { AUCTION_MAX_DURATION, AUCTION_MAX_PRICE, AUCTION_MAX_QUANTITY, AUCTION_MIN_DURATION, AUCTION_MIN_PRICE, AUCTION_MIN_QUANTITY } from 'src/app/client/config/frontend.config';
-import { FormInputOptions } from 'src/app/common/definitions/forms';
+import { FieldType, FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
 
@@ -32,9 +32,9 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
     ),
   });
   fields: FormInputOptions[] = [
-    { form: this.form, key: 'duration', label: 'auctions.duration', type: 'number' },
-    { form: this.form, key: 'quantity', label: 'auctions.quantity', type: 'number' },
-    { form: this.form, key: 'unitPrice', label: 'auctions.unitPrice', type: 'number' },
+    { form: this.form, key: 'duration', label: 'auctions.duration', fieldType: FieldType.INTEGER },
+    { form: this.form, key: 'quantity', label: 'auctions.quantity', fieldType: FieldType.INTEGER },
+    { form: this.form, key: 'unitPrice', label: 'auctions.unitPrice', fieldType: FieldType.INTEGER },
   ];
   submitLoading: boolean = false;
   tradableItems$?: Observable<PageItemDto>;

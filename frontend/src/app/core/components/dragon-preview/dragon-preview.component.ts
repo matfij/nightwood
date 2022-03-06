@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionController, FeedDragonDto, ItemController } from 'src/app/client/api';
+import { ActionController, DragonFeedDto, ItemController } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DateService } from '../../../common/services/date.service';
 import { DragonService } from '../../services/dragons.service';
@@ -63,7 +63,7 @@ export class DragonPreviewComponent implements OnInit {
   feedDragon(itemId: number) {
     if (!this.dragon) return;
 
-    const dto: FeedDragonDto = {
+    const dto: DragonFeedDto = {
       itemId: itemId,
       dragonId: this.dragon.id!,
     }

@@ -16,6 +16,10 @@
     <input class="input" [type]="options.type" [formControlName]="options.key">
   </div>
 
+  <div *ngIf="options.fieldType === FieldType.INTEGER">
+    <input class="input" type="text" pattern="\d*" [formControlName]="options.key">
+  </div>
+
   <div *ngIf="options.fieldType === FieldType.TEXTAREA">
     <textarea class="input" [formControlName]="options.key" rows="3"></textarea>
   </div>

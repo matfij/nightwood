@@ -7,7 +7,8 @@ export const API_VERSION = 'v1';
 /**
  * Database & typeorm
  */
-export const LONG_NUMBER_TYPE = 'int8';
+export const DB_TIMESTAMP_TYPE = 'int8';
+export const DB_MONEY_TYPE = 'decimal';
 
 /**
  * Localization

@@ -1,5 +1,5 @@
-import { LONG_NUMBER_TYPE } from "src/configuration/app.config";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { DB_MONEY_TYPE, DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
+import { AfterLoad, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Item } from "../../item/model/item.entity";
 
 @Entity()
@@ -11,10 +11,10 @@ export class Auction {
     @Column()
     sellerId: number;
 
-    @Column({ type: LONG_NUMBER_TYPE })
+    @Column({ type: DB_TIMESTAMP_TYPE })
     endTime: number;
 
-    @Column()
+    @Column({ type: DB_MONEY_TYPE, default: 1000 })
     totalGoldPrice: number;
 
     @ManyToOne(_ => Item)
@@ -29,4 +29,9 @@ export class Auction {
 
     @Column({ default: false })
     finalized: boolean;
+
+    @AfterLoad() 
+    convertPrice() {
+        this.totalGoldPrice = Math.floor(parseFloat(this.totalGoldPrice as any));
+    }
 }
