@@ -5,11 +5,11 @@ import { AuthorizedRequest } from "src/common/definitions/requests";
 import { PaginationInterceptor } from "src/common/interceptors/pagination.interceptor";
 import { LearnskillDto } from "../dragon-skills/model/dto/learn-skill.dto";
 import { BattleResultDto } from "./model/dto/battle-result.dto";
-import { CreateDragonDto } from "./model/dto/create-dragon.dto";
+import { DragonCreateDto } from "./model/dto/dragon-create.dto";
 import { DragonDto } from "./model/dto/dragon.dto";
-import { GetDragonDto } from "./model/dto/get-dragon.dto";
-import { PageDragonDto } from "./model/dto/page-dragon.dto";
-import { StartBattleDto } from "./model/dto/start-battle.dto";
+import { DragonGetDto } from "./model/dto/dragon-get.dto";
+import { DragonPageDto } from "./model/dto/dragon-page.dto";
+import { BattleStartDto } from "./model/dto/battle-start.dto";
 import { DragonService } from "./service/dragon.service";
 
 @Controller('dragon')
@@ -23,7 +23,7 @@ export class DragonController {
 
     @Post('create')
     @ApiOkResponse({ type: DragonDto })
-    create(@Body() dto: CreateDragonDto): Promise<DragonDto> {
+    create(@Body() dto: DragonCreateDto): Promise<DragonDto> {
         return this.dragonService.create(dto);
     }
 
@@ -35,8 +35,8 @@ export class DragonController {
 
     @Post('getAll')
     @UseInterceptors(PaginationInterceptor)
-    @ApiOkResponse({ type: PageDragonDto })
-    getAll(@Body() dto: GetDragonDto): Promise<PageDragonDto> {
+    @ApiOkResponse({ type: DragonPageDto })
+    getAll(@Body() dto: DragonGetDto): Promise<DragonPageDto> {
         return this.dragonService.getAll(dto);
     }
 
@@ -50,7 +50,7 @@ export class DragonController {
     @Post('startBattle')
     @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: BattleResultDto })
-    startBattle(@Request() req: AuthorizedRequest, @Body() dto: StartBattleDto): Promise<BattleResultDto> {
+    startBattle(@Request() req: AuthorizedRequest, @Body() dto: BattleStartDto): Promise<BattleResultDto> {
         return this.dragonService.startBattle(req.user.id!, dto);
     }
 

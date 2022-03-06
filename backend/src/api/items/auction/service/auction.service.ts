@@ -11,6 +11,7 @@ import { AuctionDto } from '../model/dto/auction.dto';
 import { AuctionCreateDto } from '../model/dto/auction-create.dto';
 import { AuctionGetDto } from '../model/dto/auction-get.dto';
 import { AuctionPageDto } from '../model/dto/auction-page.dto';
+import { ItemDto } from '../../item/model/dto/item.dto';
 
 @Injectable()
 export class AuctionService {
@@ -77,7 +78,7 @@ export class AuctionService {
         dto.minLevel = dto.minLevel ?? 0;
         dto.maxLevel = dto.maxLevel ?? 999;
 
-        const filterOptions: FindManyOptions<Auction> = {
+        const filterOptions: FindManyOptions<AuctionDto> = {
             relations: ['item'],
             where: {
                 active: true,
@@ -106,8 +107,15 @@ export class AuctionService {
             ...filterOptions,
         });
 
+        const minimizedAuctions = auctions.map(auction => {
+            const item = auction.item;
+            return {
+                ...auction,
+                item: { id: item.id, name: item.name, rarity: item.rarity, type: item.type, level: item.level },
+            }
+        });
         const auctionPage: AuctionPageDto = {
-            data: auctions,
+            data: minimizedAuctions,
             meta: { totalItems: count },
         };
         return auctionPage;
@@ -116,7 +124,7 @@ export class AuctionService {
     async cancelAuction(userId: number, auctionId: number): Promise<void> {
         const auction = await this.checkOwnedAuction(userId, auctionId);
 
-        await this.itemService.refillItem(auction.item, auction.quantity);
+        await this.itemService.refillItem(auction.item as ItemDto, auction.quantity);
 
         auction.active = false;
         await this.auctionRepository.save(auction);

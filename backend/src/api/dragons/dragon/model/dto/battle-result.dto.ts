@@ -4,10 +4,10 @@ import { BattleDragon } from "../definitions/dragon-battle";
 export class BattleResultDto {
 
     @ApiProperty()
-    ownedDragon: BattleDragon;
+    ownedDragon: Partial<BattleDragon>;
 
     @ApiProperty()
-    enemyDragon: BattleDragon;
+    enemyDragon: Partial<BattleDragon>;
 
     @ApiProperty()
     logs: string[];

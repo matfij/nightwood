@@ -15,9 +15,8 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 
 ## Refactoring
  - Defined data management [20%]
- - Controllers & repositories information flow [30%]
- - Common configuration source (logic, validation) [80%]
- - Minimize data exposition [20%]
+ - Common configuration source (logic, validation) [100%]
+ - Minimize data exposition [100%]
  - Navigation bar & user state [100%]
  - Smart tooltips [100%]
  - Data generators [0%]

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DateService } from "src/common/services/date.service";
 import { ErrorService } from "src/common/services/error.service";
+import { PAGINATION_DEFAULT_LIMIT } from "src/configuration/backend.config";
 import { FindManyOptions, Repository } from "typeorm";
 import { UserService } from "../../user/service/user.service";
 import { MailSendSystemParams } from "../model/definitions/mail-params";
@@ -65,7 +66,7 @@ export class MailService {
         const mails = await this.mailRepository.find({
             where: { receiverId: userId, isRead: false },
             order: { sentDate: 'ASC' },
-            take: 100,
+            take: PAGINATION_DEFAULT_LIMIT,
         });
 
         const mailPage: MailPageDto = {
@@ -76,9 +77,6 @@ export class MailService {
     }
 
     async getAllMails(userId: number, dto: MailGetDto): Promise<MailPageDto> {
-        dto.page = Math.max(0, dto.page ?? 0);
-        dto.limit = Math.max(1, dto.limit ?? 20);
-
         const filterOptions: FindManyOptions<Mail> = {
             where: { receiverId: userId },
             order: { sentDate: 'DESC' },

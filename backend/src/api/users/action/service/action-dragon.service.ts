@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { AdoptDragonDto } from "src/api/dragons/dragon/model/dto/adopt-dragon.dto";
+import { DragonAdoptDto } from "src/api/dragons/dragon/model/dto/dragon-adopt.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
-import { FeedDragonDto } from "src/api/dragons/dragon/model/dto/feed-dragon.dto";
+import { DragonFeedDto } from "src/api/dragons/dragon/model/dto/dragon-feed.dto";
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
 import { Repository } from "typeorm";
@@ -20,7 +20,7 @@ export class ActionDragonService {
         private itemService: ItemService,
     ) {}
 
-    async adopt(userId: number, dto: AdoptDragonDto): Promise<DragonDto> {
+    async adopt(userId: number, dto: DragonAdoptDto): Promise<DragonDto> {
         await this.userService.incrementOwnedDragons(userId);
         
         const dragon = await this.dragonService.adopt(userId, dto);
@@ -28,7 +28,7 @@ export class ActionDragonService {
         return dragon;
     }
 
-    async feed(userId: number, dto: FeedDragonDto): Promise<DragonDto> {
+    async feed(userId: number, dto: DragonFeedDto): Promise<DragonDto> {
         const item = await this.itemService.checkFeedingItem(userId, dto.itemId);
         const dragon = await this.dragonService.checkFeedingDragon(userId, dto.dragonId);
 
@@ -41,7 +41,7 @@ export class ActionDragonService {
     async release(userId: number, dragonId: number): Promise<void> {
         const user = await this.userRepository.findOne(userId);
 
-        this.dragonService.release(userId, dragonId);
+        this.dragonService.releaseDragon(userId, dragonId);
 
         user.ownedDragons -= 1;
         await this.userRepository.update(userId, { ownedDragons: user.ownedDragons });

@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { DragonNature } from "../definitions/dragon-nature";
 
-export class CreateDragonDto {
+export class DragonCreateDto {
 
     @IsString()
     @ApiProperty()

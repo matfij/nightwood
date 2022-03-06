@@ -16,7 +16,7 @@ export class AuctionDto {
     totalGoldPrice: number;
 
     @ApiProperty()
-    item: ItemDto;
+    item: Partial<ItemDto>;
 
     @ApiProperty()
     quantity: number;

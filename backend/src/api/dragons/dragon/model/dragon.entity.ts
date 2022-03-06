@@ -1,3 +1,4 @@
+import { LONG_NUMBER_TYPE } from "src/configuration/app.config";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
 import { DragonSkills } from "../../dragon-skills/model/dragon-skills.entity";
@@ -26,7 +27,7 @@ export class Dragon {
     @Column({ default: 0 })
     skillPoints: number;
 
-    @Column({ default: 0, type: 'int8' })
+    @Column({ default: 0, type: LONG_NUMBER_TYPE })
     nextFeed: number;
 
     @Column()

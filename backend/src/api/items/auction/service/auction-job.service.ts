@@ -5,6 +5,7 @@ import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-
 import { MailService } from "src/api/users/mail/service/mail.service";
 import { DateService } from "src/common/services/date.service";
 import { LessThan, Repository } from "typeorm";
+import { ItemDto } from "../../item/model/dto/item.dto";
 import { ItemService } from "../../item/service/item.service";
 import { Auction } from "../model/auction.entity";
 import { AuctionDto } from "../model/dto/auction.dto";
@@ -28,7 +29,7 @@ export class AuctionJobService {
             auction.active = false;
             auction.finalized = true;
             await this.auctionRepository.save(auction);
-            await this.itemService.refillItem(auction.item, auction.quantity);
+            await this.itemService.refillItem(auction.item as ItemDto, auction.quantity);
 
             await this.sendReportMail(auction);
         }

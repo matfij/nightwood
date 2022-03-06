@@ -25,8 +25,11 @@ hr {
     text-align: left;
     padding: 8px 8px 4px 12px;
     white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+
+    div {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
 
     &:hover {
       cursor: pointer;

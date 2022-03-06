@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsString } from "class-validator";
 import { DragonNature } from "../definitions/dragon-nature";
 
-export class AdoptDragonDto {
+export class DragonAdoptDto {
 
     @IsString()
     @ApiProperty()

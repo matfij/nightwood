@@ -1,13 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber } from "class-validator";
 
-export class FeedDragonDto {
+export class BattleStartDto {
 
     @IsNumber()
     @ApiProperty()
-    dragonId: number;
-
+    ownedDragonId: number;
+    
     @IsNumber()
     @ApiProperty()
-    itemId: number;
+    enemyDragonId: number;
 }

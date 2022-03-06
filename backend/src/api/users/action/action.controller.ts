@@ -3,9 +3,9 @@ import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
 import { ExpeditionReportDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
 import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/start-expedition.dto";
-import { AdoptDragonDto } from "src/api/dragons/dragon/model/dto/adopt-dragon.dto";
+import { DragonAdoptDto } from "src/api/dragons/dragon/model/dto/dragon-adopt.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
-import { FeedDragonDto } from "src/api/dragons/dragon/model/dto/feed-dragon.dto";
+import { DragonFeedDto } from "src/api/dragons/dragon/model/dto/dragon-feed.dto";
 import { AuctionBuyResultDto } from "src/api/items/auction/model/dto/auction-buy-result.dto";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { JwtAuthGuard } from "../auth/util/jwt.guard";
@@ -26,13 +26,13 @@ export class ActionController {
     
     @Post('adoptDragon')
     @ApiOkResponse({ type: DragonDto })
-    adoptDragon(@Request() req: AuthorizedRequest, @Body() dto: AdoptDragonDto): Promise<DragonDto> {
+    adoptDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonAdoptDto): Promise<DragonDto> {
         return this.actionDragonService.adopt(req.user.id, dto);
     }
 
     @Post('feedDragon')
     @ApiOkResponse({ type: DragonDto })
-    feedDragon(@Request() req: AuthorizedRequest, @Body() dto: FeedDragonDto): Promise<DragonDto> {
+    feedDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonFeedDto): Promise<DragonDto> {
         return this.actionDragonService.feed(req.user.id, dto);
     }
 

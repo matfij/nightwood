@@ -56,8 +56,8 @@ export class DragonBattleService {
         }
 
         return {
-            ownedDragon: owned,
-            enemyDragon: enemy,
+            ownedDragon: { id: owned.id, name: owned.name, level: owned.level, stamina: owned.stamina, },
+            enemyDragon: { id: enemy.id, name: enemy.name, level: enemy.level, },
             logs: logs,
             result: result,
         };

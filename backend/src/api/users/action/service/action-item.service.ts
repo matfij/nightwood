@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { AuctionBuyResultDto } from "src/api/items/auction/model/dto/auction-buy-result.dto";
 import { AuctionService } from "src/api/items/auction/service/auction.service";
+import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { ItemService } from "src/api/items/item/service/item.service";
 import { ErrorService } from "src/common/services/error.service";
 import { MailSendSystemParams } from "../../mail/model/definitions/mail-params";
@@ -29,7 +30,7 @@ export class ActionItemService {
         seller = await this.userService.updateGold(seller.id, auction.totalGoldPrice);
 
         await this.auctionService.finalizeAuction(auctionId);
-        await this.itemService.updateInventory(user, [{...auction.item, quantity: auction.quantity}]);
+        await this.itemService.updateInventory(user, [{...auction.item as ItemDto, quantity: auction.quantity}]);
 
         const mailParams: MailSendSystemParams = {
             senderName: 'Marketplace',

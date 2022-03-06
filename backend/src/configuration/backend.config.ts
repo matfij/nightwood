@@ -5,8 +5,8 @@
 export const EXPEDITION_TIME_SCALE = 1 / 10;
 export const FEED_TIME_SCALE = 1 / 100;
 
-export const DEFAULT_PAGE = 1;
-export const DEFAULT_LIMIT = 100;
+export const PAGINATION_DEFAULT_PAGE = 0;
+export const PAGINATION_DEFAULT_LIMIT = 100;
 
 /**
  * Users
