@@ -2,7 +2,7 @@ import { Request, Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
 import { AuthorizedRequest } from "src/common/definitions/requests";
-import { PageItemDto } from "./model/dto/page-item.dto";
+import { ItemPageDto } from "./model/dto/item-page.dto";
 import { ItemService } from "./service/item.service";
 
 @Controller('item')
@@ -14,9 +14,15 @@ export class ItemController {
         private itemService: ItemService
     ) {}
 
+    @Post('getOwnedItems')
+    @ApiOkResponse({ type: ItemPageDto })
+    getOwnedItems(@Request() req: AuthorizedRequest): Promise<ItemPageDto> {
+        return this.itemService.getOwnedItems(req.user);
+    }
+
     @Post('getOwnedFoods')
-    @ApiOkResponse({ type: PageItemDto })
-    getOwnedFoods(@Request() req: AuthorizedRequest): Promise<PageItemDto> {
+    @ApiOkResponse({ type: ItemPageDto })
+    getOwnedFoods(@Request() req: AuthorizedRequest): Promise<ItemPageDto> {
         return this.itemService.getOwnedFoods(req.user);
     }
 }

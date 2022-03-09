@@ -2,16 +2,16 @@ import { Body, Controller, Post, UseGuards, Request, Param } from "@nestjs/commo
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
 import { ExpeditionReportDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
-import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/start-expedition.dto";
+import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition-start.dto";
 import { DragonAdoptDto } from "src/api/dragons/dragon/model/dto/dragon-adopt.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { DragonFeedDto } from "src/api/dragons/dragon/model/dto/dragon-feed.dto";
 import { AuctionBuyResultDto } from "src/api/items/auction/model/dto/auction-buy-result.dto";
 import { AuthorizedRequest } from "src/common/definitions/requests";
-import { JwtAuthGuard } from "../auth/util/jwt.guard";
 import { ActionDragonService } from "./service/action-dragon.service";
 import { ActionEventService } from "./service/action-event.service";
 import { ActionItemService } from "./service/action-item.service";
+import { JwtAuthGuard } from "../users/auth/util/jwt.guard";
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -27,13 +27,13 @@ export class ActionController {
     @Post('adoptDragon')
     @ApiOkResponse({ type: DragonDto })
     adoptDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonAdoptDto): Promise<DragonDto> {
-        return this.actionDragonService.adopt(req.user.id, dto);
+        return this.actionDragonService.adoptDragon(req.user.id, dto);
     }
 
     @Post('feedDragon')
     @ApiOkResponse({ type: DragonDto })
     feedDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonFeedDto): Promise<DragonDto> {
-        return this.actionDragonService.feed(req.user.id, dto);
+        return this.actionDragonService.feedDragon(req.user.id, dto);
     }
 
     @Post('startExpedition')
@@ -51,7 +51,7 @@ export class ActionController {
     @Post('releaseDragon/:id')
     @ApiOkResponse()
     releaseDragon(@Request() req: AuthorizedRequest, @Param('id') id: string) {
-      return this.actionDragonService.release(req.user.id, +id);
+      return this.actionDragonService.releaseDragon(req.user.id, +id);
     }
 
     @Post('buyAuction/:id')

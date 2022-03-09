@@ -24,7 +24,7 @@ export class DragonSkillsService {
         return name.replace(/./, c => c.toLowerCase());
     }
 
-    async create() {
+    async createSkills() {
         const skills: DragonSkillsDto = {};
         const dragonSkills = this.dragonSkillsRepository.create(skills);
     

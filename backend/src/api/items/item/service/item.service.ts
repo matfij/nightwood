@@ -2,15 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ErrorService } from "src/common/services/error.service";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
-import { Repository } from "typeorm";
-import { StartingItems } from "../model/data/item-blueprints";
+import { MoreThan, Repository } from "typeorm";
+import { STARTING_ITEMS } from "../model/data/item-blueprints";
 import { ItemDto } from "../model/dto/item.dto";
-import { PageItemDto } from "../model/dto/page-item.dto";
+import { ItemPageDto } from "../model/dto/item-page.dto";
 import { Item } from "../model/item.entity";
-import { ExpeditionReportDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
-import { IHON_BERRY } from "../model/data/food";
 import { ItemType } from "../model/definitions/item-type";
 import { ItemRarity, LootChance } from "../model/definitions/item-rarity";
 
@@ -24,15 +22,24 @@ export class ItemService {
     ) {}
 
     async createStartingItems(user: UserDto) {
-        StartingItems.forEach(x => {
+        STARTING_ITEMS.forEach(x => {
             const item = this.itemRepository.create({ ...x, user });
             this.itemRepository.save(item);
         });
     }
 
-    async getOwnedFoods(user: UserDto): Promise<PageItemDto> {
-        const items = await this.itemRepository.find({ user: user, type: ItemType.Food });
-        const itemsPage: PageItemDto = {
+    async getOwnedFoods(user: UserDto): Promise<ItemPageDto> {
+        const items = await this.itemRepository.find({ user: user, type: ItemType.Food, quantity: MoreThan(0) });
+        const itemsPage: ItemPageDto = {
+            data: items,
+            meta: {},
+        };
+        return itemsPage;
+    }
+
+    async getOwnedItems(user: UserDto): Promise<ItemPageDto> {
+        const items = await this.itemRepository.find({ user: user, quantity: MoreThan(0) });
+        const itemsPage: ItemPageDto = {
             data: items,
             meta: {},
         };

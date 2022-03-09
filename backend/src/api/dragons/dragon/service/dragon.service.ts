@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, FindManyOptions, MoreThanOrEqual, Repository } from 'typeorm';
+import { Between, FindManyOptions, Repository } from 'typeorm';
 import { DragonActionService } from '../../dragon-action/service/dragon-action.service';
 import { Dragon } from '../model/dragon.entity';
 import { DragonAdoptDto } from '../model/dto/dragon-adopt.dto';
@@ -37,8 +37,8 @@ export class DragonService {
 
     async create(dto: DragonCreateDto): Promise<DragonDto> {
         const dragon = this.dragonRepository.create({ ...dto });
-        dragon.action = await this.dragonActionService.create();
-        dragon.skills = await this.dragonSkillsService.create();
+        dragon.action = await this.dragonActionService.createAction();
+        dragon.skills = await this.dragonSkillsService.createSkills();
         const savedDragon = await this.dragonRepository.save(dragon);
 
         return savedDragon;
@@ -51,7 +51,7 @@ export class DragonService {
     async getAll(dto: DragonGetDto): Promise<DragonPageDto> {
         const filterOptions: FindManyOptions<Dragon> = {
             where: { level: Between(dto.minLevel, dto.maxLevel) },
-            select: ['id', 'name', 'level', 'nature',],
+            select: ['id', 'name', 'level', 'nature'],
             order: { level: 'DESC' },
         };
 
@@ -73,8 +73,8 @@ export class DragonService {
 
     async adopt(ownerId: number, dto: DragonAdoptDto): Promise<DragonDto> {
         const dragon = this.dragonRepository.create({ ...dto, ownerId: ownerId });
-        dragon.action = await this.dragonActionService.create();
-        dragon.skills = await this.dragonSkillsService.create();
+        dragon.action = await this.dragonActionService.createAction();
+        dragon.skills = await this.dragonSkillsService.createSkills();
         const savedDragon = await this.dragonRepository.save(dragon);
 
         return savedDragon;

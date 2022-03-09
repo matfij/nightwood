@@ -3,10 +3,10 @@ import { AuctionBuyResultDto } from "src/api/items/auction/model/dto/auction-buy
 import { AuctionService } from "src/api/items/auction/service/auction.service";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { ItemService } from "src/api/items/item/service/item.service";
+import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
+import { MailService } from "src/api/users/mail/service/mail.service";
+import { UserService } from "src/api/users/user/service/user.service";
 import { ErrorService } from "src/common/services/error.service";
-import { MailSendSystemParams } from "../../mail/model/definitions/mail-params";
-import { MailService } from "../../mail/service/mail.service";
-import { UserService } from "../../user/service/user.service";
 
 @Injectable()
 export class ActionItemService {

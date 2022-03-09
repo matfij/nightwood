@@ -84,12 +84,12 @@ export class UserService {
         return pageUser;
     }
 
-    async incrementOwnedDragons(id: number | string) {
+    async updateOwnedDragons(id: number | string, increment: boolean = true) {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new NotFoundException();
         
-        if (user.ownedDragons >= user.maxOwnedDragons) this.errorService.throw('errors.maxDragonsExceeded');
-        user.ownedDragons += 1;
+        if (increment && user.ownedDragons >= user.maxOwnedDragons) this.errorService.throw('errors.maxDragonsExceeded');
+        increment ? user.ownedDragons += 1 : user.ownedDragons -= 1;
 
         return this.userRepository.save(user);
     }

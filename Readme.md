@@ -14,7 +14,7 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Auction house [100%]
 
 ## Refactoring
- - Defined data management [20%]
+ - Defined data management [70%]
  - Common configuration source (logic, validation) [100%]
  - Minimize data exposition [100%]
  - Navigation bar & user state [100%]
@@ -25,11 +25,11 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 ## Initial release - 01.04.2022 (prediction)
 
 ## Stage 1
- - Special dragons [0%]
- - Dragon equipment [0%]
+ - Special dragons & skills [0%]
+ - Dragon equipment - armor crafting [0%]
  - Alchemy - cooking, extracting [0%]
- - Guilds [0%]
- - Player roles [0%]
+ - Guilds - diplomacy, constructions [0%]
+ - Player profiles - achievements [0%]
  - Expedition guardians & progress [0%]
  - User roles & banning [0%]
 
@@ -40,5 +40,4 @@ The game is slow-paced and non-time intensive, suitable for both individual play
 
 ## Stage 2
  - Mini games
- - Achievements
- 
+ - Battle tournaments
