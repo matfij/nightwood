@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { AuctionController, AuctionCreateDto, ItemController, PageItemDto } from 'src/app/client/api';
+import { AuctionController, AuctionCreateDto, ItemController, ItemPageDto } from 'src/app/client/api';
 import { AUCTION_MAX_DURATION, AUCTION_MAX_PRICE, AUCTION_MAX_QUANTITY, AUCTION_MIN_DURATION, AUCTION_MIN_PRICE, AUCTION_MIN_QUANTITY } from 'src/app/client/config/frontend.config';
 import { FieldType, FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -37,7 +37,7 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
     { form: this.form, key: 'unitPrice', label: 'auctions.unitPrice', fieldType: FieldType.INTEGER },
   ];
   submitLoading: boolean = false;
-  tradableItems$?: Observable<PageItemDto>;
+  tradableItems$?: Observable<ItemPageDto>;
 
   get duration(): FormControl { return this.form.get('duration') as FormControl; }
   get quantity(): FormControl { return this.form.get('quantity') as FormControl; }

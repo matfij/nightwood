@@ -115,3 +115,21 @@
 
   line-height: 24px;
 }
+
+@media screen and (max-width: $mobile-threshold) {
+
+  .wrapper-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px 0px;
+    padding: 10px;
+  }
+
+  .wrapper-dragons-owned {
+    width: clamp(0px, 100%, 300px);
+  }
+
+  .item-dragon-owned {
+    width: 100%;
+  }
+}

@@ -783,7 +783,8 @@ export class AuthController implements IAuthController {
 }
 
 export interface IItemController {
-    getOwnedFoods(): Observable<PageItemDto>;
+    getOwnedItems(): Observable<ItemPageDto>;
+    getOwnedFoods(): Observable<ItemPageDto>;
 }
 
 @Injectable({
@@ -799,7 +800,54 @@ export class ItemController implements IItemController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getOwnedFoods(): Observable<PageItemDto> {
+    getOwnedItems(): Observable<ItemPageDto> {
+        let url_ = this.baseUrl + "/api/v1/item/getOwnedItems";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOwnedItems(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOwnedItems(<any>response_);
+                } catch (e) {
+                    return <Observable<ItemPageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ItemPageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetOwnedItems(response: HttpResponseBase): Observable<ItemPageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <ItemPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ItemPageDto>(<any>null);
+    }
+
+    getOwnedFoods(): Observable<ItemPageDto> {
         let url_ = this.baseUrl + "/api/v1/item/getOwnedFoods";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -818,14 +866,14 @@ export class ItemController implements IItemController {
                 try {
                     return this.processGetOwnedFoods(<any>response_);
                 } catch (e) {
-                    return <Observable<PageItemDto>><any>_observableThrow(e);
+                    return <Observable<ItemPageDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PageItemDto>><any>_observableThrow(response_);
+                return <Observable<ItemPageDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetOwnedFoods(response: HttpResponseBase): Observable<PageItemDto> {
+    protected processGetOwnedFoods(response: HttpResponseBase): Observable<ItemPageDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -835,7 +883,7 @@ export class ItemController implements IItemController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <PageItemDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <ItemPageDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -843,7 +891,7 @@ export class ItemController implements IItemController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PageItemDto>(<any>null);
+        return _observableOf<ItemPageDto>(<any>null);
     }
 }
 
@@ -1392,7 +1440,7 @@ export class DragonController implements IDragonController {
 }
 
 export interface IDragonActionController {
-    getExpeditions(): Observable<PageExpeditionDto>;
+    getExpeditions(): Observable<ExpeditionPageDto>;
 }
 
 @Injectable({
@@ -1408,7 +1456,7 @@ export class DragonActionController implements IDragonActionController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getExpeditions(): Observable<PageExpeditionDto> {
+    getExpeditions(): Observable<ExpeditionPageDto> {
         let url_ = this.baseUrl + "/api/v1/action/getExpeditions";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1427,14 +1475,14 @@ export class DragonActionController implements IDragonActionController {
                 try {
                     return this.processGetExpeditions(<any>response_);
                 } catch (e) {
-                    return <Observable<PageExpeditionDto>><any>_observableThrow(e);
+                    return <Observable<ExpeditionPageDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PageExpeditionDto>><any>_observableThrow(response_);
+                return <Observable<ExpeditionPageDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetExpeditions(response: HttpResponseBase): Observable<PageExpeditionDto> {
+    protected processGetExpeditions(response: HttpResponseBase): Observable<ExpeditionPageDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1444,7 +1492,7 @@ export class DragonActionController implements IDragonActionController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <PageExpeditionDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <ExpeditionPageDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1452,7 +1500,7 @@ export class DragonActionController implements IDragonActionController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PageExpeditionDto>(<any>null);
+        return _observableOf<ExpeditionPageDto>(<any>null);
     }
 }
 
@@ -1880,7 +1928,7 @@ export interface RegisterUserDto {
     nickname: string;
 }
 
-export interface PageItemDto {
+export interface ItemPageDto {
     meta: PageMetaDto;
     data: ItemDto[];
 }
@@ -1962,7 +2010,7 @@ export interface ExpeditionDto {
     minimumActionTime: number;
 }
 
-export interface PageExpeditionDto {
+export interface ExpeditionPageDto {
     meta: PageMetaDto;
     data: ExpeditionDto[];
 }
