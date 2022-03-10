@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DragonController, DragonDto, DragonGetDto } from 'src/app/client/api';
+import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
+import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
-import { DisplayDragon } from 'src/app/core/definitions/dragons';
-import { DragonService } from 'src/app/core/services/dragons.service';
 
 @Component({
   selector: 'app-arena',
@@ -13,9 +14,10 @@ import { DragonService } from 'src/app/core/services/dragons.service';
 })
 export class ArenaComponent implements OnInit {
 
+  @ViewChild('searchMinLevel') searchMinLevel?: ElementRef;
+  @ViewChild('searchMaxLevel') searchMaxLevel?: ElementRef;
+
   enemyDragonsLoading: boolean = false;
-  ownedDragonsLoading: boolean = false;
-  ownedDragons: DisplayDragon[] = [];
   enemyDragons: DragonDto[] = [];
   selectedOwnedDragon?: DragonDto;
   selectedEnemyDragon?: DragonDto;
@@ -25,34 +27,20 @@ export class ArenaComponent implements OnInit {
   canGetPrev: boolean = false;
   canGetNext: boolean = true;
 
+  displayDragonChoiceModal: boolean = false;
+  modalMessage: string = '';
   battleLoading: boolean = false;
   displayBattle: boolean = false;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private dragonController: DragonController,
     private dateService: DateService,
     private toastService: ToastService,
-    private dragonService: DragonService,
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      this.getOwnedDragons(+params['id']);
-      this.getEnemyDragons();
-    });
-  }
-
-  getOwnedDragons(selectedId?: number) {
-    this.ownedDragonsLoading = true;
-    this.dragonController.getOwned().subscribe(dragons => {
-      this.ownedDragonsLoading = false;
-      this.ownedDragons = dragons.map(dragon => this.dragonService.toDisplayDragon(dragon));
-
-      if (selectedId) this.selectedOwnedDragon = this.ownedDragons.find(dragon => dragon.id === selectedId);
-      if (!this.selectedOwnedDragon && this.ownedDragons.length > 0) this.selectedOwnedDragon = this.ownedDragons[0];
-    }, () => this.ownedDragonsLoading = false);
+    this.getEnemyDragons();
   }
 
   getEnemyDragons(next?: boolean, minLevel?: number, maxLevel?: number) {
@@ -80,14 +68,19 @@ export class ArenaComponent implements OnInit {
     this.router.navigate(['game', 'adopt-dragon']);
   }
 
-  startBattle(enemyDragonId: number) {
-    if (!this.selectedOwnedDragon && !enemyDragonId) return;
-    if (this.selectedOwnedDragon!.id === enemyDragonId) { this.toastService.showError('errors.error', 'errors.battleItself'); return; }
-    if (this.selectedOwnedDragon!.stamina < 1) { this.toastService.showError('errors.error', 'errors.noStamina'); return; }
-    if (!this.dateService.checkIfEventAvailable(this.selectedOwnedDragon!.action.nextAction)) { this.toastService.showError('errors.error', 'errors.dragonBusy'); return; }
+  selectBattleDragon(enemyDragon: DragonDto) {
+    this.selectedEnemyDragon = enemyDragon;
+    this.displayDragonChoiceModal = true;
+  }
 
-    this.selectedEnemyDragon = this.enemyDragons.find(dragon => dragon.id === enemyDragonId);
-    if (!this.selectedEnemyDragon) return;
+  startBattle(selectedOwnedDragon: DragonDto) {
+    this.displayDragonChoiceModal = false
+    this.selectedOwnedDragon = selectedOwnedDragon;
+
+    if (!selectedOwnedDragon || !this.selectedEnemyDragon) return;
+    if (selectedOwnedDragon.id == this.selectedEnemyDragon.id) { this.toastService.showError('errors.error', 'errors.battleItself'); return; }
+    if (selectedOwnedDragon.stamina < 1) { this.toastService.showError('errors.error', 'errors.noStamina'); return; }
+    if (!this.dateService.checkIfEventAvailable(selectedOwnedDragon!.action.nextAction)) { this.toastService.showError('errors.error', 'errors.dragonBusy'); return; }
 
     this.displayBattle = true;
   }

@@ -1,7 +1,7 @@
 <div *ngIf="dragon && !skillsLoading" class="container-modal">
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
-  <div>{{ dragon.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
+  <div>{{ dragon.stamina }} {{ 'dragon.stamina' | translate }}</div>
 
   <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
 
@@ -31,6 +31,7 @@
       </div>
     </div>
   </div>
+  <div class="mt-3">{{ dragon.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
 
   <button (click)="closeModal()" [disabled]="learnSkillLoading" class="btn-base mt-5">
     {{ 'common.close' | translate }}

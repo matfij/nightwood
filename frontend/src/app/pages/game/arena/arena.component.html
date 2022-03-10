@@ -3,35 +3,13 @@
 
   <div class="wrapper-content">
 
-    <div *ngIf="ownedDragonsLoading" class="mt-5">
-      <app-loading-indicator></app-loading-indicator>
-    </div>
-    <div *ngIf="!ownedDragonsLoading" class="wrapper-dragons-owned">
-      <div *ngIf="!ownedDragonsLoading && !ownedDragons.length" class="wrapper-adopt">
-        <div class="item-select-info">
-          {{ 'dragon.noOwnedDragons' | translate }}
-        </div>
-        <button (click)="navigateAdopt()" class="btn-base btn-adopt mt-4">
-          {{ 'dragon.adoptFirstDragon' | translate }}
-        </button>
-      </div>
+    <div class="wrapper-menu">
+      <input #searchMinLevel class="input-text" type="number" placeholder="{{ 'auctions.minLevel' | translate }}"/>
+      <input #searchMaxLevel class="input-text" type="number" placeholder="{{ 'auctions.maxLevel' | translate }}"/>
 
-      <div *ngIf="ownedDragons.length" class="item-select-info">
-        {{ 'arena.selectDragon' | translate }}
-      </div>
-      <div
-        *ngFor="let dragon of ownedDragons; index as ind"
-        [ngClass]="{'item-selected': dragon.id === selectedOwnedDragon!.id}"
-        (click)="selectedOwnedDragon = dragon"
-        class="item-dragon-owned">
-          <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
-          <div style="text-align: left;">
-            {{ dragon.name }} [{{ dragon.level }}]
-            <div style="font-size: 14px;">
-              <b>{{ dragon.stamina }}</b> {{ 'dragon.stamina' | translate }}
-            </div>
-          </div>
-      </div>
+      <button (click)="getEnemyDragons()" [disabled]="enemyDragonsLoading" class="btn-base btn-search">
+        {{ 'common.search' | translate }}
+      </button>
     </div>
 
     <div class="wrapper-table">
@@ -48,7 +26,7 @@
         <div *ngFor="let dragon of enemyDragons" class="item-dragon">
           <div>{{ dragon.name }} [{{ dragon.level }}]</div>
           <div>{{ dragon.nature }}</div>
-          <button (click)="startBattle(dragon.id)" [disabled]="!selectedOwnedDragon" class="btn-base btn-battle">
+          <button (click)="selectBattleDragon(dragon)" class="btn-base btn-battle">
             {{ 'arena.battle' | translate }}
           </button>
         </div>
@@ -65,6 +43,13 @@
     </div>
 
   </div>
+
+  <app-dragon-choice-modal
+    *ngIf="displayDragonChoiceModal"
+    [message]="modalMessage!"
+    (close)="displayDragonChoiceModal = false"
+    (dragonSelected)="startBattle($event)">
+  </app-dragon-choice-modal>
 
   <app-dragon-battle
     *ngIf="displayBattle"

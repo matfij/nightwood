@@ -25,9 +25,8 @@
           </button>
           <app-dragon-choice-modal
             *ngIf="showDragonChoiceModal && expedition.name === selectedExpedition"
-            [title]="modalTitle"
-            [message]="modalMessage"
-            [dragons]="ownedDragons"
+            [title]="modalTitle!"
+            [message]="modalMessage!"
             [level]="expedition.level"
             (close)="showDragonChoiceModal = false"
             (dragonSelected)="startExpedition($event, expedition)">
