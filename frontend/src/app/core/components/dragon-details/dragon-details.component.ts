@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DragonController, DragonSkillsController, DragonSkillsDto, GetSkillsDto, LearnskillDto } from 'src/app/client/api';
+import { DragonController, DragonSkillsController, DragonSkillsDto, SkillGetDto, SkillLearnDto } from 'src/app/client/api';
 import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
@@ -34,7 +34,7 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
   }
 
   getObtainableSkills() {
-    const params: GetSkillsDto = {
+    const params: SkillGetDto = {
       requiredNature: this.dragon.nature,
     };
     this.skillsLoading = true;
@@ -44,24 +44,20 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
     }, () => this.skillsLoading = false);
   }
 
-  getSkillName(name: string) {
-    return name.replace(/./, c => c.toLowerCase()) as keyof DragonSkillsDto;
-  }
-
   getSkillProgress(skill: string) {
-    return this.dragon.skills[this.getSkillName(skill)] + `/${DRAGON_SKILL_DEVELOPMENT_LIMIT}`;
+    return this.dragon.skills[skill as keyof DragonSkillsDto] + `/${DRAGON_SKILL_DEVELOPMENT_LIMIT}`;
   }
 
   canLearn(skill: DisplaySkill): boolean {
-    const progress = this.dragon.skills[this.getSkillName(skill.name)];
+    const progress = this.dragon.skills[skill.uid as keyof DragonSkillsDto];
     return this.dragon.skillPoints > 0 && progress < DRAGON_SKILL_DEVELOPMENT_LIMIT && this.dragon.level >= skill.level;
   }
 
   learnSkill(skill: DisplaySkill) {
     if (this.dragon.skillPoints < 1 || !this.canLearn(skill)) return;
 
-    const params: LearnskillDto = {
-      skillName: skill.name,
+    const params: SkillLearnDto = {
+      skillUid: skill.uid,
       dragonId: this.dragon.id,
     };
     this.learnSkillLoading = true;

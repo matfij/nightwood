@@ -85,7 +85,7 @@ export class EngineService {
       const loots: DisplayExpeditionLoot[] = [
         { name: this.translateService.instant('inventory.gold'), quantity: report.gainedGold, rarity: ItemRarity.Common },
         ...report.loots.map(loot =>
-          { return { name: this.itemsService.getItemName(loot.name), rarity: loot.rarity, quantity: loot.quantity! }
+          { return { name: loot.name, rarity: loot.rarity, quantity: loot.quantity! }
         })
       ];
       const displayReport: DisplayExpeditionReport = {

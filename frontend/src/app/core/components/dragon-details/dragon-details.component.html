@@ -10,17 +10,17 @@
       <div tooltip>
         <ng-template #tooltipTemplate>
           <div class="item-tooltip item-skill-hint">
-            <h5>{{ skill.displayName | translate }}</h5>
+            <h5>{{ skill.name }}</h5>
             <p>{{ skill.hint }}</p>
             <p>{{ 'dragon.requiredLevel' | translate }}: {{ skill.level }}</p>
           </div>
         </ng-template>
 
-        <img [src]="skill.image" [alt]="skill.displayName" draggable="false">
+        <img [src]="skill.image" [alt]="skill.name" draggable="false">
       </div>
 
       <div class="item-skill-info">
-        {{ getSkillProgress(skill.name) }}
+        {{ getSkillProgress(skill.uid) }}
         <button
           *ngIf="canLearn(skill)"
           (click)="learnSkill(skill)"

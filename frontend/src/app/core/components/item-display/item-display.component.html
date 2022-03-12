@@ -1,7 +1,7 @@
 <div tooltip class="{{ 'container item-'+displayItem.rarity }}">
   <ng-template #tooltipTemplate>
     <div class="{{ 'item-tooltip item-hint hint-'+displayItem.rarity }}">
-      <h5>{{ displayItem.displayName | translate }}</h5>
+      <h5>{{ displayItem.name }}</h5>
       {{ displayItem.rarityName | translate }} {{ displayItem.typeName | translate }}<br>
       {{ 'inventory.level' | translate }}: {{ displayItem.level }} <br>
       <div *ngIf="!simplified">{{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br></div>

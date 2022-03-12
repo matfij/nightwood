@@ -1121,7 +1121,7 @@ export interface IDragonController {
     getAll(body: DragonGetDto): Observable<DragonPageDto>;
     getOwned(): Observable<DragonDto[]>;
     startBattle(body: BattleStartDto): Observable<BattleResultDto>;
-    learnSkill(body: LearnskillDto): Observable<DragonDto>;
+    learnSkill(body: SkillLearnDto): Observable<DragonDto>;
 }
 
 @Injectable({
@@ -1387,7 +1387,7 @@ export class DragonController implements IDragonController {
         return _observableOf<BattleResultDto>(<any>null);
     }
 
-    learnSkill(body: LearnskillDto): Observable<DragonDto> {
+    learnSkill(body: SkillLearnDto): Observable<DragonDto> {
         let url_ = this.baseUrl + "/api/v1/dragon/learnSkill";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1505,7 +1505,7 @@ export class DragonActionController implements IDragonActionController {
 }
 
 export interface IDragonSkillsController {
-    getSkills(body: GetSkillsDto): Observable<SkillDto[]>;
+    getSkills(body: SkillGetDto): Observable<SkillDto[]>;
 }
 
 @Injectable({
@@ -1521,7 +1521,7 @@ export class DragonSkillsController implements IDragonSkillsController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getSkills(body: GetSkillsDto): Observable<SkillDto[]> {
+    getSkills(body: SkillGetDto): Observable<SkillDto[]> {
         let url_ = this.baseUrl + "/api/v1/dragonSkills/getSkills";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1763,7 +1763,7 @@ export enum DragonActionType {
 export interface DragonActionDto {
     id?: number;
     type: DragonActionType;
-    expeditionId?: number;
+    expeditionId?: string;
     awardCollected: boolean;
     nextAction: number;
 }
@@ -1807,7 +1807,7 @@ export interface DragonFeedDto {
 
 export interface StartExpeditionDto {
     dragonId: number;
-    expeditionId: number;
+    expeditionId: string;
 }
 
 export enum ItemRarity {
@@ -1839,6 +1839,7 @@ export enum EquipmentType {
 
 export interface ItemDto {
     id?: number;
+    uid: string;
     name: string;
     level: number;
     rarity: ItemRarity;
@@ -1995,14 +1996,15 @@ export interface BattleResultDto {
     result: string;
 }
 
-export interface LearnskillDto {
+export interface SkillLearnDto {
     dragonId: number;
-    skillName: string;
+    skillUid: string;
 }
 
 export interface ExpeditionDto {
-    id: number;
+    id: string;
     name: string;
+    hint: string;
     level: number;
     experienceAward: number;
     goldAward: number;
@@ -2015,16 +2017,18 @@ export interface ExpeditionPageDto {
     data: ExpeditionDto[];
 }
 
-export interface GetSkillsDto {
+export interface SkillGetDto {
     minLevel?: number;
     maxLevel?: number;
     requiredNature?: string;
 }
 
 export interface SkillDto {
+    uid: string;
     name: string;
+    hint: string;
     level: number;
-    nature: DragonNature[];
+    requiredNature: DragonNature[];
 }
 
 export interface AuctionCreateDto {

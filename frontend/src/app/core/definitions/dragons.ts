@@ -32,7 +32,4 @@ export interface DisplayDragon extends DragonDto {
 
 export interface DisplaySkill extends SkillDto {
   image: string;
-  displayName: string;
-  hint: string;
-  displayHint: boolean;
 }

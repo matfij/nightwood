@@ -2,91 +2,111 @@ import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragon-na
 import { Skill } from "../definitions/dragon-skills";
 
 /**
- * Increase base speed
+ * Increases the base speed
  */
 export const InnateSpeed: Skill = {
-    name: 'InnateSpeed',
+    uid: 'innateSpeed',
+    name: 'Innate Speed',
+    hint: 'Increases the base speed',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
+    requiredNature: [],
 }
 
 /**
- * Increase maximum mana and mana regenerations
+ * Increases maximum mana and mana regenerations
  */
 export const InnerFlow: Skill = {
-    name: 'InnerFlow',
+    uid: 'innerFlow',
+    name: 'Inner Flow',
+    hint: 'Increases maximum mana and mana regenerations',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
+    requiredNature: [],
 }
 
 /**
- * Increase critical strike chance
+ * Increases critical strike chance
  */
 export const LuckyStrike: Skill = {
-    name: 'LuckyStrike',
+    uid: 'luckyStrike',
+    name: 'Lucky Strike',
+    hint: 'Increases critical strike chance',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
+    requiredNature: [],
 }
 
 /**
- * Increase maximum health
+ * Increases critical strike chance
  */
 export const GreatVigor: Skill = {
-    name: 'GreatVigor',
+    uid: 'greatVigor',
+    name: 'Great Vigor',
+    hint: 'Increases critical strike chance',
     level: 1,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
+    requiredNature: [],
 }
 
 /** 
  * Decreases enemy dodge chance
  */
 export const ThoughtfulStrike: Skill = {
-   name: 'ThoughtfulStrike',
-   level: 10,
-   nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
+    uid: 'thoughtfulStrike',
+    name: 'Thoughtful Strike',
+    hint: 'Decreases enemy dodge chance',
+    level: 10,
+    requiredNature: [],
 }
 
 /** 
  * Increases expedition loots
  */
  export const BeginnersLuck: Skill = {
-    name: 'BeginnersLuck',
+    uid: 'beginnersLuck',
+    name: 'Beginners Luck',
+    hint: 'Increases expedition loots',
     level: 10,
-    nature: [DragonNature.Fire, DragonNature.Water, DragonNature.Wind, DragonNature.Earth],
+    requiredNature: [],
  }
 
 /**
  * Attack has additional damage component
  */
 export const FireBreath: Skill = {
-    name: 'FireBreath',
+    uid: 'fireBreath',
+    name: 'Fire Breath',
+    hint: 'Empowers base attack with fire component',
     level: 10,
-    nature: [DragonNature.Fire],
+    requiredNature: [DragonNature.Fire],
 }
 
 /**
  * Consecutive health regeneration
  */
 export const SoundBody: Skill = {
-    name: 'SoundBody',
+    uid: 'soundBody',
+    name: 'Sound Body',
+    hint: 'Grants consecutive health regeneration',
     level: 10,
-    nature: [DragonNature.Water],
+    requiredNature: [DragonNature.Water],
 }
 
 /**
  * Attacks breaks enemy armor
  */
 export const PugnaciousStrike: Skill = {
-    name: 'PugnaciousStrike',
+    uid: 'pugnaciousStrike',
+    name: 'Pugnacious Strike',
+    hint: 'Attacks breaks enemy armor',
     level: 10,
-    nature: [DragonNature.Wind],
+    requiredNature: [DragonNature.Wind],
 }
 
 /**
- * Reflect some of the damage back to the attacker
+ * Reflects some of the damage back to the attacker
  */
 export const RoughSkin: Skill = {
-    name: 'RoughSkin',
+    uid: 'roughSkin',
+    name: 'Rough Skin',
+    hint: 'Reflect some of the damage back to the attacker',
     level: 10,
-    nature: [DragonNature.Earth],
+    requiredNature: [DragonNature.Earth],
 }

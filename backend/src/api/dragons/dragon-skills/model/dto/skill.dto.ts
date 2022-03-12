@@ -4,11 +4,17 @@ import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragon-na
 export class SkillDto {
 
     @ApiProperty()
+    uid: string;
+
+    @ApiProperty()
     name: string;
+
+    @ApiProperty()
+    hint: string;
 
     @ApiProperty()
     level: number;
 
     @ApiProperty({ isArray: true, enum: DragonNature, enumName: 'DragonNature' })
-    nature: DragonNature[];
+    requiredNature: DragonNature[];
 }

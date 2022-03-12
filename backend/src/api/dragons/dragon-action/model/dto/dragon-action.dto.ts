@@ -14,7 +14,7 @@ export class DragonActionDto {
 
     @Expose()
     @ApiPropertyOptional()
-    expeditionId?: number;
+    expeditionId?: string;
 
     @Expose()
     @ApiProperty()

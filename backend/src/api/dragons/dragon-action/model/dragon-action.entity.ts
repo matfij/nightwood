@@ -12,7 +12,7 @@ export class DragonAction {
     type: DragonActionType;
 
     @Column({ nullable: true })
-    expeditionId: number;
+    expeditionId: string;
 
     @Column({ default: false })
     awardCollected: boolean;

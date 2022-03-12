@@ -96,7 +96,7 @@
   *ngIf="selectedAuction && displayBuyAuctionModal"
   title="auctions.confirmPurchase"
   [message]="'auctions.confirmPurchaseMessage'
-    | translate:{quantity: selectedAuction.quantity, name: (selectedAuction.displayItem.displayName | translate), gold: selectedAuction.totalGoldPrice}"
+    | translate:{quantity: selectedAuction.quantity, name: selectedAuction.displayItem.name, gold: selectedAuction.totalGoldPrice}"
   (confirm)="buyAuction(selectedAuction.id)"
   (close)="displayBuyAuctionModal = false">
 </app-confirm-modal>

@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragon-nature";
 
-export class GetSkillsDto {
+export class SkillGetDto {
 
     @ApiPropertyOptional()
     minLevel?: number;

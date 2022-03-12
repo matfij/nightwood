@@ -1,10 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class LearnskillDto {
+export class SkillLearnDto {
 
     @ApiProperty()
     dragonId: number;
 
     @ApiProperty()
-    skillName: string;
+    skillUid: string;
 }

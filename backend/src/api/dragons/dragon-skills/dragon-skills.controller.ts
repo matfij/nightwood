@@ -1,8 +1,7 @@
 import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
-import { DragonSkillsDto } from "./model/dto/dragon-skills.dto";
-import { GetSkillsDto } from "./model/dto/get-skills.dto";
+import { SkillGetDto } from "./model/dto/skill-get.dto";
 import { SkillDto } from "./model/dto/skill.dto";
 import { DragonSkillsService } from "./service/dragon-skills.service";
 
@@ -17,7 +16,7 @@ export class DragonSkillsController {
 
     @Post('getSkills')
     @ApiOkResponse({ type: [SkillDto] })
-    getSkills(@Body() dto: GetSkillsDto): Promise<SkillDto[]> {
+    getSkills(@Body() dto: SkillGetDto): Promise<SkillDto[]> {
       return this.dragonSkillsService.getSkills(dto);
     }
 }

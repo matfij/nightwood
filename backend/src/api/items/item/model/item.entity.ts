@@ -10,6 +10,9 @@ export class Item {
     id: number;
 
     @Column()
+    uid: string;
+
+    @Column()
     name: string;
 
     @Column({ default: 1 })

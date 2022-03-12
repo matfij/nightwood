@@ -88,7 +88,7 @@ export class AuctionService {
                 item: {
                     level: Between(dto.minLevel, dto.maxLevel),
                     type: dto.type ?? Any(Object.values(ItemType)),
-                    ...(dto.name && { name: Like(`%${this.itemService.getIdentifierName(dto.name)}%`) }),
+                    ...(dto.name && { name: Like(`%${dto.name}%`) }),
                     ...(dto.requiredRarity == ItemRarity.Common && { rarity: Any(Object.values(ItemRarity)) }),
                     ...(dto.requiredRarity == ItemRarity.Scarce && { rarity: Any([ItemRarity.Scarce, ItemRarity.Rare, ItemRarity.Mythical]) }),
                     ...(dto.requiredRarity == ItemRarity.Rare && { rarity: Any([ItemRarity.Rare, ItemRarity.Mythical]) }),
@@ -111,7 +111,7 @@ export class AuctionService {
             const item = auction.item;
             return {
                 ...auction,
-                item: { id: item.id, name: item.name, rarity: item.rarity, type: item.type, level: item.level },
+                item: { id: item.id, uid: item.uid, name: item.name, rarity: item.rarity, type: item.type, level: item.level },
             }
         });
         const auctionPage: AuctionPageDto = {

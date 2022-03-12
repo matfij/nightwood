@@ -11,6 +11,7 @@ import { DragonActionDto } from '../model/dto/dragon-action.dto';
 import { ExpeditionDto } from '../model/dto/expedition.dto';
 import { ExpeditionPageDto } from '../model/dto/expedition-page.dto';
 import { REGULAR_EXPEDITIONS } from '../model/data/expedition-blueprints'
+import { MathService } from 'src/common/services/math.service';
 
 @Injectable()
 export class DragonActionService {
@@ -20,6 +21,7 @@ export class DragonActionService {
     private dragonActionRepository: Repository<DragonAction>,
     private errorService: ErrorService,
     private dateService: DateService,
+    private mathService: MathService,
   ) {}
 
   async createAction() {
@@ -46,13 +48,13 @@ export class DragonActionService {
     return page;
   }
 
-  async startExpedition(expeditionId: number, dragon: DragonDto): Promise<DragonActionDto> {
+  async startExpedition(expeditionId: string, dragon: DragonDto): Promise<DragonActionDto> {
     const expedition = REGULAR_EXPEDITIONS.find(x => x.id === expeditionId);
     if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
     if (expedition.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
 
-    dragon.action.nextAction = Date.now() + expedition.minimumActionTime - randomInt(30 * 60 * 1000);
+    dragon.action.nextAction = Date.now() + Math.round(this.mathService.randRange(0.9, 1.2) * expedition.minimumActionTime);
     dragon.action.type = DragonActionType.Expedition;
     dragon.action.expeditionId = expeditionId;
     dragon.action.awardCollected = false;

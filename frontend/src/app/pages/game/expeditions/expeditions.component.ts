@@ -41,10 +41,8 @@ export class ExpeditionsComponent implements OnInit {
       this.expeditions = expeditionsPage.data.map(expedition => {
         return {
           ...expedition,
-          name: `${this.BASE_NAME_PATH}.${expedition.name}`,
-          hint: `${this.BASE_NAME_PATH}.${expedition.name}Hint`,
-          image: `${this.BASE_IMG_PATH}/${expedition.name}.png`
-        }
+          image: `${this.BASE_IMG_PATH}/${expedition.id}.png`,
+        };
       });
     }, () => this.expeditionsLoading = false);
   }

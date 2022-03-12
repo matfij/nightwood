@@ -11,6 +11,10 @@ export class ItemDto {
 
     @Expose()
     @ApiProperty()
+    uid: string;
+
+    @Expose()
+    @ApiProperty()
     name: string;
 
     @Expose()

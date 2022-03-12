@@ -82,8 +82,8 @@ export class ItemService {
 
         const newItems = [];
         loots.forEach(loot => {
-            if (items.map(x => x.name).includes(loot.name)) {
-                const item = items[items.map(x => x.name).findIndex(x => x === loot.name)];
+            if (items.map(x => x.uid).includes(loot.uid)) {
+                const item = items[items.map(x => x.uid).findIndex(x => x === loot.uid)];
                 item.quantity += loot.quantity;
             } else {
                 const newItem = this.itemRepository.create({ ...loot, user });
@@ -102,7 +102,7 @@ export class ItemService {
             const requiredChance = Math.random() * LootChance[loot.rarity];
 
             if (dragonChance > requiredChance) {
-                if (loots.map(x => x.name).includes(loot.name)) loots.find(x => x.name === loot.name).quantity += 1;
+                if (loots.map(x => x.uid).includes(loot.uid)) loots.find(x => x.uid === loot.uid).quantity += 1;
                 else loots.push({ ...loot, quantity: 1 });
             }
         });
@@ -110,10 +110,6 @@ export class ItemService {
         await this.updateInventory(user, loots);
 
         return loots;
-    }
-
-    getIdentifierName(name: string): string {
-        return name.split(' ').map(x => x.charAt(0).toUpperCase() + x.slice(1)).join('');
     }
 
     getRarityValue(rarity: ItemRarity): number {

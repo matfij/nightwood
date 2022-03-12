@@ -3,7 +3,7 @@ import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { PaginationInterceptor } from "src/common/interceptors/pagination.interceptor";
-import { LearnskillDto } from "../dragon-skills/model/dto/learn-skill.dto";
+import { SkillLearnDto } from "../dragon-skills/model/dto/skill-learn.dto";
 import { BattleResultDto } from "./model/dto/battle-result.dto";
 import { DragonCreateDto } from "./model/dto/dragon-create.dto";
 import { DragonDto } from "./model/dto/dragon.dto";
@@ -56,7 +56,7 @@ export class DragonController {
 
     @Post('learnSkill')
     @ApiOkResponse({ type: DragonDto })
-    learnSkill(@Request() req: AuthorizedRequest, @Body() dto: LearnskillDto): Promise<DragonDto> {
+    learnSkill(@Request() req: AuthorizedRequest, @Body() dto: SkillLearnDto): Promise<DragonDto> {
       return this.dragonService.learnSkill(req.user.id, dto);
     }
 }

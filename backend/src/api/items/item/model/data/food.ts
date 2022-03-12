@@ -3,7 +3,8 @@ import { FoodType, ItemType } from "../definitions/item-type";
 import { ItemDto } from "../dto/item.dto"
 
 export const BUBULAE_STEAK: ItemDto = {
-    name: 'BubulaeSteak',
+    uid: 'item-f-1',
+    name: 'Bubulae Steak',
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Food,
@@ -11,7 +12,8 @@ export const BUBULAE_STEAK: ItemDto = {
 };
 
 export const IHON_BERRY: ItemDto = {
-    name: 'IhonBerry',
+    uid: 'item-f-2',
+    name: 'Ihon Berry',
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Food,
@@ -19,7 +21,8 @@ export const IHON_BERRY: ItemDto = {
 };
 
 export const RELIQUM_EGG: ItemDto = {
-    name: 'ReliqumEgg',
+    uid: 'item-f-3',
+    name: 'Reliqum Egg',
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Food,
@@ -27,7 +30,8 @@ export const RELIQUM_EGG: ItemDto = {
 };
 
 export const SPIRAL_NUT: ItemDto = {
-    name: 'SpirialNut',
+    uid: 'item-f-4',
+    name: 'Spirial Nut',
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Food,
@@ -35,7 +39,8 @@ export const SPIRAL_NUT: ItemDto = {
 };
 
 export const RORIS_LEEFS: ItemDto = {
-    name: 'RorisLeefs',
+    uid: 'item-f-5',
+    name: 'Roris Leefs',
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Food,
@@ -43,7 +48,8 @@ export const RORIS_LEEFS: ItemDto = {
 };
 
 export const MIRACLE_FRUIT: ItemDto = {
-    name: 'MiracleFruit',
+    uid: 'item-f-6',
+    name: 'Miracle Fruit',
     level: 1,
     rarity: ItemRarity.Rare,
     type: ItemType.Food,

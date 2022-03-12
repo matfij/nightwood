@@ -5,10 +5,13 @@ import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 export class ExpeditionDto {
 
     @ApiProperty()
-    id: number;
+    id: string;
 
     @ApiProperty()
     name: string;
+
+    @ApiProperty()
+    hint: string;
 
     @ApiProperty()
     level: number;

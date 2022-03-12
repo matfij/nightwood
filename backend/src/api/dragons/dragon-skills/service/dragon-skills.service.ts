@@ -8,7 +8,7 @@ import { ALL_SKILLS } from "../model/data/skill-groups";
 import { Skill } from "../model/definitions/dragon-skills";
 import { DragonSkills } from "../model/dragon-skills.entity";
 import { DragonSkillsDto } from "../model/dto/dragon-skills.dto";
-import { GetSkillsDto } from "../model/dto/get-skills.dto";
+import { SkillGetDto } from "../model/dto/skill-get.dto";
 import { SkillDto } from "../model/dto/skill.dto";
 
 @Injectable()
@@ -20,10 +20,6 @@ export class DragonSkillsService {
         private errorService: ErrorService,
     ) {}
 
-    getSkillName(name: string): string {
-        return name.replace(/./, c => c.toLowerCase());
-    }
-
     async createSkills() {
         const skills: DragonSkillsDto = {};
         const dragonSkills = this.dragonSkillsRepository.create(skills);
@@ -31,26 +27,26 @@ export class DragonSkillsService {
         return await this.dragonSkillsRepository.save(dragonSkills);
     }
 
-    async getSkills(dto: GetSkillsDto): Promise<SkillDto[]> {
+    async getSkills(dto: SkillGetDto): Promise<SkillDto[]> {
         let skills: Skill[] = ALL_SKILLS;
 
         if (dto.minLevel) skills = skills.filter(skill => skill.level >= dto.minLevel);
         if (dto.maxLevel) skills = skills.filter(skill => skill.level <= dto.maxLevel);
-        if (dto.requiredNature) skills = skills.filter(skill => skill.nature.includes(dto.requiredNature));
+        if (dto.requiredNature) skills = skills.filter(skill => skill.requiredNature.includes(dto.requiredNature) || skill.requiredNature.length === 0);
 
         return skills;
     }
 
-    async learnSkill(skillName: string, dragon: DragonDto): Promise<DragonDto> {
+    async learnSkill(skillUid: string, dragon: DragonDto): Promise<DragonDto> {
         if (dragon.skillPoints < 1) this.errorService.throw('errors.insufficientSkillPoints');
 
-        const skill = ALL_SKILLS.find(skill => skill.name === skillName);
+        const skill = ALL_SKILLS.find(skill => skill.uid === skillUid);
         if (!skill) this.errorService.throw('errors.skillNotFound');
         if (skill.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
-        if (!skill.nature.includes(dragon.nature)) this.errorService.throw('errors.natureMismatch');
-        if (dragon.skills[this.getSkillName(skillName)] >= SKILL_DEVELOPMENT_LIMIT) this.errorService.throw('errors.skillLimitReached');
+        if (!skill.requiredNature.includes(dragon.nature) && skill.requiredNature.length != 0) this.errorService.throw('errors.natureMismatch');
+        if (dragon.skills[skillUid] >= SKILL_DEVELOPMENT_LIMIT) this.errorService.throw('errors.skillLimitReached');
 
-        dragon.skills[this.getSkillName(skillName)] += 1;
+        dragon.skills[skillUid] += 1;
         dragon.skillPoints -= 1;
         await this.dragonSkillsRepository.save(dragon.skills);
 

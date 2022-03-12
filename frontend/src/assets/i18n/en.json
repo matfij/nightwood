@@ -151,28 +151,6 @@
     "actionTraining": "Training",
     "requiredLevel": "Required level"
   },
-  "dragonSkills": {
-    "InnateSpeed": "Innate speed",
-    "InnateSpeedHint": "Increases dragon speed",
-    "InnerFlow": "Inner flow",
-    "InnerFlowHint": "Increases maximum mana and mana regenerations",
-    "LuckyStrike": "Lucky strike",
-    "LuckyStrikeHint": "Increases critical strike chance",
-    "GreatVigor": "Great vigor",
-    "GreatVigorHint": "Increases maximum health",
-    "ThoughtfulStrike": "Thoughtful strike",
-    "ThoughtfulStrikeHint": "Decreases enemy dodge chance",
-    "BeginnersLuck": "Beginner's luck",
-    "BeginnersLuckHint": "Increases expedition loots",
-    "FireBreath": "Fire breath",
-    "FireBreathHint": "Attack has additional damage component",
-    "SoundBody": "Sound body",
-    "SoundBodyHint": "Grants consecutive health regeneration",
-    "PugnaciousStrike": "Pugnacious strike",
-    "PugnaciousStrikeHint": "Attacks breaks enemy's armor",
-    "RoughSkin": "Rough skin",
-    "RoughSkinHint": "Reflect part of the received damage back to the attacker"
-  },
   "arena": {
     "dragon": "Dragon",
     "nature": "Nature",
@@ -216,14 +194,6 @@
     "confirmPurchaseMessage": "Buy {{ quantity }} {{ name }} for {{ gold }} gold.",
     "purchaseCompleted": "Purchase completed"
   },
-  "items": {
-    "BubulaeSteak": "Bubulae steak",
-    "IhonBerry": "Ihon berry",
-    "ReliqumEgg": "Reliqum egg",
-    "SpirialNut": "Spirial nut",
-    "RorisLeefs": "Roris leefs",
-    "MiracleFruit": "Miracle Fruit"
-  },
   "explore": {
     "explorePageTitle": "Explore lands of Nightwood",
     "selectDragon": "Select dragon",
@@ -240,11 +210,8 @@
   },
   "expeditions": {
     "AndrewForest": "Andrew Forest",
-    "AndrewForestHint": "Desipe the first impression it is a suprisingly calm and warm place, ideal for young dragons. The forest is protected by Andrew, a legendary dragon who has been guarding the forest since the great migration.",
     "RangaSands": "Ranga Sands",
-    "RangaSandsHint": "A faraway land, covered with sand and rocks where the wind is strong and the temperature is scorching. The desert is a place of great danger, but it is also a place of great treasure.",
-    "HarnaPeaks": "Harna Peaks",
-    "HarnaPeaksHint": "Mysterious and unexplored place filled with magical particles. Exploration requires an exceptional amount of power therefore it is accessible only for matured dragons."
+    "HarnaPeaks": "Harna Peaks"
   },
   "mails": {
     "topic": "Topic",
