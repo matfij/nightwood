@@ -35,6 +35,9 @@ export const MAIL_MESSAGE_MAX_LENGTH = 1000;
 
 export const DRAGON_NAME_MIN_LENGTH = 3;
 export const DRAGON_NAME_MAX_LENGTH = 12;
+export const DRAGON_MIN_SEARCH_LEVEL = 1;
+export const DRAGON_MAX_SEARCH_LEVEL = 9999;
+
 export const DRAGON_SKILL_DEVELOPMENT_LIMIT = 25;
 
 /**

@@ -117,6 +117,8 @@
     "chooseDragonName": "Choose a name for your dragon",
     "adopt": "Adopt",
     "adoptSuccess": "You have adopted a new dragon!",
+    "name": "Name",
+    "level": "Level",
     "nature": "Nature",
     "stamina": "Stamina",
     "experience": "Experience",

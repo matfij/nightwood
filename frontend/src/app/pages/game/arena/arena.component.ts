@@ -1,9 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DragonController, DragonDto, DragonGetDto } from 'src/app/client/api';
-import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
-import { FormInputOptions } from 'src/app/common/definitions/forms';
+import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/app/client/config/frontend.config';
 import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 
@@ -43,7 +41,25 @@ export class ArenaComponent implements OnInit {
     this.getEnemyDragons();
   }
 
-  getEnemyDragons(next?: boolean, minLevel?: number, maxLevel?: number) {
+  validateSearchParams(): boolean {
+    const searchMinLevel = +this.searchMinLevel?.nativeElement.value;
+    if (searchMinLevel) {
+      if (searchMinLevel < DRAGON_MIN_SEARCH_LEVEL) return false;
+      if (searchMinLevel > DRAGON_MAX_SEARCH_LEVEL) return false;
+    }
+    const searchMaxLevel = +this.searchMaxLevel?.nativeElement.value;
+    if (searchMaxLevel) {
+      if (searchMaxLevel < DRAGON_MIN_SEARCH_LEVEL) return false;
+      if (searchMaxLevel > DRAGON_MAX_SEARCH_LEVEL) return false;
+    }
+    if (searchMinLevel && searchMaxLevel && searchMinLevel > searchMaxLevel) return false
+
+    return true;
+  }
+
+  getEnemyDragons(next?: boolean) {
+    if (!this.validateSearchParams()) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
+
     if (next === true) this.enemyDragonPage += 1;
     if (next === false) this.enemyDragonPage -= 1;
     if (this.enemyDragonPage < 0) this.enemyDragonPage = 0;
@@ -51,8 +67,8 @@ export class ArenaComponent implements OnInit {
     const dto: DragonGetDto = {
       page: this.enemyDragonPage,
       limit: this.enemyDragonLimit,
-      minLevel: minLevel ?? 1,
-      maxLevel: maxLevel ?? 9999,
+      minLevel: this.searchMinLevel?.nativeElement.value ? Math.floor(+this.searchMinLevel.nativeElement.value) : DRAGON_MIN_SEARCH_LEVEL,
+      maxLevel: this.searchMaxLevel?.nativeElement.value ? Math.floor(+this.searchMaxLevel.nativeElement.value) : DRAGON_MAX_SEARCH_LEVEL,
     };
     this.enemyDragonsLoading = true;
     this.dragonController.getAll(dto).subscribe(dragonPage => {

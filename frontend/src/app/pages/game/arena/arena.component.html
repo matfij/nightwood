@@ -13,19 +13,17 @@
     </div>
 
     <div class="wrapper-table">
-      <div class="item-dragon-info">
-        <div>{{ 'arena.dragon' | translate }}</div>
-        <div>{{ 'arena.nature' | translate }}</div>
-        <div>{{ 'arena.action' | translate }}</div>
-      </div>
-
       <div *ngIf="enemyDragonsLoading" class="m-5">
         <app-loading-indicator></app-loading-indicator>
       </div>
       <div *ngIf="!enemyDragonsLoading" class="wrapper-dragons">
+        <div class="item-dragon item-dragon-header">
+          <div>{{ 'dragon.name' | translate }} [{{ 'dragon.level' | translate }}]</div>
+          <div class="no-mobile">{{ 'dragon.nature' | translate }}</div>
+        </div>
         <div *ngFor="let dragon of enemyDragons" class="item-dragon">
           <div>{{ dragon.name }} [{{ dragon.level }}]</div>
-          <div>{{ dragon.nature }}</div>
+          <div class="no-mobile">{{ dragon.nature }}</div>
           <button (click)="selectBattleDragon(dragon)" class="btn-base btn-battle">
             {{ 'arena.battle' | translate }}
           </button>

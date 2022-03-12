@@ -449,4 +449,5 @@ export const BANNED_WORDS = [
   'wop*',
   'yed',
   'zabourah',
+  'ujeba',
 ];
