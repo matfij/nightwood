@@ -41,7 +41,7 @@ export class ExpeditionsComponent implements OnInit {
       this.expeditions = expeditionsPage.data.map(expedition => {
         return {
           ...expedition,
-          image: `${this.BASE_IMG_PATH}/${expedition.id}.png`,
+          image: `${this.BASE_IMG_PATH}/${expedition.uid}.png`,
         };
       });
     }, () => this.expeditionsLoading = false);
@@ -67,7 +67,7 @@ export class ExpeditionsComponent implements OnInit {
 
     const dto: StartExpeditionDto = {
       dragonId: dragon.id!,
-      expeditionId: expedition.id,
+      expeditionUid: expedition.uid,
     };
     this.expeditionsLoading = true;
     this.actionController.startExpedition(dto).subscribe(() => {

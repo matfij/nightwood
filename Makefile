@@ -18,14 +18,17 @@ gen.config:
 	cp backend/src/configuration/frontend.config.ts frontend/src/app/client/config/frontend.config.ts
 	cp backend/src/common/definitions/banned-words.ts frontend/src/app/client/config/banned-words.ts
 
-
 gen.client:
-	rm -rf generator/generated
-	cp backend/schema.json generator/schema.json
-	cp generator/nswag.json nswag.json
+	rm -rf generator/api-client/generated
+	cp backend/schema.json generator/api-client/schema.json
+	cp generator/api-client/nswag.json nswag.json
 	nswag run
 	rm nswag.json
-	cp generator/api.ts frontend/src/app/client/api.ts
+	cp generator/api-client/api.ts frontend/src/app/client/api.ts
+
+gen.assets:
+	cd generator/game-assets
+	sh start
 
 
 git.push:

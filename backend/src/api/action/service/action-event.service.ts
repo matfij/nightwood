@@ -20,7 +20,7 @@ export class ActionEventService {
     async startExpedition(userId: number, dto: StartExpeditionDto): Promise<DragonActionDto> {
         const dragon = await this.dragonService.checkIfEventAvailable(userId, dto.dragonId);
 
-        const action = await this.dragonActionService.startExpedition(dto.expeditionId, dragon);
+        const action = await this.dragonActionService.startExpedition(dto.expeditionUid, dragon);
 
         return action;
     }

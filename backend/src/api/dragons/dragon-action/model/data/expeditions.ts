@@ -3,7 +3,7 @@ import { EXPEDITION_TIME_SCALE } from "src/configuration/backend.config";
 import { ExpeditionDto } from "../dto/expedition.dto";
 
 export const ANDREW_FOREST: ExpeditionDto = {
-    id: 'expedition-1',
+    uid: 'expedition-1',
     name: 'Andrew Forest',
     hint: 'Desipe the first impression it is a suprisingly calm and warm place, ideal for young dragons. The forest is protected by Andrew, a legendary dragon who has been guarding the forest since the great migration.',
     level: 1,
@@ -21,7 +21,7 @@ export const ANDREW_FOREST: ExpeditionDto = {
 }
 
 export const CARRAMBA_SANDS: ExpeditionDto = {
-    id: 'expedition-2',
+    uid: 'expedition-2',
     name: 'Carramba Sands',
     hint: 'A faraway land, covered with sand and rocks where the wind is strong and the temperature is scorching. The desert is a place of great danger, but it is also a place of great treasure.',
     level: 10,
@@ -39,7 +39,7 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
 }
 
 export const HARNA_PEAKS: ExpeditionDto = {
-    id: 'expedition-3',
+    uid: 'expedition-3',
     name: 'Harna Peaks',
     hint: 'Mysterious and unexplored place filled with magical particles. Exploration requires an exceptional amount of power therefore it is accessible only for matured dragons.',
     level: 25,

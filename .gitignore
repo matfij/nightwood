@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+.venv
 
 # Logs
 logs
@@ -40,3 +41,8 @@ lerna-debug.log*
 
 # Generated
 generator/generated/
+
+# Assets
+*.jpg
+*.png
+*.gif

@@ -7,7 +7,7 @@
     },
     "documentGenerator": {
       "fromDocument": {
-        "url": "generator/schema.json"
+        "url": "generator/api-client/schema.json"
       }
     },
     "codeGenerators": {
@@ -65,7 +65,7 @@
         "enumNameGeneratorType": null,
         "serviceHost": null,
         "serviceSchemes": null,
-        "output": "generator/api.ts"
+        "output": "generator/api-client/api.ts"
       }
     }
   }

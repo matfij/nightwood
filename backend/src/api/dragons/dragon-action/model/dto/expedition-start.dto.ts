@@ -9,5 +9,5 @@ export class StartExpeditionDto {
 
     @IsString()
     @ApiProperty()
-    expeditionId: string;
+    expeditionUid: string;
 }

@@ -49,7 +49,7 @@ export class DragonActionService {
   }
 
   async startExpedition(expeditionId: string, dragon: DragonDto): Promise<DragonActionDto> {
-    const expedition = REGULAR_EXPEDITIONS.find(x => x.id === expeditionId);
+    const expedition = REGULAR_EXPEDITIONS.find(x => x.uid === expeditionId);
     if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
     if (expedition.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
@@ -71,7 +71,7 @@ export class DragonActionService {
     dragon.action.awardCollected = true;
     await this.dragonActionRepository.save(dragon.action);
 
-    const expedition = REGULAR_EXPEDITIONS.find(x => x.id === dragon.action.expeditionId);
+    const expedition = REGULAR_EXPEDITIONS.find(x => x.uid === dragon.action.expeditionId);
     return expedition;
   }
 

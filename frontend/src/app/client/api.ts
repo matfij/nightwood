@@ -1807,7 +1807,7 @@ export interface DragonFeedDto {
 
 export interface StartExpeditionDto {
     dragonId: number;
-    expeditionId: string;
+    expeditionUid: string;
 }
 
 export enum ItemRarity {
@@ -2002,7 +2002,7 @@ export interface SkillLearnDto {
 }
 
 export interface ExpeditionDto {
-    id: string;
+    uid: string;
     name: string;
     hint: string;
     level: number;
