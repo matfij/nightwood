@@ -30,6 +30,10 @@ gen.assets:
 	cd generator/game-assets
 	sh start
 
+clear.assets:
+	rm -rf generator/game-assets/input/*
+	rm -rf generator/game-assets/output/*
+
 
 git.push:
 	git add .
