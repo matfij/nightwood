@@ -28,7 +28,8 @@ gen.client:
 
 gen.assets:
 	cd generator/game-assets
-	sh start
+	sh startwin
+	py run.py $(m) 
 
 clear.assets:
 	rm -rf generator/game-assets/input/*

@@ -47,3 +47,6 @@ generator/generated/
 *.jpg
 *.png
 *.gif
+
+# ANNs
+generator/game-assets/models/*

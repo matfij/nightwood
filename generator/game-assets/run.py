@@ -15,10 +15,8 @@ if mode == 1:
 elif mode == 2:
     from src.redraw import redraw
     redraw()
-    print('redraw')
 
-# filter
+# generate dragon assets
 elif mode == 3:
-    from src.filter import filter
-    filter()
-    print('filter')
+    from src.gen_dragons import gen_dragons
+    gen_dragons()
