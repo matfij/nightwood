@@ -3,13 +3,13 @@ import cv2
 from PIL import Image
 from shutil import copy
 
-
-TARGET_SIZE = 400
+TARGET_SIZE = 100
 APPLY_FILTERS = False
 RESIZE = True
-INPUT_FOLDER = 'img/input/'
-OUTPUT_FOLDER = 'img/output/'
+REMOVE_BG = False
 
+INPUT_FOLDER = 'img/to-resize/'
+OUTPUT_FOLDER = 'img/output/'
 
 def resize():
     raw_images = os.listdir(INPUT_FOLDER)
@@ -21,6 +21,18 @@ def resize():
             cv2.imwrite(f'{OUTPUT_FOLDER}{image}', img)
         else:
             copy(f'{INPUT_FOLDER}{image}', f'{OUTPUT_FOLDER}{image}')
+
+    if REMOVE_BG:
+        filtered_images = os.listdir(OUTPUT_FOLDER)
+
+        for image in filtered_images:
+            img = cv2.imread(f'{OUTPUT_FOLDER}{image}', cv2.IMREAD_UNCHANGED)
+            tmp = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            _, alpha = cv2.threshold(tmp, 0, 255, cv2.THRESH_BINARY)
+            b, g, r = cv2.split(img)
+            rgba = [b, g, r, alpha]
+            dst = cv2.merge(rgba, 4)
+            cv2.imwrite(f'{OUTPUT_FOLDER}{image}', dst)
 
     if RESIZE:
         filtered_images = os.listdir(OUTPUT_FOLDER)

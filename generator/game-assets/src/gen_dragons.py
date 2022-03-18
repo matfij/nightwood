@@ -8,7 +8,7 @@ PATTERN_PATH = 'img/patterns/'
 INPUT_PATH = 'img/input/'
 OUTPUT_PATH = 'img/output/'
 
-pattern = 'p-3'
+pattern = 'p-7'
 dragons = ['d-1-1', 'd-1-2', 'd-1-3', 'd-1-4']
 masks = ['m-1-1', 'm-1-2', 'm-1-3', 'm-1-4']
 
