@@ -18,6 +18,7 @@ export class DragonChoiceModalComponent extends AbstractModalComponent implement
   @Input() title: string = 'explore.selectDragon';
   @Input() message: string = '';
   @Input() level: number = 0;
+  @Input() displayStamina: boolean = false;
   @Output() dragonSelected: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
   dragonsLoading: boolean = false;

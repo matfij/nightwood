@@ -15,7 +15,7 @@ export class ItemsService {
   toDisplayItem(item: ItemDto): DisplayItem {
     const rarity = `${this.BASE_RARITY_PATH}.${item.rarity}`;
     const type = `${this.BASE_TYPE_PATH}.${item.type}`;
-    const image = `${this.BASE_IMG_PATH}/${item.name}.${this.EXTENSION}`;
+    const image = `${this.BASE_IMG_PATH}/${item.uid}.${this.EXTENSION}`;
 
     return {
       ...item,

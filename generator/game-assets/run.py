@@ -6,7 +6,7 @@ parser.add_argument('mode', type=int)
 args = parser.parse_args()
 mode = args.mode
 
-# resie assets
+# resie (and standarize) assets
 if mode == 1:
     from src.resize import resize
     resize()

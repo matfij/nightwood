@@ -57,6 +57,13 @@
   }
 }
 
+.dragon-enemy {
+
+  img {
+    transform: scaleX(-1);
+  }
+}
+
 @media screen and (max-width: $mobile-threshold) {
 
   .wrapper-dragon {

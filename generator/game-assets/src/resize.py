@@ -3,10 +3,11 @@ import cv2
 from PIL import Image
 from shutil import copy
 
-TARGET_SIZE = 100
+TARGET_SIZE = 400
 APPLY_FILTERS = False
-RESIZE = True
+RESIZE = False
 REMOVE_BG = False
+ROTATE = -180
 
 INPUT_FOLDER = 'img/to-resize/'
 OUTPUT_FOLDER = 'img/output/'
@@ -17,7 +18,8 @@ def resize():
     for image in raw_images:
         if APPLY_FILTERS:
             img = cv2.imread(f'{INPUT_FOLDER}{image}', cv2.IMREAD_UNCHANGED)
-            img = cv2.detailEnhance(img, sigma_s=11, sigma_r=0.11)
+            img = cv2.detailEnhance(img, sigma_s=3, sigma_r=0.03)
+            # img = cv2.stylization(img, sigma_s=20, sigma_r=0.12)
             cv2.imwrite(f'{OUTPUT_FOLDER}{image}', img)
         else:
             copy(f'{INPUT_FOLDER}{image}', f'{OUTPUT_FOLDER}{image}')
@@ -33,6 +35,15 @@ def resize():
             rgba = [b, g, r, alpha]
             dst = cv2.merge(rgba, 4)
             cv2.imwrite(f'{OUTPUT_FOLDER}{image}', dst)
+
+    if ROTATE != 0:
+        filtered_images = os.listdir(OUTPUT_FOLDER)
+
+        for image in filtered_images:
+            img = Image.open(f'{OUTPUT_FOLDER}{image}')
+            # img = img.rotate(ROTATE)
+            img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            img.save(f'{OUTPUT_FOLDER}{image}')
 
     if RESIZE:
         filtered_images = os.listdir(OUTPUT_FOLDER)

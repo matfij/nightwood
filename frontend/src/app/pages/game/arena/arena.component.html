@@ -45,6 +45,7 @@
   <app-dragon-choice-modal
     *ngIf="displayDragonChoiceModal"
     [message]="modalMessage!"
+    [displayStamina]="true"
     (close)="displayDragonChoiceModal = false"
     (dragonSelected)="startBattle($event)">
   </app-dragon-choice-modal>

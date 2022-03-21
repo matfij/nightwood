@@ -34,3 +34,14 @@
     background: darken($color: $app-dark, $amount: 8);
   }
 }
+
+.label-name {
+  width: 100%;
+  margin-left: 10px;
+
+  text-align: left;
+}
+
+.label-stamina {
+  font-size: 12px;
+}
