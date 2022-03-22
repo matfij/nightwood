@@ -36,9 +36,9 @@ export class DragonService {
     ) {}
 
     async create(dto: DragonCreateDto): Promise<DragonDto> {
-        const dragon = this.dragonRepository.create({ ...dto });
+        const dragon = this.dragonRepository.create({ ...dto }) as DragonDto;
         dragon.action = await this.dragonActionService.createAction();
-        dragon.skills = await this.dragonSkillsService.createSkills();
+        dragon.skills = await this.dragonSkillsService.createSkills(dto.skills);
         const savedDragon = await this.dragonRepository.save(dragon);
 
         return savedDragon;
@@ -72,9 +72,9 @@ export class DragonService {
     }
 
     async adopt(ownerId: number, dto: DragonAdoptDto): Promise<DragonDto> {
-        const dragon = this.dragonRepository.create({ ...dto, ownerId: ownerId });
+        const dragon = this.dragonRepository.create({ ...dto, ownerId: ownerId }) as DragonDto;
         dragon.action = await this.dragonActionService.createAction();
-        dragon.skills = await this.dragonSkillsService.createSkills();
+        dragon.skills = await this.dragonSkillsService.createSkills(null);
         const savedDragon = await this.dragonRepository.save(dragon);
 
         return savedDragon;

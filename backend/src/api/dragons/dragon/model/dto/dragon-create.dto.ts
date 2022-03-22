@@ -1,5 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
+import { DragonSkills } from "src/api/dragons/dragon-skills/model/dragon-skills.entity";
+import { DragonSkillsDto } from "src/api/dragons/dragon-skills/model/dto/dragon-skills.dto";
 import { DragonNature } from "../definitions/dragon-nature";
 
 export class DragonCreateDto {
@@ -11,6 +13,11 @@ export class DragonCreateDto {
     @IsEnum(DragonNature)
     @ApiProperty({ enum: DragonNature, enumName: 'DragonNature' })
     nature: DragonNature;
+
+    @IsNumber()
+    @IsOptional()
+    @ApiPropertyOptional()
+    level?: number;
 
     @IsNumber()
     @IsOptional()
@@ -36,4 +43,8 @@ export class DragonCreateDto {
     @IsOptional()
     @ApiPropertyOptional()
     luck?: number;
+
+    @IsOptional()
+    @ApiPropertyOptional({ type: DragonSkillsDto })
+    skills: Partial<DragonSkillsDto>;
 }

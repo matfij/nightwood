@@ -20,8 +20,8 @@ export class DragonSkillsService {
         private errorService: ErrorService,
     ) {}
 
-    async createSkills() {
-        const skills: DragonSkillsDto = {};
+    async createSkills(dto: DragonSkillsDto): Promise<DragonSkillsDto> {
+        const skills: DragonSkillsDto = dto ?? {};
         const dragonSkills = this.dragonSkillsRepository.create(skills);
     
         return await this.dragonSkillsRepository.save(dragonSkills);
