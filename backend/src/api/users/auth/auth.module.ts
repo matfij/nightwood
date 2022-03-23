@@ -9,6 +9,7 @@ import { AuthService } from './service/auth.service';
 import { ErrorService } from '../../../common/services/error.service';
 import { JwtAuthGuard } from './util/jwt.guard';
 import { JwtStrategy } from './util/jwt.strategy';
+import { DateService } from 'src/common/services/date.service';
 
 @Module({
   imports: [
@@ -16,7 +17,10 @@ import { JwtStrategy } from './util/jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async(x: ConfigService) => ({ secret: x.get('JWT_KEY') }),
+      useFactory: async(x: ConfigService) => ({ 
+        secret: x.get('JWT_KEY'), 
+        signOptions: { expiresIn: 900 } 
+      }),
     }),
     ItemModule,
   ],
@@ -26,6 +30,7 @@ import { JwtStrategy } from './util/jwt.strategy';
     JwtStrategy,
     JwtAuthGuard,
     ErrorService,
+    DateService,
   ],
   exports: [
     AuthService,

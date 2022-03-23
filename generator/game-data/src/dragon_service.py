@@ -13,15 +13,15 @@ class DragonService:
 
     @classmethod
     def gen_attr(cls, power: int) -> int:
-        bottom_limit = math.floor(power / 5)
-        top_limit = math.floor(power / 1.5)
+        bottom_limit = math.floor(power / 5) + 1
+        top_limit = math.floor(power / 1.5) + 1
         return random.randrange(bottom_limit, top_limit)
 
 
     @classmethod
     def gen_skill(cls, power: int) -> int:
-        bottom_limit = math.floor(power / 8)
-        top_limit = math.floor(power / 3)
+        bottom_limit = min(math.floor(power / 8), 20)
+        top_limit = min(math.floor(power / 3) + 1, 25)
         return random.randrange(bottom_limit, top_limit)
 
 
@@ -46,8 +46,8 @@ class DragonService:
                 'thoughtfulStrike': cls.gen_skill(dragon['power_level']),
                 'fireBreath': cls.gen_skill(dragon['power_level']) if dragon['nature'] == 'Fire' else 0,
                 'soundBody': cls.gen_skill(dragon['power_level']) if dragon['nature'] == 'Water' else 0,
-                'pugnaciousStrike': cls.gen_skill(dragon['power_level']) if dragon['nature'] == 'Earth' else 0,
-                'roughSkin': cls.gen_skill(dragon['power_level']) if dragon['nature'] == 'Wind' else 0,
+                'pugnaciousStrike': cls.gen_skill(dragon['power_level']) if dragon['nature'] == 'Wind' else 0,
+                'roughSkin': cls.gen_skill(dragon['power_level']) if dragon['nature'] == 'Earth' else 0,
             }
         })
 

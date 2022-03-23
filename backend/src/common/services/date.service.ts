@@ -20,4 +20,8 @@ export class DateService {
         
         return currentMillis + futureMillis;
     }
+
+    isTokenValid(expDate: number, maxAge: number): boolean {
+        return 1000 * (expDate + maxAge) > this.getCurrentDate();
+    }
 }

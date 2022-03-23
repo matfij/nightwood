@@ -25,6 +25,7 @@ export class ErrorInterceptor {
     return next.handle(request).pipe(
       catchError(e => {
         const user = this.repositoryService.getUserData();
+        user.accessToken = this.repositoryService.getAccessToken();
 
         if (
           e.status === HttpStatusCode.Unauthorized
@@ -38,11 +39,8 @@ export class ErrorInterceptor {
             && !request.url.includes(this.refreshTokenUrl)
             && request.method !== 'OPTIONS'
             ) {
-              if (e.error) {
-              this.showError(e.error);
-            }
             if (user.accessToken) {
-              this.refreshToken(user).pipe(
+              return this.refreshToken(user).pipe(
                 throttleTime(2000),
                 switchMap(() => { return next.handle(request.clone({
                   setHeaders: {
@@ -51,7 +49,6 @@ export class ErrorInterceptor {
                   }
                 }))})
               );
-              return EMPTY;
             } else {
               return EMPTY;
             }
@@ -64,10 +61,12 @@ export class ErrorInterceptor {
   }
 
   private refreshToken(user: AuthUserDto): Observable<string> {
-    return this.authController.refreshToken(user).pipe(
+    const ob$ = this.authController.refreshToken(user).pipe(
       tap((x: AuthUserDto) => this.repositoryService.setAccessToken(x.accessToken)),
       map((x: AuthUserDto) => x.accessToken),
     );
+    ob$.subscribe(() => {}, () => this.repositoryService.logout());
+    return ob$;
   }
 
   private showError(error: Blob) {

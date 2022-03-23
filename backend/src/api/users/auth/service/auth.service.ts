@@ -10,6 +10,8 @@ import { AuthUserDto } from '../dto/auth-user.dto';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { ErrorService } from '../../../../common/services/error.service';
+import { JwtData } from '../dto/jwt-user';
+import { DateService } from 'src/common/services/date.service';
 
 const bcrypt = require('bcrypt');
 
@@ -22,6 +24,7 @@ export class AuthService {
         private jwtService: JwtService,
         private itemService: ItemService, 
         private errorService: ErrorService,
+        private dateService: DateService,
     ) {}
 
     async login(dto: LoginUserDto): Promise<AuthUserDto> {
@@ -68,8 +71,10 @@ export class AuthService {
     }
 
     async refreshToken(dto: AuthUserDto) {
-        try { this.jwtService.verify(dto.accessToken) } catch (_) { this.errorService.throw('errors.tokenInvalid'); };
+        const userData = this.jwtService.decode(dto.accessToken) as JwtData;
+        if (!this.dateService.isTokenValid(userData.exp, 150)) this.errorService.throw('errors.tokenInvalid');
 
+        dto.accessToken = null;
         dto.accessToken = await this.generateJwt(dto);
 
         return dto;

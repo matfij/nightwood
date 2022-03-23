@@ -19,8 +19,8 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Minimize data exposition [100%]
  - Navigation bar & user state [100%]
  - Smart tooltips [100%]
- - Data generators [10%]
- - Update graphics assets [60%]
+ - Data generators [100%]
+ - Update graphics assets [100%]
 
 ## Initial release - 01.04.2022 (prediction)
 
