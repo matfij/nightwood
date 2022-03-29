@@ -7,7 +7,7 @@ from requests import post
 
 class DragonService:
 
-    BASE_URL = 'http://localhost:3000/api/v1'
+    BASE_URL = 'http://54.93.88.155:3000/api/v1'
     AUTH_TOKEN = os.getenv('GENERATOR_TOKEN')
 
 

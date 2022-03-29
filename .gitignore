@@ -39,6 +39,7 @@ __pycache__
 
 # Secrets
 .env
+.prod.env
 
 # Generated
 generator/generated/

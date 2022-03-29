@@ -11,6 +11,7 @@ WORKDIR ${BACKEND_SRC}
 COPY package.json ./
 COPY yarn.lock ./
 
+RUN npm i -g @nestjs/cli
 RUN yarn install
 RUN yarn run build
 
@@ -26,6 +27,8 @@ ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR ${BACKEND_SRC}
+
+COPY package.json ./
 
 COPY --from=development ${BACKEND_SRC} .
 

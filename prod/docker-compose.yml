@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - .env
+    volumes:
+      - ./backend:${BACKEND_SRC}
+      - ${BACKEND_SRC}/node_modules/
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_PORT}'
+    depends_on:
+      - postgres
+    command: npm run start:dev
+
+  postgres:
+    image: postgres:14.1
+    env_file:
+      - .env
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - .env
+    ports:
+      - '${PG_ADMIN_PORT}:${PG_ADMIN_PORT}'
+    logging:
+      driver: none
