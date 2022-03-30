@@ -6,7 +6,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: production
+      target: ${TARGET}
     env_file:
       - .env
     volumes:
@@ -24,12 +24,3 @@ services:
       - .env
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
-
-  pgadmin:
-    image: dpage/pgadmin4
-    env_file:
-      - .env
-    ports:
-      - '${PG_ADMIN_PORT}:${PG_ADMIN_PORT}'
-    logging:
-      driver: none

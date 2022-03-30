@@ -43,6 +43,7 @@ __pycache__
 
 # Generated
 generator/generated/
+backend/client/*
 
 # Assets
 *.jpg

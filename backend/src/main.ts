@@ -10,7 +10,7 @@ const fs = require('fs');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({ origin: '*' });
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix('api/v1', { exclude: [''] }); // exclude anythink to allow bare-link static content rendering
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseInterceptor());
 
@@ -21,6 +21,6 @@ async function bootstrap() {
   fs.writeFileSync(SCHEMA_FILE, JSON.stringify(document));
   SwaggerModule.setup(SWAGGER_URL, app, document);
 
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.BACKEND_PORT);
 }
 bootstrap();

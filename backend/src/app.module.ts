@@ -12,6 +12,8 @@ import { AuctionModule } from './api/items/auction/auction.module';
 import { MailModule } from './api/users/mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ActionModule } from './api/action/action.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 const API_MODULES = [
   ActionModule,
@@ -39,6 +41,10 @@ const API_MODULES = [
       synchronize: true,
     }),
     ScheduleModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+      serveStaticOptions: { redirect: false },
+    }),
   ],
   controllers: [],
 })

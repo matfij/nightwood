@@ -7,7 +7,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: development
+      target: ${TARGET}
     env_file:
       - .env
     volumes:

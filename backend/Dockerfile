@@ -15,7 +15,7 @@ RUN npm i -g @nestjs/cli
 RUN yarn install
 RUN yarn run build
 
-EXPOSE ${PORT}
+EXPOSE ${BACKEND_PORT}
 
 #
 # Production
@@ -32,6 +32,6 @@ COPY package.json ./
 
 COPY --from=development ${BACKEND_SRC} .
 
-EXPOSE ${PORT}
+EXPOSE ${BACKEND_PORT}
 
 CMD ["node", "dist/main"]
