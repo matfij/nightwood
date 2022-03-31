@@ -25,7 +25,7 @@ export class ErrorInterceptor {
     return next.handle(request).pipe(
       catchError(e => {
         const user = this.repositoryService.getUserData();
-        user.accessToken = this.repositoryService.getAccessToken();
+        if (user) user.accessToken = user ? this.repositoryService.getAccessToken() : '';
 
         if (
           e.status === HttpStatusCode.Unauthorized
@@ -39,7 +39,7 @@ export class ErrorInterceptor {
             && !request.url.includes(this.refreshTokenUrl)
             && request.method !== 'OPTIONS'
             ) {
-            if (user.accessToken) {
+            if (user && user.accessToken) {
               return this.refreshToken(user).pipe(
                 throttleTime(2000),
                 switchMap(() => { return next.handle(request.clone({

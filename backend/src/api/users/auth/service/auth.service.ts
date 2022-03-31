@@ -22,7 +22,7 @@ export class AuthService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
         private jwtService: JwtService,
-        private itemService: ItemService, 
+        private itemService: ItemService,
         private errorService: ErrorService,
         private dateService: DateService,
     ) {}

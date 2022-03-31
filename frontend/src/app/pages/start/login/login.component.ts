@@ -48,7 +48,7 @@ export class LoginComponent {
         this.repositoryService.setAccessToken(user.accessToken);
         this.repositoryService.setUserData(user);
 
-        this.engineService.start();
+        // this.engineService.start();
         this.engineService.setInitialState(user);
         return this.engineService.getExpeditionReports();
       })).subscribe(() => {

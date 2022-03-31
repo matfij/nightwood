@@ -19,6 +19,8 @@
   box-shadow: inset 1px 1px 12px 1px $app-dark;
   background-color: transparentize($color: $app-dark, $amount: 0.6);
   padding: 10px;
+  font-style: italic;
+  letter-spacing: 0.8px;
 
   img {
     width: 200px;

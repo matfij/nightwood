@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.checkExpeditionsFinished();
+    // this.checkExpeditionsFinished();
   }
 
   checkExpeditionsFinished() {
