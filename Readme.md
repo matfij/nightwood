@@ -1,8 +1,9 @@
 # Nightwood
+Re: Nightwood, the Nightwood Dragons re-edition - become a dragon tamer and explore the vast and mysterious lands of Nightwood.
+
 Independently developed, open-source browser game written in Angular and NestJS.
 
-Adopt, personalize and train dragons to participate in expeditions and battles to collect mythical items and gain glory ...
-The game is slow-paced and non-time intensive, suitable for both individual players and cooperation.
+Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 
 ## MVP Features
  - Dialog-based dragon adoption [100%]
@@ -22,11 +23,12 @@ The game is slow-paced and non-time intensive, suitable for both individual play
  - Data generators [100%]
  - Update graphics assets [100%]
 
-## Initial release - 01.04.2022 (prediction)
+## Initial release - 01.04.2022 (beta)
 
 ## Stage 1
  - Special dragons & skills [0%]
  - Dragon equipment - armor crafting [0%]
+ - Dragon QoL utils - renaming, resting etc. [0%]
  - Alchemy - cooking, extracting [0%]
  - Guilds - diplomacy, constructions [0%]
  - Player profiles - achievements [0%]
