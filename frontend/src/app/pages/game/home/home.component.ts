@@ -19,18 +19,14 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.checkExpeditionsFinished();
+    this.checkExpeditionsFinished();
   }
 
   checkExpeditionsFinished() {
-    this.reportsLoading = true;
-    this.engineService.getExpeditionReports().subscribe(() => {
-      this.reportsLoading = false;
-      const savedReports = this.storeService.getComplexItem<DisplayExpeditionReport[]>(EXPEDITION_REPORTS);
-      if (savedReports && savedReports.length > 0) {
-        this.reports = savedReports;
-      }
-    }, () => this.reportsLoading = false);
+    const savedReports = this.storeService.getComplexItem<DisplayExpeditionReport[]>(EXPEDITION_REPORTS);
+    if (savedReports && savedReports.length > 0) {
+      this.reports = savedReports;
+    }
   }
 
 }

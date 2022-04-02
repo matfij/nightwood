@@ -10,6 +10,7 @@ import { ErrorService } from '../../../common/services/error.service';
 import { JwtAuthGuard } from './util/jwt.guard';
 import { JwtStrategy } from './util/jwt.strategy';
 import { DateService } from 'src/common/services/date.service';
+import { EmailService } from 'src/common/services/email.service';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { DateService } from 'src/common/services/date.service';
     JwtAuthGuard,
     ErrorService,
     DateService,
+    EmailService,
   ],
   exports: [
     AuthService,

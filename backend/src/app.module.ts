@@ -14,6 +14,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ActionModule } from './api/action/action.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 const API_MODULES = [
   ActionModule,
@@ -48,6 +49,16 @@ const API_MODULES = [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
       serveStaticOptions: { redirect: false },
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.SMTP_ENDPOINT,
+        port: +process.env.SMTP_PORT,
+        auth: {
+          user: process.env.SMTP_USERNAME,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      },
     }),
   ],
   controllers: [],
