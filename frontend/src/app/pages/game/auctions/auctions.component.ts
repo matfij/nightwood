@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActionController, AuctionController, AuctionDto, AuthUserDto, AuctionGetDto, ItemRarity, ItemType } from 'src/app/client/api';
+import { ActionController, AuctionController, AuctionDto, UserAuthDto, AuctionGetDto, ItemRarity, ItemType } from 'src/app/client/api';
 import { AUCTION_MAX_SEARCH_LEVEL, AUCTION_MAX_SEARCH_NAME_LENGTH, AUCTION_MIN_SEARCH_LEVEL, AUCTION_MIN_SEARCH_NAME_LENGTH } from 'src/app/client/config/frontend.config';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayAuction } from 'src/app/core/definitions/items';
@@ -19,7 +19,7 @@ export class AuctionsComponent implements OnInit {
   @ViewChild('searchRarity') searchRarity?: ElementRef;
   @ViewChild('searchType') searchType?: ElementRef;
 
-  user!: AuthUserDto;
+  user!: UserAuthDto;
   auctions: AuctionDto[] = [];
   auctionsLoading: boolean = false;
   displayOwned: boolean = false;

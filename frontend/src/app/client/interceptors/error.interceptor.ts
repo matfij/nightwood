@@ -6,7 +6,7 @@ import { catchError, map, switchMap, tap, throttleTime } from "rxjs/operators";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { ToastService } from "src/app/common/services/toast.service";
 import { UtilsService } from "src/app/common/services/utils.service";
-import { AuthController, AuthUserDto } from "../api";
+import { AuthController, UserAuthDto } from "../api";
 
 @Injectable()
 export class ErrorInterceptor {
@@ -60,10 +60,10 @@ export class ErrorInterceptor {
     )
   }
 
-  private refreshToken(user: AuthUserDto): Observable<string> {
+  private refreshToken(user: UserAuthDto): Observable<string> {
     const ob$ = this.authController.refreshToken(user).pipe(
-      tap((x: AuthUserDto) => this.repositoryService.setAccessToken(x.accessToken)),
-      map((x: AuthUserDto) => x.accessToken),
+      tap((user: UserAuthDto) => this.repositoryService.setAccessToken(user.accessToken)),
+      map((user: UserAuthDto) => user.accessToken),
     );
     ob$.subscribe(() => {}, () => this.repositoryService.logout());
     return ob$;

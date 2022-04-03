@@ -562,10 +562,11 @@ export class UserController implements IUserController {
 }
 
 export interface IAuthController {
-    login(body: LoginUserDto): Observable<AuthUserDto>;
-    register(body: RegisterUserDto): Observable<AuthUserDto>;
-    refreshToken(body: AuthUserDto): Observable<AuthUserDto>;
-    getUserData(): Observable<AuthUserDto>;
+    login(body: UserLoginDto): Observable<UserAuthDto>;
+    register(body: UserRegisterDto): Observable<void>;
+    confirm(body: UserConfirmDto): Observable<void>;
+    refreshToken(body: UserAuthDto): Observable<UserAuthDto>;
+    getUserData(): Observable<UserAuthDto>;
 }
 
 @Injectable({
@@ -581,7 +582,7 @@ export class AuthController implements IAuthController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    login(body: LoginUserDto): Observable<AuthUserDto> {
+    login(body: UserLoginDto): Observable<UserAuthDto> {
         let url_ = this.baseUrl + "/api/v1/auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -604,14 +605,14 @@ export class AuthController implements IAuthController {
                 try {
                     return this.processLogin(<any>response_);
                 } catch (e) {
-                    return <Observable<AuthUserDto>><any>_observableThrow(e);
+                    return <Observable<UserAuthDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AuthUserDto>><any>_observableThrow(response_);
+                return <Observable<UserAuthDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processLogin(response: HttpResponseBase): Observable<AuthUserDto> {
+    protected processLogin(response: HttpResponseBase): Observable<UserAuthDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -621,7 +622,7 @@ export class AuthController implements IAuthController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <AuthUserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <UserAuthDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -629,10 +630,10 @@ export class AuthController implements IAuthController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AuthUserDto>(<any>null);
+        return _observableOf<UserAuthDto>(<any>null);
     }
 
-    register(body: RegisterUserDto): Observable<AuthUserDto> {
+    register(body: UserRegisterDto): Observable<void> {
         let url_ = this.baseUrl + "/api/v1/auth/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -644,7 +645,6 @@ export class AuthController implements IAuthController {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -655,14 +655,14 @@ export class AuthController implements IAuthController {
                 try {
                     return this.processRegister(<any>response_);
                 } catch (e) {
-                    return <Observable<AuthUserDto>><any>_observableThrow(e);
+                    return <Observable<void>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AuthUserDto>><any>_observableThrow(response_);
+                return <Observable<void>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRegister(response: HttpResponseBase): Observable<AuthUserDto> {
+    protected processRegister(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -671,19 +671,65 @@ export class AuthController implements IAuthController {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <AuthUserDto>JSON.parse(_responseText, this.jsonParseReviver);
-            return _observableOf(result200);
+            return _observableOf<void>(<any>null);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AuthUserDto>(<any>null);
+        return _observableOf<void>(<any>null);
     }
 
-    refreshToken(body: AuthUserDto): Observable<AuthUserDto> {
+    confirm(body: UserConfirmDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/auth/confirm";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConfirm(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConfirm(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processConfirm(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    refreshToken(body: UserAuthDto): Observable<UserAuthDto> {
         let url_ = this.baseUrl + "/api/v1/auth/refreshToken";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -706,14 +752,14 @@ export class AuthController implements IAuthController {
                 try {
                     return this.processRefreshToken(<any>response_);
                 } catch (e) {
-                    return <Observable<AuthUserDto>><any>_observableThrow(e);
+                    return <Observable<UserAuthDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AuthUserDto>><any>_observableThrow(response_);
+                return <Observable<UserAuthDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processRefreshToken(response: HttpResponseBase): Observable<AuthUserDto> {
+    protected processRefreshToken(response: HttpResponseBase): Observable<UserAuthDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -723,7 +769,7 @@ export class AuthController implements IAuthController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <AuthUserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <UserAuthDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -731,10 +777,10 @@ export class AuthController implements IAuthController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AuthUserDto>(<any>null);
+        return _observableOf<UserAuthDto>(<any>null);
     }
 
-    getUserData(): Observable<AuthUserDto> {
+    getUserData(): Observable<UserAuthDto> {
         let url_ = this.baseUrl + "/api/v1/auth/getUser";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -753,14 +799,14 @@ export class AuthController implements IAuthController {
                 try {
                     return this.processGetUserData(<any>response_);
                 } catch (e) {
-                    return <Observable<AuthUserDto>><any>_observableThrow(e);
+                    return <Observable<UserAuthDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AuthUserDto>><any>_observableThrow(response_);
+                return <Observable<UserAuthDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUserData(response: HttpResponseBase): Observable<AuthUserDto> {
+    protected processGetUserData(response: HttpResponseBase): Observable<UserAuthDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -770,7 +816,7 @@ export class AuthController implements IAuthController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <AuthUserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <UserAuthDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -778,7 +824,7 @@ export class AuthController implements IAuthController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AuthUserDto>(<any>null);
+        return _observableOf<UserAuthDto>(<any>null);
     }
 }
 
@@ -1877,6 +1923,9 @@ export interface UserDto {
     gold: number;
     ownedDragons: number;
     maxOwnedDragons: number;
+    isConfirmed: boolean;
+    actionToken?: string;
+    actionTokenValidity?: number;
 }
 
 export interface UpdateUserDto {
@@ -1907,12 +1956,12 @@ export interface PageUserDto {
     data: UserDto[];
 }
 
-export interface LoginUserDto {
+export interface UserLoginDto {
     nickname: string;
     password: string;
 }
 
-export interface AuthUserDto {
+export interface UserAuthDto {
     id: number;
     email: string;
     nickname: string;
@@ -1923,10 +1972,14 @@ export interface AuthUserDto {
     maxOwnedDragons: number;
 }
 
-export interface RegisterUserDto {
+export interface UserRegisterDto {
     email: string;
     password: string;
     nickname: string;
+}
+
+export interface UserConfirmDto {
+    activationCode: string;
 }
 
 export interface ItemPageDto {
@@ -1965,11 +2018,13 @@ export interface MailGetDto {
 export interface DragonCreateDto {
     name: string;
     nature: DragonNature;
+    level?: number;
     strength?: number;
     dexterity?: number;
     endurance?: number;
     will?: number;
     luck?: number;
+    skills?: DragonSkillsDto;
 }
 
 export interface DragonGetDto {

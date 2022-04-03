@@ -13,6 +13,9 @@ build:
 stop:
 	docker-compose down
 
+clear:
+	docker system prune --all --volumes --force
+
 
 gen.config:
 	cp backend/src/configuration/frontend.config.ts frontend/src/app/client/config/frontend.config.ts

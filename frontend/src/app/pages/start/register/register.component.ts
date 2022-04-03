@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthController, RegisterUserDto } from 'src/app/client/api';
+import { AuthController, UserRegisterDto } from 'src/app/client/api';
 import { EMAIL_MAX_LENGTH, NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { RepositoryService } from 'src/app/common/services/repository.service';
@@ -71,7 +71,7 @@ export class RegisterComponent implements OnInit {
     if (!this.validatePasswords()) { this.toastService.showError('errors.error', 'start.passwordsMismatch'); return; }
     if (!this.validatorService.checkBannedWords(this.nickname.value)) return;
 
-    const user: RegisterUserDto = {
+    const user: UserRegisterDto = {
       email: this.email.value,
       nickname: this.nickname.value,
       password: this.password.value,
@@ -79,13 +79,8 @@ export class RegisterComponent implements OnInit {
     this.submitLoading = true;
     this.authController.register(user).subscribe(user => {
       this.submitLoading = false;
-      this.toastService.showSuccess('start.registerSuccess', 'start.registerSuccessHint');
-
-      this.repositoryService.setAccessToken(user.accessToken);
-      this.repositoryService.setUserData(user);
-      this.engineService.setInitialState(user);
-      this.engineService.start();
-      this.router.navigate(['../game/home']);
+      this.toastService.showSuccess('start.registerSuccess', 'start.confirmEmail');
+      this.router.navigate(['../start/login']);
     }, _ => {
       this.submitLoading = false;
     });

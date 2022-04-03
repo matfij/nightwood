@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthUserDto } from 'src/app/client/api';
+import { UserAuthDto } from 'src/app/client/api';
 import { EngineService } from 'src/app/core/services/engine.service';
 import { NavigationItem } from '../../definitions/navigaion';
 import { RepositoryService } from '../../services/repository.service';
@@ -15,7 +15,7 @@ export class NavigationBarComponent {
 
   @Input() currentLocation!: string;
 
-  user$?: Observable<AuthUserDto>;
+  user$?: Observable<UserAuthDto>;
   displayMenu: boolean = false;
 
   navigationItems: NavigationItem[] = [

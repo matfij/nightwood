@@ -22,4 +22,13 @@ export class UserDto {
 
     @ApiProperty()
     maxOwnedDragons?: number;
+
+    @ApiProperty()
+    isConfirmed?: boolean;
+
+    @ApiPropertyOptional()
+    actionToken?: string;
+
+    @ApiPropertyOptional()
+    actionTokenValidity?: number;
 }

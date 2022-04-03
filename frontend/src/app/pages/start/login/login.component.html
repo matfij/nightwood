@@ -1,4 +1,10 @@
-<div class="wrapper-main">
+<div *ngIf="confirmLoading" class="wrapper-main">
+  <div *ngIf="submitLoading" class="spinner">
+    <app-loading-indicator></app-loading-indicator>
+  </div>
+</div>
+
+<div *ngIf="!confirmLoading" class="wrapper-main">
   <div class="wrapper-content">
 
     <div class="title title-main">{{ 'common.appName' | translate }}</div>

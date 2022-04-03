@@ -3,17 +3,18 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../user/model/user.entity';
-import { LoginUserDto } from '../dto/login-user.dto';
-import { RegisterUserDto } from '../dto/register-user.dto';
+import { UserLoginDto } from '../dto/user-login.dto';
+import { UserRegisterDto } from '../dto/user-register.dto';
 import { GetUserDto } from '../../user/model/dto/get-user.dto';
-import { AuthUserDto } from '../dto/auth-user.dto';
+import { UserAuthDto } from '../dto/user-auth.dto';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { ErrorService } from '../../../../common/services/error.service';
-import { JwtData } from '../dto/jwt-user';
+import { JwtData } from '../dto/user-jwt';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
-import { EmailType } from 'src/common/definitions/emails';
+import { EmailReplaceToken, EmailType } from 'src/common/definitions/emails';
+import { UserConfirmDto } from '../dto/user-confirm.dto';
 
 const bcrypt = require('bcrypt');
 
@@ -30,9 +31,10 @@ export class AuthService {
         private emailService: EmailService,
     ) {}
 
-    async login(dto: LoginUserDto): Promise<AuthUserDto> {
+    async login(dto: UserLoginDto): Promise<UserAuthDto> {
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
         if (!user) this.errorService.throw('errors.loginNotFound');
+        if (!user.isConfirmed) this.errorService.throw('errors.userNotConfirmed');
 
         const match: boolean = await this.validatePassword(dto.password, user.password);
         if (!match) this.errorService.throw('errors.passwordIncorrect');
@@ -47,33 +49,44 @@ export class AuthService {
         };
     }
 
-    async register(dto: RegisterUserDto): Promise<AuthUserDto> {
+    async register(dto: UserRegisterDto): Promise<void> {
         if (await this.emailExists(dto.email)) this.errorService.throw('errors.emailNotUnique');
         if (await this.nicknameExists(dto.nickname)) this.errorService.throw('errors.nicknameNotUnique');
 
         const hashedPassword = await this.hashPassword(dto.password);
+
+        const confirmationCode = this.generateActionToken();
+
         const newUser: UserDto = {
             email: dto.email,
             password: hashedPassword,
             nickname: dto.nickname,
+            actionToken: confirmationCode,
+            actionTokenValidity: this.dateService.getFutureDate(0, 1),
         };
 
-        const createdUser = this.userRepository.create(newUser);
-        const savedUser = await this.userRepository.save(createdUser);
+        this.userRepository.save(newUser);
 
-        this.itemService.createStartingItems(savedUser);
-
-        const token = await this.generateJwt(createdUser);
-        return {
-            id: savedUser.id,
-            email: createdUser.email,
-            nickname: createdUser.nickname,
-            accessToken: token,
-            gold: createdUser.gold,
-        };
+        const emailData: EmailReplaceToken[] = [
+            { token: '$user_name', value: dto.nickname },
+            { token: '$activation_code_1', value: confirmationCode },
+            { token: '$activation_code_2', value: confirmationCode },
+        ];
+        this.emailService.sendEmail(dto.email, EmailType.Activation, emailData);
     }
 
-    async refreshToken(dto: AuthUserDto) {
+    async confirm(dto: UserConfirmDto): Promise<void> {
+        const user = await this.userRepository.findOne({ isConfirmed: false, actionToken: dto.activationCode });
+        if (!user) this.errorService.throw('errors.confirmationCodeInvalid');
+        if (this.dateService.checkIfEventAvailable(user.actionTokenValidity)) this.errorService.throw('errors.confirmationCodeExpired');
+
+        user.isConfirmed = true;
+        this.userRepository.save(user);
+
+        this.itemService.createStartingItems(user);
+    }
+
+    async refreshToken(dto: UserAuthDto) {
         const userData = this.jwtService.decode(dto.accessToken) as JwtData;
         if (!this.dateService.isTokenValid(userData.exp, 1500)) this.errorService.throw('errors.tokenInvalid');
 
@@ -111,16 +124,18 @@ export class AuthService {
     }
 
     private async emailExists(email: string): Promise<boolean> {
-        const params: GetUserDto = { email: email };
-        const users = await this.userRepository.find(params);
+        const users = await this.userRepository.find({ email: email });
 
         return users.length > 0;
     }
 
     private async nicknameExists(nickname: string): Promise<boolean> {
-        const params: GetUserDto = { nickname: nickname };
-        const users = await this.userRepository.find(params);
+        const users = await this.userRepository.find({ nickname: nickname });
 
         return users.length > 0;
+    }
+
+    private generateActionToken(): string {
+        return Math.floor(1000000000000000 + Math.random() * 9000000000000000).toString();
     }
 }

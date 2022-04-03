@@ -2,9 +2,10 @@ import { Body, Controller, Post, UseGuards, Request } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { UserDto } from "../user/model/dto/user.dto";
-import { AuthUserDto } from "./dto/auth-user.dto";
-import { LoginUserDto } from "./dto/login-user.dto";
-import { RegisterUserDto } from "./dto/register-user.dto";
+import { UserAuthDto } from "./dto/user-auth.dto";
+import { UserConfirmDto } from "./dto/user-confirm.dto";
+import { UserLoginDto } from "./dto/user-login.dto";
+import { UserRegisterDto } from "./dto/user-register.dto";
 import { AuthService } from "./service/auth.service";
 import { JwtAuthGuard } from "./util/jwt.guard";
 
@@ -17,26 +18,32 @@ export class AuthController {
     ) {}
 
     @Post('login')
-    @ApiOkResponse({ type: AuthUserDto })
-    login(@Body() dto: LoginUserDto): Promise<AuthUserDto> {
+    @ApiOkResponse({ type: UserAuthDto })
+    login(@Body() dto: UserLoginDto): Promise<UserAuthDto> {
         return this.authService.login(dto);
     }
 
     @Post('register')
-    @ApiOkResponse({ type: AuthUserDto })
-    register(@Body() dto: RegisterUserDto): Promise<AuthUserDto> {
+    @ApiOkResponse()
+    register(@Body() dto: UserRegisterDto): Promise<void> {
         return this.authService.register(dto);
     }
 
+    @Post('confirm')
+    @ApiOkResponse()
+    confirm(@Body() dto: UserConfirmDto): Promise<void> {
+        return this.authService.confirm(dto);
+    }
+
     @Post('refreshToken')
-    @ApiOkResponse({ type: AuthUserDto })
-    refreshToken(@Body() dto: AuthUserDto): Promise<AuthUserDto> {
+    @ApiOkResponse({ type: UserAuthDto })
+    refreshToken(@Body() dto: UserAuthDto): Promise<UserAuthDto> {
         return this.authService.refreshToken(dto);
     }
 
     @Post('getUser')
     @UseGuards(JwtAuthGuard)
-    @ApiOkResponse({ type: AuthUserDto })
+    @ApiOkResponse({ type: UserAuthDto })
     getUserData(@Request() req: AuthorizedRequest): Promise<UserDto> {
         return this.authService.getUserData(+req.user.id);
     }

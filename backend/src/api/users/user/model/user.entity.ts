@@ -1,5 +1,5 @@
 import { Item } from "src/api/items/item/model/item.entity";
-import { DB_MONEY_TYPE } from "src/configuration/app.config";
+import { DB_MONEY_TYPE, DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
 import { AfterLoad, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -28,6 +28,15 @@ export class User {
 
     @OneToMany(_ => Item, x => x.user)
     items: Item[];
+
+    @Column({ default: false })
+    isConfirmed: boolean;
+
+    @Column({ nullable: true })
+    actionToken: string;
+
+    @Column({ default: 0, type: DB_TIMESTAMP_TYPE })
+    actionTokenValidity: number;
 
     @AfterLoad() 
     convertGold() {

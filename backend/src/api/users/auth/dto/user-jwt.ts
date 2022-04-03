@@ -1,11 +1,11 @@
-export interface JwtUser {
+export interface UserJwt {
     id: number;
     email: string;
     nickname: string;
 }
 
 export interface JwtData {
-    user: JwtUser;
+    user: UserJwt;
     iat: number;
     exp: number;
 }

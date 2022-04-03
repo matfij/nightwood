@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { BehaviorSubject, Observable, Subscription, timer } from "rxjs";
 import { map, tap } from "rxjs/operators";
-import { ActionController, AuthController, AuthUserDto, ExpeditionReportDto, ItemRarity } from "src/app/client/api";
+import { ActionController, AuthController, ExpeditionReportDto, ItemRarity, UserAuthDto } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { EXPEDITION_REPORTS, StoreService } from "src/app/common/services/store.service";
@@ -15,7 +15,7 @@ import { ItemsService } from "./items.service";
 })
 export class EngineService {
 
-  private user$!: BehaviorSubject<AuthUserDto>;
+  private user$!: BehaviorSubject<UserAuthDto>;
   private tick$?: Subscription;
 
   constructor(
@@ -42,23 +42,23 @@ export class EngineService {
     this.tick$?.unsubscribe();
   }
 
-  setInitialState(userData: AuthUserDto): void {
-    this.user$ = new BehaviorSubject<AuthUserDto>(userData);
+  setInitialState(userData: UserAuthDto): void {
+    this.user$ = new BehaviorSubject<UserAuthDto>(userData);
   }
 
-  get user(): AuthUserDto {
+  get user(): UserAuthDto {
     return this.getUser().getValue();
   }
 
-  getUser(): BehaviorSubject<AuthUserDto> {
-    if (!this.user$) this.user$ = new BehaviorSubject<AuthUserDto>(this.repositoryService.getUserData());
+  getUser(): BehaviorSubject<UserAuthDto> {
+    if (!this.user$) this.user$ = new BehaviorSubject<UserAuthDto>(this.repositoryService.getUserData());
     else if (!this.user$.getValue()) this.user$.next(this.repositoryService.getUserData());
 
     return this.user$;
   }
 
-  updateUser(data: Partial<AuthUserDto>): void {
-    if (!this.user$) this.user$ = new BehaviorSubject<AuthUserDto>(this.repositoryService.getUserData());
+  updateUser(data: Partial<UserAuthDto>): void {
+    if (!this.user$) this.user$ = new BehaviorSubject<UserAuthDto>(this.repositoryService.getUserData());
 
     if (data) {
       this.repositoryService.setUserData({ ...this.user, ...data });

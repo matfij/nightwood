@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
-import { UserDto } from 'src/app/client/api';
+import { UserAuthDto, UserDto } from 'src/app/client/api';
 import { CHAT_MESSAGE_MAX_LENGTH, CHAT_MESSAGE_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { ChatMessage, ChatMode } from 'src/app/common/definitions/chat';
 import { ChatService } from 'src/app/common/services/chat.service';
@@ -15,7 +15,7 @@ import { ValidatorService } from 'src/app/common/services/validator.service';
 })
 export class ShoutboxComponent implements OnInit, OnDestroy {
 
-  user!: UserDto;
+  user!: UserAuthDto;
   message: string = '';
   message$!: Subscription;
   messages: ChatMessage[] = [];

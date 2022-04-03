@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthUserDto } from "src/app/client/api";
+import { UserAuthDto } from "src/app/client/api";
 import { ACCESS_TOKEN, StoreService, USER_DATA } from "./store.service";
 
 @Injectable({
@@ -13,11 +13,11 @@ export class RepositoryService {
     private storeService: StoreService,
   ) {}
 
-  setUserData(user: AuthUserDto) {
+  setUserData(user: UserAuthDto) {
     this.storeService.setItem(USER_DATA, JSON.stringify(user));
   }
 
-  getUserData(): AuthUserDto {
+  getUserData(): UserAuthDto {
     const user = this.storeService.getItem(USER_DATA);
     return user ? JSON.parse(user) : null;
   }

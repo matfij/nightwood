@@ -44,7 +44,9 @@
     "registerSuccess": "Registration successful",
     "registerSuccessHint": "Welcome to Nightwood",
     "nicknameHint": "Your nickname must be unique and contain between {{ min }} and {{ max }} characters",
-    "passwordHint": "Your password should be strong and contain between {{ min }} and {{ max }} characters"
+    "passwordHint": "Your password should be strong and contain between {{ min }} and {{ max }} characters",
+    "confirmEmail": "Account created, please verify your email address",
+    "confirmSuccess": "Account activated, you can now log into the game"
   },
   "errors": {
     "error": "Error",
@@ -80,7 +82,10 @@
     "skillLimitReached": "Skill limit reached",
     "auctionNotFound": "Auction not found",
     "insufficientsFound": "Insufficient founds",
-    "mailNotFound": "Mail not found"
+    "mailNotFound": "Mail not found",
+    "confirmationCodeInvalid": "Invalid confirmation code",
+    "confirmationCodeExpired": "Confirmation code expired",
+    "userNotConfirmed": "This account requires email verification"
   },
   "game": {
     "menu": "Menu",
