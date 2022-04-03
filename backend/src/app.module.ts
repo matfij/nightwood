@@ -13,8 +13,8 @@ import { MailModule } from './api/users/mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ActionModule } from './api/action/action.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { join } from 'path';
 
 const API_MODULES = [
   ActionModule,

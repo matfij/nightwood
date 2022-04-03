@@ -49,6 +49,7 @@ backend/client/*
 *.jpg
 *.png
 *.gif
+/backend/src/common/data/*
 
 # ANNs
 generator/game-assets/models/*

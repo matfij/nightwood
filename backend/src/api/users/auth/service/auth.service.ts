@@ -13,6 +13,7 @@ import { ErrorService } from '../../../../common/services/error.service';
 import { JwtData } from '../dto/jwt-user';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
+import { EmailType } from 'src/common/definitions/emails';
 
 const bcrypt = require('bcrypt');
 
