@@ -7,7 +7,7 @@ export enum ItemRarity {
 
 export const LootChance = {
     Common: 2,
-    Scare: 6,
+    Scarce: 6,
     Rare: 16,
     Mythical: 44,
 }

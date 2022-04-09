@@ -38,7 +38,10 @@ export class ItemService {
     }
 
     async getOwnedItems(user: UserDto): Promise<ItemPageDto> {
-        const items = await this.itemRepository.find({ user: user, quantity: MoreThan(0) });
+        const items = await this.itemRepository.find({
+            where: { user: user, quantity: MoreThan(0) },
+            order: { id: 'DESC' },
+        });
         const itemsPage: ItemPageDto = {
             data: items,
             meta: {},
@@ -78,7 +81,7 @@ export class ItemService {
     }
 
     async updateInventory(user: UserDto, loots: ItemDto[]) {
-        const items = await this.itemRepository.find({ user: user, type: ItemType.Food });
+        const items = await this.itemRepository.find({ user: user });
 
         const newItems = [];
         loots.forEach(loot => {
@@ -98,8 +101,8 @@ export class ItemService {
         const loots: ItemDto[] = [];
         expedition.loots.forEach(loot => {
 
-            const dragonChance = Math.random() * (1 + (dragon.luck / (2*dragon.level + 5)));
-            const requiredChance = Math.random() * LootChance[loot.rarity];
+            const dragonChance = Math.random() * Math.log(4 + dragon.luck / dragon.level);
+            const requiredChance = Math.random() * LootChance[loot.rarity]; // 0-1 * 2-44
 
             if (dragonChance > requiredChance) {
                 if (loots.map(x => x.uid).includes(loot.uid)) loots.find(x => x.uid === loot.uid).quantity += 1;

@@ -3,9 +3,9 @@ import cv2
 from PIL import Image
 from shutil import copy
 
-TARGET_SIZE = 400
+TARGET_SIZE = 100
 APPLY_FILTERS = False
-RESIZE = False
+RESIZE = True
 REMOVE_BG = False
 ROTATE = -180
 

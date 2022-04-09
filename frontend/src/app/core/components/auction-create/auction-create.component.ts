@@ -65,7 +65,7 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
   }
 
   getTradableItems() {
-    this.tradableItems$ = this.itemController.getOwnedFoods();
+    this.tradableItems$ = this.itemController.getOwnedItems();
   }
 
   createAuction() {

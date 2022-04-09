@@ -27,7 +27,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 
 ## Stage 1
  - Special dragons & skills [0%]
- - Dragon equipment - armor crafting [0%]
+ - Dragon equipment - runes crafting [40%]
  - Dragon QoL utils - renaming, resting etc. [0%]
  - Alchemy - cooking, extracting [0%]
  - Guilds - diplomacy, constructions [0%]

@@ -29,9 +29,9 @@ export class InventoryComponent implements OnInit {
 
   getOwnedItems(): void {
     this.itemsLoading = true;
-    this.itemController.getOwnedFoods().subscribe(page => {
+    this.itemController.getOwnedItems().subscribe(itemPage => {
       this.itemsLoading = false;
-      this.ownedItems = page.data.map(item => this.itemsService.toDisplayItem(item));
+      this.ownedItems = itemPage.data.map(item => this.itemsService.toDisplayItem(item));
     }, () => this.itemsLoading = false);
   }
 
