@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ErrorService } from 'src/common/services/error.service';
 import { ItemController } from './item.controller';
 import { Item } from './model/item.entity';
+import { ItemRuneService } from './service/item-rune.service';
 import { ItemService } from './service/item.service';
 
 @Module({
@@ -14,6 +15,7 @@ import { ItemService } from './service/item.service';
     ],
     providers: [
         ItemService,
+        ItemRuneService,
         ErrorService,
     ],
     exports: [

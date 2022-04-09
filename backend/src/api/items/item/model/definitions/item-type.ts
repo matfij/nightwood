@@ -1,3 +1,5 @@
+import { ItemDto } from "../dto/item.dto";
+
 export enum ItemType {
     Food = 'Food',
     Ingredient = 'Ingredient',
@@ -16,4 +18,5 @@ export enum FoodType {
 export enum EquipmentType {
     Armor = 'Armor',
     Charm = 'Charm',
+    Rune = 'Rune',
 }
