@@ -29,7 +29,7 @@
   <div class="wrapper-name">
     {{ dragon.name }} [{{ dragon.level }}]
     <div class="no-mobile" style="font-size: 14px; font-weight: 300;">
-      {{ dragon.experience }} {{ 'dragon.experience' | translate }}
+      {{ dragon.experience }} {{ 'dragon.experience' | translate }} | {{ dragon.stamina }} {{ 'dragon.stamina' | translate }}
     </div>
 
     <div class="wrapper-image">
@@ -58,7 +58,7 @@
       {{ 'dragon.battle' | translate }}
     </button>
     <button (click)="displayDetails = true" class="btn-base btn-action">
-      {{ 'common.details' | translate }}
+      {{ 'dragon.skills' | translate }}
     </button>
     <button (click)="displayReleaseModal = true" class="btn-base btn-action no-mobile">
       {{ 'dragon.release' | translate }}

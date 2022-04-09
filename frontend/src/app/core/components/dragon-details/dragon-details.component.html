@@ -1,7 +1,6 @@
 <div *ngIf="dragon && !skillsLoading" class="container-modal">
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
-  <div>{{ dragon.stamina }} {{ 'dragon.stamina' | translate }}</div>
 
   <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
 

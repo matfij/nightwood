@@ -35,12 +35,12 @@ export const LuckyStrike: Skill = {
 }
 
 /**
- * Increases critical strike chance
+ * Increases maximum health
  */
 export const GreatVigor: Skill = {
     uid: 'greatVigor',
     name: 'Great Vigor',
-    hint: 'Increases critical strike chance',
+    hint: 'Increases maximum health',
     level: 1,
     requiredNature: [],
 }
