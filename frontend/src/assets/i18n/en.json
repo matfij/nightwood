@@ -178,7 +178,8 @@
   "crafting": {
     "runeCraftingHint": "Versus Goons, the goblin thinkerer is the master of rune crafting. Once, he could craft runes of any type, but now he is limited to the following:",
     "requiredIngredients": "Required ingredients",
-    "craft": "Craft"
+    "craft": "Craft",
+    "itemCrafted": "{{ name }} crafted"
   },
   "auctions": {
     "availableOffers": "Available offers",

@@ -51,7 +51,7 @@ export class ItemRuneService {
             const newItem = this.itemRepository.create({ ...product, user });
             this.itemRepository.save(newItem);
         } else {
-            item.quantity += product.quantity;
+            item.quantity += product.quantity ?? 1;
             this.itemRepository.save(item);
         }
 

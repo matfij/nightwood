@@ -1,7 +1,10 @@
 <div class="wrapper-main">
   <app-navigation-bar currentLocation="crafting"></app-navigation-bar>
 
-  <div class="wrapper-content">
+  <div *ngIf="itemsLoading" class="mt-5">
+    <app-loading-indicator></app-loading-indicator>
+  </div>
+  <div *ngIf="!itemsLoading" class="wrapper-content">
 
     <div class="wrapper-crafting-section">
       <div class="wrapper-lore">
@@ -34,7 +37,7 @@
           </div>
 
           <div class="break"></div>
-          <button class="btn-base btn-craft">
+          <button (click)="craftRecipe(recipe)" [disabled]="checkIngredients(recipe)" class="btn-base btn-craft">
             {{ 'crafting.craft' | translate }}
           </button>
         </div>
