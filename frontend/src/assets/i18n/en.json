@@ -176,7 +176,7 @@
     "quantity": "Quantity"
   },
   "crafting": {
-    "runeCraftingHint": "Raven, the goblin thinkerer is a master of the crafting of runes. Once, he could craft runes of any type, but now he is limited to the following:",
+    "runeCraftingHint": "Versus Goons, the goblin thinkerer is the master of rune crafting. Once, he could craft runes of any type, but now he is limited to the following:",
     "requiredIngredients": "Required ingredients",
     "craft": "Craft"
   },

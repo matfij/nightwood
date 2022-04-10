@@ -27,7 +27,9 @@
             <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
             <div *ngFor="let ingredient of recipe.ingredients">
               {{ ingredient.name }} ({{ ingredient.quantity }})
-              <progress class="progress-crafting" value="32" max="100" ></progress>
+              <div *ngIf="items.length" class="inline">
+                <progress class="progress-crafting" [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity" ></progress>
+              </div>
             </div>
           </div>
 

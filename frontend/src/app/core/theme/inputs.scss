@@ -45,3 +45,19 @@ input[type="number"] {
 .input-select {
   @include input-base();
 }
+
+progress {
+  width: 80px;
+  margin-left: 5px;
+
+  border-radius: 8px;
+  height: 10px;
+}
+progress::-webkit-progress-bar {
+  background-color: $app-light;
+  border-radius: 8px;
+}
+progress::-webkit-progress-value {
+  background-color: $app-secondary;
+  border-radius: 4px;
+}
