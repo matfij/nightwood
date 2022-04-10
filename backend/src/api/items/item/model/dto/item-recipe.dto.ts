@@ -9,6 +9,6 @@ export class ItemRecipeDto {
     @ApiProperty()
     product: ItemDto;
 
-    @ApiProperty()
+    @ApiProperty({ type: [ItemDto] })
     ingredients: ItemDto[];
 }

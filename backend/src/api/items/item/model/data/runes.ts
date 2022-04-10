@@ -133,7 +133,7 @@ export const RUNE_AGILITY_3: ItemDto = {
 
 export const RUNE_WISDOM_1: ItemDto = {
     uid: 'item-r-16',
-    name: 'Agility Rune I',
+    name: 'Wisdom Rune I',
     level: 10,
     rarity: ItemRarity.Scarce,
     type: ItemType.Equipment,
@@ -142,7 +142,7 @@ export const RUNE_WISDOM_1: ItemDto = {
 
 export const RUNE_WISDOM_2: ItemDto = {
     uid: 'item-r-17',
-    name: 'Agility Rune II',
+    name: 'Wisdom Rune II',
     level: 30,
     rarity: ItemRarity.Scarce,
     type: ItemType.Equipment,
@@ -151,7 +151,7 @@ export const RUNE_WISDOM_2: ItemDto = {
 
 export const RUNE_WISDOM_3: ItemDto = {
     uid: 'item-r-18',
-    name: 'Agility Rune III',
+    name: 'Wisdom Rune III',
     level: 60,
     rarity: ItemRarity.Scarce,
     type: ItemType.Equipment,

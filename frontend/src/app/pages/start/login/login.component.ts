@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { AuthController, UserConfirmDto } from 'src/app/client/api';
+import { AuthController, UserConfirmDto, UserLoginDto } from 'src/app/client/api';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { RepositoryService } from 'src/app/common/services/repository.service';
@@ -17,7 +17,7 @@ import { EngineService } from 'src/app/core/services/engine.service';
 export class LoginComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
-    nickname: new FormControl(
+    login: new FormControl(
       null, [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
     ),
     password: new FormControl(
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     ),
   });
   fields: FormInputOptions[] = [
-    { form: this.form, key: 'nickname', label: 'start.nickname', type: 'text' },
+    { form: this.form, key: 'login', label: 'start.nickname', type: 'text' },
     { form: this.form, key: 'password', label: 'start.password', type: 'password' },
   ];
   confirmLoading: boolean = false;
@@ -62,8 +62,12 @@ export class LoginComponent implements OnInit {
   login() {
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
+    const params: UserLoginDto = {
+      nickname: this.form.get('login')?.value,
+      password: this.form.get('password')?.value,
+    };
     this.submitLoading = true;
-    this.authController.login(this.form.value)
+    this.authController.login(params)
       .pipe(switchMap(user => {
         this.repositoryService.clearUserData();
         this.repositoryService.setAccessToken(user.accessToken);

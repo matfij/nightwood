@@ -4,6 +4,7 @@ import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { ItemPageDto } from "./model/dto/item-page.dto";
 import { ItemRecipeDto } from "./model/dto/item-recipe.dto";
+import { ItemDto } from "./model/dto/item.dto";
 import { RecipeComposeDto } from "./model/dto/recipe-compose.dto";
 import { ItemRuneService } from "./service/item-rune.service";
 import { ItemService } from "./service/item.service";
@@ -37,8 +38,8 @@ export class ItemController {
     }
 
     @Post('composeRecipe')
-    @ApiOkResponse()
-    composeRecipe(@Request() req: AuthorizedRequest, @Body() dto: RecipeComposeDto): Promise<void> {
+    @ApiOkResponse({ type: ItemDto })
+    composeRecipe(@Request() req: AuthorizedRequest, @Body() dto: RecipeComposeDto): Promise<ItemDto> {
         return this.itemRuneService.composeRecipe(req.user, dto);
     }
 }

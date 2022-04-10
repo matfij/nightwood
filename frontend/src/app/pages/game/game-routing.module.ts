@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdoptDragonComponent } from './adopt-dragon/adopt-dragon.component';
 import { ArenaComponent } from './arena/arena.component';
 import { AuctionsComponent } from './auctions/auctions.component';
+import { CraftingComponent } from './crafting/crafting.component';
 import { ExpeditionsComponent } from './expeditions/expeditions.component';
 import { HomeComponent } from './home/home.component';
 import { InventoryComponent } from './inventory/inventory.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'auctions', component: AuctionsComponent },
   { path: 'mail', component: MailComponent },
   { path: 'shoutbox', component: ShoutboxComponent },
+  { path: 'crafting', component: CraftingComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 

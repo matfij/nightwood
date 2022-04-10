@@ -6,6 +6,6 @@ import { ItemDto } from "./item.dto";
 export class ItemPageDto extends PaginationBaseDto {
 
     @IsArray()
-    @ApiProperty( { type: [ItemDto] })
+    @ApiProperty({ type: [ItemDto] })
     data: ItemDto[];
 }

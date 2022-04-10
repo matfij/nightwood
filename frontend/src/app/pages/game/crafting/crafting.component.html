@@ -1,0 +1,45 @@
+<div class="wrapper-main">
+  <app-navigation-bar currentLocation="crafting"></app-navigation-bar>
+
+  <div class="wrapper-content">
+
+    <div class="wrapper-crafting-section">
+      <div class="wrapper-lore">
+        <div class="wrapper-lore-img">
+          <img src="assets/img/lore/crafting-runes.png" draggable="false" alt="Goblin thinkerer">
+        </div>
+        {{ 'crafting.runeCraftingHint' | translate }}
+      </div>
+
+      <ng-template #loading>
+        <div class="mt-5">
+          <app-loading-indicator></app-loading-indicator>
+        </div>
+      </ng-template>
+      <div *ngIf="recipe$ | async as recipes; else loading" class="wrapper-recipes">
+
+        <div *ngFor="let recipe of recipes" class="item-recipe">
+          <div class="recipe-item">
+            <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
+          </div>
+
+          <div class="recipe-info">
+            <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
+            <div *ngFor="let ingredient of recipe.ingredients">
+              {{ ingredient.name }} ({{ ingredient.quantity }})
+              <progress class="progress-crafting" value="32" max="100" ></progress>
+            </div>
+          </div>
+
+          <div class="break"></div>
+          <button class="btn-base btn-craft">
+            {{ 'crafting.craft' | translate }}
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

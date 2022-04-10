@@ -831,6 +831,8 @@ export class AuthController implements IAuthController {
 export interface IItemController {
     getOwnedItems(): Observable<ItemPageDto>;
     getOwnedFoods(): Observable<ItemPageDto>;
+    getRuneRecipes(): Observable<ItemRecipeDto[]>;
+    composeRecipe(body: RecipeComposeDto): Observable<ItemDto>;
 }
 
 @Injectable({
@@ -938,6 +940,104 @@ export class ItemController implements IItemController {
             }));
         }
         return _observableOf<ItemPageDto>(<any>null);
+    }
+
+    getRuneRecipes(): Observable<ItemRecipeDto[]> {
+        let url_ = this.baseUrl + "/api/v1/item/getRuneRecipes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRuneRecipes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRuneRecipes(<any>response_);
+                } catch (e) {
+                    return <Observable<ItemRecipeDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ItemRecipeDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetRuneRecipes(response: HttpResponseBase): Observable<ItemRecipeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <ItemRecipeDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ItemRecipeDto[]>(<any>null);
+    }
+
+    composeRecipe(body: RecipeComposeDto): Observable<ItemDto> {
+        let url_ = this.baseUrl + "/api/v1/item/composeRecipe";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processComposeRecipe(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processComposeRecipe(<any>response_);
+                } catch (e) {
+                    return <Observable<ItemDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ItemDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processComposeRecipe(response: HttpResponseBase): Observable<ItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <ItemDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ItemDto>(<any>null);
     }
 }
 
@@ -1881,6 +1981,7 @@ export enum FoodType {
 export enum EquipmentType {
     Armor = "Armor",
     Charm = "Charm",
+    Rune = "Rune",
 }
 
 export interface ItemDto {
@@ -1985,6 +2086,16 @@ export interface UserConfirmDto {
 export interface ItemPageDto {
     meta: PageMetaDto;
     data: ItemDto[];
+}
+
+export interface ItemRecipeDto {
+    uid: string;
+    product: ItemDto;
+    ingredients: ItemDto[];
+}
+
+export interface RecipeComposeDto {
+    recipeUid: string;
 }
 
 export interface MailSendDto {

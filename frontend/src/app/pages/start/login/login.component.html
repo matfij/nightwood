@@ -15,10 +15,10 @@
     </div>
 
     <div class="wrapper-form">
-      <form [formGroup]="form" (ngSubmit)="login()">
+      <form [formGroup]="form" (ngSubmit)="login()" (keydown.enter)="login()">
         <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
-        <button *ngIf="!submitLoading" [disabled]="!form.valid" class="btn-base">
+        <button *ngIf="!submitLoading" [disabled]="!form.valid" type="submit" class="btn-base">
           {{ 'start.login' | translate }}
         </button>
         <div *ngIf="submitLoading" class="spinner">

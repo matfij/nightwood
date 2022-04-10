@@ -85,7 +85,9 @@
     "mailNotFound": "Mail not found",
     "confirmationCodeInvalid": "Invalid confirmation code",
     "confirmationCodeExpired": "Confirmation code expired",
-    "userNotConfirmed": "This account requires email verification"
+    "userNotConfirmed": "This account requires email verification",
+    "insufficientIngredients": "Insufficient ingredients",
+    "recipeNotFound": "Recipe not found"
   },
   "game": {
     "menu": "Menu",
@@ -93,6 +95,7 @@
     "adoptDragon": "Adopt dragon",
     "myDragons": "My dragons",
     "inventory": "Inventory",
+    "crafting": "Crafting",
     "expeditions": "Expeditions",
     "arena": "Arena",
     "auctions": "Marketplace",
@@ -171,6 +174,11 @@
     "rarity": "Rarity",
     "level": "Required level",
     "quantity": "Quantity"
+  },
+  "crafting": {
+    "runeCraftingHint": "Raven, the goblin thinkerer is a master of the crafting of runes. Once, he could craft runes of any type, but now he is limited to the following:",
+    "requiredIngredients": "Required ingredients",
+    "craft": "Craft"
   },
   "auctions": {
     "availableOffers": "Available offers",
