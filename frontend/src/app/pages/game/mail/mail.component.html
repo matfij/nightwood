@@ -13,7 +13,7 @@
 
         <div *ngIf="mail.id === activeMailId" class="mail-content">
           <hr>
-          {{ mail.message.length ? mail.message : '---' }}
+          <div [innerHTML]="mail.message.length ? mail.message : '---'"></div>
 
           <div *ngIf="mail.senderId" (click)="displayComposeModal = true; replyName = mail.senderName;" class="btn-base btn-mail">
             {{ 'mails.reply' | translate }}

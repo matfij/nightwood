@@ -88,7 +88,7 @@ export class AuthService {
 
     async refreshToken(dto: UserAuthDto) {
         const userData = this.jwtService.decode(dto.accessToken) as JwtData;
-        if (!this.dateService.isTokenValid(userData.exp, 1500)) this.errorService.throw('errors.tokenInvalid');
+        if (!this.dateService.isTokenValid(userData.exp, 15000)) this.errorService.throw('errors.tokenInvalid');
 
         dto.accessToken = null;
         dto.accessToken = await this.generateJwt(dto);

@@ -102,7 +102,8 @@
     "mail": "Mailbox",
     "shoutbox": "Shoutbox",
     "logout": "Logout",
-    "recentChanges": "Recent changes"
+    "recentChanges": "Recent changes",
+    "bestDragons": "Best dragons"
   },
   "dragon": {
     "adoptDragonTilte": "Who are you fated to encounter?",
@@ -156,8 +157,8 @@
     "feedSuccess": "The dragon was fed",
     "feedSuccessHint": "Stamina restored, some attributes have changed",
     "actionNone": "---",
-    "actionExpedition": "Expedition",
-    "actionTraining": "Training",
+    "actionExpedition": "On expedition",
+    "actionTraining": "On training",
     "requiredLevel": "Required level"
   },
   "arena": {
@@ -214,9 +215,7 @@
     "selectDragon": "Select dragon",
     "explore": "Explore",
     "startExpeditionOf": "Start exploration of {{ location }}",
-    "startExpeditionShort": "This is a relatively short trip that usually takes around three hours and requires dragon to have at least [{{ level }}] maturity level.",
-    "startExpeditionMedium": "This is a typical expedition that usually takes around six hours and requires dragon to have at least [{{ level }}] maturity level.",
-    "startExpeditionLong": "This is a long and arduous journey that usually takes around twelve hours and requires dragon to have at least [{{ level }}] maturity level.",
+    "startExpeditionHint": "This expedition requires at least [{{ level }}] maturity level.",
     "expeditionStarted": "Expedition started",
     "expeditionStartedHint": "Your dragon will be busy for a while",
     "expeditionReports": "Expedition reports",

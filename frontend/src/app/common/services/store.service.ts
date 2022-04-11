@@ -42,5 +42,3 @@ export class StoreService {
 export const USER_DATA = 'user-data';
 export const REFRESH_TOKEN = 'refresh-token';
 export const ACCESS_TOKEN = 'access-token';
-
-export const EXPEDITION_REPORTS = 'expedition-reports';

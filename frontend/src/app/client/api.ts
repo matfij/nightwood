@@ -1265,6 +1265,7 @@ export interface IDragonController {
     create(body: DragonCreateDto): Observable<DragonDto>;
     getOne(id: string): Observable<DragonDto>;
     getAll(body: DragonGetDto): Observable<DragonPageDto>;
+    getBest(body: DragonGetDto): Observable<DragonPageDto>;
     getOwned(): Observable<DragonDto[]>;
     startBattle(body: BattleStartDto): Observable<BattleResultDto>;
     learnSkill(body: SkillLearnDto): Observable<DragonDto>;
@@ -1415,6 +1416,57 @@ export class DragonController implements IDragonController {
     }
 
     protected processGetAll(response: HttpResponseBase): Observable<DragonPageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonPageDto>(<any>null);
+    }
+
+    getBest(body: DragonGetDto): Observable<DragonPageDto> {
+        let url_ = this.baseUrl + "/api/v1/dragon/getBest";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBest(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonPageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonPageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBest(response: HttpResponseBase): Observable<DragonPageDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :

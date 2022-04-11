@@ -5,6 +5,8 @@ import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expe
 import { DragonActionService } from "src/api/dragons/dragon-action/service/dragon-action.service";
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
+import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
+import { MailService } from "src/api/users/mail/service/mail.service";
 import { UserService } from "src/api/users/user/service/user.service";
 
 @Injectable()
@@ -12,6 +14,7 @@ export class ActionEventService {
 
     constructor(
         private userService: UserService,
+        private mailService: MailService,
         private dragonService: DragonService,
         private dragonActionService: DragonActionService,
         private itemService: ItemService,
@@ -47,6 +50,15 @@ export class ActionEventService {
                     gainedGold: gainedGold,
                     loots: loots,
                 });
+
+                const params: MailSendSystemParams = {
+                    receiverId: userId,
+                    topic: 'Expedition ended',
+                    message: `${dragon.name} has finished exploring Andrew Forest, 
+                        gained ${gainedExperience} experience and found: <br> • ${gainedGold} gold,
+                        ${loots.map(loot => `<br> • ${loot.name} (${loot.quantity})`).join(', ')}`,
+                }
+                this.mailService.sendSystemMail(params);
             }
         }
 

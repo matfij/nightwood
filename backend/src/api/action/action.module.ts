@@ -22,6 +22,7 @@ import { ActionItemService } from './service/action-item.service';
         DragonActionModule,
         ItemModule,
         AuctionModule,
+        MailModule,
     ],
     controllers: [
         ActionController,

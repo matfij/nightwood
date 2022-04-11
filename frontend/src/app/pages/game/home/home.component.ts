@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EXPEDITION_REPORTS, StoreService } from 'src/app/common/services/store.service';
-import { DisplayExpeditionReport } from 'src/app/core/definitions/expeditions';
-import { EngineService } from 'src/app/core/services/engine.service';
+import { Observable } from 'rxjs';
+import { DragonController, DragonGetDto, DragonPageDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-home',
@@ -10,23 +9,22 @@ import { EngineService } from 'src/app/core/services/engine.service';
 })
 export class HomeComponent implements OnInit {
 
-  reports: DisplayExpeditionReport[] = [];
-  reportsLoading: boolean = false;
+  dragons$: Observable<DragonPageDto> = new Observable<DragonPageDto>();
+  dragonsLoading: boolean = false;
 
   constructor(
-    private engineService: EngineService,
-    private storeService: StoreService,
+    private dragonController: DragonController,
   ) {}
 
   ngOnInit(): void {
-    this.checkExpeditionsFinished();
+    this.getTopDragons();
   }
 
-  checkExpeditionsFinished() {
-    const savedReports = this.storeService.getComplexItem<DisplayExpeditionReport[]>(EXPEDITION_REPORTS);
-    if (savedReports && savedReports.length > 0) {
-      this.reports = savedReports;
-    }
+  getTopDragons() {
+    const params: DragonGetDto = {
+      limit: 10,
+    };
+    this.dragons$ = this.dragonController.getBest(params);
   }
 
 }

@@ -43,7 +43,7 @@ export class MailService {
     async sendSystemMail(params: MailSendSystemParams): Promise<MailDto> {
         const mail: MailDto = {
             sentDate: this.dateService.getCurrentDate(),
-            senderName: params.senderName,
+            senderName: params.senderName ?? 'System',
             receiverId: params.receiverId,
             topic: params.topic,
             message: params.message,

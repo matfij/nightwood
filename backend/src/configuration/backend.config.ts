@@ -2,7 +2,7 @@
  * General
  */
 
-export const EXPEDITION_TIME_SCALE = 1 / 2;
+export const EXPEDITION_TIME_SCALE = 1 / 500;
 export const FEED_TIME_SCALE = 1;
 
 export const PAGINATION_DEFAULT_PAGE = 0;
@@ -36,7 +36,7 @@ export const MAIL_MESSAGE_MAX_LENGTH = 1000;
  */
 
 export const SKILL_DEVELOPMENT_LIMIT = 25;
-export const FEED_INTERVAL = FEED_TIME_SCALE * 1000 * 60 * 60 * 1;
+export const FEED_INTERVAL = FEED_TIME_SCALE * 1000 * 60 * 60 * 12;
 export const FOOD_STAMINA_GAIN = 50;
 
 /**

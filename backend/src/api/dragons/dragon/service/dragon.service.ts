@@ -20,6 +20,7 @@ import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
 import { FEED_INTERVAL, FOOD_STAMINA_GAIN } from 'src/configuration/backend.config';
+import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/configuration/frontend.config';
 
 @Injectable()
 export class DragonService {
@@ -50,9 +51,32 @@ export class DragonService {
 
     async getAll(dto: DragonGetDto): Promise<DragonPageDto> {
         const filterOptions: FindManyOptions<Dragon> = {
-            where: { level: Between(dto.minLevel, dto.maxLevel) },
+            where: { level: Between(dto.minLevel ?? DRAGON_MIN_SEARCH_LEVEL, dto.maxLevel ?? DRAGON_MAX_SEARCH_LEVEL) },
             select: ['id', 'name', 'level', 'nature'],
             order: { level: 'DESC' },
+        };
+
+        const dragons = await this.dragonRepository.find({
+            ...filterOptions,
+            skip: dto.page * dto.limit,
+            take: dto.limit,
+        });
+        const count = await this.dragonRepository.count({
+            ...filterOptions,
+        });
+
+        const dragonPage: DragonPageDto = {
+            data: dragons,
+            meta: { totalItems: count },
+        };
+        return dragonPage;
+    }
+
+    async getBest(dto: DragonGetDto): Promise<DragonPageDto> {
+        const filterOptions: FindManyOptions<Dragon> = {
+            where: { level: Between(dto.minLevel ?? DRAGON_MIN_SEARCH_LEVEL, dto.maxLevel ?? DRAGON_MAX_SEARCH_LEVEL) },
+            select: ['name', 'level', 'nature', 'experience'],
+            order: { experience: 'DESC' },
         };
 
         const dragons = await this.dragonRepository.find({

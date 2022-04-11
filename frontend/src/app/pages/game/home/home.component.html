@@ -30,23 +30,18 @@
       </div>
     </div>
 
-    <div class="wrapper-reports">
-      <div class="title">{{ 'explore.expeditionReports' | translate }}</div>
-      <div *ngIf="reportsLoading" class="mt-5">
+    <div class="wrapper-dragons">
+      <div class="title mb-4">{{ 'game.bestDragons' | translate }}</div>
+      <div *ngIf="dragonsLoading" class="mt-5">
         <app-loading-indicator></app-loading-indicator>
       </div>
       <div class="reports-scroll">
-        <div *ngFor="let report of reports" class="report">
-          {{ report.generationDate | date:"HH:mm dd.MM.yyyy" }}
-          <div
-            [innerHtml]="'explore.expeditionReportDescription' | translate
-              :{ dragon: report.dragonName, expedition: report.expeditionName, experience: report.experience }">
-          </div>
-          <ul>
-            <li *ngFor="let loot of report.loots" class="loot color-{{loot.rarity}}">
-              {{ loot.name | translate }} ({{ loot.quantity }})
-            </li>
-          </ul>
+        <div
+          *ngFor="let dragon of (dragons$ | async)?.data; index as i"
+          [ngStyle]="{'font-size': 'clamp(13px, '+(18-1.5*i)+'px, 18px)'}"
+          [ngClass]="{ 'dragon-first': i === 0 }"
+          class="item-dragon">
+          {{ i+1 }}. {{ dragon.name }} [{{ dragon.level }}] | exp.: {{ dragon.experience }}
         </div>
       </div>
     </div>

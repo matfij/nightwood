@@ -11,7 +11,6 @@ import { DisplayExpedition } from 'src/app/core/definitions/events';
 })
 export class ExpeditionsComponent implements OnInit {
 
-  private readonly BASE_NAME_PATH = 'expeditions';
   private readonly BASE_IMG_PATH = 'assets/img/expeditions';
 
   @ViewChild('selectDragon') selectDragon?: ElementRef;
@@ -51,12 +50,7 @@ export class ExpeditionsComponent implements OnInit {
     const titleParams = { location: this.translateService.instant(expedition.name) };
     this.modalTitle = this.translateService.instant('explore.startExpeditionOf', titleParams);
 
-    let message = 'explore.';
-    if (expedition.minimumActionTime < 4 * 60 * 60 * 1000) message += 'startExpeditionShort';
-    else if (expedition.minimumActionTime < 7 * 60 * 60 * 1000) message += 'startExpeditionMedium';
-    else if (expedition.minimumActionTime < 13 * 60 * 60 * 1000) message += 'startExpeditionLong';
-
-    this.modalMessage = this.translateService.instant(message, { level: expedition.level });
+    this.modalMessage = this.translateService.instant('explore.startExpeditionHint', { level: expedition.level });
 
     this.selectedExpedition = expedition.name;
     this.showDragonChoiceModal = true;

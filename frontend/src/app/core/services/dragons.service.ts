@@ -37,7 +37,7 @@ export class DragonService {
 
     const currentAction = (dragon.action && !this.dateService.checkIfEventAvailable(dragon.action.nextAction))
       ? this.getDragonActionName(dragon.action.type)
-      : '---';
+      : undefined;
 
     return {
       ...dragon,

@@ -40,6 +40,13 @@ export class DragonController {
         return this.dragonService.getAll(dto);
     }
 
+    @Post('getBest')
+    @UseInterceptors(PaginationInterceptor)
+    @ApiOkResponse({ type: DragonPageDto })
+    getBest(@Body() dto: DragonGetDto): Promise<DragonPageDto> {
+        return this.dragonService.getBest(dto);
+    }
+
     @Post('getOwned')
     @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: [DragonDto] })

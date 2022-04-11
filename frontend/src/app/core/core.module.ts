@@ -17,6 +17,7 @@ import { ConfirmModalComponent } from '../common/components/confirm-modal/confir
 import { TooltipDirective } from '../common/utils/tooltip.directive';
 import { AuctionCreateComponent } from './components/auction-create/auction-create.component';
 import { MailSendModalComponent } from './components/mail-send-modal/mail-send-modal.component';
+import { TimerPipe } from '../common/utils/timer.pipe';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -42,6 +43,7 @@ const MODULES = [
 ];
 const UTILS = [
   TooltipDirective,
+  TimerPipe,
 ];
 const CHILD_PROVIDERS = [
   ...(TranslateModule.forChild().providers ?? []),

@@ -20,7 +20,7 @@ import { EmailService } from 'src/common/services/email.service';
       inject: [ConfigService],
       useFactory: async(x: ConfigService) => ({ 
         secret: x.get('JWT_KEY'), 
-        signOptions: { expiresIn: 900 } 
+        signOptions: { expiresIn: 2000 } 
       }),
     }),
     ItemModule,
