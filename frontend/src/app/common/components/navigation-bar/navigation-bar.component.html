@@ -8,7 +8,10 @@
 </div>
 <div *ngIf="displayMenu" class="no-desktop wrapper-menu">
   <li *ngFor="let item of navigationItems" [ngClass]="{'app-active': item.isActive}" class="nav-item">
-    <div class="item-menu-nav" (click)="navigate(item.path)">{{ item.label | translate }}</div>
+    <div class="item-menu-nav" (click)="navigate(item.path)">
+      <div *ngIf="item.label === 'game.mail' && newMails">{{ item.label | translate }} ({{ newMails }})</div>
+      <div *ngIf="item.label !== 'game.mail' || !newMails">{{ item.label | translate }}</div>
+    </div>
   </li>
 </div>
 
@@ -23,6 +26,9 @@
   </div>
 
   <li *ngFor="let item of navigationItems" [ngClass]="{'app-active': item.isActive}" class="nav-item">
-    <div class="item-nav" (click)="navigate(item.path)">{{ item.label | translate }}</div>
+    <div class="item-nav" (click)="navigate(item.path)">
+      <div *ngIf="item.label === 'game.mail' && newMails">{{ item.label | translate }} ({{ newMails }})</div>
+      <div *ngIf="item.label !== 'game.mail' || !newMails">{{ item.label | translate }}</div>
+    </div>
   </li>
 </div>

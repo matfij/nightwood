@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { BehaviorSubject, Observable, Subscription, timer } from "rxjs";
-import { tap } from "rxjs/operators";
-import { ActionController, AuthController, ExpeditionReportDto, UserAuthDto } from "src/app/client/api";
+import { map, tap } from "rxjs/operators";
+import { ActionController, AuthController, ExpeditionReportDto, MailController, UserAuthDto } from "src/app/client/api";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { ToastService } from "src/app/common/services/toast.service";
 
@@ -17,18 +17,20 @@ export class EngineService {
   constructor(
     private actionController: ActionController,
     private authController: AuthController,
+    private mailController: MailController,
     private translateService: TranslateService,
     private toastService: ToastService,
     private repositoryService: RepositoryService,
   ) {}
 
-  tick(): void {
+  tick(): Observable<number> {
     this.updateUserData();
     this.getExpeditionReports().subscribe();
+    return this.checkMails();
   }
 
   start(): void {
-    this.tick$ = timer(0, 5000).subscribe(() => { this.tick(); });
+    this.tick$ = timer(0, 30000).subscribe(() => { this.tick(); });
   }
 
   stop(): void {
@@ -64,6 +66,11 @@ export class EngineService {
       this.repositoryService.setUserData(data);
       this.user$.next(data);
     });
+  }
+
+  checkMails(): Observable<number> {
+    return this.mailController.checkUnread()
+      .pipe(map(mailPage => mailPage.data.length));
   }
 
   getExpeditionReports(): Observable<ExpeditionReportDto[]> {

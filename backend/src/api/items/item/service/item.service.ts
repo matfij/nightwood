@@ -11,6 +11,7 @@ import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
 import { ItemType } from "../model/definitions/item-type";
 import { ItemRarity, LootChance } from "../model/definitions/item-rarity";
+import { MathService } from "src/common/services/math.service";
 
 @Injectable()
 export class ItemService {
@@ -19,6 +20,7 @@ export class ItemService {
         @InjectRepository(Item)
         private itemRepository: Repository<Item>,
         private errorService: ErrorService,
+        private mathService: MathService,
     ) {}
 
     async createStartingItems(user: UserDto) {
@@ -101,7 +103,8 @@ export class ItemService {
         const loots: ItemDto[] = [];
         expedition.loots.forEach(loot => {
 
-            const dragonChance = Math.random() * Math.log(4 + dragon.luck / dragon.level);
+            const luckFactor = Math.log(1 + 2*dragon.luck / dragon.level);
+            const dragonChance = Math.random() * this.mathService.randRange(1, this.mathService.limit(1, luckFactor, 10));
             const requiredChance = Math.random() * LootChance[loot.rarity]; // 0-1 * 2-44
 
             if (dragonChance > requiredChance) {

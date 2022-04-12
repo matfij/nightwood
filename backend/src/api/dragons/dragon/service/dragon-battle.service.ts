@@ -195,10 +195,9 @@ export class DragonBattleService {
 
     private async saveBattleResults(ownedWin: boolean, owned: BattleDragon, enemy: BattleDragon, battleLength: number): Promise<BattleDragon> {
         if (ownedWin) {
-            let gainedExperience = 10 
-                + this.mathService.randRange(0.7, 1.2) * (enemy.level - owned.level)
-                + this.mathService.randRange(0.05, 0.12) * battleLength;
-            gainedExperience = Math.round(this.mathService.limit(10, gainedExperience, 1000));
+            let gainedExperience = 10 * this.mathService.randRange(0.7, 1.3) 
+                * Math.log(1 + Math.max(1, (enemy.level - owned.level)));
+            gainedExperience = Math.round(this.mathService.limit(1, gainedExperience, 100));
 
             owned.experience += gainedExperience;
         }

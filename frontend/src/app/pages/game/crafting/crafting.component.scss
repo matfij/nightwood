@@ -69,3 +69,11 @@
 
   line-height: 22px;
 }
+
+
+@media screen and (max-width: $mobile-threshold) {
+
+  .item-recipe {
+    min-width: 100%;
+  }
+}

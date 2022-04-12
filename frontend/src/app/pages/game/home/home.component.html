@@ -3,31 +3,33 @@
 
   <div class="wrapper-content">
 
-    <div class="wrapper-news">
-      <div class="title">{{ 'game.recentChanges' | translate }}</div>
+    <div class="section-news">
+      <div class="title mb-4">{{ 'game.recentChanges' | translate }}</div>
 
-      <div class="item-news">
-        <p><b>10.04.2022 <br>Technical review.</b></p>
-        1. New loots added to existing expeditions.<br>
-        2. New game mechanic - rune crafting (for now runes do not have any statistics which will be introduced in a future update). <br>
-        3. For the next 2 days the expedition time will be cut in half.<br>
-        4. Before the main rune update some QoL changes will be introduced (e. g. expedition timers) <br>
+      <div class="wrapper-news">
+        <div class="item-news">
+          <p><b>13.04.2022 <br>Technical review.</b></p>
+          1. New experience formula, experience gained to this point was normalized.<br>
+          2. QoL changes - expedition timers, expedition report mails.<br>
+          3. Minor display fixes.<br>
+          4. Expedition time is back to normal. <br>
+          5. Next update: full rune implementation.
+        </div>
+
+        <div class="item-news">
+          <p><b>10.04.2022 <br>Technical review.</b></p>
+          1. New loots added to existing expeditions.<br>
+          2. New game mechanic - rune crafting (for now runes do not have any statistics which will be introduced in a future update). <br>
+          3. For the next 2 days the expedition time will be cut in half.<br>
+        </div>
+
+        <div class="item-news">
+          <p><b>09.04.2022 <br>Technical review.</b></p>
+          1. Dragon feeding and expedition cooldown times are back to normal. <br>
+          2. Starded work on dragon equipment - runes. <br>
+        </div>
       </div>
 
-      <div class="item-news">
-        <p><b>09.04.2022 <br>Technical review.</b></p>
-        1. Dragon feeding and expedition cooldown times are back to normal. <br>
-        2. Starded work on dragon equipment - runes. <br>
-      </div>
-
-      <div class="item-news">
-        <img src="assets/img/news/dragon.png" alt="dragon">
-        <p><b>01.04.2022 <br>Welcome to the Re: Nightwood.</b></p>
-        This game was created solely for entertainment purposes to allow old players to return to the lands of Nightwood
-        and enable new players to get to know them. New features will be delivered in the future, including new dragons,
-        equipment, alchemy, guilds, and more (of course non-functional features e.g. performance and safety will also be addressed).
-        Tribute to the original creator Przmysław "Gilfuin" Krowiński who inspired this project.
-      </div>
     </div>
 
     <div class="wrapper-dragons">
@@ -41,7 +43,7 @@
           [ngStyle]="{'font-size': 'clamp(13px, '+(18-1.5*i)+'px, 18px)'}"
           [ngClass]="{ 'dragon-first': i === 0 }"
           class="item-dragon">
-          {{ i+1 }}. {{ dragon.name }} [{{ dragon.level }}] | exp.: {{ dragon.experience }}
+          {{ i+1 }}. {{ dragon.name }} [{{ dragon.level }}] | {{ dragon.experience }} {{ 'dragon.experience' | translate }}
         </div>
       </div>
     </div>

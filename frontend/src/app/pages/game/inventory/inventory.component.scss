@@ -29,3 +29,11 @@
   display: flex;
   border-radius: 4px;
 }
+
+
+@media screen and (max-width: $mobile-threshold) {
+
+  .wrapper-items {
+    justify-content: center;
+  }
+}

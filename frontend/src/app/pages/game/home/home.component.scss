@@ -9,9 +9,7 @@
 }
 
 .wrapper-news {
-  max-height: 600px;
-  margin-top: 10px;
-
+  height: clamp(0px, 60vh, 600px);
   overflow: auto;
 }
 
@@ -30,6 +28,10 @@
     padding-right: 10px;
     float: left;
   }
+
+  &:first-of-type {
+    margin-top: 0px;
+  }
 }
 
 .item-dragon {
@@ -40,14 +42,18 @@
   background-color: transparentize($color: $app-primary, $amount: 0.95);
   letter-spacing: 1px;
 
-  ul {
-    margin: 0px;
+  &:hover {
+    box-shadow: inset 1px 1px 12px 1px lighten($app-primary, 10);
   }
 }
 
 .dragon-first {
   box-shadow: inset 1px 1px 12px 1px $app-secondary;
   background-color: transparentize($color: $app-secondary, $amount: 0.95);
+
+  &:hover {
+    box-shadow: inset 1px 1px 12px 1px lighten($app-secondary, 10);
+  }
 }
 
 @media screen and (max-width: $mobile-threshold) {

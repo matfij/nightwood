@@ -16,7 +16,9 @@ export class NavigationBarComponent {
   @Input() currentLocation!: string;
 
   user$?: Observable<UserAuthDto>;
+  newMails: number = 0;
   displayMenu: boolean = false;
+  isCollapsed: boolean = true;
 
   navigationItems: NavigationItem[] = [
     { label: 'game.home', path: 'home', icon: '', isActive: false },
@@ -30,7 +32,6 @@ export class NavigationBarComponent {
     { label: 'game.mail', path: 'mail', icon: '', isActive: false },
     { label: 'game.shoutbox', path: 'shoutbox', icon: '', isActive: false },
   ];
-  isCollapsed: boolean = true;
 
   constructor(
     private router: Router,
@@ -42,11 +43,13 @@ export class NavigationBarComponent {
     this.navigationItems.forEach(x => x.isActive = this.currentLocation === x.path);
 
     this.user$ = this.engineService.getUser();
+
+    this.engineService.tick().subscribe(newMails => {
+      this.newMails = newMails;
+    });
   }
 
   navigate(path: string) {
-    this.engineService.tick();
-
     this.router.navigate(['game', path]);
   }
 
