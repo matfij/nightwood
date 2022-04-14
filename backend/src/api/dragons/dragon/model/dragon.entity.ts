@@ -1,5 +1,6 @@
+import { Item } from "src/api/items/item/model/item.entity";
 import { DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
 import { DragonSkills } from "../../dragon-skills/model/dragon-skills.entity";
 import { DragonNature } from "./definitions/dragon-nature";
@@ -9,9 +10,6 @@ export class Dragon {
 
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Column()
-    name: string;
 
     @Column({ nullable: true })
     ownerId?: number;
@@ -23,6 +21,12 @@ export class Dragon {
     @OneToOne(_ => DragonSkills)
     @JoinColumn()
     skills: DragonSkills;
+
+    @OneToMany(_ => Item, x => x.dragon)
+    runes: Item[];
+
+    @Column()
+    name: string;
 
     @Column({ default: 0 })
     skillPoints: number;

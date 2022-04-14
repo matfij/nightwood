@@ -1,3 +1,4 @@
+import { Dragon } from "src/api/dragons/dragon/model/dragon.entity";
 import { User } from "src/api/users/user/model/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ItemRarity } from "./definitions/item-rarity";
@@ -8,6 +9,12 @@ export class Item {
 
     @PrimaryGeneratedColumn()
     id: number;
+
+    @ManyToOne(_ => User, x => x.items)
+    user: User;
+
+    @ManyToOne(_ => User, x => x.items)
+    dragon: Dragon;
 
     @Column()
     uid: string;
@@ -35,7 +42,4 @@ export class Item {
 
     @Column({ nullable: true })
     equipmentType?: EquipmentType;
-
-    @ManyToOne(_ => User, x => x.items)
-    user: User;
 }

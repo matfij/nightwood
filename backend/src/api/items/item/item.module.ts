@@ -22,6 +22,7 @@ import { ItemService } from './service/item.service';
     ],
     exports: [
         ItemService,
+        ItemRuneService,
     ],
 })
 export class ItemModule {}

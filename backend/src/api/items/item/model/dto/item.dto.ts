@@ -10,6 +10,16 @@ export class ItemDto {
     id?: number;
 
     @Expose()
+    @Transform(({obj}) => { obj.user.id })
+    @ApiPropertyOptional()
+    userId?: number;
+
+    @Expose()
+    @Transform(({obj}) => { obj.dragon.id })
+    @ApiPropertyOptional()
+    dragonId?: number;
+
+    @Expose()
     @ApiProperty()
     uid: string;
 
@@ -44,9 +54,4 @@ export class ItemDto {
     @Expose()
     @ApiPropertyOptional({enum: EquipmentType, enumName: 'EquipmentType' })
     equipmentType?: EquipmentType;
-
-    @Expose()
-    @Transform(({obj}) => { obj.user.id })
-    @ApiPropertyOptional()
-    userId?: number;
 }

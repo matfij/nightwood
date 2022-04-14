@@ -69,7 +69,7 @@
     "dragonNotFound": "Dragon not found",
     "dragonAlreadyFed": "Selected dragon has been fed recently",
     "maxDragonsExceeded": "Maximum number of dragons exceeded",
-    "dragonTooYoung": "Selected dragon is not mature enough",
+    "dragonTooYoung": "Selected dragon is too young",
     "dragonBusy": "Selected dragon is busy",
     "expeditionNotFound": "Location not found",
     "expeditionNotFinished": "Expedition is not finished",
@@ -87,7 +87,9 @@
     "confirmationCodeExpired": "Confirmation code expired",
     "userNotConfirmed": "This account requires email verification",
     "insufficientIngredients": "Insufficient ingredients",
-    "recipeNotFound": "Recipe not found"
+    "recipeNotFound": "Recipe not found",
+    "itemNotEquipped": "Item is not equipped",
+    "itemCanNotBeEquipped": "Item can not be equipped"
   },
   "game": {
     "menu": "Menu",

@@ -119,7 +119,7 @@ export class DragonService {
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills'] });
+        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills', 'runes'] });
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
         if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');
@@ -170,7 +170,7 @@ export class DragonService {
     }
 
     async awardExpeditionExperience(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
-        const gainedExperience = Math.round(this.mathService.randRange(0.8, 1.2) * expedition.experienceAward);
+        const gainedExperience = Math.round(this.mathService.randRange(0.9, 1.1) * expedition.experienceAward);
         dragon.experience += gainedExperience;
     
         await this.dragonRepository.update(dragon.id, { experience: dragon.experience });
@@ -179,8 +179,8 @@ export class DragonService {
 
     async awardExpeditionGold(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
         const gainedGold = 
-            this.mathService.randRange(0.8, 1.2) * expedition.goldAward
-                * Math.log(1 + 3*dragon.luck / dragon.level);
+            this.mathService.randRange(0.9, 1.1) * expedition.goldAward
+                * Math.log(1 + 2*dragon.luck / dragon.level);
         return Math.round(gainedGold);
     }
 
@@ -217,6 +217,6 @@ export class DragonService {
         const updatedDragon = await this.dragonSkillsService.learnSkill(dto.skillUid, dragon);
         await this.dragonRepository.update(dragon.id, { skillPoints: updatedDragon.skillPoints });
         return updatedDragon;
-    } 
+    }
 
 }

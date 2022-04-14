@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { ErrorService } from "src/common/services/error.service";
 import { MoreThan, Repository } from "typeorm";
@@ -56,5 +57,19 @@ export class ItemRuneService {
         }
 
         return product;
+    }
+
+    async equipDragon(dragon: DragonDto, item: ItemDto): Promise<void> {
+        console.log(dragon.runes)
+        // if (item.dragonId !== dragon.id) this.errorService.throw('errors.itemCanNotBeEquipped');
+        item.dragonId = dragon.id;
+        await this.itemRepository.save({ ...item, dragon});
+    }
+
+    async unequipDragon(dragon: DragonDto, item: ItemDto): Promise<void> {
+        // check if item is equipped
+        if (item.dragonId !== dragon.id) this.errorService.throw('errors.itemNotEquipped');
+        item.dragonId = null;
+        await this.itemRepository.save(item);
     }
 }

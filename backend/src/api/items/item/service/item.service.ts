@@ -62,13 +62,16 @@ export class ItemService {
     }
 
     async checkFeedingItem(userId: number, itemId: number): Promise<ItemDto> {
-        const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
-        
-        if (!item) this.errorService.throw('errors.itemNotFound');
-        if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
-        if (item.type !== ItemType.Food) this.errorService.throw('errors.itemNotFound');
-        if (item.quantity < 1) this.errorService.throw('errors.insufficientQuantity');
-        
+        const item = await this.checkItem(userId, itemId);
+
+        if (item.type !== ItemType.Food) this.errorService.throw('errors.itemNotFound')
+        return item;
+    }
+
+    async checkEquippingItem(userId: number, itemId: number): Promise<ItemDto> {
+        const item = await this.checkItem(userId, itemId);
+
+        if (item.type !== ItemType.Equipment) this.errorService.throw('errors.itemNotFound')
         return item;
     }
 

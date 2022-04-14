@@ -12,6 +12,7 @@ import { ActionDragonService } from "./service/action-dragon.service";
 import { ActionEventService } from "./service/action-event.service";
 import { ActionItemService } from "./service/action-item.service";
 import { JwtAuthGuard } from "../users/auth/util/jwt.guard";
+import { DragonEquipDto } from "../dragons/dragon/model/dto/dragon-equip.dto";
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -36,6 +37,24 @@ export class ActionController {
         return this.actionDragonService.feedDragon(req.user.id, dto);
     }
 
+    @Post('equipDragon')
+    @ApiOkResponse({ type: DragonDto })
+    equipDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonEquipDto): Promise<DragonDto> {
+        return this.actionDragonService.equipDragon(req.user.id, dto);
+    }
+
+    @Post('unequipDragon')
+    @ApiOkResponse({ type: DragonDto })
+    unequipDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonEquipDto): Promise<DragonDto> {
+        return this.actionDragonService.unequipDragon(req.user.id, dto);
+    }
+
+    @Post('releaseDragon/:id')
+    @ApiOkResponse()
+    releaseDragon(@Request() req: AuthorizedRequest, @Param('id') id: string) {
+      return this.actionDragonService.releaseDragon(req.user.id, +id);
+    }
+
     @Post('startExpedition')
     @ApiOkResponse({ type: DragonActionDto })
     startExpedition(@Request() req: AuthorizedRequest, @Body() dto: StartExpeditionDto): Promise<DragonActionDto> {
@@ -46,12 +65,6 @@ export class ActionController {
     @ApiOkResponse({ type: [ExpeditionReportDto] })
     checkExpeditions(@Request() req: AuthorizedRequest): Promise<ExpeditionReportDto[]> {
       return this.actionEventService.checkExpeditions(req.user.id);
-    }
-
-    @Post('releaseDragon/:id')
-    @ApiOkResponse()
-    releaseDragon(@Request() req: AuthorizedRequest, @Param('id') id: string) {
-      return this.actionDragonService.releaseDragon(req.user.id, +id);
     }
 
     @Post('buyAuction/:id')

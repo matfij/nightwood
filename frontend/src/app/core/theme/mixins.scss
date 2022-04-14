@@ -36,6 +36,11 @@
       color: $app-dark;
     }
   }
+
+  &::selection {
+    color: none;
+    background: none;
+  }
 }
 
 @mixin tile($color: $app-primary, $size: 12px, $transparency: 0.95) {

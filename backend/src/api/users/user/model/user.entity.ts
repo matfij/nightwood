@@ -1,12 +1,16 @@
+import { Dragon } from "src/api/dragons/dragon/model/dragon.entity";
 import { Item } from "src/api/items/item/model/item.entity";
 import { DB_MONEY_TYPE, DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
-import { AfterLoad, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { AfterLoad, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
 
     @PrimaryGeneratedColumn()
     id: number;
+
+    @OneToMany(_ => Item, x => x.user)
+    items: Item[];
 
     @Column({ unique: true })
     email: string;
@@ -25,9 +29,6 @@ export class User {
 
     @Column({ default: 3 })
     maxOwnedDragons: number;
-
-    @OneToMany(_ => Item, x => x.user)
-    items: Item[];
 
     @Column({ default: false })
     isConfirmed: boolean;
