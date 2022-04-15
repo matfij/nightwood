@@ -13,8 +13,8 @@ export class Item {
     @ManyToOne(_ => User, x => x.items)
     user: User;
 
-    @ManyToOne(_ => User, x => x.items)
-    dragon: Dragon;
+    @Column({ nullable: true })
+    dragonId: number;
 
     @Column()
     uid: string;

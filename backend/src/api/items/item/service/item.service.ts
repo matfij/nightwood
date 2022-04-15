@@ -75,6 +75,16 @@ export class ItemService {
         return item;
     }
 
+    async checkUnequippingItem(userId: number, itemId: number): Promise<ItemDto> {
+        const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
+        
+        if (!item) this.errorService.throw('errors.itemNotFound');
+        if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
+
+        if (item.type !== ItemType.Equipment) this.errorService.throw('errors.itemNotFound')
+        return item;
+    }
+
     async refillItem(item: ItemDto, quantity: number = 1): Promise<void> {
         item.quantity += quantity;
         this.itemRepository.save(item);
@@ -85,12 +95,24 @@ export class ItemService {
         this.itemRepository.save(item);
     }
 
+    async equipItem(item: ItemDto, dragonId: number): Promise<ItemDto> {
+        item.dragonId = dragonId;
+        item.quantity -= 1;
+        return await this.itemRepository.save(item)
+    }
+
+    async unquipItem(item: ItemDto): Promise<ItemDto> {
+        item.dragonId = null;
+        item.quantity += 1;
+        return await this.itemRepository.save(item)
+    }
+
     async updateInventory(user: UserDto, loots: ItemDto[]) {
         const items = await this.itemRepository.find({ user: user });
 
         const newItems = [];
         loots.forEach(loot => {
-            if (items.map(x => x.uid).includes(loot.uid)) {
+            if (items.map(x => x.uid).includes(loot.uid) && loot.type !== ItemType.Equipment) {
                 const item = items[items.map(x => x.uid).findIndex(x => x === loot.uid)];
                 item.quantity += loot.quantity;
             } else {

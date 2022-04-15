@@ -15,7 +15,6 @@ export class ItemDto {
     userId?: number;
 
     @Expose()
-    @Transform(({obj}) => { obj.dragon.id })
     @ApiPropertyOptional()
     dragonId?: number;
 

@@ -47,29 +47,9 @@ export class ItemRuneService {
         });
 
         const product = recipe.product;
-        const item = items.find(y => y.uid === product.uid);
-        if (!item) {
-            const newItem = this.itemRepository.create({ ...product, user });
-            this.itemRepository.save(newItem);
-        } else {
-            item.quantity += product.quantity ?? 1;
-            this.itemRepository.save(item);
-        }
+        const newItem = this.itemRepository.create({ ...product, user });
+        this.itemRepository.save(newItem);
 
         return product;
-    }
-
-    async equipDragon(dragon: DragonDto, item: ItemDto): Promise<void> {
-        console.log(dragon.runes)
-        // if (item.dragonId !== dragon.id) this.errorService.throw('errors.itemCanNotBeEquipped');
-        item.dragonId = dragon.id;
-        await this.itemRepository.save({ ...item, dragon});
-    }
-
-    async unequipDragon(dragon: DragonDto, item: ItemDto): Promise<void> {
-        // check if item is equipped
-        if (item.dragonId !== dragon.id) this.errorService.throw('errors.itemNotEquipped');
-        item.dragonId = null;
-        await this.itemRepository.save(item);
     }
 }

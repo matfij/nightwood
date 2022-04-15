@@ -19,7 +19,7 @@ import { MathService } from 'src/common/services/math.service';
 import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
-import { FEED_INTERVAL, FOOD_STAMINA_GAIN } from 'src/configuration/backend.config';
+import { FEED_INTERVAL, FOOD_STAMINA_GAIN, MAX_RUNES } from 'src/configuration/backend.config';
 import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/configuration/frontend.config';
 
 @Injectable()
@@ -119,7 +119,7 @@ export class DragonService {
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills', 'runes'] });
+        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills'] });
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
         if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');
@@ -219,4 +219,18 @@ export class DragonService {
         return updatedDragon;
     }
 
+    async equipDragon(dragon: DragonDto, item: ItemDto): Promise<DragonDto> {
+        dragon.equipment.runes.push(item);
+
+        return await this.dragonRepository.save(dragon);
+    }
+
+    async unequipDragon(dragon: DragonDto, item: ItemDto): Promise<DragonDto> {
+        const index = dragon.equipment.runes.findIndex(rune => rune.uid === item.uid);
+        if (index === -1) this.errorService.throw('errors.itemNotFound');
+
+        dragon.equipment.runes.splice(index, 1);
+
+        return await this.dragonRepository.save(dragon);
+    }
 }

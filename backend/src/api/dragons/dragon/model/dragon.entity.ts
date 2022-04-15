@@ -1,8 +1,8 @@
-import { Item } from "src/api/items/item/model/item.entity";
 import { DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
 import { DragonSkills } from "../../dragon-skills/model/dragon-skills.entity";
+import { DragonEquipment } from "./definitions/dragon-equipment";
 import { DragonNature } from "./definitions/dragon-nature";
 
 @Entity()
@@ -22,8 +22,8 @@ export class Dragon {
     @JoinColumn()
     skills: DragonSkills;
 
-    @OneToMany(_ => Item, x => x.dragon)
-    runes: Item[];
+    @Column({ type: 'json', default: { runes: [] } })
+    equipment: DragonEquipment;
 
     @Column()
     name: string;

@@ -7,7 +7,7 @@ import { ItemService } from "src/api/items/item/service/item.service";
 import { UserService } from "src/api/users/user/service/user.service";
 import { DragonEquipDto } from "src/api/dragons/dragon/model/dto/dragon-equip.dto";
 import { ErrorService } from "src/common/services/error.service";
-import { ItemRuneService } from "src/api/items/item/service/item-rune.service";
+import { MAX_RUNES } from "src/configuration/backend.config";
 
 @Injectable()
 export class ActionDragonService {
@@ -16,7 +16,6 @@ export class ActionDragonService {
         private userService: UserService,
         private dragonService: DragonService,
         private itemService: ItemService,
-        private itemRuneService: ItemRuneService,
         private errorService: ErrorService,
     ) {}
 
@@ -49,20 +48,23 @@ export class ActionDragonService {
         const item = await this.itemService.checkEquippingItem(userId, dto.itemId);
 
         if (dragon.level < item.level) this.errorService.throw('errors.dragonTooYoung');
+        if (dragon.equipment.runes.length >= MAX_RUNES) this.errorService.throw('errors.itemCanNotBeEquipped');
 
-        await this.itemRuneService.equipDragon(dragon, item);
-        await this.itemService.consumeItem(item);
+        const equippedDragon = await this.dragonService.equipDragon(dragon, item);
+        await this.itemService.equipItem(item, dragon.id);
 
-        return dragon;
+        return equippedDragon;
     }
 
     async unequipDragon(userId: number, dto: DragonEquipDto): Promise<DragonDto> {
         const dragon = await this.dragonService.checkDragon(userId, dto.dragonId);
-        const item = await this.itemService.checkEquippingItem(userId, dto.itemId);
+        const item = await this.itemService.checkUnequippingItem(userId, dto.itemId);
 
-        await this.itemRuneService.unequipDragon(dragon, item);
-        await this.itemService.refillItem(item);
+        if (item.dragonId !== dragon.id) this.errorService.throw('errors.itemNotEquipped');
 
-        return dragon;
+        const unequippedDragon = await this.dragonService.unequipDragon(dragon, item);
+        await this.itemService.unquipItem(item);
+
+        return unequippedDragon;
     }
 }
