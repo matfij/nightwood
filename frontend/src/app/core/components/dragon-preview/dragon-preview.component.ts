@@ -24,6 +24,7 @@ export class DragonPreviewComponent implements OnInit {
   availableFood: DisplayItem[] = [];
   feedLoading: boolean = false;
   displayDetails: boolean = false;
+  displayEquipment: boolean = false;
   displayReleaseModal: boolean = false;
 
   constructor(
@@ -75,14 +76,6 @@ export class DragonPreviewComponent implements OnInit {
       this.toastService.showSuccess('dragon.feedSuccess', 'dragon.feedSuccessHint')
       this.dragon = Object.assign(this.dragon, fedDragon);
     }, () => this.feedLoading = false);
-  }
-
-  navigateExplore() {
-    this.router.navigate(['game', 'expeditions']);
-  }
-
-  navigateArena(dragonId: number) {
-    this.router.navigate(['game', 'arena', dragonId]);
   }
 
   onRelease(dragonId: number) {

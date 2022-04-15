@@ -134,6 +134,7 @@
     "stamina": "Stamina",
     "experience": "Experience",
     "skills": "Skills",
+    "equipment": "Equipment",
     "skillPoints": "Skill points",
     "strength": "Strength",
     "strengthHint": "Strength has impact on the dragon's physical capabilities",

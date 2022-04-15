@@ -51,14 +51,11 @@
     <button (click)="prepareFeedModal()" [disabled]="!feedAvailable" class="btn-base btn-action">
       {{ 'dragon.feed' | translate }}
     </button>
-    <button (click)="navigateExplore()" class="btn-base btn-action no-mobile">
-      {{ 'dragon.explore' | translate }}
-    </button>
-    <button (click)="navigateArena(dragon.id)" class="btn-base btn-action no-mobile">
-      {{ 'dragon.battle' | translate }}
-    </button>
     <button (click)="displayDetails = true" class="btn-base btn-action">
       {{ 'dragon.skills' | translate }}
+    </button>
+    <button (click)="displayEquipment = true" class="btn-base btn-action">
+      {{ 'dragon.equipment' | translate }}
     </button>
     <button (click)="displayReleaseModal = true" class="btn-base btn-action no-mobile">
       {{ 'dragon.release' | translate }}
@@ -72,6 +69,12 @@
   [dragon]="dragon"
   (close)="displayDetails = false">
 </app-dragon-details>
+
+<app-dragon-equip
+  *ngIf="displayEquipment && dragon"
+  [dragon]="dragon"
+  (close)="displayEquipment = false">
+</app-dragon-equip>
 
 <app-confirm-modal
   *ngIf="displayReleaseModal && dragon"

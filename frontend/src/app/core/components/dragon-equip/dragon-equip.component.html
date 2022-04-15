@@ -1,0 +1,19 @@
+<div *ngIf="dragon && !equipmentLoading" class="container-modal">
+
+  <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
+
+
+  <div *ngIf="availableEquipment" class="wrapper-equipment">
+    <div *ngFor="let item of availableEquipment" class="item-equipment">
+      {{ item.name }}
+    </div>
+  </div>
+
+  <button (click)="closeModal()" class="btn-base mt-5">
+    {{ 'common.close' | translate }}
+  </button>
+</div>
+
+<div *ngIf="equipmentLoading" class="container-modal">
+  <app-loading-indicator></app-loading-indicator>
+</div>

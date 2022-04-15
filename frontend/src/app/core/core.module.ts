@@ -18,6 +18,7 @@ import { TooltipDirective } from '../common/utils/tooltip.directive';
 import { AuctionCreateComponent } from './components/auction-create/auction-create.component';
 import { MailSendModalComponent } from './components/mail-send-modal/mail-send-modal.component';
 import { TimerPipe } from '../common/utils/timer.pipe';
+import { DragonEquipComponent } from './components/dragon-equip/dragon-equip.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -32,6 +33,7 @@ const COMPONENTS = [
   DragonBattleComponent,
   ItemDisplayComponent,
   MailSendModalComponent,
+  DragonEquipComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

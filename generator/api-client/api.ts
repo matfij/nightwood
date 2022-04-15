@@ -17,9 +17,11 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 export interface IActionController {
     adoptDragon(body: DragonAdoptDto): Observable<DragonDto>;
     feedDragon(body: DragonFeedDto): Observable<DragonDto>;
+    equipDragon(body: DragonEquipDto): Observable<DragonDto>;
+    unequipDragon(body: DragonEquipDto): Observable<DragonDto>;
+    releaseDragon(id: string): Observable<void>;
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
     checkExpeditions(): Observable<ExpeditionReportDto[]>;
-    releaseDragon(id: string): Observable<void>;
     buyAuction(id: string): Observable<AuctionBuyResultDto>;
 }
 
@@ -138,6 +140,155 @@ export class ActionController implements IActionController {
         return _observableOf<DragonDto>(<any>null);
     }
 
+    equipDragon(body: DragonEquipDto): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/equipDragon";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEquipDragon(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEquipDragon(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEquipDragon(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    unequipDragon(body: DragonEquipDto): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/unequipDragon";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUnequipDragon(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUnequipDragon(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUnequipDragon(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    releaseDragon(id: string): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/action/releaseDragon/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processReleaseDragon(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processReleaseDragon(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processReleaseDragon(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto> {
         let url_ = this.baseUrl + "/api/v1/action/startExpedition";
         url_ = url_.replace(/[?&]$/, "");
@@ -234,53 +385,6 @@ export class ActionController implements IActionController {
             }));
         }
         return _observableOf<ExpeditionReportDto[]>(<any>null);
-    }
-
-    releaseDragon(id: string): Observable<void> {
-        let url_ = this.baseUrl + "/api/v1/action/releaseDragon/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processReleaseDragon(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processReleaseDragon(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processReleaseDragon(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
     }
 
     buyAuction(id: string): Observable<AuctionBuyResultDto> {
@@ -1981,10 +2085,11 @@ export interface DragonSkillsDto {
 
 export interface DragonDto {
     id: number;
-    name: string;
     ownerId?: number;
     action: DragonActionDto;
     skills: DragonSkillsDto;
+    equipment: any;
+    name: string;
     skillPoints: number;
     nextFeed: number;
     nature: DragonNature;
@@ -1999,6 +2104,11 @@ export interface DragonDto {
 }
 
 export interface DragonFeedDto {
+    dragonId: number;
+    itemId: number;
+}
+
+export interface DragonEquipDto {
     dragonId: number;
     itemId: number;
 }
@@ -2038,6 +2148,8 @@ export enum EquipmentType {
 
 export interface ItemDto {
     id?: number;
+    userId?: number;
+    dragonId?: number;
     uid: string;
     name: string;
     level: number;
@@ -2047,7 +2159,6 @@ export interface ItemDto {
     type: ItemType;
     foodType?: FoodType;
     equipmentType?: EquipmentType;
-    userId?: number;
 }
 
 export interface ExpeditionReportDto {
