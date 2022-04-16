@@ -1,19 +1,37 @@
-<div *ngIf="dragon && !equipmentLoading" class="container-modal">
+<div *ngIf="dragon" class="container-modal">
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
 
+  <div class="label-runes">
+    {{ 'dragon.equippedRunes' | translate }}
+  </div>
+  <div class="wrapper-runes">
+    <div *ngFor="let rune of dragonRunes" (click)="unequipRune(rune)" class="item-hexagon">
+      <div tooltip class="{{ 'item-rune item-'+rune.rarity }}">
+        <ng-template #tooltipTemplate>
+          <div class="{{ 'item-tooltip item-hint hint-'+rune.rarity }}">
+            <h5>{{ rune.name }}</h5>
+            {{ rune.rarityName | translate }} {{ rune.typeName | translate }}<br>
+            {{ 'inventory.level' | translate }}: {{ rune.level }} <br>
+          </div>
+        </ng-template>
+        <div class="item">
+          <img [src]="rune.image" [alt]="rune.name" draggable="false">
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="label-runes" style="margin-bottom: 0px;">
+    {{ 'dragon.availableRunes' | translate }}
+  </div>
   <div *ngIf="availableEquipment" class="wrapper-equipment">
-    <div *ngFor="let item of availableEquipment" class="item-equipment">
-      {{ item.name }}
+    <div *ngFor="let item of availableEquipment" class="item-equipment" [ngClass]="{ 'item-inactive': dragon.level < item.level }">
+      <app-item-display (click)="equipRune(item)" [item]="item" style="width: 55px; height: 55px;"></app-item-display>
     </div>
   </div>
 
   <button (click)="closeModal()" class="btn-base mt-5">
     {{ 'common.close' | translate }}
   </button>
-</div>
-
-<div *ngIf="equipmentLoading" class="container-modal">
-  <app-loading-indicator></app-loading-indicator>
 </div>

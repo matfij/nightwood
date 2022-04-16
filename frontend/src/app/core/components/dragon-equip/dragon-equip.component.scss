@@ -1,2 +1,105 @@
 @import '../../theme/mixins.scss';
 @import '../../theme/variables.scss';
+
+
+.label-runes {
+  margin: 16px auto;
+
+  line-height: 20px;
+  font-size: 20px;
+}
+
+.item-inactive {
+  opacity: 0.5 !important;
+
+  &:hover {
+    cursor: auto !important;
+    opacity: 0.5 !important;
+  }
+}
+
+.wrapper-runes {
+  width: clamp(0px, 95%, 600px);
+  margin: 20px auto;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  overflow: visible;
+
+  .item-rune {
+    width: 63px;
+    height: 63px;
+    margin: auto;
+
+    z-index: 2;
+    display:block;
+    position:relative;
+    cursor: pointer;
+  }
+
+  .item-hint {
+    text-align: left;
+    background: $app-dark;
+    border-radius: 4px;
+  }
+}
+
+.wrapper-equipment {
+  width: clamp(0px, 95%, 600px);
+  margin: 20px auto;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  overflow: visible;
+
+  .item-equipment {
+    display: flex;
+    border-radius: 4px;
+    opacity: 0.8;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 1;
+    }
+  }
+}
+
+
+.item-hexagon {
+  width: 100px;
+  height: 57.74px;
+  margin: 28.87px 0;
+
+  position: relative;
+  border-left: solid 5px lighten($app-dark, 60);
+  border-right: solid 5px lighten($app-dark, 60);
+  background: lighten($app-dark, 10);
+}
+
+.item-hexagon:before,
+.item-hexagon:after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  width: 70.71px;
+  height: 70.71px;
+  transform: scaleY(0.5774) rotate(-45deg);
+  background-color: inherit;
+  left: 9.6447px;
+}
+
+.item-hexagon:before {
+  top: -35.3553px;
+  border-top: solid 7.0711px lighten($app-dark, 60);
+  border-right: solid 7.0711px lighten($app-dark, 60);
+}
+
+.item-hexagon:after {
+  bottom: -35.3553px;
+  border-bottom: solid 7.0711px lighten($app-dark, 60);
+  border-left: solid 7.0711px lighten($app-dark, 60);
+}

@@ -89,7 +89,8 @@
     "insufficientIngredients": "Insufficient ingredients",
     "recipeNotFound": "Recipe not found",
     "itemNotEquipped": "Item is not equipped",
-    "itemCanNotBeEquipped": "Item can not be equipped"
+    "itemCanNotBeEquipped": "Item can not be equipped",
+    "runesNumberExceeded": "Number of runes exceeded"
   },
   "game": {
     "menu": "Menu",
@@ -135,6 +136,7 @@
     "experience": "Experience",
     "skills": "Skills",
     "equipment": "Equipment",
+    "runes": "Runes",
     "skillPoints": "Skill points",
     "strength": "Strength",
     "strengthHint": "Strength has impact on the dragon's physical capabilities",
@@ -162,7 +164,9 @@
     "actionNone": "---",
     "actionExpedition": "On expedition",
     "actionTraining": "On training",
-    "requiredLevel": "Required level"
+    "requiredLevel": "Required level",
+    "equippedRunes": "Equipped runes",
+    "availableRunes": "Available runes"
   },
   "arena": {
     "dragon": "Dragon",

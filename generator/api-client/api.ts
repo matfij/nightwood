@@ -2083,41 +2083,6 @@ export interface DragonSkillsDto {
     roughSkin: number;
 }
 
-export interface DragonDto {
-    id: number;
-    ownerId?: number;
-    action: DragonActionDto;
-    skills: DragonSkillsDto;
-    equipment: any;
-    name: string;
-    skillPoints: number;
-    nextFeed: number;
-    nature: DragonNature;
-    level: number;
-    stamina: number;
-    experience: number;
-    strength: number;
-    dexterity: number;
-    endurance: number;
-    will: number;
-    luck: number;
-}
-
-export interface DragonFeedDto {
-    dragonId: number;
-    itemId: number;
-}
-
-export interface DragonEquipDto {
-    dragonId: number;
-    itemId: number;
-}
-
-export interface StartExpeditionDto {
-    dragonId: number;
-    expeditionUid: string;
-}
-
 export enum ItemRarity {
     Common = "Common",
     Scarce = "Scarce",
@@ -2159,6 +2124,45 @@ export interface ItemDto {
     type: ItemType;
     foodType?: FoodType;
     equipmentType?: EquipmentType;
+}
+
+export interface DragonEquipmentDto {
+    runes: ItemDto[];
+}
+
+export interface DragonDto {
+    id: number;
+    ownerId?: number;
+    action: DragonActionDto;
+    skills: DragonSkillsDto;
+    equipment: DragonEquipmentDto;
+    name: string;
+    skillPoints: number;
+    nextFeed: number;
+    nature: DragonNature;
+    level: number;
+    stamina: number;
+    experience: number;
+    strength: number;
+    dexterity: number;
+    endurance: number;
+    will: number;
+    luck: number;
+}
+
+export interface DragonFeedDto {
+    dragonId: number;
+    itemId: number;
+}
+
+export interface DragonEquipDto {
+    dragonId: number;
+    itemId: number;
+}
+
+export interface StartExpeditionDto {
+    dragonId: number;
+    expeditionUid: string;
 }
 
 export interface ExpeditionReportDto {

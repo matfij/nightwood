@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ItemDto } from 'src/app/client/api';
+import { ItemDto, ItemType } from 'src/app/client/api';
 import { DisplayItem } from '../../definitions/items';
 import { ItemsService } from '../../services/items.service';
 
@@ -14,6 +14,7 @@ export class ItemDisplayComponent implements OnInit {
   @Input() simplified: boolean = false;
 
   displayItem!: DisplayItem;
+  ItemType = ItemType;
 
   constructor(
     private itemsService: ItemsService,

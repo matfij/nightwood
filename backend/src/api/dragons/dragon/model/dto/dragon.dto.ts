@@ -3,7 +3,7 @@ import { Expose } from "class-transformer";
 import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
 import { DragonSkillsDto } from "src/api/dragons/dragon-skills/model/dto/dragon-skills.dto";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
-import { DragonEquipment } from "../definitions/dragon-equipment";
+import { DragonEquipment, DragonEquipmentDto } from "../definitions/dragon-equipment";
 import { DragonNature } from "../definitions/dragon-nature";
 
 export class DragonDto {
@@ -26,7 +26,7 @@ export class DragonDto {
 
     @Expose()
     @ApiProperty()
-    equipment?: DragonEquipment;
+    equipment?: DragonEquipmentDto;
     
     @Expose()
     @ApiProperty()

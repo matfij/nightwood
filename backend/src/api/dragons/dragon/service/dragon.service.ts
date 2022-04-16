@@ -226,7 +226,7 @@ export class DragonService {
     }
 
     async unequipDragon(dragon: DragonDto, item: ItemDto): Promise<DragonDto> {
-        const index = dragon.equipment.runes.findIndex(rune => rune.uid === item.uid);
+        const index = dragon.equipment.runes.findIndex(rune => rune.id === item.id);
         if (index === -1) this.errorService.throw('errors.itemNotFound');
 
         dragon.equipment.runes.splice(index, 1);
