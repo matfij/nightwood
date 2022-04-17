@@ -2111,6 +2111,22 @@ export enum EquipmentType {
     Rune = "Rune",
 }
 
+export interface EquipmentStatisticsDto {
+    strength: number;
+    dexterity: number;
+    endurance: number;
+    will: number;
+    luck: number;
+    allAttributes: number;
+    criticalChance: number;
+    criticalPower: number;
+    health: number;
+    armor: number;
+    speed: number;
+    initiative: number;
+    mana: number;
+}
+
 export interface ItemDto {
     id?: number;
     userId?: number;
@@ -2124,10 +2140,7 @@ export interface ItemDto {
     type: ItemType;
     foodType?: FoodType;
     equipmentType?: EquipmentType;
-}
-
-export interface DragonEquipmentDto {
-    runes: ItemDto[];
+    statistics: EquipmentStatisticsDto;
 }
 
 export interface DragonDto {
@@ -2135,7 +2148,7 @@ export interface DragonDto {
     ownerId?: number;
     action: DragonActionDto;
     skills: DragonSkillsDto;
-    equipment: DragonEquipmentDto;
+    runes: ItemDto[];
     name: string;
     skillPoints: number;
     nextFeed: number;

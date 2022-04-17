@@ -76,7 +76,7 @@ export class ItemService {
     }
 
     async checkUnequippingItem(userId: number, itemId: number): Promise<ItemDto> {
-        const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
+        const item = await this.itemRepository.findOne(itemId, { relations: ['user', 'dragon'] });
         
         if (!item) this.errorService.throw('errors.itemNotFound');
         if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
@@ -95,16 +95,15 @@ export class ItemService {
         this.itemRepository.save(item);
     }
 
-    async equipItem(item: ItemDto, dragonId: number): Promise<ItemDto> {
-        item.dragonId = dragonId;
+    async equipItem(item: ItemDto, dragon: DragonDto): Promise<ItemDto> {
         item.quantity -= 1;
-        return await this.itemRepository.save(item)
+        return await this.itemRepository.save({ ...item, dragon });
     }
 
-    async unquipItem(item: ItemDto): Promise<ItemDto> {
-        item.dragonId = null;
+    async unquipItem(item: Item): Promise<ItemDto> {
         item.quantity += 1;
-        return await this.itemRepository.save(item)
+        item.dragon = null;
+        return await this.itemRepository.save(item);
     }
 
     async updateInventory(user: UserDto, loots: ItemDto[]) {

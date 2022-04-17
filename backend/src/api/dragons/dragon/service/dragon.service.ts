@@ -46,7 +46,7 @@ export class DragonService {
     }
 
     async getOne(id: string | number): Promise<DragonDto> {
-        return this.dragonRepository.findOne(id, { relations: ['action', 'skills'] });
+        return this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes'] });
     }
 
     async getAll(dto: DragonGetDto): Promise<DragonPageDto> {
@@ -107,7 +107,7 @@ export class DragonService {
     async getOwnedDragons(ownerId: number): Promise<DragonDto[]> {
         const filterOptions: FindManyOptions<Dragon> = {
             where: { ownerId: ownerId },
-            relations: ['action', 'skills'],
+            relations: ['action', 'skills', 'runes'],
             order: { id: 'ASC' },
         };
 
@@ -119,7 +119,7 @@ export class DragonService {
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills'] });
+        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills', 'runes'] });
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
         if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');
@@ -217,20 +217,5 @@ export class DragonService {
         const updatedDragon = await this.dragonSkillsService.learnSkill(dto.skillUid, dragon);
         await this.dragonRepository.update(dragon.id, { skillPoints: updatedDragon.skillPoints });
         return updatedDragon;
-    }
-
-    async equipDragon(dragon: DragonDto, item: ItemDto): Promise<DragonDto> {
-        dragon.equipment.runes.push(item);
-
-        return await this.dragonRepository.save(dragon);
-    }
-
-    async unequipDragon(dragon: DragonDto, item: ItemDto): Promise<DragonDto> {
-        const index = dragon.equipment.runes.findIndex(rune => rune.id === item.id);
-        if (index === -1) this.errorService.throw('errors.itemNotFound');
-
-        dragon.equipment.runes.splice(index, 1);
-
-        return await this.dragonRepository.save(dragon);
     }
 }

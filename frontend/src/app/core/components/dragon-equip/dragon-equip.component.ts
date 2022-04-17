@@ -40,7 +40,7 @@ export class DragonEquipComponent extends AbstractModalComponent implements OnIn
   getDragonData() {
     this.dragonController.getOne(this.dragon.id.toString()).subscribe(dragon => {
       this.dragon = dragon;
-      this.dragonRunes = this.dragon.equipment.runes.map(rune => this.itemsService.toDisplayItem(rune));
+      this.dragonRunes = this.dragon.runes.map(rune => this.itemsService.toDisplayItem(rune));
     });
   }
 

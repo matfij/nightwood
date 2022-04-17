@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose, Transform } from "class-transformer";
+import { EquipmentStatisticsDto } from "../definitions/equipment";
 import { ItemRarity } from "../definitions/item-rarity";
 import { EquipmentType, FoodType, ItemType } from "../definitions/item-type";
 
@@ -53,4 +54,8 @@ export class ItemDto {
     @Expose()
     @ApiPropertyOptional({enum: EquipmentType, enumName: 'EquipmentType' })
     equipmentType?: EquipmentType;
+
+    @Expose()
+    @ApiProperty({ type: EquipmentStatisticsDto })
+    statistics?: EquipmentStatisticsDto;
 }

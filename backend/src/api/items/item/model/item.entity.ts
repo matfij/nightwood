@@ -1,6 +1,7 @@
 import { Dragon } from "src/api/dragons/dragon/model/dragon.entity";
 import { User } from "src/api/users/user/model/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { EquipmentStatisticsDto } from "./definitions/equipment";
 import { ItemRarity } from "./definitions/item-rarity";
 import { EquipmentType, FoodType, ItemType } from "./definitions/item-type";
 
@@ -13,8 +14,11 @@ export class Item {
     @ManyToOne(_ => User, x => x.items)
     user: User;
 
-    @Column({ nullable: true })
-    dragonId: number;
+    @ManyToOne(_ => Dragon, x => x.runes)
+    dragon: Dragon;
+
+    // @Column({ nullable: true })
+    // dragonId: number;
 
     @Column()
     uid: string;
@@ -42,4 +46,7 @@ export class Item {
 
     @Column({ nullable: true })
     equipmentType?: EquipmentType;
+
+    @Column({ type: 'json', default: {} })
+    statistics: EquipmentStatisticsDto;
 }
