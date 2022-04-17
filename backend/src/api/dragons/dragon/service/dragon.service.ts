@@ -21,6 +21,7 @@ import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.s
 import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
 import { FEED_INTERVAL, FOOD_STAMINA_GAIN, MAX_RUNES } from 'src/configuration/backend.config';
 import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/configuration/frontend.config';
+import { DataService } from 'src/common/services/data.service';
 
 @Injectable()
 export class DragonService {
@@ -32,6 +33,7 @@ export class DragonService {
         private dragonActionService: DragonActionService,
         private dragonSkillsService: DragonSkillsService,
         private errorService: ErrorService,
+        private dataService: DataService,
         private dateService: DateService,
         private mathService: MathService,
     ) {}
@@ -46,7 +48,11 @@ export class DragonService {
     }
 
     async getOne(id: string | number): Promise<DragonDto> {
-        return this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes'] });
+        const dragon = await this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes'] });
+
+        dragon.runes = dragon.runes.map(rune => { return { ...rune, ...this.dataService.getItemData(rune.uid) } });
+
+        return dragon;
     }
 
     async getAll(dto: DragonGetDto): Promise<DragonPageDto> {
@@ -107,7 +113,7 @@ export class DragonService {
     async getOwnedDragons(ownerId: number): Promise<DragonDto[]> {
         const filterOptions: FindManyOptions<Dragon> = {
             where: { ownerId: ownerId },
-            relations: ['action', 'skills', 'runes'],
+            relations: ['action', 'skills'],
             order: { id: 'ASC' },
         };
 
@@ -119,7 +125,7 @@ export class DragonService {
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(dragonId, { relations: ['action', 'skills', 'runes'] });
+        const dragon = await this.getOne(dragonId);
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
         if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');

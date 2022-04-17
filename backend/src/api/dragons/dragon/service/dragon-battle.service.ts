@@ -6,25 +6,21 @@ import { BattleDragon, TurnResult } from "../model/definitions/dragon-battle";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
+import { BattleHelperService } from "./dragon-helper.service";
 
 @Injectable()
 export class DragonBattleService {
 
-    private readonly BASE_HEALTH = 100;
-    private readonly BASE_MANA = 20;
-    private readonly BASE_DAMAGE = 10;
-    private readonly BASE_ARMOR = 5;
-    private readonly BASE_SPEED = 10;
-
     constructor (
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
+        private battleHelperService: BattleHelperService,
         private mathService: MathService,
     ) {}
 
     async executeBattle(ownedDragon: DragonDto, enemyDragon: DragonDto): Promise<Partial<BattleResultDto>> {
-        let owned = this.calculateBattleStats(ownedDragon);
-        let enemy = this.calculateBattleStats(enemyDragon);
+        let owned = this.battleHelperService.calculateBattleStats(ownedDragon, enemyDragon);
+        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon, ownedDragon);
 
         const logs = [];
         let result = '';
@@ -63,32 +59,6 @@ export class DragonBattleService {
         };
     }
 
-    private calculateBattleStats(dragon: DragonDto): BattleDragon {
-        let health = this.BASE_HEALTH + 5 * dragon.endurance + 2 * dragon.strength + dragon.will;
-        let mana = this.BASE_MANA + 5 * dragon.will;
-        let damage = this.BASE_DAMAGE + dragon.strength + 0.1 * dragon.dexterity;
-        let armor = this.BASE_ARMOR + 0.5 * dragon.endurance + 0.1 * dragon.strength;
-        let speed = this.BASE_SPEED + 1.5 * dragon.dexterity;
-
-        health = health * (1 + dragon.skills.greatVigor / 60);
-        mana = mana * (1 + dragon.skills.innerFlow / 40);
-        speed = speed * (1 + dragon.skills.innateSpeed / 60);
-
-        const initiative = 1 * speed;
-
-        return {
-            ...dragon,
-            maxHealth: health,
-            health: health,
-            maxMana: mana,
-            mana: mana,
-            damage: damage,
-            armor: armor,
-            speed: speed,
-            initiative: initiative,
-        };
-    }
-
     private performMovement(attacker: BattleDragon, defender: BattleDragon, ownedTurn: boolean): TurnResult {
         let cssClasses = ownedTurn ? 'item-log log-owned' : 'item-log log-enemy';
         let independentLogs = [];
@@ -104,12 +74,8 @@ export class DragonBattleService {
         /**
          * Dodge chance
          */
-        const hitChance = 0.5 + Math.random();
-        let dodgeChance = Math.random() + 0.5 * Math.min(1, defender.dexterity - 0.8 * attacker.dexterity);
-        dodgeChance = dodgeChance * (1 - attacker.skills.thoughtfulStrike / 60);
-        dodgeChance = this.mathService.limit(0.55, dodgeChance, 1.05);
-
-        if (dodgeChance > hitChance) {
+        const hitChance = 0.5 + Math.random();  // 0.5 - 1.5
+        if (defender.dodgeChance > hitChance) {
             const log = `
                 <div class="${cssClasses}">
                     ${attacker.name} (${attacker.health.toFixed(1)}) 
@@ -123,11 +89,7 @@ export class DragonBattleService {
          * Critical chance
          */
         const nocritChance = 0.5 + Math.random();  // 0.5 - 1.5
-        let critChance = Math.random() + 0.5 * Math.min(0.5, attacker.luck / (attacker.level + 10));  // 0.25 - 1.25
-        critChance = critChance * (1 + attacker.skills.luckyStrike / 40);
-        critChance = this.mathService.limit(0.6, critChance, 1.25);
-
-        if (critChance > nocritChance) {
+        if (attacker.critChance > nocritChance) {
             isCrit = true;
             cssClasses += ' log-crit';
         }
@@ -136,9 +98,9 @@ export class DragonBattleService {
          * Regular hit
          */
         let baseHit = isCrit 
-            ? this.mathService.randRange(1.6, 1.8) * attacker.damage - defender.armor 
-            : this.mathService.randRange(0.9, 1.2) * attacker.damage - defender.armor;
-        baseHit = this.mathService.limit(5 * Math.random(), baseHit, baseHit);
+            ? this.mathService.randRange(0.9, 1.1) * attacker.critPower * attacker.damage - defender.armor 
+            : this.mathService.randRange(0.9, 1.1) * attacker.damage - defender.armor;
+        baseHit = this.mathService.limit((1 + attacker.level/10) * Math.random(), baseHit, baseHit);
         defender.health -= baseHit;
 
         /**
@@ -147,8 +109,8 @@ export class DragonBattleService {
         if (attacker.skills.fireBreath > 0) {
             const baseFireComponent = (1 + attacker.skills.fireBreath / 40) * attacker.will;
             let fireHit = isCrit 
-                ? this.mathService.randRange(1.5, 1.6) * baseFireComponent - 0.5 * defender.armor 
-                : this.mathService.randRange(0.9, 1.1) * baseFireComponent - 0.5 * defender.armor;
+                ? this.mathService.randRange(0.9, 1.1) * attacker.critPower * baseFireComponent - (0.5 * defender.armor + 0.5 * defender.will)
+                : this.mathService.randRange(0.9, 1.1) * baseFireComponent - (0.5 * defender.armor + 0.5 * defender.will);
             fireHit = this.mathService.limit(attacker.skills.fireBreath * Math.random(), fireHit, fireHit);
             defender.health -= fireHit;
             extraLogs.push(`<div class="log-extra">+ ${fireHit.toFixed(1)} fire damage</div>`);
@@ -183,7 +145,7 @@ export class DragonBattleService {
          * Post-movement effects
          */
         if (defender.skills.soundBody > 0 && defender.health < defender.maxHealth && defender.health > 0) {
-            let restoredHealth = 0.05 * defender.maxHealth * (1 + defender.skills.soundBody / 20);
+            let restoredHealth = 0.05 * defender.maxHealth * (1 + defender.skills.soundBody / 25);
             defender.health += restoredHealth;
             independentLogs.push(`<div class="item-log log-status">${defender.name} restored ${restoredHealth.toFixed(1)} health.</div>`);
         }

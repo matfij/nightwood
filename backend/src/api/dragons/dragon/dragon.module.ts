@@ -9,6 +9,8 @@ import { DragonService } from './service/dragon.service';
 import { DragonBattleService } from './service/dragon-battle.service';
 import { MathService } from 'src/common/services/math.service';
 import { DragonSkillsModule } from '../dragon-skills/dragon-skills.module';
+import { DataService } from 'src/common/services/data.service';
+import { BattleHelperService } from './service/dragon-helper.service';
 
 @Module({
   imports: [
@@ -22,7 +24,9 @@ import { DragonSkillsModule } from '../dragon-skills/dragon-skills.module';
   providers: [
     DragonService,
     DragonBattleService,
+    BattleHelperService,
     ErrorService,
+    DataService,
     DateService,
     MathService,
   ],

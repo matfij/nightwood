@@ -26,6 +26,15 @@ export class BattleDragon extends DragonDto {
 
     @ApiProperty()
     initiative: number;
+
+    @ApiProperty()
+    critChance: number;
+
+    @ApiProperty()
+    critPower: number;
+
+    @ApiProperty()
+    dodgeChance: number;
 }
 
 export interface TurnResult {
