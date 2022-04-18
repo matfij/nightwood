@@ -29,8 +29,8 @@ export class DragonService {
 
     let adulthood: number;
     if (dragon.level <= 10) adulthood = 1;
-    else if (dragon.level <= 30) adulthood = 2;
-    else if (dragon.level <= 90) adulthood = 3;
+    else if (dragon.level <= 60) adulthood = 2;
+    else if (dragon.level <= 150) adulthood = 3;
     else adulthood = 4;
 
     const image = `${this.BASE_IMG_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;

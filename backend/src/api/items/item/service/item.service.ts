@@ -12,6 +12,7 @@ import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expeditio
 import { ItemType } from "../model/definitions/item-type";
 import { ItemRarity, LootChance } from "../model/definitions/item-rarity";
 import { MathService } from "src/common/services/math.service";
+import { DataService } from "src/common/services/data.service";
 
 @Injectable()
 export class ItemService {
@@ -19,6 +20,7 @@ export class ItemService {
     constructor(
         @InjectRepository(Item)
         private itemRepository: Repository<Item>,
+        private dataService: DataService,
         private errorService: ErrorService,
         private mathService: MathService,
     ) {}
@@ -40,10 +42,15 @@ export class ItemService {
     }
 
     async getOwnedItems(user: UserDto): Promise<ItemPageDto> {
-        const items = await this.itemRepository.find({
+        let items = await this.itemRepository.find({
             where: { user: user, quantity: MoreThan(0) },
             order: { id: 'DESC' },
         });
+
+        items = items.map(item => {
+            return { ...item, ...this.dataService.getItemData(item.uid) };
+        });
+
         const itemsPage: ItemPageDto = {
             data: items,
             meta: {},
@@ -127,9 +134,8 @@ export class ItemService {
         const loots: ItemDto[] = [];
         expedition.loots.forEach(loot => {
 
-            const luckFactor = Math.log(1 + 2*dragon.luck / dragon.level);
-            const dragonChance = Math.random() * this.mathService.randRange(1, this.mathService.limit(1, luckFactor, 10));
-            const requiredChance = Math.random() * LootChance[loot.rarity]; // 0-1 * 2-44
+            const dragonChance = Math.random();  // 0 - 1
+            const requiredChance = Math.random() * LootChance[loot.rarity];  // 0-1 * 2-44
 
             if (dragonChance > requiredChance) {
                 if (loots.map(x => x.uid).includes(loot.uid)) loots.find(x => x.uid === loot.uid).quantity += 1;

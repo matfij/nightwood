@@ -40,7 +40,7 @@ export class BattleHelperService {
 
         const initiative = 1 * speed + runeStats.initiative;
 
-        let critChance = Math.min(0.5, dragon.luck - 0.33 * rival.luck)
+        let critChance = Math.max(0.5, dragon.luck - 0.3 * rival.luck)
             * (1 + dragon.skills.luckyStrike / 40)
             * runeStats.criticalChance / 66;
         critChance = this.mathService.limit(0.6, critChance, 1.25);
@@ -48,7 +48,7 @@ export class BattleHelperService {
         let critPower = 1.5 + runeStats.criticalPower;
         critPower = this.mathService.limit(1.25, critPower, 3);
 
-        let dodgeChance = Math.min(0.5, dragon.dexterity - 0.33 * rival.dexterity)
+        let dodgeChance = Math.max(0.5, (dragon.dexterity + dragon.luck) - 0.45 * (rival.dexterity + rival.luck))
             * (1 - rival.skills.thoughtfulStrike / 60);
         dodgeChance = this.mathService.limit(0.55, dodgeChance, 1.05);
 

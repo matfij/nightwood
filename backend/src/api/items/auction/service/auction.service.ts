@@ -12,6 +12,7 @@ import { AuctionCreateDto } from '../model/dto/auction-create.dto';
 import { AuctionGetDto } from '../model/dto/auction-get.dto';
 import { AuctionPageDto } from '../model/dto/auction-page.dto';
 import { ItemDto } from '../../item/model/dto/item.dto';
+import { DataService } from 'src/common/services/data.service';
 
 @Injectable()
 export class AuctionService {
@@ -19,6 +20,7 @@ export class AuctionService {
     constructor(
         @InjectRepository(Auction)
         private auctionRepository: Repository<Auction>,
+        private dataService: DataService,
         private dateService: DateService,
         private errorService: ErrorService,
         private itemService: ItemService,
@@ -111,7 +113,7 @@ export class AuctionService {
             const item = auction.item;
             return {
                 ...auction,
-                item: { id: item.id, uid: item.uid, name: item.name, rarity: item.rarity, type: item.type, level: item.level },
+                item: { id: item.id, uid: item.uid, name: item.name, rarity: item.rarity, type: item.type, level: item.level, ...this.dataService.getItemData(item.uid) },
             }
         });
         const auctionPage: AuctionPageDto = {

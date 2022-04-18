@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataService } from 'src/common/services/data.service';
 import { ErrorService } from 'src/common/services/error.service';
 import { MathService } from 'src/common/services/math.service';
 import { ItemController } from './item.controller';
@@ -17,6 +18,7 @@ import { ItemService } from './service/item.service';
     providers: [
         ItemService,
         ItemRuneService,
+        DataService,
         ErrorService,
         MathService,
     ],

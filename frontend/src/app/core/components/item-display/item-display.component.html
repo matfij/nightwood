@@ -7,6 +7,48 @@
       <div *ngIf="!simplified && item.type !== ItemType.Equipment">
         {{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br>
       </div>
+
+      <div *ngIf="item.type === ItemType.Equipment && item.statistics" style="margin-top: 8px;">
+        <div *ngIf="item.statistics.armor">
+          {{ ('dragon.armor' | translate) + ': ' + item.statistics.armor }}
+        </div>
+        <div *ngIf="item.statistics.health">
+          {{ ('dragon.health' | translate) + ': ' + item.statistics.health }}
+        </div>
+        <div *ngIf="item.statistics.mana">
+          {{ ('dragon.mana' | translate) + ': ' + item.statistics.mana }}
+        </div>
+        <div *ngIf="item.statistics.criticalChance">
+          {{ ('dragon.criticalChance' | translate) + ': ' + item.statistics.criticalChance + '%' }}
+        </div>
+        <div *ngIf="item.statistics.criticalPower">
+          {{ ('dragon.criticalPower' | translate) + ': ' + 100*item.statistics.criticalPower + '%' }}
+        </div>
+        <div *ngIf="item.statistics.speed">
+          {{ ('dragon.speed' | translate) + ': ' + item.statistics.speed }}
+        </div>
+        <div *ngIf="item.statistics.initiative">
+          {{ ('dragon.initiative' | translate) + ': ' + item.statistics.initiative }}
+        </div>
+        <div *ngIf="item.statistics.allAttributes">
+          {{ ('dragon.allAttributes' | translate) + ': ' + item.statistics.allAttributes }}
+        </div>
+        <div *ngIf="item.statistics.strength">
+          {{ ('dragon.strength' | translate) + ': ' + item.statistics.strength }}
+        </div>
+        <div *ngIf="item.statistics.dexterity">
+          {{ ('dragon.dexterity' | translate) + ': ' + item.statistics.dexterity }}
+        </div>
+        <div *ngIf="item.statistics.endurance">
+          {{ ('dragon.endurance' | translate) + ': ' + item.statistics.endurance }}
+        </div>
+        <div *ngIf="item.statistics.will">
+          {{ ('dragon.will' | translate) + ': ' + item.statistics.will }}
+        </div>
+        <div *ngIf="item.statistics.luck">
+          {{ ('dragon.will' | translate) + ': ' + item.statistics.luck }}
+        </div>
+      </div>
     </div>
   </ng-template>
 
