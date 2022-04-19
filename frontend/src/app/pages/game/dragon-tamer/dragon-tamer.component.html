@@ -1,0 +1,35 @@
+<div class="wrapper-main">
+  <app-navigation-bar currentLocation="dragon-tamer"></app-navigation-bar>
+
+  <div class="wrapper-content">
+
+    <div *ngIf="actionLoading" class="mt-5">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+
+    <div class="wrapper-actions-section">
+      <div class="wrapper-lore">
+        <div class="wrapper-lore-img">
+          <img src="assets/img/lore/crafting-runes.png" draggable="false" alt="Goblin thinkerer">
+        </div>
+        {{ 'dragonTamer.dragonTamerHint' | translate }}
+      </div>
+
+      <div class="wrapper-actions">
+
+        <div class="item-action">
+          <div class="action-hint">
+            {{ 'dragonTamer.renameHint' | translate }}
+          </div>
+
+          <button  class="btn-base btn-action">
+            {{ 'common.confirm' | translate }}
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

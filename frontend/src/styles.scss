@@ -92,9 +92,8 @@ img::selection {
 
 .wrapper-content {
   width: clamp(0px, 95%, 1200px);
-  min-height: 70vh;
-  max-height: calc(100vh - 5rem);
-  margin: 0px auto;
+  height: clamp(70vh, 90%, calc(100vh - 5rem));
+  margin: 10px auto 0px auto;
 
   padding-top: 10px;
   padding: 20px auto;
@@ -166,6 +165,7 @@ img::selection {
   overflow: visible;
   color: $app-light;
   background: darken($app-dark, 10);
+  opacity: 0.9;
 }
 
 

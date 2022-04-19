@@ -1,0 +1,25 @@
+@import '../../../core/theme/variables.scss';
+@import '../../../core/theme/mixins.scss';
+
+
+.wrapper-actions-section {
+  @include tile(black);
+
+  margin: 10px auto;
+  max-width: 900px;
+
+  padding: 10px;
+}
+
+.wrapper-lore {
+  display: flex;
+  text-align: left;
+}
+
+.wrapper-lore-img {
+  margin-right: 10px;
+
+  img {
+    width: 160px;
+  }
+}

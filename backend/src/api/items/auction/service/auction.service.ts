@@ -80,6 +80,9 @@ export class AuctionService {
         dto.minLevel = dto.minLevel ?? 0;
         dto.maxLevel = dto.maxLevel ?? 999;
 
+        if (!dto.type) delete dto.type;
+        if (!dto.requiredRarity) delete dto.requiredRarity;
+
         const filterOptions: FindManyOptions<AuctionDto> = {
             relations: ['item'],
             where: {

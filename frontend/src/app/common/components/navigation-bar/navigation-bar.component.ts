@@ -24,6 +24,7 @@ export class NavigationBarComponent {
     { label: 'game.home', path: 'home', icon: '', isActive: false },
     { label: 'game.adoptDragon', path: 'adopt-dragon', icon: '', isActive: false },
     { label: 'game.myDragons', path: 'my-dragons', icon: '', isActive: false },
+    { label: 'game.dragonTamer', path: 'dragon-tamer', icon: '', isActive: false },
     { label: 'game.inventory', path: 'inventory', icon: '', isActive: false },
     { label: 'game.crafting', path: 'crafting', icon: '', isActive: false },
     { label: 'game.auctions', path: 'auctions', icon: '', isActive: false },

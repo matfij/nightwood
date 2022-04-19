@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { AuctionsComponent } from './auctions/auctions.component';
 import { MailComponent } from './mail/mail.component';
 import { CraftingComponent } from './crafting/crafting.component';
+import { DragonTamerComponent } from './dragon-tamer/dragon-tamer.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CraftingComponent } from './crafting/crafting.component';
     AuctionsComponent,
     MailComponent,
     CraftingComponent,
+    DragonTamerComponent,
   ],
   imports: [
     CommonModule,

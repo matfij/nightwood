@@ -19,13 +19,15 @@
         <input #searchName class="input-text" placeholder="{{ 'auctions.name' | translate }}"/>
         <input #searchMinLevel class="input-text" type="number" placeholder="{{ 'auctions.minLevel' | translate }}"/>
         <input #searchMaxLevel class="input-text" type="number" placeholder="{{ 'auctions.maxLevel' | translate }}"/>
-        <select #searchRarity class="input-select" placeholder="auctions.rarity">
+        <select #searchRarity class="input-select">
+          <option value="">{{ 'auctions.itemRarity' | translate }}</option>
           <option [value]="ItemRarity.Common">{{ 'enums.itemRarity.Common' | translate }}</option>
           <option [value]="ItemRarity.Scarce">{{ 'enums.itemRarity.Scarce' | translate }}</option>
           <option [value]="ItemRarity.Rare">{{ 'enums.itemRarity.Rare' | translate }}</option>
           <option [value]="ItemRarity.Mythical">{{ 'enums.itemRarity.Mythical' | translate }}</option>
         </select>
-        <select #searchType class="input-select" placeholder="auctions.rarity">
+        <select #searchType class="input-select">
+          <option value="">{{ 'auctions.itemType' | translate }}</option>
           <option [value]="ItemType.Food">{{ 'enums.itemType.Food' | translate }}</option>
           <option [value]="ItemType.Ingredient">{{ 'enums.itemType.Ingredient' | translate }}</option>
           <option [value]="ItemType.Equipment">{{ 'enums.itemType.Equipment' | translate }}</option>

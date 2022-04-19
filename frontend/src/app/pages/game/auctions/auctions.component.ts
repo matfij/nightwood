@@ -81,8 +81,8 @@ export class AuctionsComponent implements OnInit {
       limit: this.pageLimit,
       ownedByUser: this.displayOwned,
       name: this.searchName?.nativeElement.value,
-      type: this.searchType?.nativeElement.value,
-      requiredRarity: this.searchRarity?.nativeElement.value,
+      type: this.searchType?.nativeElement.value ?? undefined,
+      requiredRarity: this.searchRarity?.nativeElement.value ?? undefined,
       minLevel: this.searchMinLevel?.nativeElement.value ? Math.floor(+this.searchMinLevel.nativeElement.value) : AUCTION_MIN_SEARCH_LEVEL,
       maxLevel: this.searchMaxLevel?.nativeElement.value ? Math.floor(+this.searchMaxLevel.nativeElement.value) : AUCTION_MAX_SEARCH_LEVEL,
     };

@@ -97,6 +97,7 @@
     "home": "Home",
     "adoptDragon": "Adopt dragon",
     "myDragons": "My dragons",
+    "dragonTamer": "Dragon tamer",
     "inventory": "Inventory",
     "crafting": "Crafting",
     "expeditions": "Expeditions",
@@ -176,6 +177,12 @@
     "equippedRunes": "Equipped runes",
     "availableRunes": "Available runes"
   },
+  "dragonTamer": {
+    "dragonTamerHint": "Markiz von Alienz, the first true dragon tamer, was an ascended paladin of the White Rose. Once a great hero, but with age, he decided to devote himself to deepening his knowledge about dragons.",
+    "renameHint": "Rename the dragon",
+    "resetSkillsHint": "Reset the dragon skills",
+    "refreshHint": "Refresh the dragon's stamina. This action cannot be performed when the dragon is fed. After the treatment, the dragon will not be hungry for some time."
+  },
   "arena": {
     "dragon": "Dragon",
     "nature": "Nature",
@@ -223,7 +230,9 @@
     "offerCancelled": "Offer cancelled",
     "confirmPurchase": "Confirm purchase",
     "confirmPurchaseMessage": "Buy {{ quantity }} {{ name }} for {{ gold }} gold.",
-    "purchaseCompleted": "Purchase completed"
+    "purchaseCompleted": "Purchase completed",
+    "itemRarity": "Item rarity",
+    "itemType": "Item type"
   },
   "explore": {
     "explorePageTitle": "Explore lands of Nightwood",
