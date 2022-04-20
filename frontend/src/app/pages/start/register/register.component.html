@@ -1,10 +1,13 @@
 <div class="wrapper-main">
   <div class="wrapper-content">
 
-    <div class="title title-main mt-5">{{ 'common.appName' | translate }}</div>
-    <div class="title title-small">{{ 'start.registerHint' | translate }}</div>
+    <div class="title title-main">{{ 'common.appName' | translate }}</div>
+    <div class="title title-small">
+      {{ 'start.registerHint' | translate }}
+      <br> {{ 'start.registerLore' | translate }}
+    </div>
 
-    <div class="wrapper-form">
+    <div class="wrapper-form mt-4">
       <form [formGroup]="form" (ngSubmit)="register()">
         <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 

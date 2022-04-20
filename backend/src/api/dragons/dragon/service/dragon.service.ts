@@ -22,6 +22,8 @@ import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
 import { FEED_INTERVAL, FOOD_STAMINA_GAIN, MAX_RUNES } from 'src/configuration/backend.config';
 import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/configuration/frontend.config';
 import { DataService } from 'src/common/services/data.service';
+import { DRAGON_TAMER_ACTIONS } from '../data/dragon-tamer-actions';
+import { DragonTamerActionDto } from '../model/dto/dragon-tamer-actions.dto';
 
 @Injectable()
 export class DragonService {
@@ -221,5 +223,9 @@ export class DragonService {
         const updatedDragon = await this.dragonSkillsService.learnSkill(dto.skillUid, dragon);
         await this.dragonRepository.update(dragon.id, { skillPoints: updatedDragon.skillPoints });
         return updatedDragon;
+    }
+
+    async getTamerActions(): Promise<DragonTamerActionDto[]> {
+        return DRAGON_TAMER_ACTIONS;
     }
 }

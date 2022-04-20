@@ -12,7 +12,10 @@
 .wrapper-content {
   max-width: 600px;
   min-height: none;
+  height: auto;
   margin: auto;
+
+  padding: 2rem 0rem 2rem 0rem;
 }
 
 .title {
@@ -47,4 +50,12 @@
 
 .btn-base {
   margin: 20px auto;
+}
+
+
+@media screen and (max-width: $mobile-threshold) {
+
+  .wrapper-content {
+    height: 100%;
+  }
 }

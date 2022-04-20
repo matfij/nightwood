@@ -73,6 +73,12 @@
 
 @media screen and (max-width: $mobile-threshold) {
 
+  .wrapper-lore {
+    flex-direction: column;
+    align-items: center;
+    text-align: justify;
+  }
+
   .item-recipe {
     min-width: 100%;
   }

@@ -3,26 +3,45 @@
 
   <div class="wrapper-content">
 
-    <div *ngIf="actionLoading" class="mt-5">
+    <div *ngIf="actionsLoading" class="mt-5">
       <app-loading-indicator></app-loading-indicator>
     </div>
 
-    <div class="wrapper-actions-section">
+    <div *ngIf="(dragons$ | async) as dragons;" class="wrapper-actions-section">
       <div class="wrapper-lore">
         <div class="wrapper-lore-img">
-          <img src="assets/img/lore/crafting-runes.png" draggable="false" alt="Goblin thinkerer">
+          <img src="assets/img/lore/dragon-tamer.png" draggable="false" alt="Goblin thinkerer">
         </div>
         {{ 'dragonTamer.dragonTamerHint' | translate }}
       </div>
 
       <div class="wrapper-actions">
 
-        <div class="item-action">
+        <div *ngFor="let action of actions; let actionInd = index" class="item-action">
           <div class="action-hint">
-            {{ 'dragonTamer.renameHint' | translate }}
+            {{ action.hint | translate }}
           </div>
 
-          <button  class="btn-base btn-action">
+          <select #dragonSelect (change)="0" class="input-select">
+            <option value=""></option>
+            <option class="input-select-option" *ngFor="let dragon of dragons; let dragonInd = index" [value]="dragonInd">
+              {{ dragon.name }} [{{ dragon.level }}]
+            </option>
+          </select>
+
+          <div *ngIf="action.requiredItems && action.requiredItems.length" class="cost-hint">
+            {{ 'dragonTamer.requiredItems' | translate }}:
+            <div *ngFor="let item of action.requiredItems" [class]="'inline' + ' color-' + item.rarity">
+              {{ item.name }}
+            </div>
+          </div>
+
+          <div class="cost-hint">
+            {{ 'dragonTamer.actionCost' | translate }}:
+            {{ dragonSelect.value != '' ? dragons[+dragonSelect.value].level * action.costFactor : '---' }}
+          </div>
+
+          <button (click)="performAction(action, dragons[+dragonSelect.value])" [disabled]="dragonSelect.value == ''" class="btn-base btn-action">
             {{ 'common.confirm' | translate }}
           </button>
         </div>

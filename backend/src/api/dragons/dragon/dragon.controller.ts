@@ -11,6 +11,7 @@ import { DragonGetDto } from "./model/dto/dragon-get.dto";
 import { DragonPageDto } from "./model/dto/dragon-page.dto";
 import { BattleStartDto } from "./model/dto/battle-start.dto";
 import { DragonService } from "./service/dragon.service";
+import { DragonTamerActionDto } from "./model/dto/dragon-tamer-actions.dto";
 
 @Controller('dragon')
 @UseGuards(JwtAuthGuard)
@@ -65,5 +66,11 @@ export class DragonController {
     @ApiOkResponse({ type: DragonDto })
     learnSkill(@Request() req: AuthorizedRequest, @Body() dto: SkillLearnDto): Promise<DragonDto> {
       return this.dragonService.learnSkill(req.user.id, dto);
+    }
+
+    @Post('getTamerActions')
+    @ApiOkResponse({ type: [DragonTamerActionDto] })
+    getTamerActions(): Promise<DragonTamerActionDto[]> {
+      return this.dragonService.getTamerActions();
     }
 }

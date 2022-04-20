@@ -12,8 +12,11 @@
 }
 
 .wrapper-lore {
+  margin-bottom: 5px;
+
   display: flex;
   text-align: left;
+  gap: 10px;
 }
 
 .wrapper-lore-img {
@@ -21,5 +24,31 @@
 
   img {
     width: 160px;
+  }
+}
+
+.item-action {
+  margin-top: 10px;
+
+  padding: 10px;
+  text-align: left;
+  background-color: $app-dark;
+}
+
+.btn-action {
+  width: 240px;
+  height: 22px;
+  margin: 10px 0px;
+
+  line-height: 22px;
+}
+
+
+@media screen and (max-width: $mobile-threshold) {
+
+  .wrapper-lore {
+    flex-direction: column;
+    align-items: center;
+    text-align: justify;
   }
 }

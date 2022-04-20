@@ -31,6 +31,7 @@
     "login": "Login",
     "register": "Register",
     "registerHint": "Create a new account",
+    "registerLore": "and raise the greatest dragons",
     "nickname": "Nickname",
     "password": "Password",
     "passwordConfirm": "Confirm password",
@@ -179,9 +180,12 @@
   },
   "dragonTamer": {
     "dragonTamerHint": "Markiz von Alienz, the first true dragon tamer, was an ascended paladin of the White Rose. Once a great hero, but with age, he decided to devote himself to deepening his knowledge about dragons.",
-    "renameHint": "Rename the dragon",
-    "resetSkillsHint": "Reset the dragon skills",
-    "refreshHint": "Refresh the dragon's stamina. This action cannot be performed when the dragon is fed. After the treatment, the dragon will not be hungry for some time."
+    "renameHint": "Rename the dragon.",
+    "resetSkillsHint": "Reset the dragon's skills.",
+    "refreshHint": "Refresh the dragon's stamina. This action cannot be performed when the dragon is fed. After the treatment, the dragon will not be hungry for some time.",
+    "changeNatureHint": "Change the dragon's nature.",
+    "actionCost": "Action cost",
+    "requiredItems": "Required items"
   },
   "arena": {
     "dragon": "Dragon",
