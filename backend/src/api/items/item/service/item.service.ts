@@ -102,6 +102,11 @@ export class ItemService {
         this.itemRepository.save(item);
     }
 
+    async checkAndConsumeItem(itemUid: string, userId: number): Promise<void> {
+        const item = await this.itemRepository.findOne({ relations: ['user'], where: { uid: itemUid, user: userId } });
+        console.log(item)
+    }
+
     async equipItem(item: ItemDto, dragon: DragonDto): Promise<ItemDto> {
         item.quantity -= 1;
         return await this.itemRepository.save({ ...item, dragon });

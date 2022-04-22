@@ -19,6 +19,10 @@ export interface IActionController {
     feedDragon(body: DragonFeedDto): Observable<DragonDto>;
     equipDragon(body: DragonEquipDto): Observable<DragonDto>;
     unequipDragon(body: DragonEquipDto): Observable<DragonDto>;
+    renameDragon(body: DragonRenameDto): Observable<DragonDto>;
+    resetDragonSkills(id: string): Observable<DragonDto>;
+    restoreDragonStamina(id: string): Observable<DragonDto>;
+    changeDragonNature(body: DragonChangeNatureDto): Observable<DragonDto>;
     releaseDragon(id: string): Observable<void>;
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
     checkExpeditions(): Observable<ExpeditionReportDto[]>;
@@ -222,6 +226,208 @@ export class ActionController implements IActionController {
     }
 
     protected processUnequipDragon(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    renameDragon(body: DragonRenameDto): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/renameDragon";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRenameDragon(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRenameDragon(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRenameDragon(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    resetDragonSkills(id: string): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/resetDragonSkills/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processResetDragonSkills(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResetDragonSkills(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processResetDragonSkills(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    restoreDragonStamina(id: string): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/restoreDragonStamina/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRestoreDragonStamina(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRestoreDragonStamina(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRestoreDragonStamina(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
+    }
+
+    changeDragonNature(body: DragonChangeNatureDto): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/changeDragonNature";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangeDragonNature(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangeDragonNature(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangeDragonNature(response: HttpResponseBase): Observable<DragonDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2219,6 +2425,16 @@ export interface DragonFeedDto {
 export interface DragonEquipDto {
     dragonId: number;
     itemId: number;
+}
+
+export interface DragonRenameDto {
+    dragonId: number;
+    newName: string;
+}
+
+export interface DragonChangeNatureDto {
+    dragonId: number;
+    newNature: DragonNature;
 }
 
 export interface StartExpeditionDto {

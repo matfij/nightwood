@@ -29,7 +29,7 @@ export class Dragon {
     @Column()
     name: string;
 
-    @Column({ default: 0 })
+    @Column({ default: 1 })
     skillPoints: number;
 
     @Column({ default: 0, type: DB_TIMESTAMP_TYPE })

@@ -3,11 +3,7 @@
 
   <div class="wrapper-content">
 
-    <div *ngIf="actionsLoading" class="mt-5">
-      <app-loading-indicator></app-loading-indicator>
-    </div>
-
-    <div *ngIf="(dragons$ | async) as dragons;" class="wrapper-actions-section">
+    <div class="wrapper-actions-section">
       <div class="wrapper-lore">
         <div class="wrapper-lore-img">
           <img src="assets/img/lore/dragon-tamer.png" draggable="false" alt="Goblin thinkerer">
@@ -15,7 +11,10 @@
         {{ 'dragonTamer.dragonTamerHint' | translate }}
       </div>
 
-      <div class="wrapper-actions">
+      <div *ngIf="actionsLoading" class="mt-5">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+      <div *ngIf="!actionsLoading && (dragons$ | async) as dragons" class="wrapper-actions">
 
         <div *ngFor="let action of actions; let actionInd = index" class="item-action">
           <div class="action-hint">
@@ -29,10 +28,23 @@
             </option>
           </select>
 
+          <div *ngIf="action.uid === 'tamer-action-1'">
+            <div class="label">New name:</div>
+            <input #nameInput class="input-text" placeholder="{{ 'auctions.name' | translate }}"/>
+          </div>
+
+          <div *ngIf="action.uid === 'tamer-action-4'">
+            <div class="label">New nature:</div>
+            <select #newNatureSelect class="input-select">
+              <option value=""></option>
+              <option *ngFor="let nature of dragonNature;" [value]="nature.value">{{ nature.name| translate }}</option>
+            </select>
+          </div>
+
           <div *ngIf="action.requiredItems && action.requiredItems.length" class="cost-hint">
             {{ 'dragonTamer.requiredItems' | translate }}:
-            <div *ngFor="let item of action.requiredItems" [class]="'inline' + ' color-' + item.rarity">
-              {{ item.name }}
+            <div *ngFor="let item of action.requiredItems; let itemInd = index" [class]="'inline' + ' color-' + item.rarity">
+              {{ item.name + (itemInd+1 < action.requiredItems.length ? ', ' : '') }}
             </div>
           </div>
 

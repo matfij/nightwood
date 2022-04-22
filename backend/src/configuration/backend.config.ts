@@ -36,7 +36,9 @@ export const MAIL_MESSAGE_MAX_LENGTH = 1000;
  */
 
 export const FEED_INTERVAL = FEED_TIME_SCALE * 1000 * 60 * 60 * 12;
+export const RESTORE_STAMINA_INTERVAL = FEED_TIME_SCALE * 1000 * 60 * 60 * 12;
 export const FOOD_STAMINA_GAIN = 50;
+export const RESTORE_STAMINA_GAIN = 50;
 
 export const SKILL_DEVELOPMENT_LIMIT = 25;
 export const MAX_RUNES = 3;

@@ -13,6 +13,7 @@ import { ActionEventService } from "./service/action-event.service";
 import { ActionItemService } from "./service/action-item.service";
 import { JwtAuthGuard } from "../users/auth/util/jwt.guard";
 import { DragonEquipDto } from "../dragons/dragon/model/dto/dragon-equip.dto";
+import { DragonChangeNatureDto, DragonRenameDto } from "../dragons/dragon/model/dto/dragon-tamer-params.dto";
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -49,27 +50,51 @@ export class ActionController {
         return this.actionDragonService.unequipDragon(req.user.id, dto);
     }
 
+    @Post('renameDragon')
+    @ApiOkResponse({ type: DragonDto })
+    renameDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonRenameDto): Promise<DragonDto> {
+        return this.actionDragonService.renameDragon(req.user.id, dto);
+    }
+
+    @Post('resetDragonSkills/:id')
+    @ApiOkResponse({ type: DragonDto })
+    resetDragonSkills(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<DragonDto> {
+        return this.actionDragonService.resetDragonSkills(req.user.id, +id);
+    }
+
+    @Post('restoreDragonStamina/:id')
+    @ApiOkResponse({ type: DragonDto })
+    restoreDragonStamina(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<DragonDto> {
+        return this.actionDragonService.restoreDragonStamina(req.user.id, +id);
+    }
+
+    @Post('changeDragonNature')
+    @ApiOkResponse({ type: DragonDto })
+    changeDragonNature(@Request() req: AuthorizedRequest, @Body() dto: DragonChangeNatureDto): Promise<DragonDto> {
+        return this.actionDragonService.changeDragonNature(req.user.id, dto);
+    }
+
     @Post('releaseDragon/:id')
     @ApiOkResponse()
     releaseDragon(@Request() req: AuthorizedRequest, @Param('id') id: string) {
-      return this.actionDragonService.releaseDragon(req.user.id, +id);
+        return this.actionDragonService.releaseDragon(req.user.id, +id);
     }
 
     @Post('startExpedition')
     @ApiOkResponse({ type: DragonActionDto })
     startExpedition(@Request() req: AuthorizedRequest, @Body() dto: StartExpeditionDto): Promise<DragonActionDto> {
-      return this.actionEventService.startExpedition(req.user.id, dto);
+        return this.actionEventService.startExpedition(req.user.id, dto);
     }
 
     @Post('checkExpeditions')
     @ApiOkResponse({ type: [ExpeditionReportDto] })
     checkExpeditions(@Request() req: AuthorizedRequest): Promise<ExpeditionReportDto[]> {
-      return this.actionEventService.checkExpeditions(req.user.id);
+        return this.actionEventService.checkExpeditions(req.user.id);
     }
 
     @Post('buyAuction/:id')
     @ApiOkResponse({ type: AuctionBuyResultDto })
     async buyAuction(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<AuctionBuyResultDto> {
-      return this.actionItemService.buyAuction(req.user.id, +id);
+        return this.actionItemService.buyAuction(req.user.id, +id);
     }
 }

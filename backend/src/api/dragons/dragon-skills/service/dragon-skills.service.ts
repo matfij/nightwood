@@ -52,4 +52,13 @@ export class DragonSkillsService {
 
         return dragon;
     }
+
+    async resetSkills(dragon: DragonDto): Promise<DragonDto> {
+        for (const skill in dragon.skills) {
+            if (skill != 'id') dragon.skills[skill] = 0;
+        }
+        await this.dragonSkillsRepository.save(dragon.skills);
+
+        return dragon;
+    }
 }

@@ -15,6 +15,12 @@
     "search": "Search"
   },
   "enums": {
+    "dragonNature": {
+      "Fire": "Fire",
+      "Water": "Water",
+      "Wind": "Wind",
+      "Earth": "Earth"
+    },
     "itemType": {
       "Food": "Food",
       "Ingredient": "Ingredient",
@@ -61,6 +67,7 @@
     "emailIncorrectLength": "Email must be between {min} and {max} characters",
     "nicknameNotUnique": "Nickname occupied",
     "nicknameIncorrectLength": "Nickname must be between {min} and {max} characters",
+    "dragonNameIncorrectLength": "Dragon name must be between {{min}} and {{max}} characters",
     "loginNotFound": "Login not found",
     "passwordIncorrect": "Incorrect password",
     "tokenInvalid": "Invalid access token",
@@ -81,6 +88,7 @@
     "natureMismatch": "Selected dragon ha a non-matching nature",
     "skillNotFound": "Skill not found",
     "skillLimitReached": "Skill limit reached",
+    "actionNotFound": "Action not found",
     "auctionNotFound": "Auction not found",
     "insufficientsFound": "Insufficient founds",
     "mailNotFound": "Mail not found",
@@ -91,7 +99,9 @@
     "recipeNotFound": "Recipe not found",
     "itemNotEquipped": "Item is not equipped",
     "itemCanNotBeEquipped": "Item can not be equipped",
-    "runesNumberExceeded": "Number of runes exceeded"
+    "runesNumberExceeded": "Number of runes exceeded",
+    "dragonAlreadyHasThisNature": "Selected dragon already has this nature",
+    "incorrectDragonName": "Incorrect dragon name"
   },
   "game": {
     "menu": "Menu",

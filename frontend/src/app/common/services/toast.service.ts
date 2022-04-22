@@ -12,17 +12,17 @@ export class ToastService {
     private translateService: TranslateService,
   ) {}
 
-  showSuccess(title: string, message: string) {
+  showSuccess(title: string, message: string, titleParams?: any, messageParams?: any) {
     this.toastrService.success(
-      this.translateService.instant(message),
-      this.translateService.instant(title),
+      this.translateService.instant(message, messageParams),
+      this.translateService.instant(title, titleParams),
     );
   }
 
-  showError(title: string, message: string) {
+  showError(title: string, message: string, titleParams?: any, messageParams?: any) {
     this.toastrService.error(
-      this.translateService.instant(message),
-      this.translateService.instant(title),
+      this.translateService.instant(message, messageParams),
+      this.translateService.instant(title, titleParams),
     );
   }
 }

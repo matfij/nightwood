@@ -19,11 +19,12 @@ import { MathService } from 'src/common/services/math.service';
 import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
-import { FEED_INTERVAL, FOOD_STAMINA_GAIN, MAX_RUNES } from 'src/configuration/backend.config';
+import { FEED_INTERVAL, FOOD_STAMINA_GAIN, MAX_RUNES, RESTORE_STAMINA_GAIN, RESTORE_STAMINA_INTERVAL } from 'src/configuration/backend.config';
 import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/configuration/frontend.config';
 import { DataService } from 'src/common/services/data.service';
 import { DRAGON_TAMER_ACTIONS } from '../data/dragon-tamer-actions';
 import { DragonTamerActionDto } from '../model/dto/dragon-tamer-actions.dto';
+import { DragonNature } from '../model/definitions/dragon-nature';
 
 @Injectable()
 export class DragonService {
@@ -227,5 +228,30 @@ export class DragonService {
 
     async getTamerActions(): Promise<DragonTamerActionDto[]> {
         return DRAGON_TAMER_ACTIONS;
+    }
+
+    async changeName(dragon: DragonDto, newName: string): Promise<DragonDto> {
+        dragon.name = newName;
+        return await this.dragonRepository.save(dragon);
+    }
+
+    async resetSkills(dragon: DragonDto): Promise<DragonDto> {
+        await this.dragonSkillsService.resetSkills(dragon);
+        dragon.skillPoints = dragon.level;
+        return await this.dragonRepository.save(dragon);
+    }
+
+    async restoreStamina(dragon: DragonDto): Promise<DragonDto> {
+        dragon.stamina = RESTORE_STAMINA_GAIN;
+        dragon.nextFeed = Date.now() + RESTORE_STAMINA_INTERVAL;
+        return await this.dragonRepository.save(dragon);
+    }
+
+    async changeNature(dragon: DragonDto, newNature: DragonNature): Promise<DragonDto> {
+        await this.resetSkills(dragon);
+
+        dragon.nature = newNature;
+
+        return await this.dragonRepository.save(dragon);
     }
 }

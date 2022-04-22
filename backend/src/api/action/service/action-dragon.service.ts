@@ -9,6 +9,11 @@ import { DragonEquipDto } from "src/api/dragons/dragon/model/dto/dragon-equip.dt
 import { ErrorService } from "src/common/services/error.service";
 import { MAX_RUNES } from "src/configuration/backend.config";
 import { Item } from "src/api/items/item/model/item.entity";
+import { DragonChangeNatureDto, DragonRenameDto } from "src/api/dragons/dragon/model/dto/dragon-tamer-params.dto";
+import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from "src/configuration/frontend.config";
+import { ACTION_CHANGE_NATURE, ACTION_RENAME, ACTION_RESET_SKILLS, ACTION_RESTORE_STAMINA } from "src/api/dragons/dragon/data/dragon-tamer-actions";
+import { TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
+import { SHARD_UNITY } from "src/api/items/item/model/data/runes";
 
 @Injectable()
 export class ActionDragonService {
@@ -66,5 +71,51 @@ export class ActionDragonService {
         await this.itemService.unquipItem(item);
 
         return dragon;
+    }
+
+    async renameDragon(userId: number, dto: DragonRenameDto): Promise<DragonDto> {
+        const dragon = await this.dragonService.checkDragon(userId, dto.dragonId);
+        const actionCost = dragon.level * ACTION_RENAME.costFactor;
+
+        if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
+        if (dto.newName.length > DRAGON_NAME_MAX_LENGTH || dto.newName.length < DRAGON_NAME_MIN_LENGTH) this.errorService.throw('errors.incorrectDragonName');
+        if (!this.errorService.checkBannedWords(dto.newName)) this.errorService.throw('errors.incorrectDragonName');
+
+        await this.userService.updateGold(userId, -actionCost);
+        return await this.dragonService.changeName(dragon, dto.newName);
+    }
+
+    async resetDragonSkills(userId: number, dragonId: number): Promise<DragonDto> {
+        const dragon = await this.dragonService.checkDragon(userId, dragonId);
+        const actionCost = dragon.level * ACTION_RESET_SKILLS.costFactor;
+
+        if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
+        
+        await this.userService.updateGold(userId, -actionCost);
+        return await this.dragonService.resetSkills(dragon);
+    }
+
+    async restoreDragonStamina(userId: number, dragonId: number): Promise<DragonDto> {
+        const dragon = await this.dragonService.checkFeedingDragon(userId, dragonId);
+        const actionCost = dragon.level * ACTION_RESTORE_STAMINA.costFactor;
+
+        if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
+        
+        await this.userService.updateGold(userId, -actionCost);
+        return await this.dragonService.restoreStamina(dragon);
+    }
+    
+    async changeDragonNature(userId: number, dto: DragonChangeNatureDto): Promise<DragonDto> {
+        const dragon = await this.dragonService.checkDragon(userId, dto.dragonId);
+        const actionCost = dragon.level * ACTION_CHANGE_NATURE.costFactor;
+
+        if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
+        if (dto.newNature === dragon.nature) this.errorService.throw('errors.dragonAlreadyHasThisNature')
+
+        // foreach item in requiredItems, synchronous
+        await this.itemService.checkAndConsumeItem(SHARD_UNITY.uid, userId);
+
+        await this.userService.updateGold(userId, -actionCost);
+        return await this.dragonService.changeNature(dragon, dto.newNature);
     }
 }
