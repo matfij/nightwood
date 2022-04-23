@@ -12,8 +12,6 @@ import { Item } from "src/api/items/item/model/item.entity";
 import { DragonChangeNatureDto, DragonRenameDto } from "src/api/dragons/dragon/model/dto/dragon-tamer-params.dto";
 import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from "src/configuration/frontend.config";
 import { ACTION_CHANGE_NATURE, ACTION_RENAME, ACTION_RESET_SKILLS, ACTION_RESTORE_STAMINA } from "src/api/dragons/dragon/data/dragon-tamer-actions";
-import { TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
-import { SHARD_UNITY } from "src/api/items/item/model/data/runes";
 
 @Injectable()
 export class ActionDragonService {
@@ -112,8 +110,7 @@ export class ActionDragonService {
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
         if (dto.newNature === dragon.nature) this.errorService.throw('errors.dragonAlreadyHasThisNature')
 
-        // foreach item in requiredItems, synchronous
-        await this.itemService.checkAndConsumeItem(SHARD_UNITY.uid, userId);
+        await this.itemService.checkAndConsumeItems(ACTION_CHANGE_NATURE.requiredItems, userId);
 
         await this.userService.updateGold(userId, -actionCost);
         return await this.dragonService.changeNature(dragon, dto.newNature);

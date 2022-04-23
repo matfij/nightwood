@@ -35,13 +35,13 @@ export const ACTION_CHANGE_NATURE = {
     maxCost: 1000000,
     requiredLevel: 1,
     requiredItems: [
-        TRANSMUTATION_STONE,
+        { ...TRANSMUTATION_STONE, quantity: 1 },
     ],
 };
 
 export const DRAGON_TAMER_ACTIONS: DragonTamerActionDto[] = [
     ACTION_RESTORE_STAMINA,
-    ACTION_RENAME,
     ACTION_RESET_SKILLS,
+    ACTION_RENAME,
     ACTION_CHANGE_NATURE,
 ];

@@ -29,11 +29,11 @@ export class DragonBattleService {
             let turnResult: TurnResult;
 
             if (owned.initiative > enemy.initiative) {
-                turnResult = this.performMovement(owned, enemy, true);
+                turnResult = this.performMovement(owned, enemy, true, logs.length);
                 owned = turnResult.attacker;
                 enemy = turnResult.defender;
             } else {
-                turnResult = this.performMovement(enemy, owned, false);
+                turnResult = this.performMovement(enemy, owned, false, logs.length);
                 owned = turnResult.defender;
                 enemy = turnResult.attacker;
             }
@@ -59,7 +59,7 @@ export class DragonBattleService {
         };
     }
 
-    private performMovement(attacker: BattleDragon, defender: BattleDragon, ownedTurn: boolean): TurnResult {
+    private performMovement(attacker: BattleDragon, defender: BattleDragon, ownedTurn: boolean, turn: number): TurnResult {
         let cssClasses = ownedTurn ? 'item-log log-owned' : 'item-log log-enemy';
         let independentLogs = [];
         let extraLogs = [];
@@ -117,7 +117,7 @@ export class DragonBattleService {
         }
         
         if (attacker.skills.pugnaciousStrike > 0 && defender.armor > 0) {
-            const armorBreak = attacker.skills.pugnaciousStrike;
+            const armorBreak = (1 + attacker.dexterity / 10) * attacker.skills.pugnaciousStrike / 2;
             defender.armor -= armorBreak;
             extraLogs.push(`<div class="log-extra">+ broken ${armorBreak.toFixed(1)} armor</div>`);
         }
@@ -145,9 +145,12 @@ export class DragonBattleService {
          * Post-movement effects
          */
         if (defender.skills.soundBody > 0 && defender.health < defender.maxHealth && defender.health > 0) {
-            let restoredHealth = 0.05 * defender.maxHealth * (1 + defender.skills.soundBody / 25);
-            defender.health += restoredHealth;
-            independentLogs.push(`<div class="item-log log-status">${defender.name} restored ${restoredHealth.toFixed(1)} health.</div>`);
+            let restoredHealth = 0.05 * defender.maxHealth * (1 + defender.skills.soundBody / (20 + 1.25 * turn));
+            if (restoredHealth > 0) {
+                defender.health += restoredHealth;
+                if (defender.health > defender.maxHealth) defender.health = defender.maxHealth;
+                independentLogs.push(`<div class="item-log log-status">${defender.name} restored ${restoredHealth.toFixed(1)} health.</div>`);
+            } 
         }
 
         independentLogs.forEach(independentLog => log += independentLog);

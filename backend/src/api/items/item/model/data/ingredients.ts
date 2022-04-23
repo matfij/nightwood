@@ -3,7 +3,7 @@ import { ItemType } from "../definitions/item-type";
 import { ItemDto } from "../dto/item.dto";
 
 export const TRANSMUTATION_STONE: ItemDto = {
-    uid: 'item-r-11',
+    uid: 'item-i-1',
     name: 'Transmutation Stone',
     level: 10,
     rarity: ItemRarity.Mythical,

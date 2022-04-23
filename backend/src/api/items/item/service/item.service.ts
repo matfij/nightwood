@@ -102,9 +102,22 @@ export class ItemService {
         this.itemRepository.save(item);
     }
 
-    async checkAndConsumeItem(itemUid: string, userId: number): Promise<void> {
-        const item = await this.itemRepository.findOne({ relations: ['user'], where: { uid: itemUid, user: userId } });
-        console.log(item)
+    async checkAndConsumeItems(requiredItems: ItemDto[], userId: number): Promise<void> {
+        const userItems = await this.itemRepository.find({
+            where: { user: userId, quantity: MoreThan(0) },
+        });
+        const missingItems = requiredItems.filter(requiredItem => {
+            const item = userItems.find(item => item.uid === requiredItem.uid);
+            if (!item || item.quantity < requiredItem.quantity) return true;
+            return false;
+        });
+        if (missingItems.length > 0) this.errorService.throw('errors.insufficientIngredients');
+
+        requiredItems.forEach(requiredItem => {
+            const item = userItems.find(item => item.uid === requiredItem.uid);
+            item.quantity -= requiredItem.quantity;
+            this.itemRepository.save(item);
+        });
     }
 
     async equipItem(item: ItemDto, dragon: DragonDto): Promise<ItemDto> {

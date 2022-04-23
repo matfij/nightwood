@@ -77,7 +77,7 @@ ul, li {
   border-radius: 4px;
 
   .item-user {
-    @include tile(darken($app-mythical, 20));
+    @include tile(darken($app-tertiary, 33));
 
     height: 120px;
     margin: 2px;
@@ -124,7 +124,7 @@ ul, li {
   font-weight: 400;
 
   &:hover {
-    @include tile(darken($app-mythical, 20));
+    @include tile(darken($app-tertiary, 33));
 
     cursor: pointer;
   }
