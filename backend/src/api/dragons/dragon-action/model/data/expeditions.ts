@@ -19,7 +19,7 @@ export const ANDREW_FOREST: ExpeditionDto = {
         RORIS_LEEFS, RORIS_LEEFS, RORIS_LEEFS,
         MIRACLE_FRUIT,
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
-        TRANSMUTATION_STONE, TRANSMUTATION_STONE,
+        TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 3 * 60 * 60 * 1000,
 }
@@ -29,7 +29,7 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
     name: 'Carramba Sands',
     hint: 'A faraway land, covered with sand and rocks where the wind is strong and the temperature is scorching. The desert is a place of great danger, but it is also a place of great treasure.',
     level: 10,
-    experienceAward: 100,
+    experienceAward: 90,
     goldAward: 100,
     loots: [
         BUBULAE_STEAK, BUBULAE_STEAK,
@@ -44,7 +44,7 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
         SHARD_AGILITY, SHARD_AGILITY,
         SHARD_WISDOM, SHARD_WISDOM,
         SHARD_UNITY,
-        TRANSMUTATION_STONE, TRANSMUTATION_STONE,
+        TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 6 * 60 * 60 * 1000,
 }
@@ -54,7 +54,7 @@ export const HARNA_PEAKS: ExpeditionDto = {
     name: 'Harna Peaks',
     hint: 'Mysterious and unexplored place filled with magical particles. Exploration requires an exceptional amount of power therefore it is accessible only for matured dragons.',
     level: 25,
-    experienceAward: 150,
+    experienceAward: 120,
     goldAward: 125,
     loots: [
         MIRACLE_FRUIT, MIRACLE_FRUIT,
@@ -64,7 +64,7 @@ export const HARNA_PEAKS: ExpeditionDto = {
         SHARD_AGILITY, SHARD_AGILITY, SHARD_AGILITY,
         SHARD_WISDOM, SHARD_WISDOM, SHARD_WISDOM,
         SHARD_UNITY, SHARD_UNITY,
-        TRANSMUTATION_STONE, TRANSMUTATION_STONE,
+        TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 9 * 60 * 60 * 1000,
 }

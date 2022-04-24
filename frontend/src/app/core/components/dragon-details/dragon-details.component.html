@@ -1,4 +1,4 @@
-<div *ngIf="dragon && !skillsLoading" class="container-modal">
+<div *ngIf="dragon && !skillsLoading && !dragonLoading" class="container-modal">
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
 
@@ -38,6 +38,6 @@
 
 </div>
 
-<div *ngIf="skillsLoading" class="container-modal">
+<div *ngIf="skillsLoading || dragonLoading" class="container-modal">
   <app-loading-indicator></app-loading-indicator>
 </div>

@@ -55,7 +55,7 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
     const quantity = this.fields.filter(field => field.key === 'quantity')[0];
     const unitPrice = this.fields.filter(field => field.key === 'unitPrice')[0];
 
-    duration.hint = this.translateService.instant('auctions.durationHint', { min: AUCTION_MAX_DURATION, max: AUCTION_MAX_DURATION });
+    duration.hint = this.translateService.instant('auctions.durationHint', { min: AUCTION_MIN_DURATION, max: AUCTION_MAX_DURATION });
     quantity.hint = this.translateService.instant('auctions.quantityHint', { min: AUCTION_MIN_QUANTITY, max: AUCTION_MAX_QUANTITY });
     unitPrice.hint = this.translateService.instant('auctions.priceHint', { min: AUCTION_MIN_PRICE, max: AUCTION_MAX_PRICE });
   }

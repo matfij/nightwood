@@ -1,5 +1,5 @@
-# Nightwood
-Re: Nightwood, the Nightwood Dragons re-edition - become a dragon tamer and explore the vast and mysterious lands of Nightwood.
+# Re: Nightwood
+The Nightwood Dragons reconstruction - become a dragon tamer, raise the greatest dragons and explore the vast and mysterious lands of Nightwood.
 
 Independently developed, open-source browser game written in Angular and NestJS.
 
@@ -27,9 +27,9 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 
 ## Stage 1
  - Special dragons & skills [0%]
- - Dragon equipment - runes crafting [40%]
- - Dragon QoL utils - renaming, resting etc. [0%]
- - Alchemy - cooking, extracting [0%]
+ - Dragon equipment - runes crafting [100%]
+ - Dragon QoL utils - renaming, resting etc. [100%]
+ - Alchemy - cooking, extracting [20%]
  - Guilds - diplomacy, constructions [0%]
  - Player profiles - achievements [0%]
  - Expedition guardians & progress [0%]

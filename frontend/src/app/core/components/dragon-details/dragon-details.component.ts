@@ -18,6 +18,7 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
   @Input() dragon!: DisplayDragon;
 
   obtainableSkills: DisplaySkill[] = [];
+  dragonLoading: boolean = false;
   skillsLoading: boolean = false;
   learnSkillLoading: boolean = false;
 
@@ -30,7 +31,17 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
   }
 
   ngOnInit(): void {
+    this.updateDragonData();
     this.getObtainableSkills();
+  }
+
+  updateDragonData() {
+    this.dragonLoading = true;
+    this.dragonController.getOne(this.dragon.id.toString()).subscribe(dragon => {
+      this.dragonLoading = false;
+      this.dragon.skillPoints = dragon.skillPoints;
+      this.dragon.skills = dragon.skills;
+    }, () => this.dragonLoading = false);
   }
 
   getObtainableSkills() {

@@ -195,7 +195,11 @@
     "refreshHint": "Refresh the dragon's stamina. This action cannot be performed when the dragon is fed. After the treatment, the dragon will not be hungry for some time.",
     "changeNatureHint": "Change the dragon's nature.",
     "actionCost": "Action cost",
-    "requiredItems": "Required items"
+    "requiredItems": "Required items",
+    "staminaRestored": "Stamina restored",
+    "skillsReseted": "Skills has been reset",
+    "natureChanged": "Nature changed",
+    "dragonRenamed": "Dragon renamed"
   },
   "arena": {
     "dragon": "Dragon",

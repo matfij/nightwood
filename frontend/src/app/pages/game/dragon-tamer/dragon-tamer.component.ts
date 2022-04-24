@@ -82,6 +82,7 @@ export class DragonTamerComponent implements OnInit {
     this.actionsLoading = true;
     this.actionController.renameDragon(params).subscribe(_ => {
       this.actionsLoading = false;
+      this.toastService.showSuccess('common.success', 'dragonTamer.dragonRenamed');
       this.getOwnedDragons();
       this.engineService.tick();
     }, () => this.actionsLoading = false);
@@ -91,6 +92,7 @@ export class DragonTamerComponent implements OnInit {
     this.actionsLoading = true;
     this.actionController.resetDragonSkills(dragon.id.toString()).subscribe(_ => {
       this.actionsLoading = false;
+      this.toastService.showSuccess('common.success', 'dragonTamer.skillsReseted');
       this.getOwnedDragons();
       this.engineService.tick();
     }, () => this.actionsLoading = false);
@@ -100,6 +102,7 @@ export class DragonTamerComponent implements OnInit {
     this.actionsLoading = true;
     this.actionController.restoreDragonStamina(dragon.id.toString()).subscribe(_ => {
       this.actionsLoading = false;
+      this.toastService.showSuccess('common.success', 'dragonTamer.staminaRestored');
       this.getOwnedDragons();
       this.engineService.tick();
     }, () => this.actionsLoading = false);
@@ -116,6 +119,7 @@ export class DragonTamerComponent implements OnInit {
     this.actionsLoading = true;
     this.actionController.changeDragonNature(params).subscribe(_ => {
       this.actionsLoading = false;
+      this.toastService.showSuccess('common.success', 'dragonTamer.natureChanged');
       this.getOwnedDragons();
       this.engineService.tick();
     }, () => this.actionsLoading = false);
