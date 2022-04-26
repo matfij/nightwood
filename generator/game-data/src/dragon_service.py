@@ -13,7 +13,7 @@ class DragonService:
 
     @classmethod
     def gen_attr(cls, power: int) -> int:
-        bottom_limit = math.floor(power / 5) + 1
+        bottom_limit = math.floor(power / 5)
         top_limit = math.floor(power / 1.5) + 1
         return random.randrange(bottom_limit, top_limit)
 
