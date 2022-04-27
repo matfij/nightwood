@@ -6,13 +6,13 @@
   @include tile($app-dark);
 
   max-width: 100%;
+  min-height: 250px;
   margin: 2px;
 
   padding-left: 10%;
   display: flex;
   justify-content: flex-start;
   gap: 10%;
-  // grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
 }
 
 .wrapper-name {
@@ -36,7 +36,7 @@
 }
 
 .wrapper-stats {
-  margin-top: 5%;
+  margin-top: 3rem;
 
   display: flex;
   flex-direction: column;
@@ -48,8 +48,19 @@
   }
 }
 
+.item-stat {
+  margin-bottom: 5px;
+  display: flex;
+
+  img {
+    max-width: 100%;
+    width: 16px;
+    margin-right: 5px;
+  }
+}
+
 .wrapper-actions {
-  margin-top: 5%;
+  margin-top: 3rem;
 
   display: flex;
   flex-direction: column;
@@ -129,6 +140,7 @@
 @media screen and (max-width: $mobile-threshold) {
   .container-dragon {
     padding: 0%;
+    min-height: 0px;
 
     display: flex;
     flex-direction: column;

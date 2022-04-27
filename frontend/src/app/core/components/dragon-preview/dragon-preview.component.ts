@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
 import { ActionController, DragonFeedDto, ItemController } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DateService } from '../../../common/services/date.service';
@@ -27,8 +26,9 @@ export class DragonPreviewComponent implements OnInit {
   displayEquipment: boolean = false;
   displayReleaseModal: boolean = false;
 
+  DRAGON_ATTRIBUTES = ['strength', 'dexterity', 'endurance', 'will', 'luck'];
+
   constructor(
-    private router: Router,
     private actionController: ActionController,
     private itemController: ItemController,
     private dateService: DateService,
@@ -42,6 +42,10 @@ export class DragonPreviewComponent implements OnInit {
       this.dragon = this.dragonService.toDisplayDragon(this.dragon);
       this.feedAvailable = this.dateService.checkIfEventAvailable(this.dragon.nextFeed);
     }
+  }
+
+  getDragonAttribute(attribute: string) {
+    return this.dragon ? (this.dragon as any)[attribute] : 0;
   }
 
   prepareFeedModal() {

@@ -10,11 +10,12 @@
 }
 
 .item-inactive {
+  z-index: 10;
   opacity: 0.5 !important;
 
   &:hover {
     cursor: auto !important;
-    opacity: 0.5 !important;
+    opacity: 0.6 !important;
   }
 }
 

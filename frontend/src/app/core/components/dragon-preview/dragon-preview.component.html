@@ -38,13 +38,20 @@
   </div>
 
   <div class="wrapper-stats">
-    <p>{{ 'dragon.nature' | translate }}: <b>{{ dragon.nature }}</b></p>
-    <p>{{ 'dragon.strength' | translate }}: <b>{{ dragon.strength }}</b></p>
-    <p>{{ 'dragon.dexterity' | translate }}: <b>{{ dragon.dexterity }}</b></p>
-    <p>{{ 'dragon.endurance' | translate }}: <b>{{ dragon.endurance }}</b></p>
-    <p>{{ 'dragon.will' | translate }}: <b>{{ dragon.will }}</b></p>
-    <p>{{ 'dragon.luck' | translate }}: <b>{{ dragon.luck }}</b></p>
-    <p *ngIf="dragon.currentAction">{{ dragon.currentAction }}: {{ dragon.action.nextAction | timer | async }}</p>
+    <div *ngFor="let attribute of DRAGON_ATTRIBUTES" tooltip class="item-stat">
+      <ng-template #tooltipTemplate>
+        <div class="item-tooltip item-hint">
+          <h5>{{ 'dragon.'+attribute | translate }}</h5>
+          {{ 'dragon.'+attribute+'Hint' | translate }}<br>
+        </div>
+      </ng-template>
+      <img src="/assets/img/icons/info.svg" alt="info">
+      <div class="inline">{{ 'dragon.'+attribute | translate }}: <b>{{ getDragonAttribute(attribute) }}</b></div>
+    </div>
+
+    <p *ngIf="dragon.currentAction" style="margin-top: 8px;">
+      {{ dragon.currentAction }}: {{ dragon.action.nextAction | timer | async }}
+    </p>
   </div>
 
   <div class="wrapper-actions">
