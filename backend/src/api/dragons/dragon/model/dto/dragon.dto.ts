@@ -20,6 +20,9 @@ export class DragonDto {
 
     @ApiProperty( { type: [ItemDto] })
     runes: ItemDto[];
+
+    @ApiProperty({ type: [Number] })
+    battledWith: number[];
     
     @ApiProperty()
     name: string;

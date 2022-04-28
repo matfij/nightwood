@@ -70,7 +70,10 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
         }
         this.scrollLogs();
       });
-    }, () => this.battleLoading = false);
+    }, () =>  {
+      this.battleLoading = false;
+      this.closeModal();
+    });
   }
 
   onAuto() {

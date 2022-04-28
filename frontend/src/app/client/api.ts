@@ -2403,6 +2403,7 @@ export interface DragonDto {
     action: DragonActionDto;
     skills: DragonSkillsDto;
     runes: ItemDto[];
+    battledWith: number[];
     name: string;
     skillPoints: number;
     nextFeed: number;

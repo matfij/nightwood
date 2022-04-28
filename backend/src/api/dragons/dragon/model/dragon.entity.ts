@@ -26,6 +26,9 @@ export class Dragon {
     @OneToMany(_ => Item, x => x.dragon)
     runes: ItemDto[];
 
+    @Column('int', { array: true, default: [] })
+    battledWith: number[];
+
     @Column()
     name: string;
 

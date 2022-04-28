@@ -101,7 +101,8 @@
     "itemCanNotBeEquipped": "Item can not be equipped",
     "runesNumberExceeded": "Number of runes exceeded",
     "dragonAlreadyHasThisNature": "Selected dragon already has this nature",
-    "incorrectDragonName": "Incorrect dragon name"
+    "incorrectDragonName": "Incorrect dragon name",
+    "alreadyBattled": "Selected dragons has already battled two times"
   },
   "game": {
     "menu": "Menu",

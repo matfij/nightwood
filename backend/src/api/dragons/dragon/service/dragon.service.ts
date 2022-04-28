@@ -19,7 +19,7 @@ import { MathService } from 'src/common/services/math.service';
 import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
-import { FEED_INTERVAL, FOOD_STAMINA_GAIN, MAX_RUNES, RESTORE_STAMINA_GAIN, RESTORE_STAMINA_INTERVAL } from 'src/configuration/backend.config';
+import { FEED_INTERVAL, FOOD_STAMINA_GAIN, RESTORE_STAMINA_GAIN, RESTORE_STAMINA_INTERVAL } from 'src/configuration/backend.config';
 import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/configuration/frontend.config';
 import { DataService } from 'src/common/services/data.service';
 import { DRAGON_TAMER_ACTIONS } from '../data/dragon-tamer-actions';
@@ -164,6 +164,7 @@ export class DragonService {
         dragon.skillPoints += 1;
         dragon.nextFeed = Date.now() + FEED_INTERVAL;
 
+        dragon.battledWith = [];
         dragon.stamina = FOOD_STAMINA_GAIN;
 
         const fedDragon = await this.dragonRepository.save(dragon);
@@ -197,6 +198,8 @@ export class DragonService {
         const ownedDragon = await this.checkIfEventAvailable(ownerId, dto.ownedDragonId);
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
+
+        if (ownedDragon.battledWith.filter(id => id === dto.enemyDragonId).length > 1) this.errorService.throw('errors.alreadyBattled');
 
         const enemyDragon = await this.getOne(dto.enemyDragonId);
         enemyDragon.action = null;
@@ -242,6 +245,7 @@ export class DragonService {
     }
 
     async restoreStamina(dragon: DragonDto): Promise<DragonDto> {
+        dragon.battledWith = [];
         dragon.stamina = RESTORE_STAMINA_GAIN;
         dragon.nextFeed = Date.now() + RESTORE_STAMINA_INTERVAL;
         return await this.dragonRepository.save(dragon);

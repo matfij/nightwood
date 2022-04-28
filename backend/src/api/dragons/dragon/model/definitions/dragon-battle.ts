@@ -42,3 +42,14 @@ export interface TurnResult {
     defender: BattleDragon;
     log: string;
 }
+
+export enum BattleResultType {
+    Win,
+    Loss,
+    Draw,
+}
+
+export interface BattleResultExperience {
+    ownedExperience: number;
+    enemyExperience: number;
+}

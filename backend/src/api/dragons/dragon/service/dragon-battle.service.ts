@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
-import { BattleDragon, TurnResult } from "../model/definitions/dragon-battle";
+import { BattleDragon, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
@@ -41,14 +41,17 @@ export class DragonBattleService {
         }
 
         if (logs.length >= 100) {
-            result =`<div class="neither">The battle did not found a winner.</div>`;
+            const resultExperience = await this.saveBattleResults(BattleResultType.Draw, owned, enemy, logs.length);
+            result =`<div class="neither">The battle did not found a winner. 
+                Both participants gained ${resultExperience.ownedExperience} experience.</div>`;
         } else if (owned.health > enemy.health) {
-            owned = await this.saveBattleResults(true, owned, enemy, logs.length);
-            const gainedExperience = owned.experience - ownedDragon.experience;
-            result = `<div class="owned">${owned.name} won and gained ${gainedExperience} experience.</div>`;
+            const resultExperience = await this.saveBattleResults(BattleResultType.Win, owned, enemy, logs.length);
+            result = `<div class="owned">${owned.name} won and gained ${resultExperience.ownedExperience} experience.<br>
+                ${enemy.name} lost ${resultExperience.enemyExperience} experience.</div>`;
         } else {
-            owned = await this.saveBattleResults(false, owned, enemy, logs.length);
-            result =`<div class="enemy">${enemy.name} won.</div>`;
+            const resultExperience = await this.saveBattleResults(BattleResultType.Loss, owned, enemy, logs.length);
+            result = `<div class="enemy">${enemy.name} won and gained ${resultExperience.enemyExperience} experience.<br>
+                ${owned.name} lost ${resultExperience.ownedExperience} experience.</div>`;
         }
 
         return {
@@ -158,19 +161,59 @@ export class DragonBattleService {
         return { attacker: attacker, defender: defender, log: log };
     }
 
-    private async saveBattleResults(ownedWin: boolean, owned: BattleDragon, enemy: BattleDragon, battleLength: number): Promise<BattleDragon> {
-        if (ownedWin) {
-            let gainedExperience = 10 * this.mathService.randRange(0.7, 1.3) 
-                * Math.log(1 + Math.max(1, (enemy.level - owned.level)));
-            gainedExperience = Math.round(this.mathService.limit(1, gainedExperience, 100));
+    private async saveBattleResults(result: BattleResultType, owned: BattleDragon, enemy: BattleDragon, battleLength: number): Promise<BattleResultExperience> {
+        let resultExperience: BattleResultExperience = { ownedExperience: 0, enemyExperience: 0 };
 
-            owned.experience += gainedExperience;
+        switch (result) {
+            case BattleResultType.Win: {
+                let gainedExperience = 15 * this.mathService.randRange(0.8, 1.2) * Math.log(1 + Math.max(1, (enemy.level - owned.level)));
+                gainedExperience = Math.round(this.mathService.limit(1, gainedExperience, 150));
+                let lostExperience = 5 * this.mathService.randRange(0.8, 1.2) * Math.log(1 + Math.max(1, (enemy.level - owned.level)));
+                lostExperience = Math.round(this.mathService.limit(1, lostExperience, 50));
+
+                owned.experience += gainedExperience;
+                enemy.experience -= Math.floor(lostExperience / 3);
+                resultExperience = { ownedExperience: gainedExperience, enemyExperience: Math.floor(lostExperience / 3) };
+                break;
+            }
+            case BattleResultType.Loss: {
+                let gainedExperience = 15 * this.mathService.randRange(0.8, 1.2) * Math.log(1 + Math.max(1, (owned.level - enemy.level)));
+                gainedExperience = Math.round(this.mathService.limit(1, gainedExperience, 150));
+                let lostExperience = 5 * this.mathService.randRange(0.8, 1.2) * Math.log(1 + Math.max(1, (owned.level - enemy.level)));
+                lostExperience = Math.round(this.mathService.limit(1, lostExperience, 50));
+
+                owned.experience -= lostExperience;
+                enemy.experience += Math.floor(gainedExperience / 3);
+                resultExperience = { ownedExperience: lostExperience, enemyExperience: Math.floor(gainedExperience / 3) };
+                break;
+            }
+            case BattleResultType.Draw: {
+                let gainedExperience = 5 * this.mathService.randRange(0.8, 1.2) * Math.log(1 + Math.max(1, (enemy.level - owned.level)));
+                gainedExperience = Math.round(this.mathService.limit(1, gainedExperience, 50));
+
+                owned.experience += gainedExperience;
+                enemy.experience += Math.floor(gainedExperience / 3);
+                resultExperience = { ownedExperience: gainedExperience, enemyExperience: Math.floor(gainedExperience / 3) };
+                break;
+            }
         }
 
         owned.stamina -= 1 + Math.floor(battleLength / 10);
         if (owned.stamina < 0) owned.stamina = 0;
 
-        await this.dragonRepository.update(owned.id, { experience: owned.experience, stamina: owned.stamina });
-        return owned;
+        owned.battledWith.push(enemy.id);
+
+        if (owned.experience < 0) owned.experience = 0;
+        if (enemy.experience < 0) enemy.experience = 0;
+
+        await this.dragonRepository.update(
+            owned.id, 
+            { experience: owned.experience, stamina: owned.stamina, battledWith: owned.battledWith },
+        );
+        await this.dragonRepository.update(
+            enemy.id,
+            { experience: enemy.experience },
+        );
+        return resultExperience;
     }
 }
