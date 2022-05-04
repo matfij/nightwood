@@ -55,9 +55,9 @@
   </div>
 
   <div class="wrapper-actions">
-    <div tooltip >
-      <ng-template *ngIf="!feedAvailable" #tooltipTemplate>
-        <div class="item-tooltip item-hint">
+    <div *ngIf="!feedAvailable" tooltip>
+      <ng-template #tooltipTemplate>
+        <div  class="item-tooltip item-hint">
           {{ 'dragon.nextFeedIn' | translate }}: {{  dragon.nextFeed | timer | async }}<br>
         </div>
       </ng-template>
@@ -65,6 +65,9 @@
         {{ 'dragon.feed' | translate }}
       </button>
     </div>
+    <button *ngIf="feedAvailable" (click)="prepareFeedModal()" class="btn-base btn-action">
+      {{ 'dragon.feed' | translate }}
+    </button>
 
     <button (click)="displayDetails = true" class="btn-base btn-action">
       {{ 'dragon.skills' | translate }}

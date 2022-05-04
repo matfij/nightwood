@@ -34,6 +34,8 @@ export class DragonSkillsService {
         if (dto.maxLevel) skills = skills.filter(skill => skill.level <= dto.maxLevel);
         if (dto.requiredNature) skills = skills.filter(skill => skill.requiredNature.includes(dto.requiredNature) || skill.requiredNature.length === 0);
 
+        skills.sort((a, b) => a.level - b.level);
+
         return skills;
     }
 

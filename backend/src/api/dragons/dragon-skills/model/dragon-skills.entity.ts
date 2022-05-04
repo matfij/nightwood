@@ -32,4 +32,31 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     roughSkin: number;
+
+    @Column({ default: 0 })
+    beginnersLuck: number;
+
+    @Column({ default: 0 })
+    magicArrow: number;
+
+    @Column({ default: 0 })
+    block: number;
+
+    @Column({ default: 0 })
+    armorPenetration: number;
+
+    @Column({ default: 0 })
+    rage: number;
+
+    @Column({ default: 0 })
+    fireBolt: number;
+
+    @Column({ default: 0 })
+    iceBolt: number;
+
+    @Column({ default: 0 })
+    airVector: number;
+
+    @Column({ default: 0 })
+    rockBlast: number;
 }

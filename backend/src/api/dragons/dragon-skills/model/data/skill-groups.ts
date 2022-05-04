@@ -1,5 +1,6 @@
 import { Skill } from "../definitions/dragon-skills";
-import { FireBreath, GreatVigor, InnateSpeed, InnerFlow, LuckyStrike, PugnaciousStrike, RoughSkin, SoundBody, ThoughtfulStrike } from "./skills";
+import { ArmorPenetration, BeginnersLuck, Block, GreatVigor, InnateSpeed, InnerFlow, LuckyStrike, MagicArrow, Rage, ThoughtfulStrike } from "./skills-common";
+import { FireBreath, SoundBody, PugnaciousStrike, RoughSkin, FireBolt, IceBolt, AirVector, rockBlast } from "./skills-exclusive";
 
 export const COMMON_SKILLS: Skill[] = [
     InnateSpeed,
@@ -7,22 +8,31 @@ export const COMMON_SKILLS: Skill[] = [
     LuckyStrike,
     GreatVigor,
     ThoughtfulStrike,
+    BeginnersLuck,
+    MagicArrow,
+    Block,
+    ArmorPenetration,
+    Rage,
 ];
 
 export const FIRE_SKILLS: Skill[] = [
     FireBreath,
+    FireBolt,
 ];
 
 export const WATER_SKILLS: Skill[] = [
     SoundBody,
+    IceBolt,
 ];
 
 export const WIND_SKILLS: Skill[] = [
     PugnaciousStrike,
+    AirVector,
 ];
 
 export const EARTH_SKILLS: Skill[] = [
     RoughSkin,
+    rockBlast,
 ];
 
 export const ALL_SKILLS: Skill[] = [
