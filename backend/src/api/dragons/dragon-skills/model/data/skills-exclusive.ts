@@ -15,9 +15,11 @@ export const FireBreath: Skill = {
 export const FireBolt: Skill = {
     uid: 'fireBolt',
     name: 'Fire Bolt',
-    hint: 'Enables the dragon to cast fire bolts that have a chance to burn enemies (require mana)',
+    hint: 'Enables the dragon to cast fire bolts that increase caster\'s critical power (require mana)',
     level: 30,
     requiredNature: [DragonNature.Fire],
+    castMana: 25,
+    castChance: 0.25,
 };
 
 /**
@@ -37,6 +39,8 @@ export const IceBolt: Skill = {
     hint: 'Enables the dragon to cast ice bolts that slow down enemies (require mana)',
     level: 30,
     requiredNature: [DragonNature.Water],
+    castMana: 25,
+    castChance: 0.25,
 };
 
 /**
@@ -56,6 +60,8 @@ export const AirVector: Skill = {
     hint: 'Enables the dragon to cast air vectors that accelerate the caster (require mana)',
     level: 30,
     requiredNature: [DragonNature.Wind],
+    castMana: 25,
+    castChance: 0.25,
 };
 
 /**
@@ -69,10 +75,12 @@ export const RoughSkin: Skill = {
     requiredNature: [DragonNature.Earth],
 };
 
-export const rockBlast: Skill = {
+export const RockBlast: Skill = {
     uid: 'rockBlast',
     name: 'Rock Blast',
-    hint: 'Enables the dragon to cast rock blasts that  (require mana)',
+    hint: 'Enables the dragon to cast rock blasts that can stun enemies (require mana)',
     level: 30,
     requiredNature: [DragonNature.Earth],
+    castMana: 25,
+    castChance: 0.25,
 };

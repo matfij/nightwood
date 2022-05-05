@@ -57,7 +57,7 @@ export class DragonService {
   }
 
   toDisplaySkill(skill: SkillDto): DisplaySkill {
-    const image = `${this.BASE_SKILL_IMG_PATH}/${skill.uid}.${this.EXTENSION}`;
+    const image = `${this.BASE_SKILL_IMG_PATH}/${skill.uid}.svg`;
 
     return {
       ...skill,

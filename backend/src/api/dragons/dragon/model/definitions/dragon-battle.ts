@@ -41,6 +41,9 @@ export interface TurnResult {
     attacker: BattleDragon;
     defender: BattleDragon;
     log: string;
+
+    cssClasses?: string;
+    skip?: boolean;
 }
 
 export enum BattleResultType {

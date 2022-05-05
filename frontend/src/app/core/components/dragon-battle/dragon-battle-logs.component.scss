@@ -21,6 +21,17 @@
   @include tile($app-red);
 }
 
+.log-skill {
+  font-size: 15px;
+  font-style: italic;
+}
+
+.log-miss {
+  @include tile(lighten($app-dark, 33%));
+
+  font-size: 13px;
+}
+
 .log-crit {
   font-weight: 500;
 }

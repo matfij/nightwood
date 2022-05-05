@@ -38,7 +38,7 @@ export class ActionEventService {
                 const user = await this.userService.getOne(userId);
 
                 const gainedExperience = await this.dragonService.awardExpeditionExperience(dragon, expedition);
-                const gainedGold = await this.dragonService.awardExpeditionGold(expedition);
+                const gainedGold = await this.dragonService.awardExpeditionGold(dragon, expedition);
                 const loots = await this.itemService.awardExpeditionItems(user, dragon, expedition);
 
                 await this.userService.updateGold(userId, gainedGold);

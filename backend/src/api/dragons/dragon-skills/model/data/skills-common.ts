@@ -60,6 +60,8 @@ export const MagicArrow: Skill = {
     hint: 'Enables the dragon to cast magic arrows (require mana)',
     level: 10,
     requiredNature: [],
+    castChance: 0.25,
+    castMana: 10,
 }
 
 /**

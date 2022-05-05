@@ -49,6 +49,7 @@ backend/client/*
 *.jpg
 *.png
 *.gif
+*.svg
 /backend/src/common/data/*
 
 # ANNs

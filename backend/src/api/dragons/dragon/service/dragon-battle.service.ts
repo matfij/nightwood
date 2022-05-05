@@ -1,7 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { skip } from "rxjs";
 import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
+import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
+import { AirVector, FireBolt, IceBolt, RockBlast } from "../../dragon-skills/model/data/skills-exclusive";
 import { BattleDragon, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -64,29 +67,173 @@ export class DragonBattleService {
 
     private performMovement(attacker: BattleDragon, defender: BattleDragon, ownedTurn: boolean, turn: number): TurnResult {
         let cssClasses = ownedTurn ? 'item-log log-owned' : 'item-log log-enemy';
-        let independentLogs = [];
-        let extraLogs = [];
-        let isCrit = false;
+        let turnResult: TurnResult = { attacker: attacker, defender: defender, log: '', cssClasses: cssClasses };
 
         /**
          * Preamptive restore effects
          */
-        defender.mana += defender.skills.innerFlow;
-        defender.initiative += defender.speed;
+        turnResult.defender.mana += defender.skills.innerFlow;
+        turnResult.defender.initiative += defender.speed;
+
+        /**
+         * Special attacks
+         */
+        turnResult = this.executeSpecialAttacks(turnResult);
 
         /**
          * Dodge chance
          */
         const hitChance = 0.5 + Math.random();  // 0.5 - 1.5
-        if (defender.dodgeChance > hitChance) {
-            const log = `
-                <div class="${cssClasses}">
-                    ${attacker.name} (${attacker.health.toFixed(1)}) 
+        if (!turnResult.skip && turnResult.defender.dodgeChance > hitChance) {
+            turnResult.log = `
+                <div class="item-log log-miss">
+                    ${turnResult.attacker.name} (${turnResult.attacker.health.toFixed(1)}) 
                     missess.
                 </div>`;
 
-            return { attacker: attacker, defender: defender, log: log };
+            turnResult.skip = true;
         }
+
+        /**
+         * Regular turn
+         */
+        if (!turnResult.skip) {
+            turnResult = this.executeRegularTurn(turnResult);
+        }
+
+        /**
+         * Post-movement effects
+         */
+        turnResult = this.executePostTurnEffects(turnResult, turn);
+
+        return turnResult;
+    }
+
+    private executeSpecialAttacks(turnResult: TurnResult): TurnResult {
+        let attacker = turnResult.attacker;
+        let defender = turnResult.defender;
+        let log = turnResult.log;
+        let extraLogs = [];
+        let cssClasses = turnResult.cssClasses;
+
+        if (attacker.skills.magicArrow > 0) {
+            const castCost = MagicArrow.castMana * (1 + attacker.skills.magicArrow / 10);
+            if (attacker.mana > castCost && Math.random() < MagicArrow.castChance) {
+                const skillHit = this.mathService.randRange(0.95, 1.05) * (1 + attacker.skills.magicArrow / 10)
+                    * Math.max(1, (attacker.will - 0.5 * defender.armor));
+                defender.health -= skillHit;
+                attacker.mana -= castCost;
+                
+                cssClasses += ' log-skill';
+                log = `
+                <div class="${cssClasses}">
+                    ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Magic Arrow</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
+                    for ${skillHit.toFixed(1)} damage.
+                </div>`;
+
+                return { attacker: attacker, defender: defender, skip: true, log: log };
+            }
+        }
+        if (attacker.skills.fireBolt > 0) {
+            const castCost = FireBolt.castMana * (1 + attacker.skills.fireBolt / 10);
+            if (attacker.mana > castCost && Math.random() < FireBolt.castChance) {
+                const skillHit = this.mathService.randRange(0.95, 1.05) * (1 + attacker.skills.fireBolt / 6)
+                    * Math.max(1, (attacker.will - 0.5 * defender.armor));
+                defender.health -= skillHit;
+                const extraCritPower = attacker.skills.fireBolt;
+                attacker.critPower += extraCritPower / 100;
+                attacker.mana -= castCost;
+
+                cssClasses += ' log-skill';
+                log = `
+                <div class="${cssClasses}">
+                    ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Fire bolt</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
+                    for ${skillHit.toFixed(1)} damage.
+                    <div class="log-extra">+ critical power boost (${extraCritPower.toFixed(1)} %)</div>
+                </div>`;
+
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
+        }
+        if (attacker.skills.iceBolt > 0) {
+            const castCost = IceBolt.castMana * (1 + attacker.skills.iceBolt / 10);
+            if (attacker.mana > castCost && Math.random() < IceBolt.castChance) {
+                const skillHit = this.mathService.randRange(0.95, 1.05) * (1 + attacker.skills.iceBolt / 9)
+                    * Math.max(1, (attacker.will - 0.5 * defender.armor));
+                defender.health -= skillHit;
+                const skillSlow = 5 + 1.5 * attacker.skills.iceBolt;
+                defender.initiative -= skillSlow;
+                attacker.mana -= castCost;
+
+                cssClasses += ' log-skill';
+                log = `
+                <div class="${cssClasses}">
+                    ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Ice Bolt</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
+                    for ${skillHit.toFixed(1)} damage.
+                    <div class="log-extra">+ slow (${skillSlow.toFixed(1)} initiative)</div>
+                </div>`;
+
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
+        }
+        if (attacker.skills.airVector > 0) {
+            const castCost = AirVector.castMana * (1 + attacker.skills.airVector / 10);
+            if (attacker.mana > castCost && Math.random() < AirVector.castChance) {
+                const skillHit = this.mathService.randRange(0.95, 1.05) * (1 + attacker.skills.airVector / 11)
+                    * Math.max(1, (attacker.will - 0.5 * defender.armor));
+                defender.health -= skillHit;
+                const skillHaste = 5 + 1.67 * attacker.skills.airVector;
+                attacker.initiative += skillHaste;
+                attacker.mana -= castCost;
+
+                cssClasses += ' log-skill';
+                log = `
+                <div class="${cssClasses}">
+                    ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Air Vector</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
+                    for ${skillHit.toFixed(1)} damage.
+                    <div class="log-extra">+ haste (${skillHaste.toFixed(1)} initiative)</div>
+                </div>`;
+
+                return { attacker: attacker, defender: defender, log: log, skip: true };
+            }
+        }
+        if (attacker.skills.rockBlast > 0) {
+            const castCost = RockBlast.castMana * (1 + attacker.skills.rockBlast / 10);
+            if (attacker.mana > castCost && Math.random() < RockBlast.castChance) {
+                const skillHit = this.mathService.randRange(0.95, 1.05) * (1 + attacker.skills.rockBlast / 9)
+                    * Math.max(1, (attacker.will - 0.5 * defender.armor));
+                defender.health -= skillHit;
+                
+                const stunChance = 0.1 + attacker.skills.rockBlast / 50;
+                if (stunChance > Math.random()) {
+                    defender.initiative -= defender.speed;
+                    extraLogs.push(`<div class="log-extra">+stun</div>`);
+                }
+
+                attacker.mana -= castCost;
+
+                cssClasses += ' log-skill';
+                log = `
+                <div class="${cssClasses}">
+                    ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Rock Blast</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
+                    for ${skillHit.toFixed(1)} damage.`;
+                extraLogs.forEach(extraLog => log += extraLog);
+                log += `</div>`;
+
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
+        }
+
+        return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
+    }
+
+    private executeRegularTurn(turnResult: TurnResult): TurnResult {
+        let attacker = turnResult.attacker;
+        let defender = turnResult.defender;
+        let log = turnResult.log;
+        let extraLogs = [];
+        let cssClasses = turnResult.cssClasses;
+        let isCrit = false;
 
         /**
          * Critical chance
@@ -135,7 +282,7 @@ export class DragonBattleService {
             extraLogs.push(`<div class="log-extra">- ${defender.name} reflected ${reflectedHit.toFixed(1)} damage</div>`);
         }
 
-        let log = `
+        log += `
             <div class="${cssClasses}">
                 ${attacker.name} (${attacker.health.toFixed(1)}) 
                 ${isCrit ? 'critically strikes' : 'strikes'} 
@@ -144,9 +291,16 @@ export class DragonBattleService {
         extraLogs.forEach(extraLog => log += extraLog);
         log += `</div>`;
 
-        /**
-         * Post-movement effects
-         */
+        return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
+    }
+
+    private executePostTurnEffects(turnResult: TurnResult, turn: number): TurnResult {
+        let attacker = turnResult.attacker;
+        let defender = turnResult.defender;
+        let log = turnResult.log;
+        let independentLogs = [];
+        let cssClasses = turnResult.cssClasses;
+
         if (defender.skills.soundBody > 0 && defender.health < defender.maxHealth && defender.health > 0) {
             let restoredHealth = 0.05 * defender.maxHealth * (1 + defender.skills.soundBody / (20 + 1.25 * turn));
             if (restoredHealth > 0) {
@@ -158,7 +312,7 @@ export class DragonBattleService {
 
         independentLogs.forEach(independentLog => log += independentLog);
 
-        return { attacker: attacker, defender: defender, log: log };
+        return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
     }
 
     private async saveBattleResults(result: BattleResultType, owned: BattleDragon, enemy: BattleDragon, battleLength: number): Promise<BattleResultExperience> {

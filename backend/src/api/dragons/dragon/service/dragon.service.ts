@@ -187,8 +187,8 @@ export class DragonService {
         return gainedExperience;
     }
 
-    async awardExpeditionGold(expedition: ExpeditionDto): Promise<number> {
-        const gainedGold = this.mathService.randRange(0.9, 1.1) * expedition.goldAward;
+    async awardExpeditionGold(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
+        const gainedGold = this.mathService.randRange(0.9, 1.1) * expedition.goldAward * (1 + dragon.skills.beginnersLuck/33);
         return Math.round(gainedGold);
     }
 
@@ -199,7 +199,7 @@ export class DragonService {
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
 
-        if (ownedDragon.battledWith.filter(id => id === dto.enemyDragonId).length > 1) this.errorService.throw('errors.alreadyBattled');
+        // if (ownedDragon.battledWith.filter(id => id === dto.enemyDragonId).length > 1) this.errorService.throw('errors.alreadyBattled');
 
         const enemyDragon = await this.getOne(dto.enemyDragonId);
         enemyDragon.action = null;

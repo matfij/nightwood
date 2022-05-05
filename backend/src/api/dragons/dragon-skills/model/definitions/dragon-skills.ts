@@ -6,4 +6,7 @@ export interface Skill {
     hint: string;
     level: number;
     requiredNature: DragonNature[];
+
+    castChance?: number;
+    castMana?: number;
 }
