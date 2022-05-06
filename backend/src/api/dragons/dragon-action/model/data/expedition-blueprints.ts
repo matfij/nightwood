@@ -1,9 +1,10 @@
-import { ANDREW_FOREST, CARRAMBA_SANDS, HARNA_PEAKS } from './expeditions';
+import { ANDREW_FOREST, CARRAMBA_SANDS, HARNA_PEAKS, MIRAGE_ISLAND } from './expeditions';
 
 export const REGULAR_EXPEDITIONS = [
     ANDREW_FOREST, 
     CARRAMBA_SANDS, 
-    HARNA_PEAKS
+    HARNA_PEAKS,
+    MIRAGE_ISLAND,
 ];
 
 export const EVENT_EXPEDITIONS = [];

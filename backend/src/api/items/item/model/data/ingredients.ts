@@ -9,3 +9,43 @@ export const TRANSMUTATION_STONE: ItemDto = {
     rarity: ItemRarity.Mythical,
     type: ItemType.Ingredient,
 };
+
+export const GATE_PARTICLE: ItemDto = {
+    uid: 'item-i-2',
+    name: 'Gate Particle',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Ingredient,
+};
+
+export const GATE_KEY: ItemDto = {
+    uid: 'item-i-3',
+    name: 'Gate Key',
+    level: 1,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Ingredient,
+};
+
+export const SUPERCHARGE_CRYSTAL: ItemDto = {
+    uid: 'item-i-4',
+    name: 'Supercharge Crystal',
+    level: 1,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Ingredient,
+};
+
+export const ETERNAL_FLOWER: ItemDto = {
+    uid: 'item-i-5',
+    name: 'Eternal Flower',
+    level: 1,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Ingredient,
+};
+
+export const MIDNIGHT_ESSENCE: ItemDto = {
+    uid: 'item-i-6',
+    name: 'Midnight Essence',
+    level: 1,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Ingredient,
+};
