@@ -37,7 +37,7 @@
             <div class="label">New nature:</div>
             <select #newNatureSelect class="input-select">
               <option value=""></option>
-              <option *ngFor="let nature of dragonNature;" [value]="nature.value">{{ nature.name | translate }}</option>
+              <option *ngFor="let nature of basicNatures;" [value]="nature.value">{{ nature.name | translate }}</option>
             </select>
           </div>
 

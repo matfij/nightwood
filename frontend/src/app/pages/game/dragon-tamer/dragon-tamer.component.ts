@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActionController, DragonChangeNatureDto, DragonController, DragonDto, DragonNature, DragonRenameDto, DragonTamerActionDto, UserAuthDto, UserDto } from 'src/app/client/api';
 import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
+import { SelectOption } from 'src/app/common/definitions/common';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { UtilsService } from 'src/app/common/services/utils.service';
@@ -33,7 +34,14 @@ export class DragonTamerComponent implements OnInit {
     private repositoryService: RepositoryService,
   ) {}
 
-  get dragonNature() { return this.utilsService.enumToConst(DragonNature, 'enums.dragonNature.'); }
+  get basicNatures(): SelectOption[] {
+    return [
+      { value: DragonNature.Fire, name: 'enums.dragonNature.Fire' },
+      { value: DragonNature.Water, name: 'enums.dragonNature.Water' },
+      { value: DragonNature.Wind, name: 'enums.dragonNature.Wind' },
+      { value: DragonNature.Earth, name: 'enums.dragonNature.Earth' },
+    ];
+  }
 
   ngOnInit(): void {
     this.user = this.repositoryService.getUserData();

@@ -3,4 +3,7 @@ export enum DragonNature {
     Water = 'Water',
     Wind = 'Wind',
     Earth = 'Earth',
+    Thunder = 'Thunder',
+    Nature = 'Nature',
+    Dark = 'Dark',
 }

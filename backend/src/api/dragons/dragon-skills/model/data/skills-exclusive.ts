@@ -84,3 +84,62 @@ export const RockBlast: Skill = {
     castMana: 25,
     castChance: 0.25,
 };
+
+/**
+ * Thunder
+ */
+export const StaticStrike: Skill = {
+    uid: 'staticStrike',
+    name: 'Static Strike',
+    hint: 'Base attacks have a chance to strike enemies with an electric component that breaks armor',
+    level: 10,
+    requiredNature: [DragonNature.Thunder],
+};
+
+export const ThunderBolt: Skill = {
+    uid: 'thunderBolt',
+    name: 'Thunder Bolt',
+    hint: 'Enables the dragon to cast thunder bolts that can stun enemies (require mana)',
+    level: 30,
+    requiredNature: [DragonNature.Thunder],
+    castMana: 25,
+    castChance: 0.25,
+};
+
+/**
+ * Nature
+ */
+export const LeafCocoon: Skill = {
+    uid: 'leafCocoon',
+    name: 'Leaf Cocoon',
+    hint: 'Covers the dragon in a leaf cocoon that blocks a part of incoming damage',
+    level: 10,
+    requiredNature: [DragonNature.Nature],
+};
+
+export const CriticalDrain: Skill = {
+    uid: 'criticalDrain',
+    name: 'Critical Drain',
+    hint: 'Critical strikes drain enemy\'s health and mana',
+    level: 30,
+    requiredNature: [DragonNature.Nature],
+};
+
+/**
+ * Dark
+ */
+export const Poison: Skill = {
+    uid: 'poison',
+    name: 'Poison',
+    hint: 'Base attacks infect enemies with a poison that deals damage over time',
+    level: 10,
+    requiredNature: [DragonNature.Dark],
+};
+
+export const LifeLink: Skill = {
+    uid: 'lifeLink',
+    name: 'Life Link',
+    hint: 'Base attacks drain enemy\'s health',
+    level: 30,
+    requiredNature: [DragonNature.Dark],
+};
