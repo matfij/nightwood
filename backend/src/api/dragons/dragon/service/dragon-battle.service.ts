@@ -233,12 +233,44 @@ export class DragonBattleService {
         let log = turnResult.log;
         let extraLogs = [];
         let cssClasses = turnResult.cssClasses;
+        
         let isCrit = false;
+        let isArmorPenetrated = false;
+        let rageFactor = 1;
+        let blockedHit = 0;
+
+        /**
+         * Pre-offensive effects
+         */
+        if (attacker.skills.armorPenetration > 0) {
+            const penetrationChance = 0.05 + defender.skills.block / 125;
+            if (Math.random() < penetrationChance) {
+                isArmorPenetrated = true;
+                extraLogs.push(`<div class="log-extra">+ armor penetration</div>`);
+            }
+        }
+        if (attacker.skills.rage > 0) {
+            if (attacker.health < 0.5 * attacker.maxHealth) {
+                rageFactor = 1 + attacker.skills.rage / 75;
+                extraLogs.push(`<div class="log-extra">+ rage</div>`);
+            }
+        }
+
+        /**
+         * Pre-defensive skills
+         */
+        if (defender.skills.block > 0) {
+            const blockChance = 0.10 + defender.skills.block / 90;
+            if (blockChance > Math.random()) {
+                blockedHit = this.mathService.randRange(0.95, 1.05) * (50 + defender.skills.block);
+                extraLogs.push(`<div class="log-extra">- blocked ${blockedHit.toFixed(1)}% damage</div>`);
+            }
+        }
 
         /**
          * Critical chance
          */
-        const nocritChance = 0.5 + Math.random();  // 0.5 - 1.5
+        const nocritChance = 0.5 + Math.random(); // 0.5 - 1.5
         if (attacker.critChance > nocritChance) {
             isCrit = true;
             cssClasses += ' log-crit';
@@ -248,20 +280,24 @@ export class DragonBattleService {
          * Regular hit
          */
         let baseHit = isCrit 
-            ? this.mathService.randRange(0.9, 1.1) * attacker.critPower * attacker.damage - defender.armor 
-            : this.mathService.randRange(0.9, 1.1) * attacker.damage - defender.armor;
+            ? this.mathService.randRange(0.9, 1.1) * rageFactor * attacker.critPower * attacker.damage 
+            : this.mathService.randRange(0.9, 1.1) * rageFactor * attacker.damage;
+        baseHit = isArmorPenetrated ? baseHit : baseHit - defender.armor;
+        baseHit *= (1 - blockedHit);
         baseHit = this.mathService.limit((1 + attacker.level/10) * Math.random(), baseHit, baseHit);
         defender.health -= baseHit;
 
         /**
-         * Offensive effects
+         * Post-offensive effects
          */
         if (attacker.skills.fireBreath > 0) {
-            const baseFireComponent = (1 + attacker.skills.fireBreath / 40) * attacker.will;
+            const baseFireComponent = 0.6 * (1 + attacker.skills.fireBreath / 60) * attacker.will;
             let fireHit = isCrit 
-                ? this.mathService.randRange(0.9, 1.1) * attacker.critPower * baseFireComponent - (0.5 * defender.armor + 0.5 * defender.will)
-                : this.mathService.randRange(0.9, 1.1) * baseFireComponent - (0.5 * defender.armor + 0.5 * defender.will);
+                ? this.mathService.randRange(0.9, 1.1) * rageFactor * attacker.critPower * baseFireComponent - (0.6 * defender.armor)
+                : this.mathService.randRange(0.9, 1.1) * rageFactor * baseFireComponent - (0.6 * defender.armor);
             fireHit = this.mathService.limit(attacker.skills.fireBreath * Math.random(), fireHit, fireHit);
+            fireHit *= (1 - blockedHit);
+            fireHit = this.mathService.limit((1 + attacker.level/10) * Math.random(), fireHit, fireHit);
             defender.health -= fireHit;
             extraLogs.push(`<div class="log-extra">+ ${fireHit.toFixed(1)} fire damage</div>`);
         }
@@ -273,9 +309,8 @@ export class DragonBattleService {
         }
         
         /**
-         * Defensive skills
+         * Post-defensive skills
          */
-
         if (defender.skills.roughSkin > 0) {
             const reflectedHit = baseHit * defender.skills.roughSkin / 60;
             attacker.health -= reflectedHit;

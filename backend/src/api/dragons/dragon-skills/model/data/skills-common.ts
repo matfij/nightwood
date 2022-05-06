@@ -14,7 +14,7 @@ export const InnateSpeed: Skill = {
 export const InnerFlow: Skill = {
     uid: 'innerFlow',
     name: 'Inner Flow',
-    hint: 'Increases maximum mana and mana regenerations',
+    hint: 'Increases maximum mana and grants mana regenerations',
     level: 1,
     requiredNature: [],
 }
@@ -49,7 +49,7 @@ export const ThoughtfulStrike: Skill = {
  export const BeginnersLuck: Skill = {
     uid: 'beginnersLuck',
     name: 'Beginners Luck',
-    hint: 'Increases the amount of gold you get from expeditions',
+    hint: 'Increases the amount of gold from expeditions',
     level: 10,
     requiredNature: [],
 }
@@ -86,7 +86,7 @@ export const ArmorPenetration: Skill = {
 export const Rage: Skill = {
     uid: 'rage',
     name: 'Rage',
-    hint: 'Increases dragon damage the lower its health is',
+    hint: 'Increases dragon damage when low on health',
     level: 30,
     requiredNature: [],
 }
