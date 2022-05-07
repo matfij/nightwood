@@ -97,7 +97,7 @@ export class UserService {
     async updateGold(userId: number, gold: number): Promise<UserDto> {
         const user = await this.getOne(userId);
 
-        if (gold < 0 && user.gold < gold) this.errorService.throw('errors.insufficientsFound');
+        if (gold < 0 && user.gold < Math.abs(gold)) this.errorService.throw('errors.insufficientsFound');
         
         user.gold += gold;
         await this.userRepository.update(userId, { gold: user.gold });

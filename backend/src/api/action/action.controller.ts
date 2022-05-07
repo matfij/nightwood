@@ -14,6 +14,7 @@ import { ActionItemService } from "./service/action-item.service";
 import { JwtAuthGuard } from "../users/auth/util/jwt.guard";
 import { DragonEquipDto } from "../dragons/dragon/model/dto/dragon-equip.dto";
 import { DragonChangeNatureDto, DragonRenameDto } from "../dragons/dragon/model/dto/dragon-tamer-params.dto";
+import { DragonSummonDto } from "../dragons/dragon/model/dto/dragon-summon.dto";
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -30,6 +31,12 @@ export class ActionController {
     @ApiOkResponse({ type: DragonDto })
     adoptDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonAdoptDto): Promise<DragonDto> {
         return this.actionDragonService.adoptDragon(req.user.id, dto);
+    }
+    
+    @Post('summonDragon')
+    @ApiOkResponse({ type: DragonDto })
+    summonDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonSummonDto): Promise<DragonDto> {
+        return this.actionDragonService.summonDragon(req.user.id, dto);
     }
 
     @Post('feedDragon')

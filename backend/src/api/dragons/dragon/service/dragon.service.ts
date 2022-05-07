@@ -20,7 +20,7 @@ import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
 import { FEED_INTERVAL, FOOD_STAMINA_GAIN, RESTORE_STAMINA_GAIN, RESTORE_STAMINA_INTERVAL } from 'src/configuration/backend.config';
-import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/configuration/frontend.config';
+import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL, DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/configuration/frontend.config';
 import { DataService } from 'src/common/services/data.service';
 import { DRAGON_TAMER_ACTIONS } from '../data/dragon-tamer-actions';
 import { DragonTamerActionDto } from '../model/dto/dragon-tamer-actions.dto';
@@ -107,6 +107,9 @@ export class DragonService {
     }
 
     async adopt(ownerId: number, dto: DragonAdoptDto): Promise<DragonDto> {
+        if (dto.name.length < DRAGON_NAME_MIN_LENGTH || dto.name.length > DRAGON_NAME_MAX_LENGTH) this.errorService.throw('errors.incorrectDragonName');
+        if (!this.errorService.checkBannedWords(dto.name)) this.errorService.throw('errors.bannedWordUse');
+
         const dragon = this.dragonRepository.create({ ...dto, ownerId: ownerId }) as DragonDto;
         dragon.action = await this.dragonActionService.createAction();
         dragon.skills = await this.dragonSkillsService.createSkills(null);

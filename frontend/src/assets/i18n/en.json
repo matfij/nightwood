@@ -196,7 +196,8 @@
     "thunderHint": "Summon a dragon of storms",
     "natureHint": "Summon a dragon of woods",
     "darkHint": "Summon a dragon of darkness",
-    "summon": "Summon"
+    "summon": "Summon",
+    "summonSuccess": "You have summoned a new dragon!"
   },
   "dragonTamer": {
     "dragonTamerHint": "Reinhardt von Aliez, the first man who killed a battle dragon, was an ascended paladin of the White Rose. Once a great warrior and national hero, but with age, he decided to devote himself to deepening his knowledge about dragons.",

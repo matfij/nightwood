@@ -12,6 +12,8 @@ import { Item } from "src/api/items/item/model/item.entity";
 import { DragonChangeNatureDto, DragonRenameDto } from "src/api/dragons/dragon/model/dto/dragon-tamer-params.dto";
 import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from "src/configuration/frontend.config";
 import { ACTION_CHANGE_NATURE, ACTION_RENAME, ACTION_RESET_SKILLS, ACTION_RESTORE_STAMINA } from "src/api/dragons/dragon/data/dragon-tamer-actions";
+import { DragonSummonDto } from "src/api/dragons/dragon/model/dto/dragon-summon.dto";
+import { DRAGON_SUMMON_ACTIONS } from "src/api/dragons/dragon/data/dragon-summon-actions";
 
 @Injectable()
 export class ActionDragonService {
@@ -25,6 +27,26 @@ export class ActionDragonService {
 
     async adoptDragon(userId: number, dto: DragonAdoptDto): Promise<DragonDto> {
         await this.userService.updateOwnedDragons(userId, true);
+        
+        const dragon = await this.dragonService.adopt(userId, dto);
+
+        return dragon;
+    }
+
+    async summonDragon(userId: number, dto: DragonSummonDto): Promise<DragonDto> {
+        const action = DRAGON_SUMMON_ACTIONS.find(action => action.uid === dto.actionUid);
+        if (!action) this.errorService.throw('errors.actionNotFound');
+
+        const user = await this.userService.getOne(userId);
+        if (user.gold < action.cost) this.errorService.throw('errors.insufficientsFound');
+        if (user.ownedDragons >= user.maxOwnedDragons) this.errorService.throw('errors.maxDragonsExceeded');
+
+        if (dto.name.length < DRAGON_NAME_MIN_LENGTH || dto.name.length > DRAGON_NAME_MAX_LENGTH) this.errorService.throw('errors.incorrectDragonName');
+        if (!this.errorService.checkBannedWords(dto.name)) this.errorService.throw('errors.bannedWordUse');
+
+        await this.itemService.checkAndConsumeItems(action.requiredItems, userId);
+        await this.userService.updateOwnedDragons(userId, true);
+        await this.userService.updateGold(userId, -action.cost);
         
         const dragon = await this.dragonService.adopt(userId, dto);
 
@@ -108,7 +130,10 @@ export class ActionDragonService {
         const actionCost = dragon.level * ACTION_CHANGE_NATURE.costFactor;
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
-        if (dto.newNature === dragon.nature) this.errorService.throw('errors.dragonAlreadyHasThisNature')
+        if (dto.newNature === dragon.nature) this.errorService.throw('errors.dragonAlreadyHasThisNature');
+
+        const user = await this.userService.getOne(userId);
+        if (user.gold < actionCost) this.errorService.throw('errors.insufficientsFound');
 
         await this.itemService.checkAndConsumeItems(ACTION_CHANGE_NATURE.requiredItems, userId);
 
