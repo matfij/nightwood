@@ -4,6 +4,7 @@ import { AdoptDragonComponent } from './adopt-dragon/adopt-dragon.component';
 import { ArenaComponent } from './arena/arena.component';
 import { AuctionsComponent } from './auctions/auctions.component';
 import { CraftingComponent } from './crafting/crafting.component';
+import { DragonSummonComponent } from './dragon-summon/dragon-summon.component';
 import { DragonTamerComponent } from './dragon-tamer/dragon-tamer.component';
 import { ExpeditionsComponent } from './expeditions/expeditions.component';
 import { HomeComponent } from './home/home.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'adopt-dragon', component: AdoptDragonComponent },
   { path: 'my-dragons', component: MyDragonsComponent },
+  { path: 'summon-dragon', component: DragonSummonComponent },
   { path: 'dragon-tamer', component: DragonTamerComponent },
   { path: 'inventory', component: InventoryComponent },
   { path: 'expeditions', component: ExpeditionsComponent },

@@ -25,12 +25,15 @@ export class DragonService {
       case DragonNature.Water: { nature = 'water'; break; }
       case DragonNature.Wind: { nature = 'wind'; break; }
       case DragonNature.Earth: { nature = 'earth'; break; }
+      case DragonNature.Thunder: { nature = 'thunder'; break; }
+      case DragonNature.Nature: { nature = 'nature'; break; }
+      case DragonNature.Dark: { nature = 'dark'; break; }
     };
 
     let adulthood: number;
-    if (dragon.level <= 10) adulthood = 1;
-    else if (dragon.level <= 60) adulthood = 2;
-    else if (dragon.level <= 150) adulthood = 3;
+    if (dragon.level < 10) adulthood = 1;
+    else if (dragon.level < 45) adulthood = 2;
+    else if (dragon.level < 100) adulthood = 3;
     else adulthood = 4;
 
     const image = `${this.BASE_IMG_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;

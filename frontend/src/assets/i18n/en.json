@@ -108,6 +108,7 @@
     "menu": "Menu",
     "home": "Home",
     "adoptDragon": "Adopt dragon",
+    "summonDragon": "Summon dragon",
     "myDragons": "My dragons",
     "dragonTamer": "Dragon tamer",
     "inventory": "Inventory",
@@ -188,7 +189,9 @@
     "actionTraining": "On training",
     "requiredLevel": "Required level",
     "equippedRunes": "Equipped runes",
-    "availableRunes": "Available runes"
+    "availableRunes": "Available runes",
+    "summonDragonTilte": "Who are you fated to encounter?",
+    "summonDragonHint": "Open a door on a new adventure throughout lands of Nightwood ..."
   },
   "dragonTamer": {
     "dragonTamerHint": "Markiz von Alienz, the first true dragon tamer, was an ascended paladin of the White Rose. Once a great hero, but with age, he decided to devote himself to deepening his knowledge about dragons.",

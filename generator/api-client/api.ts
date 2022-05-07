@@ -2303,6 +2303,9 @@ export enum DragonNature {
     Water = "Water",
     Wind = "Wind",
     Earth = "Earth",
+    Thunder = "Thunder",
+    Nature = "Nature",
+    Dark = "Dark",
 }
 
 export interface DragonAdoptDto {
@@ -2331,10 +2334,19 @@ export interface DragonSkillsDto {
     luckyStrike: number;
     greatVigor: number;
     thoughtfulStrike: number;
+    beginnersLuck: number;
     fireBreath: number;
     soundBody: number;
     pugnaciousStrike: number;
     roughSkin: number;
+    magicArrow: number;
+    block: number;
+    armorPenetration: number;
+    rage: number;
+    fireBolt: number;
+    iceBolt: number;
+    airVector: number;
+    rockBlast: number;
 }
 
 export enum ItemRarity {
