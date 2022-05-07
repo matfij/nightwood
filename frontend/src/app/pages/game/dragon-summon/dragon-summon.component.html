@@ -1,14 +1,51 @@
 <div class="wrapper-main">
-  <app-navigation-bar currentLocation="summon-dragon"></app-navigation-bar>
+  <app-navigation-bar currentLocation="dragon-summoner"></app-navigation-bar>
 
   <div class="wrapper-content">
 
-    <div>
-      <div class="title">{{ 'dragon.summonDragonTilte' | translate }}</div>
-      <div class="title-secondary">{{ 'dragon.summonDragonHint' | translate }}</div>
+    <div class="wrapper-actions-section">
+      <div class="wrapper-lore">
+        <div class="wrapper-lore-img">
+          <img src="assets/img/lore/dragon-summoner.png" draggable="false" alt="Dragon summoner">
+        </div>
+        {{ 'dragonSummon.dragonSummonerHint' | translate }}
+      </div>
+
+      <ng-template #loading>
+        <div class="mt-5">
+          <app-loading-indicator></app-loading-indicator>
+        </div>
+      </ng-template>
+      <div *ngIf="actions$ | async as actions; else loading" class="wrapper-actions">
+
+        <div *ngFor="let action of actions; let actionInd = index" class="item-action">
+          <div class="action-hint">
+            {{ action.hint | translate }}
+          </div>
+
+          <div>
+            <input #nameInput class="input-text" placeholder="{{ 'auctions.name' | translate }}"/>
+          </div>
+
+          <div *ngIf="action.requiredItems && action.requiredItems.length" class="cost-hint">
+            {{ 'dragonTamer.requiredItems' | translate }}:
+            <div *ngFor="let item of action.requiredItems; let itemInd = index" [class]="'inline' + ' color-' + item.rarity">
+              {{ item.name + ' ('+item.quantity+')' + (itemInd+1 < action.requiredItems.length ? ', ' : '') }}
+            </div>
+          </div>
+
+          <div class="cost-hint">
+            {{ 'dragonTamer.actionCost' | translate }}:
+            {{ action.cost }}
+          </div>
+          <button (click)="summonDragon(action, nameInput.value)" class="btn-base btn-action">
+            {{ 'dragonSummon.summon' | translate }}
+          </button>
+        </div>
+
+      </div>
+
     </div>
-
-
 
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
 import { DragonTamerActionDto } from "../model/dto/dragon-tamer-actions.dto";
 
-export const ACTION_RENAME = {
+export const ACTION_RENAME: DragonTamerActionDto = {
     uid: 'tamer-action-1',
     hint: 'dragonTamer.renameHint',
     costFactor: 75,
@@ -10,7 +10,7 @@ export const ACTION_RENAME = {
     requiredItems: [],
 };
 
-export const ACTION_RESET_SKILLS = {
+export const ACTION_RESET_SKILLS: DragonTamerActionDto = {
     uid: 'tamer-action-2',
     hint: 'dragonTamer.resetSkillsHint',
     costFactor: 50,
@@ -19,7 +19,7 @@ export const ACTION_RESET_SKILLS = {
     requiredItems: [],
 };
 
-export const ACTION_RESTORE_STAMINA = {
+export const ACTION_RESTORE_STAMINA: DragonTamerActionDto = {
     uid: 'tamer-action-3',
     hint: 'dragonTamer.refreshHint',
     costFactor: 15,
@@ -28,7 +28,7 @@ export const ACTION_RESTORE_STAMINA = {
     requiredItems: [],
 };
 
-export const ACTION_CHANGE_NATURE = {
+export const ACTION_CHANGE_NATURE: DragonTamerActionDto = {
     uid: 'tamer-action-4',
     hint: 'dragonTamer.changeNatureHint',
     costFactor: 225,

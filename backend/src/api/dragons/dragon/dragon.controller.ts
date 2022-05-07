@@ -12,6 +12,7 @@ import { DragonPageDto } from "./model/dto/dragon-page.dto";
 import { BattleStartDto } from "./model/dto/battle-start.dto";
 import { DragonService } from "./service/dragon.service";
 import { DragonTamerActionDto } from "./model/dto/dragon-tamer-actions.dto";
+import { DragonSummonActionDto } from "./model/dto/dragon-summon.dto";
 
 @Controller('dragon')
 @UseGuards(JwtAuthGuard)
@@ -72,5 +73,11 @@ export class DragonController {
     @ApiOkResponse({ type: [DragonTamerActionDto] })
     getTamerActions(): Promise<DragonTamerActionDto[]> {
       return this.dragonService.getTamerActions();
+    }
+
+    @Post('getSummonActions')
+    @ApiOkResponse({ type: [DragonSummonActionDto] })
+    getSummonActions(): Promise<DragonSummonActionDto[]> {
+      return this.dragonService.getSummonActions();
     }
 }

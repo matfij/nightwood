@@ -1,11 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ActionController, DragonChangeNatureDto, DragonController, DragonDto, DragonNature, DragonRenameDto, DragonTamerActionDto, UserAuthDto, UserDto } from 'src/app/client/api';
+import { ActionController, DragonChangeNatureDto, DragonController, DragonDto, DragonNature, DragonRenameDto, DragonTamerActionDto, UserAuthDto } from 'src/app/client/api';
 import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { SelectOption } from 'src/app/common/definitions/common';
 import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';
-import { UtilsService } from 'src/app/common/services/utils.service';
 import { ValidatorService } from 'src/app/common/services/validator.service';
 import { EngineService } from 'src/app/core/services/engine.service';
 
@@ -27,7 +26,6 @@ export class DragonTamerComponent implements OnInit {
   constructor(
     private actionController: ActionController,
     private dragonController: DragonController,
-    private utilsService: UtilsService,
     private toastService: ToastService,
     private validatorService: ValidatorService,
     private engineService: EngineService,

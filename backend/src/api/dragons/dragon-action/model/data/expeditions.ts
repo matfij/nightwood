@@ -1,5 +1,5 @@
 import { BUBULAE_STEAK, IHON_BERRY, MIRACLE_FRUIT, RELIQUM_EGG, RORIS_LEEFS, SPIRAL_NUT } from "src/api/items/item/model/data/food";
-import { ETERNAL_FLOWER, GATE_KEY, GATE_PARTICLE, MIDNIGHT_ESSENCE, SUPERCHARGE_CRYSTAL, TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
+import { ETERNAL_FLOWER, GATE_KEY, GATE_PARTICLE, MIDNIGHT_ESSENCE, SUPERCHARGED_CRYSTAL, TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
 import { SHARD_AGILITY, SHARD_ATTACK, SHARD_BLANK, SHARD_DEFENCE, SHARD_UNITY, SHARD_WISDOM } from "src/api/items/item/model/data/runes";
 import { EXPEDITION_TIME_SCALE } from "src/configuration/backend.config";
 import { ExpeditionDto } from "../dto/expedition.dto";
@@ -79,7 +79,7 @@ export const MIRAGE_ISLAND: ExpeditionDto = {
         TRANSMUTATION_STONE,
         GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE,
         GATE_KEY,
-        SUPERCHARGE_CRYSTAL,
+        SUPERCHARGED_CRYSTAL,
         ETERNAL_FLOWER,
         MIDNIGHT_ESSENCE,
     ],

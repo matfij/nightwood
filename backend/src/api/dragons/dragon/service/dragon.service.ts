@@ -25,6 +25,8 @@ import { DataService } from 'src/common/services/data.service';
 import { DRAGON_TAMER_ACTIONS } from '../data/dragon-tamer-actions';
 import { DragonTamerActionDto } from '../model/dto/dragon-tamer-actions.dto';
 import { DragonNature } from '../model/definitions/dragon-nature';
+import { DRAGON_SUMMON_ACTIONS } from '../data/dragon-summon-actions';
+import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
 
 @Injectable()
 export class DragonService {
@@ -257,5 +259,9 @@ export class DragonService {
         dragon.nature = newNature;
 
         return await this.dragonRepository.save(dragon);
+    }
+
+    async getSummonActions(): Promise<DragonSummonActionDto[]> {
+        return DRAGON_SUMMON_ACTIONS;
     }
 }

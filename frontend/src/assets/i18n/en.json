@@ -189,12 +189,17 @@
     "actionTraining": "On training",
     "requiredLevel": "Required level",
     "equippedRunes": "Equipped runes",
-    "availableRunes": "Available runes",
-    "summonDragonTilte": "Who are you fated to encounter?",
-    "summonDragonHint": "Open a door on a new adventure throughout lands of Nightwood ..."
+    "availableRunes": "Available runes"
+  },
+  "dragonSummon": {
+    "dragonSummonerHint": "Lotta zi Ayvalik, a member of the White Rose and the only survivor of the Mirage Island expedition. She discovered Dimension Gate which pushed for further research on dragon summoning.",
+    "thunderHint": "Summon a dragon of storms",
+    "natureHint": "Summon a dragon of woods",
+    "darkHint": "Summon a dragon of darkness",
+    "summon": "Summon"
   },
   "dragonTamer": {
-    "dragonTamerHint": "Markiz von Alienz, the first true dragon tamer, was an ascended paladin of the White Rose. Once a great hero, but with age, he decided to devote himself to deepening his knowledge about dragons.",
+    "dragonTamerHint": "Reinhardt von Aliez, the first man who killed a battle dragon, was an ascended paladin of the White Rose. Once a great warrior and national hero, but with age, he decided to devote himself to deepening his knowledge about dragons.",
     "renameHint": "Rename the dragon.",
     "resetSkillsHint": "Reset the dragon's skills.",
     "refreshHint": "Refresh the dragon's stamina. This action cannot be performed when the dragon is fed. After the treatment, the dragon will not be hungry for some time.",

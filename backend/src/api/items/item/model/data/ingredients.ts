@@ -26,9 +26,9 @@ export const GATE_KEY: ItemDto = {
     type: ItemType.Ingredient,
 };
 
-export const SUPERCHARGE_CRYSTAL: ItemDto = {
+export const SUPERCHARGED_CRYSTAL: ItemDto = {
     uid: 'item-i-4',
-    name: 'Supercharge Crystal',
+    name: 'Supercharged Crystal',
     level: 1,
     rarity: ItemRarity.Mythical,
     type: ItemType.Ingredient,
