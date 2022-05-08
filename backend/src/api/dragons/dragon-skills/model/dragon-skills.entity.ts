@@ -59,4 +59,22 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     rockBlast: number;
+
+    @Column({ default: 0 })
+    staticStrike: number;
+
+    @Column({ default: 0 })
+    thunderbolt: number;
+
+    @Column({ default: 0 })
+    leafCut: number;
+
+    @Column({ default: 0 })
+    criticalDrain: number;
+
+    @Column({ default: 0 })
+    poison: number;
+
+    @Column({ default: 0 })
+    lifeLink: number;
 }

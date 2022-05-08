@@ -93,15 +93,15 @@ export const StaticStrike: Skill = {
     name: 'Static Strike',
     hint: 'Base attacks have a chance to strike enemies with an electric component that breaks armor',
     level: 10,
-    requiredNature: [DragonNature.Thunder],
+    requiredNature: [DragonNature.Electric],
 };
 
-export const ThunderBolt: Skill = {
-    uid: 'thunderBolt',
-    name: 'Thunder Bolt',
+export const Thunderbolt: Skill = {
+    uid: 'thunderbolt',
+    name: 'Thunderbolt',
     hint: 'Enables the dragon to cast thunder bolts that can stun enemies (require mana)',
     level: 30,
-    requiredNature: [DragonNature.Thunder],
+    requiredNature: [DragonNature.Electric],
     castMana: 25,
     castChance: 0.25,
 };
@@ -109,10 +109,10 @@ export const ThunderBolt: Skill = {
 /**
  * Nature
  */
-export const LeafCocoon: Skill = {
-    uid: 'leafCocoon',
-    name: 'Leaf Cocoon',
-    hint: 'Covers the dragon in a leaf cocoon that blocks a part of incoming damage',
+export const LeafCut: Skill = {
+    uid: 'leafCut',
+    name: 'Leaf Cut',
+    hint: 'Enhances base attacks with magical leafs (require mana)',
     level: 10,
     requiredNature: [DragonNature.Nature],
 };

@@ -2,7 +2,7 @@
  * General
  */
 
-export const EXPEDITION_TIME_SCALE = 1 / 123412341;
+export const EXPEDITION_TIME_SCALE = 1 / 2;
 export const FEED_TIME_SCALE = 1;
 
 export const PAGINATION_DEFAULT_PAGE = 0;

@@ -2403,7 +2403,7 @@ export enum DragonNature {
     Water = "Water",
     Wind = "Wind",
     Earth = "Earth",
-    Thunder = "Thunder",
+    Electric = "Electric",
     Nature = "Nature",
     Dark = "Dark",
 }

@@ -5,7 +5,7 @@ import { DragonSummonActionDto } from "../model/dto/dragon-summon.dto";
 export const SUMMON_THUNDER: DragonSummonActionDto = {
     uid: 'summon-action-1',
     hint: 'dragonSummon.thunderHint',
-    nature: DragonNature.Thunder,
+    nature: DragonNature.Electric,
     cost: 3000,
     requiredItems: [
         { ...SUPERCHARGED_CRYSTAL, quantity: 1 },

@@ -25,7 +25,7 @@ export class DragonService {
       case DragonNature.Water: { nature = 'water'; break; }
       case DragonNature.Wind: { nature = 'wind'; break; }
       case DragonNature.Earth: { nature = 'earth'; break; }
-      case DragonNature.Thunder: { nature = 'thunder'; break; }
+      case DragonNature.Electric: { nature = 'electric'; break; }
       case DragonNature.Nature: { nature = 'nature'; break; }
       case DragonNature.Dark: { nature = 'dark'; break; }
     };

@@ -58,4 +58,22 @@ export class DragonSkillsDto {
 
     @ApiProperty()
     rockBlast?: number;
+
+    @ApiProperty()
+    staticStrike?: number;
+
+    @ApiProperty()
+    thunderbolt?: number;
+
+    @ApiProperty()
+    leafCut?: number;
+
+    @ApiProperty()
+    criticalDrain?: number;
+
+    @ApiProperty()
+    poison?: number;
+
+    @ApiProperty()
+    lifeLink?: number;
 }

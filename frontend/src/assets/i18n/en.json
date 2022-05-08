@@ -19,7 +19,10 @@
       "Fire": "Fire",
       "Water": "Water",
       "Wind": "Wind",
-      "Earth": "Earth"
+      "Earth": "Earth",
+      "Electric": "Electric",
+      "Nature": "Nature",
+      "Dark": "Dark"
     },
     "itemType": {
       "Food": "Food",

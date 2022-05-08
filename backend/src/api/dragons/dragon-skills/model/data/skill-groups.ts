@@ -1,6 +1,6 @@
 import { Skill } from "../definitions/dragon-skills";
 import { ArmorPenetration, BeginnersLuck, Block, GreatVigor, InnateSpeed, InnerFlow, LuckyStrike, MagicArrow, Rage, ThoughtfulStrike } from "./skills-common";
-import { FireBreath, SoundBody, PugnaciousStrike, RoughSkin, FireBolt, IceBolt, AirVector, RockBlast, ThunderBolt, StaticStrike, LeafCocoon, CriticalDrain, Poison, LifeLink } from "./skills-exclusive";
+import { FireBreath, SoundBody, PugnaciousStrike, RoughSkin, FireBolt, IceBolt, AirVector, RockBlast, Thunderbolt, StaticStrike, LeafCut, CriticalDrain, Poison, LifeLink } from "./skills-exclusive";
 
 export const COMMON_SKILLS: Skill[] = [
     InnateSpeed,
@@ -29,9 +29,9 @@ export const EXCLUSIVE_SKILLS: Skill[] = [
     RockBlast,
 
     StaticStrike,
-    ThunderBolt,
+    Thunderbolt,
 
-    LeafCocoon,
+    LeafCut,
     CriticalDrain,
 
     Poison,
