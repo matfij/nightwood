@@ -99,7 +99,7 @@ export const StaticStrike: Skill = {
 export const Thunderbolt: Skill = {
     uid: 'thunderbolt',
     name: 'Thunderbolt',
-    hint: 'Enables the dragon to cast thunder bolts that can stun enemies (require mana)',
+    hint: 'Enables the dragon to cast thunder bolts that can paralyze enemies (require mana)',
     level: 30,
     requiredNature: [DragonNature.Electric],
     castMana: 25,
