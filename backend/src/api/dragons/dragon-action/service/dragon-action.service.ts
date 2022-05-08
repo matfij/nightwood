@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { randomInt } from 'crypto';
 import { DateService } from 'src/common/services/date.service';
 import { ErrorService } from 'src/common/services/error.service';
 import { Repository } from 'typeorm';
@@ -54,7 +53,7 @@ export class DragonActionService {
 
     if (expedition.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
 
-    dragon.action.nextAction = Date.now() + Math.round(this.mathService.randRange(0.9, 1.2) * expedition.minimumActionTime);
+    dragon.action.nextAction = Date.now() + Math.round(this.mathService.randRange(0.95, 1.05) * expedition.minimumActionTime);
     dragon.action.type = DragonActionType.Expedition;
     dragon.action.expeditionId = expeditionId;
     dragon.action.awardCollected = false;

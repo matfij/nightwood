@@ -122,7 +122,7 @@ export class DragonService {
         const filterOptions: FindManyOptions<Dragon> = {
             where: { ownerId: ownerId },
             relations: ['action', 'skills'],
-            order: { id: 'ASC' },
+            order: { experience: 'DESC' },
         };
 
         const dragons = await this.dragonRepository.find({
@@ -193,7 +193,7 @@ export class DragonService {
     }
 
     async awardExpeditionGold(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
-        const gainedGold = this.mathService.randRange(0.9, 1.1) * expedition.goldAward * (1 + dragon.skills.beginnersLuck/33);
+        const gainedGold = this.mathService.randRange(0.9, 1.1) * expedition.goldAward * (1 + dragon.skills.beginnersLuck/35);
         return Math.round(gainedGold);
     }
 

@@ -1,5 +1,7 @@
 import argparse
 
+# .venv\scripts\activate
+
 parser = argparse.ArgumentParser()
 parser.add_argument('mode', type=int)
 

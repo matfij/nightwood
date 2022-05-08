@@ -38,6 +38,10 @@
   </div>
 
   <div class="wrapper-stats">
+    <div class="item-stat">
+      {{ 'dragon.nature' | translate }}: <b style="margin-left: 7px;">{{ dragon.nature }}</b>
+    </div>
+
     <div *ngFor="let attribute of DRAGON_ATTRIBUTES" tooltip class="item-stat">
       <ng-template #tooltipTemplate>
         <div class="item-tooltip item-hint">
