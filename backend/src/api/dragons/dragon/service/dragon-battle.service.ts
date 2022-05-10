@@ -225,7 +225,7 @@ export class DragonBattleService {
         if (attacker.skills.thunderbolt > 0) {
             const castCost = Thunderbolt.castMana * (1 + attacker.skills.thunderbolt / 10);
             if (attacker.mana > castCost && Math.random() < Thunderbolt.castChance) {
-                const skillHit = this.mathService.randRange(0.5, 2.1) * (1 + attacker.skills.thunderbolt / 8)
+                const skillHit = this.mathService.randRange(0.6, 3.3) * (1 + attacker.skills.thunderbolt / 9)
                     * Math.max(1, (attacker.will - 0.5 * defender.armor));
                 defender.health -= skillHit;
                 attacker.mana -= castCost;
@@ -326,7 +326,7 @@ export class DragonBattleService {
         }
 
         if (attacker.skills.lifeLink > 0) {
-            const drainedHealth = baseHit * (0.05 + attacker.skills.lifeLink / 60);
+            const drainedHealth = baseHit * (0.04 + attacker.skills.lifeLink / 80);
             attacker.health += drainedHealth;
             defender.health -= drainedHealth;
             extraLogs.push(`<div class="log-extra">+ drained ${drainedHealth.toFixed(1)} health</div>`);

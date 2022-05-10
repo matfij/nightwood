@@ -58,3 +58,17 @@ class DragonService:
 
         res = post(url, dragon, headers=headers)
         print(res)
+
+    @classmethod
+    def create_full_dragon(cls, dragon: dict) -> None:
+        url = f'{cls.BASE_URL}/dragon/create'
+
+        dragon = json.dumps(dragon)
+
+        headers = { 
+            'Authorization': cls.AUTH_TOKEN,
+            'Content-Type': 'application/json',
+        }
+
+        res = post(url, dragon, headers=headers)
+        print(res)

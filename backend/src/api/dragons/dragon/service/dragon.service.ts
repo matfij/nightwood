@@ -204,7 +204,7 @@ export class DragonService {
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
 
-        // if (ownedDragon.battledWith.filter(id => id === dto.enemyDragonId).length > 1) this.errorService.throw('errors.alreadyBattled');
+        if (ownedDragon.battledWith.filter(id => id === dto.enemyDragonId).length > 1) this.errorService.throw('errors.alreadyBattled');
 
         const enemyDragon = await this.getOne(dto.enemyDragonId);
         enemyDragon.action = null;

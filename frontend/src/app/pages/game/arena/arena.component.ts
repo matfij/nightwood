@@ -96,7 +96,7 @@ export class ArenaComponent implements OnInit {
     if (!selectedOwnedDragon || !this.selectedEnemyDragon) return;
     if (selectedOwnedDragon.id == this.selectedEnemyDragon.id) { this.toastService.showError('errors.error', 'errors.battleItself'); return; }
     if (selectedOwnedDragon.stamina < 1) { this.toastService.showError('errors.error', 'errors.noStamina'); return; }
-    // if (selectedOwnedDragon.battledWith.filter(id => id === this.selectedEnemyDragon!.id).length > 1) { this.toastService.showError('errors.error', 'errors.alreadyBattled'); return; }
+    if (selectedOwnedDragon.battledWith.filter(id => id === this.selectedEnemyDragon!.id).length > 1) { this.toastService.showError('errors.error', 'errors.alreadyBattled'); return; }
     if (!this.dateService.checkIfEventAvailable(selectedOwnedDragon!.action.nextAction)) { this.toastService.showError('errors.error', 'errors.dragonBusy'); return; }
 
     this.displayBattle = true;

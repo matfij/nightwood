@@ -8,10 +8,10 @@ export class ErrorService {
         throw new BadRequestException(message);
     }
 
-    checkBannedWords(text: string): boolean {
+    checkBannedWords(text: string, isChat: boolean = false): boolean {
         let clear = true;
 
-        text = text.toLowerCase().replace(/ /g, '');
+        if (!isChat) text = text.toLowerCase().replace(/ /g, '');
 
         BANNED_WORDS.forEach(word => {
             if (text.includes(word)) clear = false;

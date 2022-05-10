@@ -7,7 +7,8 @@ import { ExpeditionDto } from "../dto/expedition.dto";
 export const ANDREW_FOREST: ExpeditionDto = {
     uid: 'expedition-1',
     name: 'Andrew Forest',
-    hint: 'Desipe the first impression it is a suprisingly calm and warm place, ideal for young dragons. The forest is protected by Andrew, a legendary dragon who has been guarding the forest since the great migration.',
+    hint: `Despite the first impression, it is a surprisingly calm and warm place, ideal for young dragons. 
+        The forest is protected by Andrew, a legendary dragon who has been guarding it since the great migration.`,
     level: 1,
     experienceAward: 50,
     goldAward: 50,
@@ -17,8 +18,8 @@ export const ANDREW_FOREST: ExpeditionDto = {
         RELIQUM_EGG, RELIQUM_EGG, RELIQUM_EGG,
         SPIRAL_NUT, SPIRAL_NUT, SPIRAL_NUT, SPIRAL_NUT,
         RORIS_LEEFS, RORIS_LEEFS, RORIS_LEEFS,
-        SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
-        SHARD_UNITY,
+        SHARD_BLANK, SHARD_BLANK,
+        TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 3 * 60 * 60 * 1000,
 };
@@ -26,10 +27,11 @@ export const ANDREW_FOREST: ExpeditionDto = {
 export const CARRAMBA_SANDS: ExpeditionDto = {
     uid: 'expedition-2',
     name: 'Carramba Sands',
-    hint: 'A faraway land, covered with sand and rocks where the wind is strong and the temperature is scorching. The desert is a place of great danger, but it is also a place of great treasure.',
+    hint: `In the past, a great southern empire stretched over these lands, but was destroyed by the elusive mechanical dragon.
+        The sands are now a place of peace and a wide variety of treasures.`,
     level: 10,
     experienceAward: 90,
-    goldAward: 100,
+    goldAward: 110,
     loots: [
         BUBULAE_STEAK, BUBULAE_STEAK,
         IHON_BERRY, IHON_BERRY, 
@@ -43,6 +45,7 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
         SHARD_WISDOM, SHARD_WISDOM,
         SHARD_UNITY,
         TRANSMUTATION_STONE,
+        GATE_PARTICLE, GATE_PARTICLE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 6 * 60 * 60 * 1000,
 };
@@ -50,10 +53,11 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
 export const HARNA_PEAKS: ExpeditionDto = {
     uid: 'expedition-3',
     name: 'Harna Peaks',
-    hint: 'Mysterious and little explored place filled with magical particles. These mountains hide gems used by the thinkerink goblin tribe.',
+    hint: `A mysterious and little explored place filled with magical particles. Because of strong winds this expedition 
+        takes a long time. These mountains hide shards and gems used by the Tinkering Goblin Tribe.`,
     level: 10,
-    experienceAward: 120,
-    goldAward: 125,
+    experienceAward: 110,
+    goldAward: 90,
     loots: [
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
         SHARD_ATTACK, SHARD_ATTACK, SHARD_ATTACK,
@@ -69,15 +73,15 @@ export const HARNA_PEAKS: ExpeditionDto = {
 export const MIRAGE_ISLAND: ExpeditionDto = {
     uid: 'expedition-4',
     name: 'Mirage Island',
-    hint: 'Miraculously discovered lands by the order of the White Rose. The island hides items that are not found anywhere else in the world and may be used to summon dragons from ancient times.',
+    hint: `Miraculously discovered lands by the order of the White Rose. The island hides items that are not found anywhere 
+        else in the world and may be used for dragon summoning.`,
     level: 30,
     experienceAward: 100,
     goldAward: 100,
     loots: [
-        SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
+        SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
         SHARD_UNITY,
-        TRANSMUTATION_STONE,
-        GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE,
+        GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE, GATE_PARTICLE,
         GATE_KEY,
         SUPERCHARGED_CRYSTAL,
         ETERNAL_FLOWER,

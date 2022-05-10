@@ -61,7 +61,7 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
   sendMessage() {
     if (this.message.length < CHAT_MESSAGE_MIN_LENGTH) return;
     if (this.message.length > CHAT_MESSAGE_MAX_LENGTH) return;
-    if (!this.validatorService.checkBannedWords(this.message)) return;
+    if (!this.validatorService.checkBannedWords(this.message, true)) return;
 
     const chatMessage: ChatMessage = {
       date: Date.now(),

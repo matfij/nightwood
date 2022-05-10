@@ -11,13 +11,13 @@ export class ValidatorService {
     private toastService: ToastService,
   ) {}
 
-  checkBannedWords(text: string): boolean {
+  checkBannedWords(text: string, isChat: boolean = false): boolean {
     let clear = true;
 
-    text = text.toLowerCase().replace(/ /g, '');
+    if (!isChat) text = text.toLowerCase().replace(/ /g, '');
 
     BANNED_WORDS.forEach((word) => {
-      if (text.includes(word)) clear = false;
+      if (text.includes(word)) { clear = false; console.log(word); }
     });
 
     if (!clear) this.toastService.showError('errors.error', 'errors.bannedWordUse');
