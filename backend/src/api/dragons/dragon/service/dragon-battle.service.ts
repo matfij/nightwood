@@ -285,7 +285,7 @@ export class DragonBattleService {
          * Pre-defensive skills
          */
         if (defender.skills.block > 0) {
-            const blockChance = 0.10 + defender.skills.block / 90;
+            const blockChance = 0.08 + defender.skills.block / 80;
             if (blockChance > Math.random()) {
                 blockedHit = this.mathService.randRange(0.95, 1.05) * (50 + defender.skills.block);
                 extraLogs.push(`<div class="log-extra">- blocked ${blockedHit.toFixed(1)}% damage</div>`);

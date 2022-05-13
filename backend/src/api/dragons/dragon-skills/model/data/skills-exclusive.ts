@@ -86,7 +86,7 @@ export const RockBlast: Skill = {
 };
 
 /**
- * Thunder
+ * Electric
  */
 export const StaticStrike: Skill = {
     uid: 'staticStrike',

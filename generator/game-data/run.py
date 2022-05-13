@@ -1,13 +1,9 @@
-from dotenv import load_dotenv
-load_dotenv()
-
-from src.dragon_data import DRAGON_BLUEPRINTS_1, DRAGON_BLUEPRINTS_2, DRAGON_BLUEPRINTS_3
 from src.dragon_service import DragonService
 
-# .venv\Scripts\activate
+# .venv\scripts\activate
 
-# for dragon in DRAGON_BLUEPRINTS_2:
-#     DragonService.create_dragon(dragon)
+MIN_LEVEL = 1
+MAX_LEVEL = 90
 
-for dragon in DRAGON_BLUEPRINTS_3:
-    DragonService.create_full_dragon(dragon)
+for ind in range(150):
+    DragonService.create_dragon(MIN_LEVEL, MAX_LEVEL)
