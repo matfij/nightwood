@@ -76,10 +76,13 @@
     <button (click)="displayDetails = true" class="btn-base btn-action">
       {{ 'dragon.skills' | translate }}
     </button>
+    <button (click)="displayStatistics = true" class="btn-base btn-action">
+      {{ 'dragon.statistics' | translate }}
+    </button>
     <button (click)="displayEquipment = true" class="btn-base btn-action">
       {{ 'dragon.equipment' | translate }}
     </button>
-    <button (click)="displayReleaseModal = true" class="btn-base btn-action no-mobile">
+    <button (click)="displayReleaseModal = true" class="btn-base btn-action">
       {{ 'dragon.release' | translate }}
     </button>
   </div>
@@ -97,6 +100,12 @@
   [dragon]="dragon"
   (close)="displayEquipment = false">
 </app-dragon-equip>
+
+<app-dragon-stats
+  *ngIf="displayStatistics && dragon"
+  [dragon]="dragon"
+  (close)="displayStatistics = false">
+</app-dragon-stats>
 
 <app-confirm-modal
   *ngIf="displayReleaseModal && dragon"

@@ -9,10 +9,10 @@
   min-height: 250px;
   margin: 2px;
 
-  padding-left: 10%;
+  padding-left: 5rem;
   display: flex;
   justify-content: flex-start;
-  gap: 10%;
+  gap: 5rem;
 }
 
 .wrapper-name {
@@ -165,7 +165,8 @@
 
   .wrapper-actions {
     margin-top: 10px;
-    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: center;
 
     .btn-action {
       margin: 5px;

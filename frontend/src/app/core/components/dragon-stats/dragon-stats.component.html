@@ -1,0 +1,9 @@
+<div *ngIf="dragon" class="container-modal">
+
+  <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
+
+
+  <button (click)="closeModal()" class="btn-base mt-5">
+    {{ 'common.close' | translate }}
+  </button>
+</div>

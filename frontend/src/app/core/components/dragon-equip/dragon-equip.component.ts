@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActionController, DragonController, DragonDto, DragonEquipDto, ItemController, ItemType } from 'src/app/client/api';
 import { DRAGON_MAX_RUNES } from 'src/app/client/config/frontend.config';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
-import { DisplayDragon } from '../../definitions/dragons';
 import { DisplayItem } from '../../definitions/items';
 import { ItemsService } from '../../services/items.service';
 

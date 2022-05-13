@@ -24,6 +24,7 @@ export class DragonPreviewComponent implements OnInit {
   feedLoading: boolean = false;
   displayDetails: boolean = false;
   displayEquipment: boolean = false;
+  displayStatistics: boolean = false;
   displayReleaseModal: boolean = false;
 
   DRAGON_ATTRIBUTES = ['strength', 'dexterity', 'endurance', 'will', 'luck'];

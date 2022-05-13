@@ -19,6 +19,7 @@ import { AuctionCreateComponent } from './components/auction-create/auction-crea
 import { MailSendModalComponent } from './components/mail-send-modal/mail-send-modal.component';
 import { TimerPipe } from '../common/utils/timer.pipe';
 import { DragonEquipComponent } from './components/dragon-equip/dragon-equip.component';
+import { DragonStatsComponent } from './components/dragon-stats/dragon-stats.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -34,6 +35,7 @@ const COMPONENTS = [
   ItemDisplayComponent,
   MailSendModalComponent,
   DragonEquipComponent,
+  DragonStatsComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,
