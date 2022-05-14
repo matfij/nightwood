@@ -2,6 +2,30 @@
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
 
+  <ng-template #loading>
+    <div class="mt-5">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+  </ng-template>
+
+  <div *ngIf="(statistics$ | async) as statistics; else loading" class="wrapper-statistics">
+    <hr>
+    <div class="item-stat">{{ 'dragon.nature' | translate }}: <div class="inline bold">{{ statistics.nature }}</div></div>
+    <hr>
+    <div class="item-stat">{{ 'dragon.health' | translate }}: <div class="inline bold">{{ statistics.health | number: '1.1-1' }}</div></div>
+    <div class="item-stat">{{ 'dragon.mana' | translate }}: <div class="inline bold">{{ statistics.mana | number: '1.1-1' }}</div></div>
+    <div class="item-stat">{{ 'dragon.armor' | translate }}: <div class="inline bold">{{ statistics.armor | number: '1.1-1' }}</div></div>
+    <div class="item-stat">{{ 'dragon.resistance' | translate }}: <div class="inline bold">{{ statistics.resistance | number: '1.1-1' }}</div></div>
+    <hr>
+    <div class="item-stat">{{ 'dragon.speed' |translate }}: <div class="inline bold">{{ statistics.speed | number: '1.1-1' }}</div></div>
+    <div class="item-stat">{{ 'dragon.dodgeChance' |translate }}: <div class="inline bold">{{ 100 * statistics.dodgeChance | number: '1.1-1' }}%</div></div>
+    <hr>
+    <div class="item-stat">{{ 'dragon.physicalAttack' |translate }}: <div class="inline bold">{{ statistics.physicalAttack | number: '1.1-1' }}</div></div>
+    <div class="item-stat">{{ 'dragon.magicalAttack' |translate }}: <div class="inline bold">{{ statistics.magicalAttack | number: '1.1-1' }}</div></div>
+    <div class="item-stat">{{ 'dragon.criticalChance' | translate }}: <div class="inline bold">{{ 100 * statistics.critChance | number: '1.1-1' }}%</div></div>
+    <div class="item-stat">{{ 'dragon.criticalPower' | translate }}: <div class="inline bold">{{ 100 * statistics.critPower | number: '1.1-1' }}%</div></div>
+    <hr>
+  </div>
 
   <button (click)="closeModal()" class="btn-base mt-5">
     {{ 'common.close' | translate }}

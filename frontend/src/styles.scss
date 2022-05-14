@@ -49,6 +49,18 @@ img::selection {
   display: inline;
 }
 
+.bold {
+  font-weight: bold;
+}
+
+.primary {
+  color: $app-primary;
+}
+
+.secondary {
+  color: $app-secondary;
+}
+
 /**
  * Scrollbar
  */

@@ -33,6 +33,9 @@ export class EquipmentStatisticsDto {
     armor?: number;
 
     @ApiProperty()
+    resistance?: number;
+
+    @ApiProperty()
     speed?: number;
 
     @ApiProperty()

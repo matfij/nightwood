@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DragonDto } from 'src/app/client/api';
+import { Observable } from 'rxjs';
+import { BattleDragonDto, DragonController, DragonDto } from 'src/app/client/api';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
 
 @Component({
@@ -14,11 +15,19 @@ export class DragonStatsComponent extends AbstractModalComponent implements OnIn
 
   @Input() dragon!: DragonDto;
 
-  constructor() {
+  statistics$: Observable<BattleDragonDto> = new Observable<BattleDragonDto>();
+
+  constructor(
+    private dragonController: DragonController,
+  ) {
     super();
   }
 
   ngOnInit(): void {
+    this.getDragonData();
   }
 
+  getDragonData() {
+    this.statistics$ = this.dragonController.calculateStatistics(this.dragon.id.toString());
+  }
 }

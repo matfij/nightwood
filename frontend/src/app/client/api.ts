@@ -1629,6 +1629,7 @@ export interface IDragonController {
     getAll(body: DragonGetDto): Observable<DragonPageDto>;
     getBest(body: DragonGetDto): Observable<DragonPageDto>;
     getOwned(): Observable<DragonDto[]>;
+    calculateStatistics(id: string): Observable<BattleDragonDto>;
     startBattle(body: BattleStartDto): Observable<BattleResultDto>;
     learnSkill(body: SkillLearnDto): Observable<DragonDto>;
     getTamerActions(): Observable<DragonTamerActionDto[]>;
@@ -1896,6 +1897,56 @@ export class DragonController implements IDragonController {
             }));
         }
         return _observableOf<DragonDto[]>(<any>null);
+    }
+
+    calculateStatistics(id: string): Observable<BattleDragonDto> {
+        let url_ = this.baseUrl + "/api/v1/dragon/calculateStatistics/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCalculateStatistics(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCalculateStatistics(<any>response_);
+                } catch (e) {
+                    return <Observable<BattleDragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BattleDragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCalculateStatistics(response: HttpResponseBase): Observable<BattleDragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <BattleDragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BattleDragonDto>(<any>null);
     }
 
     startBattle(body: BattleStartDto): Observable<BattleResultDto> {
@@ -2447,6 +2498,12 @@ export interface DragonSkillsDto {
     iceBolt: number;
     airVector: number;
     rockBlast: number;
+    staticStrike: number;
+    thunderbolt: number;
+    leafCut: number;
+    criticalDrain: number;
+    poison: number;
+    lifeLink: number;
 }
 
 export enum ItemRarity {
@@ -2488,6 +2545,7 @@ export interface EquipmentStatisticsDto {
     criticalPower: number;
     health: number;
     armor: number;
+    resistance: number;
     speed: number;
     initiative: number;
     mana: number;
@@ -2711,6 +2769,41 @@ export interface DragonGetDto {
 export interface DragonPageDto {
     meta: PageMetaDto;
     data: DragonDto[];
+}
+
+export interface BattleDragonDto {
+    id: number;
+    ownerId?: number;
+    action: DragonActionDto;
+    skills: DragonSkillsDto;
+    runes: ItemDto[];
+    battledWith: number[];
+    name: string;
+    skillPoints: number;
+    nextFeed: number;
+    nature: DragonNature;
+    level: number;
+    stamina: number;
+    experience: number;
+    strength: number;
+    dexterity: number;
+    endurance: number;
+    will: number;
+    luck: number;
+    maxHealth: number;
+    health: number;
+    maxMana: number;
+    mana: number;
+    manaRegen: number;
+    physicalAttack: number;
+    magicalAttack: number;
+    armor: number;
+    resistance: number;
+    speed: number;
+    initiative: number;
+    critChance: number;
+    critPower: number;
+    dodgeChance: number;
 }
 
 export interface BattleStartDto {

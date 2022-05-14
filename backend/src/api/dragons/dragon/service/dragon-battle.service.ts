@@ -5,7 +5,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
 import { AirVector, FireBolt, IceBolt, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
-import { BattleDragon, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
+import { BattleDragonDto, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
@@ -65,7 +65,7 @@ export class DragonBattleService {
         };
     }
 
-    private performMovement(attacker: BattleDragon, defender: BattleDragon, ownedTurn: boolean, turn: number): TurnResult {
+    private performMovement(attacker: BattleDragonDto, defender: BattleDragonDto, ownedTurn: boolean, turn: number): TurnResult {
         let cssClasses = ownedTurn ? 'item-log log-owned' : 'item-log log-enemy';
         let turnResult: TurnResult = { attacker: attacker, defender: defender, log: '', cssClasses: cssClasses };
 
@@ -305,8 +305,8 @@ export class DragonBattleService {
          * Regular hit
          */
         let baseHit = isCrit 
-            ? this.mathService.randRange(0.9, 1.1) * rageFactor * attacker.critPower * attacker.damage 
-            : this.mathService.randRange(0.9, 1.1) * rageFactor * attacker.damage;
+            ? this.mathService.randRange(0.9, 1.1) * rageFactor * attacker.critPower * attacker.physicalAttack 
+            : this.mathService.randRange(0.9, 1.1) * rageFactor * attacker.physicalAttack;
         baseHit = isArmorPenetrated ? baseHit : baseHit - defender.armor;
         baseHit *= (1 - blockedHit);
         baseHit = this.mathService.limit((1 + attacker.level/10) * Math.random(), baseHit, baseHit);
@@ -428,7 +428,7 @@ export class DragonBattleService {
         return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
     }
 
-    private async saveBattleResults(result: BattleResultType, owned: BattleDragon, enemy: BattleDragon, battleLength: number): Promise<BattleResultExperience> {
+    private async saveBattleResults(result: BattleResultType, owned: BattleDragonDto, enemy: BattleDragonDto, battleLength: number): Promise<BattleResultExperience> {
         let resultExperience: BattleResultExperience = { ownedExperience: 0, enemyExperience: 0 };
 
         switch (result) {

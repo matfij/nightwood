@@ -1,2 +1,23 @@
 @import '../../theme/mixins.scss';
 @import '../../theme/variables.scss';
+
+
+.wrapper-statistics {
+  width: clamp(0px, 95%, 300px);
+  margin: 20px auto 0px auto;
+
+  letter-spacing: 0.5px;
+
+  .item-stat {
+    display: flex;
+
+    justify-content: space-between;
+  }
+
+  hr {
+    margin: 5px 0;
+    border: 0;
+    border-top: 0.5px dashed $app-light;
+    opacity: 0.5;
+  }
+}

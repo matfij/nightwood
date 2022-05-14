@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { DragonDto } from "../dto/dragon.dto"
 
-export class BattleDragon extends DragonDto {
+export class BattleDragonDto extends DragonDto {
 
     @ApiProperty()
     maxHealth: number;
@@ -16,10 +16,19 @@ export class BattleDragon extends DragonDto {
     mana: number;
 
     @ApiProperty()
-    damage: number;
+    manaRegen: number;
+
+    @ApiProperty()
+    physicalAttack: number;
+
+    @ApiProperty()
+    magicalAttack: number;
 
     @ApiProperty()
     armor: number;
+
+    @ApiProperty()
+    resistance: number;
 
     @ApiProperty()
     speed: number;
@@ -38,8 +47,8 @@ export class BattleDragon extends DragonDto {
 }
 
 export interface TurnResult {
-    attacker: BattleDragon;
-    defender: BattleDragon;
+    attacker: BattleDragonDto;
+    defender: BattleDragonDto;
     log: string;
 
     cssClasses?: string;

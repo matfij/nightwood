@@ -27,6 +27,8 @@ import { DragonTamerActionDto } from '../model/dto/dragon-tamer-actions.dto';
 import { DragonNature } from '../model/definitions/dragon-nature';
 import { DRAGON_SUMMON_ACTIONS } from '../data/dragon-summon-actions';
 import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
+import { BattleDragonDto } from '../model/definitions/dragon-battle';
+import { BattleHelperService } from './dragon-helper.service';
 
 @Injectable()
 export class DragonService {
@@ -35,6 +37,7 @@ export class DragonService {
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
         private dragonBattleService: DragonBattleService,
+        private battleHelperService: BattleHelperService,
         private dragonActionService: DragonActionService,
         private dragonSkillsService: DragonSkillsService,
         private errorService: ErrorService,
@@ -147,6 +150,14 @@ export class DragonService {
         if (!this.dateService.checkIfEventAvailable(dragon.nextFeed)) this.errorService.throw('errors.dragonAlreadyFed');
 
         return dragon;
+    }
+
+    async calculateStatistics(ownerId: number, dragonId: number): Promise<BattleDragonDto> {
+        const dragon = await this.checkDragon(ownerId, dragonId);
+
+        const battleDragon = this.battleHelperService.getRawStats(dragon);
+
+        return battleDragon;
     }
 
     async feedDragon(item: ItemDto, dragon: DragonDto): Promise<DragonDto> {
