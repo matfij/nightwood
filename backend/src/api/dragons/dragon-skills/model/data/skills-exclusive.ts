@@ -18,7 +18,7 @@ export const FireBolt: Skill = {
     hint: 'Enables the dragon to cast fire bolts that increase caster\'s critical power (require mana)',
     level: 30,
     requiredNature: [DragonNature.Fire],
-    castMana: 25,
+    castMana: 20,
     castChance: 0.25,
 };
 
@@ -39,7 +39,7 @@ export const IceBolt: Skill = {
     hint: 'Enables the dragon to cast ice bolts that slow down enemies (require mana)',
     level: 30,
     requiredNature: [DragonNature.Water],
-    castMana: 25,
+    castMana: 20,
     castChance: 0.25,
 };
 
@@ -60,7 +60,7 @@ export const AirVector: Skill = {
     hint: 'Enables the dragon to cast air vectors that accelerate the caster (require mana)',
     level: 30,
     requiredNature: [DragonNature.Wind],
-    castMana: 25,
+    castMana: 20,
     castChance: 0.25,
 };
 
@@ -81,7 +81,7 @@ export const RockBlast: Skill = {
     hint: 'Enables the dragon to cast rock blasts that can stun enemies (require mana)',
     level: 30,
     requiredNature: [DragonNature.Earth],
-    castMana: 25,
+    castMana: 20,
     castChance: 0.25,
 };
 
@@ -102,7 +102,7 @@ export const Thunderbolt: Skill = {
     hint: 'Enables the dragon to cast thunder bolts that can paralyze enemies (require mana)',
     level: 30,
     requiredNature: [DragonNature.Electric],
-    castMana: 25,
+    castMana: 20,
     castChance: 0.25,
 };
 

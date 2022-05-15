@@ -57,7 +57,7 @@ export const ThoughtfulStrike: Skill = {
 export const MagicArrow: Skill = {
     uid: 'magicArrow',
     name: 'Magic Arrow',
-    hint: 'Enables the dragon to cast magic arrows (require mana)',
+    hint: 'Enables the dragon to cast magic arrows that reduce magic resistance (require mana)',
     level: 10,
     requiredNature: [],
     castChance: 0.25,

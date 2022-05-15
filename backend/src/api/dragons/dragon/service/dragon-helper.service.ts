@@ -35,32 +35,32 @@ export class BattleHelperService {
         dragon.will += runeStats.will + runeStats.allAttributes;
         dragon.luck += runeStats.luck + runeStats.allAttributes;
 
-        let health = this.BASE_HEALTH + 5 * dragon.endurance + 2 * dragon.strength + dragon.will + runeStats.health;
-        let mana = this.BASE_MANA + 5 * dragon.will + runeStats.mana;
-        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity;
-        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck;
+        let health = this.BASE_HEALTH + 5 * dragon.endurance + dragon.strength + dragon.will + runeStats.health;
+        let mana = this.BASE_MANA + 4 * dragon.will + runeStats.mana;
         let armor = this.BASE_ARMOR + 0.75 * dragon.endurance + runeStats.armor;
         let resistance = this.BASE_RESISTANCE + 0.5 * dragon.will + runeStats.resistance;
         let speed = this.BASE_SPEED + 1.5 * dragon.dexterity + runeStats.speed;
+        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity + 0.1 * dragon.will;
+        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck;
         
         let manaRegen =  mana * (dragon.skills.innerFlow / 40);
-        health = health * (1 + dragon.skills.greatVigor / 60);
+        health = health * (1 + dragon.skills.greatVigor / 50);
         mana = mana * (1 + dragon.skills.innerFlow / 40);
         speed = speed * (1 + dragon.skills.innateSpeed / 60);
 
-        const initiative = 1 * speed + runeStats.initiative;
-
-        let critChance = Math.max(0.5, dragon.luck - 0.3 * rival.luck)
-            * (1 + dragon.skills.luckyStrike / 10)
-            * (1 + runeStats.criticalChance / 66);
-        critChance = this.mathService.limit(0.6, critChance, 1.25);
-        
-        let critPower = 1.5 + runeStats.criticalPower;
-        critPower = this.mathService.limit(1.25, critPower, 3);
-
-        let dodgeChance = Math.max(0.5, (dragon.dexterity + dragon.luck) - 0.67 * (rival.dexterity + rival.luck))
-            * (1 - rival.skills.thoughtfulStrike / 40);
-        dodgeChance = this.mathService.limit(0.55, dodgeChance, 0.9);
+        const initiative = speed + runeStats.initiative;
+        const critChance = Math.min(
+            this.MAX_CRIT_CHANCE, 
+            this.BASE_CRIT_CHANCE + dragon.luck / (dragon.level + 10) + (dragon.skills.luckyStrike / 100)
+        );
+        const critPower = Math.min(
+            this.MAX_CRIT_POWER, 
+            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10)
+        );
+        const dodgeChance = Math.min(
+            this.MAX_DODGE_CHANCE, 
+            ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20)) * (1 - rival.skills.thoughtfulStrike / 50)
+        );
 
         return {
             ...dragon,
@@ -90,8 +90,8 @@ export class BattleHelperService {
         dragon.will += runeStats.will + runeStats.allAttributes;
         dragon.luck += runeStats.luck + runeStats.allAttributes;
 
-        let health = this.BASE_HEALTH + 5 * dragon.endurance + 2 * dragon.strength + dragon.will + runeStats.health;
-        let mana = this.BASE_MANA + 5 * dragon.will + runeStats.mana;
+        let health = this.BASE_HEALTH + 5 * dragon.endurance + dragon.strength + dragon.will + runeStats.health;
+        let mana = this.BASE_MANA + 4 * dragon.will + runeStats.mana;
         let armor = this.BASE_ARMOR + 0.75 * dragon.endurance + runeStats.armor;
         let resistance = this.BASE_RESISTANCE + 0.5 * dragon.will + runeStats.resistance;
         let speed = this.BASE_SPEED + 1.5 * dragon.dexterity + runeStats.speed;
@@ -104,9 +104,18 @@ export class BattleHelperService {
         speed = speed * (1 + dragon.skills.innateSpeed / 60);
 
         const initiative = speed + runeStats.initiative;
-        const critChance = Math.min(this.MAX_CRIT_CHANCE, this.BASE_CRIT_CHANCE + dragon.luck / (dragon.level + 10));
-        const critPower = Math.min(this.MAX_CRIT_POWER, this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10));
-        const dodgeChance = Math.min(this.MAX_DODGE_CHANCE, (dragon.dexterity + dragon.luck) / (2*dragon.level + 20));
+        const critChance = Math.min(
+            this.MAX_CRIT_CHANCE, 
+            this.BASE_CRIT_CHANCE + dragon.luck / (dragon.level + 10) + (dragon.skills.luckyStrike / 100)
+        );
+        const critPower = Math.min(
+            this.MAX_CRIT_POWER, 
+            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10)
+        );
+        const dodgeChance = Math.min(
+            this.MAX_DODGE_CHANCE, 
+            ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20))
+        );
 
         return {
             ...dragon,
