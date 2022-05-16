@@ -115,11 +115,25 @@ export class DragonBattleService {
         let extraLogs = [];
         let cssClasses = turnResult.cssClasses;
 
+        let blockedHit = 0;
+
+        /**
+         * Pre-spell effects
+         */
+         if (defender.skills.block > 0) {
+            const blockChance = 0.05 + defender.skills.block / 100;
+            if (blockChance > Math.random()) {
+                blockedHit = this.mathService.randRange(0.95, 1.05) * (40 + defender.skills.block) / 120;
+                extraLogs.push(`<div class="log-extra">- blocked ${(100*blockedHit).toFixed(1)}% damage</div>`);
+            }
+        }
+
         if (attacker.skills.magicArrow > 0) {
             const castCost = MagicArrow.castMana * (1 + attacker.skills.magicArrow / 10);
             if (attacker.mana > castCost && Math.random() < MagicArrow.castChance) {
                 let skillHit = (1 + attacker.skills.magicArrow / 10) * (1.1 * attacker.magicalAttack) - defender.resistance;
-                skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit)
+                skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+                skillHit *= (1 - blockedHit);
                 defender.health -= skillHit;
                 attacker.mana -= castCost;
                 
@@ -127,15 +141,16 @@ export class DragonBattleService {
                 if (defender.resistance > 0) {
                     brokenResistance = this.mathService.randRange(0.9, 1.1) * (3 + 0.05 * defender.resistance * attacker.skills.magicArrow);
                     defender.resistance -= brokenResistance;
+                    extraLogs.push(`<div class="log-extra">+ broken ${brokenResistance.toFixed(1)} resistance</div>`);
                 }
 
                 cssClasses += ' log-skill';
                 log = `
                 <div class="${cssClasses}">
                     ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Magic Arrow</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
-                    for ${skillHit.toFixed(1)} damage.`;
-                    if (brokenResistance) log += `<div class="log-extra">+ broken ${brokenResistance.toFixed(1)} resistance</div>`;
-                log +=`</div>`;
+                    for ${skillHit.toFixed(1)} damage.`
+                extraLogs.forEach(extraLog => log += extraLog);
+                log += `</div>`;
 
                 return { attacker: attacker, defender: defender, skip: true, log: log };
             }
@@ -145,19 +160,21 @@ export class DragonBattleService {
             if (attacker.mana > castCost && Math.random() < FireBolt.castChance) {
                 let skillHit = (1 + attacker.skills.fireBolt / 10) * (1.5 * attacker.magicalAttack) - defender.resistance;
                 skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+                skillHit *= (1 - blockedHit);
                 defender.health -= skillHit;
                 attacker.mana -= castCost;
                 
                 const extraCritPower = attacker.skills.fireBolt;
                 attacker.critPower += extraCritPower / 100;
+                extraLogs.push(`<div class="log-extra">+ critical power boost (${extraCritPower.toFixed(1)} %)</div>`);
 
                 cssClasses += ' log-skill';
                 log = `
                 <div class="${cssClasses}">
                     ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Fire bolt</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
-                    for ${skillHit.toFixed(1)} damage.
-                    <div class="log-extra">+ critical power boost (${extraCritPower.toFixed(1)} %)</div>
-                </div>`;
+                    for ${skillHit.toFixed(1)} damage.`
+                extraLogs.forEach(extraLog => log += extraLog);
+                log += `</div>`;
 
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
@@ -167,19 +184,21 @@ export class DragonBattleService {
             if (attacker.mana > castCost && Math.random() < IceBolt.castChance) {
                 let skillHit = (1 + attacker.skills.iceBolt / 10) * (1.4 * attacker.magicalAttack) - defender.resistance;
                 skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+                skillHit *= (1 - blockedHit);
                 defender.health -= skillHit;
                 attacker.mana -= castCost;
 
                 const skillSlow = this.mathService.randRange(0.9, 1.1) * (5 + 0.075 * defender.speed * attacker.skills.iceBolt);
                 defender.initiative -= skillSlow;
+                extraLogs.push(`<div class="log-extra">+ slow (${skillSlow.toFixed(1)} initiative)</div>`);
 
                 cssClasses += ' log-skill';
                 log = `
                 <div class="${cssClasses}">
                     ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Ice Bolt</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
-                    for ${skillHit.toFixed(1)} damage.
-                    <div class="log-extra">+ slow (${skillSlow.toFixed(1)} initiative)</div>
-                </div>`;
+                    for ${skillHit.toFixed(1)} damage.`
+                extraLogs.forEach(extraLog => log += extraLog);
+                log += `</div>`;
 
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
@@ -189,19 +208,21 @@ export class DragonBattleService {
             if (attacker.mana > castCost && Math.random() < AirVector.castChance) {
                 let skillHit = (1 + attacker.skills.airVector / 10) * (1.3 * attacker.magicalAttack) - defender.resistance;
                 skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+                skillHit *= (1 - blockedHit);
                 defender.health -= skillHit;
                 attacker.mana -= castCost;
                 
                 const skillHaste = this.mathService.randRange(0.9, 1.1) * (5 + 0.09 * attacker.speed * attacker.skills.airVector);
                 attacker.initiative += skillHaste;
+                extraLogs.push(`<div class="log-extra">+ haste (${skillHaste.toFixed(1)} initiative)</div>`);
 
                 cssClasses += ' log-skill';
                 log = `
                 <div class="${cssClasses}">
                     ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Air Vector</b> and strikes ${defender.name} (${defender.health.toFixed(1)}) 
-                    for ${skillHit.toFixed(1)} damage.
-                    <div class="log-extra">+ haste (${skillHaste.toFixed(1)} initiative)</div>
-                </div>`;
+                    for ${skillHit.toFixed(1)} damage;`
+                extraLogs.forEach(extraLog => log += extraLog);
+                log += `</div>`;
 
                 return { attacker: attacker, defender: defender, log: log, skip: true };
             }
@@ -211,6 +232,7 @@ export class DragonBattleService {
             if (attacker.mana > castCost && Math.random() < RockBlast.castChance) {
                 let skillHit = (1 + attacker.skills.rockBlast / 10) * (1.5 * attacker.magicalAttack) - defender.resistance;
                 skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+                skillHit *= (1 - blockedHit);
                 defender.health -= skillHit;
                 attacker.mana -= castCost;
                 
@@ -236,6 +258,7 @@ export class DragonBattleService {
             if (attacker.mana > castCost && Math.random() < Thunderbolt.castChance) {
                 let skillHit = (1 + attacker.skills.thunderbolt / 10) * (1.9 * attacker.magicalAttack) - defender.resistance;
                 skillHit = this.mathService.randRange(0.6, 2.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+                skillHit *= (1 - blockedHit);
                 defender.health -= skillHit;
                 attacker.mana -= castCost;
 
@@ -297,8 +320,8 @@ export class DragonBattleService {
         if (defender.skills.block > 0) {
             const blockChance = 0.05 + defender.skills.block / 100;
             if (blockChance > Math.random()) {
-                blockedHit = this.mathService.randRange(0.95, 1.05) * (50 + defender.skills.block);
-                extraLogs.push(`<div class="log-extra">- blocked ${blockedHit.toFixed(1)}% damage</div>`);
+                blockedHit = this.mathService.randRange(0.95, 1.05) * (50 + defender.skills.block) / 100;
+                extraLogs.push(`<div class="log-extra">- blocked ${(100*blockedHit).toFixed(1)}% damage</div>`);
             }
         }
 

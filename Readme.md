@@ -26,7 +26,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 ## Initial release - 01.04.2022 (beta)
 
 ## Stage 1
- - Special dragons & skills [0%]
+ - Special dragons & skills [100%]
  - Dragon equipment - runes crafting [100%]
  - Dragon QoL utils - renaming, resting etc. [100%]
  - Alchemy - cooking, extracting [20%]
