@@ -49,3 +49,27 @@ export const MIDNIGHT_ESSENCE: ItemDto = {
     rarity: ItemRarity.Mythical,
     type: ItemType.Ingredient,
 };
+
+export const PALE_GRAINS: ItemDto = {
+    uid: 'item-i-7',
+    name: 'Pale Grains',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Ingredient,
+};
+
+export const ARTICHOKE: ItemDto = {
+    uid: 'item-i-8',
+    name: '',
+    level: 1,
+    rarity: ItemRarity.Scarce,
+    type: ItemType.Ingredient,
+};
+
+export const CRIMSON_SEED: ItemDto = {
+    uid: 'item-i-9',
+    name: '',
+    level: 1,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Ingredient,
+};

@@ -17,9 +17,6 @@ export class Item {
     @ManyToOne(_ => Dragon, x => x.runes)
     dragon: Dragon;
 
-    // @Column({ nullable: true })
-    // dragonId: number;
-
     @Column()
     uid: string;
 

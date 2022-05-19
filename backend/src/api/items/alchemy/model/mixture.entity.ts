@@ -7,6 +7,9 @@ export class Mixture {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    uid: string;
+
     @Column({ type: DB_TIMESTAMP_TYPE })
     readyOn: number;
 
