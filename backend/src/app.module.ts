@@ -15,6 +15,7 @@ import { ActionModule } from './api/action/action.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
+import { AlchemyModule } from './api/items/alchemy/alchemy.module';
 
 const API_MODULES = [
   ActionModule,
@@ -27,6 +28,7 @@ const API_MODULES = [
   DragonSkillsModule,
   ItemModule,
   AuctionModule,
+  AlchemyModule,
 ];
 
 @Module({

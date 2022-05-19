@@ -13,7 +13,7 @@ export const ACTION_RENAME: DragonTamerActionDto = {
 export const ACTION_RESET_SKILLS: DragonTamerActionDto = {
     uid: 'tamer-action-2',
     hint: 'dragonTamer.resetSkillsHint',
-    costFactor: 5, // base 50
+    costFactor: 50,
     maxCost: 1000000,
     requiredLevel: 1,
     requiredItems: [],
@@ -31,7 +31,7 @@ export const ACTION_RESTORE_STAMINA: DragonTamerActionDto = {
 export const ACTION_CHANGE_NATURE: DragonTamerActionDto = {
     uid: 'tamer-action-4',
     hint: 'dragonTamer.changeNatureHint',
-    costFactor: 25, // base 225
+    costFactor: 225,
     maxCost: 1000000,
     requiredLevel: 1,
     requiredItems: [

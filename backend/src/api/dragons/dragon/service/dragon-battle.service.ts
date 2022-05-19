@@ -408,7 +408,7 @@ export class DragonBattleService {
          * Post-defensive skills
          */
         if (defender.skills.roughSkin > 0) {
-            const reflectedHit = baseHit * defender.skills.roughSkin / 60;
+            const reflectedHit = baseHit * defender.skills.roughSkin / 50;
             attacker.health -= reflectedHit;
             extraLogs.push(`<div class="log-extra">- ${defender.name} reflected ${reflectedHit.toFixed(1)} damage</div>`);
         }
