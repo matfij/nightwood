@@ -161,23 +161,23 @@ export class DragonService {
     }
 
     async feedDragon(item: ItemDto, dragon: DragonDto): Promise<DragonDto> {
+        let levelGain = 1;
         switch(item.foodType) {
             case FoodType.Strength: { dragon.strength += 1; break; }
             case FoodType.Dexterity: { dragon.dexterity += 1; break; }
             case FoodType.Endurance: { dragon.endurance += 1; break; }
             case FoodType.Will: { dragon.will += 1; break; }
             case FoodType.Luck: { dragon.luck += 1; break; }
-            case FoodType.Complete: { 
-                dragon.strength += 1; 
-                dragon.dexterity += 1; 
-                dragon.endurance += 1; 
-                dragon.will += 1; 
-                dragon.luck += 1; 
-                break; 
-            }
+            case FoodType.Complete: { dragon.strength += 1; dragon.dexterity += 1; dragon.endurance += 1; dragon.will += 1; dragon.luck += 1; break; }
+            case FoodType.StrengthPotion: { dragon.strength += 3; levelGain = 3; break; }
+            case FoodType.DexterityPotion: { dragon.dexterity += 3; levelGain = 3; break; }
+            case FoodType.EndurancePotion: { dragon.endurance += 3; levelGain = 3; break; }
+            case FoodType.WillPotion: { dragon.will += 3; levelGain = 3; break; }
+            case FoodType.LuckPotion: { dragon.luck += 3; levelGain = 3; break; }
+            case FoodType.CompletePotion: { dragon.strength += 1; dragon.dexterity += 1; dragon.endurance += 1; dragon.will += 1; dragon.luck += 1; levelGain = 3; break; }
         };
-        dragon.level += 1;
-        dragon.skillPoints += 1;
+        dragon.level += levelGain;
+        dragon.skillPoints += levelGain;
         dragon.nextFeed = Date.now() + FEED_INTERVAL;
 
         dragon.battledWith = [];

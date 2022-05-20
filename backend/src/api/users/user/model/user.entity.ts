@@ -1,3 +1,4 @@
+import { Mixture } from "src/api/items/alchemy/model/mixture.entity";
 import { Item } from "src/api/items/item/model/item.entity";
 import { DB_MONEY_TYPE, DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
 import { AfterLoad, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -10,6 +11,9 @@ export class User {
 
     @OneToMany(_ => Item, x => x.user)
     items: Item[];
+
+    @OneToMany(_ => Mixture, x => x.user)
+    mixtures: Mixture[];
 
     @Column({ unique: true })
     email: string;

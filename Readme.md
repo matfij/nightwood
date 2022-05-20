@@ -29,7 +29,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Special dragons & skills [100%]
  - Dragon equipment - runes crafting [100%]
  - Dragon QoL utils - renaming, resting etc. [100%]
- - Alchemy - cooking, extracting [20%]
+ - Alchemy - cooking, extracting [50%]
  - Guilds - diplomacy, constructions [0%]
  - Player profiles - achievements [0%]
  - Expedition guardians & progress [0%]

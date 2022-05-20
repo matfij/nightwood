@@ -116,6 +116,7 @@ export class DragonTamerComponent implements OnInit {
 
   changeDragonNature(dragon: DragonDto) {
     const newNature = this.newNatureSelect.nativeElement.value;
+    if (!newNature) return;
     if (newNature === dragon.nature) { this.toastService.showError('errors.error', 'errors.dragonAlreadyHasThisNature'); return; }
 
     const params: DragonChangeNatureDto = {

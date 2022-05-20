@@ -1,11 +1,30 @@
-import { Controller, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, UseGuards, Request, Param } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/api/users/auth/util/jwt.guard';
+import { AuthorizedRequest } from 'src/common/definitions/requests';
+import { ItemDto } from '../item/model/dto/item.dto';
+import { MixtureComposeDto } from './model/dto/mixture-compose.dto';
+import { MixtureDto } from './model/dto/mixture.dto';
+import { AlchemyService } from './service/alchemy.service';
 
 @Controller('alchemy')
 @UseGuards(JwtAuthGuard)
 @ApiTags('AlchemyController')
 export class AlchemyController {
 
-    constructor() {}
+    constructor(
+        private alchemyService: AlchemyService
+    ) {}
+
+    @Post('prepareMixture')
+    @ApiOkResponse({ type: MixtureDto })
+    composeMixture(@Request() req: AuthorizedRequest, @Body() dto: MixtureComposeDto): Promise<MixtureDto> {
+        return this.alchemyService.composeMixture(req.user, dto);
+    }
+
+    @Post('prepareMixture/:id')
+    @ApiOkResponse({ type: ItemDto })
+    collectMixture(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<ItemDto> {
+        return this.alchemyService.collectMixture(req.user, +id);
+    }
 }
