@@ -15,6 +15,7 @@ import { MailComponent } from './mail/mail.component';
 import { CraftingComponent } from './crafting/crafting.component';
 import { DragonTamerComponent } from './dragon-tamer/dragon-tamer.component';
 import { DragonSummonComponent } from './dragon-summon/dragon-summon.component';
+import { AlchemyComponent } from './alchemy/alchemy.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { DragonSummonComponent } from './dragon-summon/dragon-summon.component';
     CraftingComponent,
     DragonTamerComponent,
     DragonSummonComponent,
+    AlchemyComponent,
   ],
   imports: [
     CommonModule,

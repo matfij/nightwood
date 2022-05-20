@@ -20,8 +20,7 @@ export class ItemRuneService {
     ) {}
 
     async getRuneRecipes(): Promise<ItemRecipeDto[]> {
-        const recipes = RUNE_RECIPES;
-        return recipes;
+        return RUNE_RECIPES;
     }
 
     async composeRecipe(user: UserDto, dto: RecipeComposeDto): Promise<ItemDto> {

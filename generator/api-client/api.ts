@@ -2449,6 +2449,174 @@ export class AuctionController implements IAuctionController {
     }
 }
 
+export interface IAlchemyController {
+    getMixtureRecipes(): Observable<MixtureRecipeDto[]>;
+    composeMixture(body: MixtureComposeDto): Observable<MixtureDto>;
+    collectMixture(id: string): Observable<ItemDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AlchemyController implements IAlchemyController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getMixtureRecipes(): Observable<MixtureRecipeDto[]> {
+        let url_ = this.baseUrl + "/api/v1/alchemy/getMixtureRecipes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMixtureRecipes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMixtureRecipes(<any>response_);
+                } catch (e) {
+                    return <Observable<MixtureRecipeDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MixtureRecipeDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMixtureRecipes(response: HttpResponseBase): Observable<MixtureRecipeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MixtureRecipeDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MixtureRecipeDto[]>(<any>null);
+    }
+
+    composeMixture(body: MixtureComposeDto): Observable<MixtureDto> {
+        let url_ = this.baseUrl + "/api/v1/alchemy/prepareMixture";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processComposeMixture(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processComposeMixture(<any>response_);
+                } catch (e) {
+                    return <Observable<MixtureDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MixtureDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processComposeMixture(response: HttpResponseBase): Observable<MixtureDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MixtureDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MixtureDto>(<any>null);
+    }
+
+    collectMixture(id: string): Observable<ItemDto> {
+        let url_ = this.baseUrl + "/api/v1/alchemy/prepareMixture/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCollectMixture(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCollectMixture(<any>response_);
+                } catch (e) {
+                    return <Observable<ItemDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ItemDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCollectMixture(response: HttpResponseBase): Observable<ItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <ItemDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ItemDto>(<any>null);
+    }
+}
+
 export enum DragonNature {
     Fire = "Fire",
     Water = "Water",
@@ -2521,11 +2689,17 @@ export enum ItemType {
 
 export enum FoodType {
     Strength = "Strength",
+    StrengthPotion = "StrengthPotion",
     Dexterity = "Dexterity",
+    DexterityPotion = "DexterityPotion",
     Endurance = "Endurance",
+    EndurancePotion = "EndurancePotion",
     Will = "Will",
+    WillPotion = "WillPotion",
     Luck = "Luck",
+    LuckPotion = "LuckPotion",
     Complete = "Complete",
+    CompletePotion = "CompletePotion",
 }
 
 export enum EquipmentType {
@@ -2902,6 +3076,26 @@ export interface AuctionGetDto {
 export interface AuctionPageDto {
     meta: PageMetaDto;
     data: AuctionDto[];
+}
+
+export interface MixtureRecipeDto {
+    uid: string;
+    product: ItemDto;
+    ingredients: ItemDto[];
+    prepareTime: number;
+}
+
+export interface MixtureComposeDto {
+    recipeUid: string;
+}
+
+export interface MixtureDto {
+    id?: number;
+    userId?: number;
+    uid: string;
+    readyOn: number;
+    collected: boolean;
+    recipeData: MixtureRecipeDto;
 }
 
 export class SwaggerException extends Error {

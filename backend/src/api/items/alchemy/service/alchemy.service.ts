@@ -8,6 +8,7 @@ import { ItemDto } from "../../item/model/dto/item.dto";
 import { ItemService } from "../../item/service/item.service";
 import { Booster } from "../model/booster.entity";
 import { MIXTURE_RECIPES } from "../model/data/mixture-recipe";
+import { MixtureRecipeDto } from "../model/definitions/mixture-recipe.dto";
 import { MixtureComposeDto } from "../model/dto/mixture-compose.dto";
 import { MixtureDto } from "../model/dto/mixture.dto";
 import { Mixture } from "../model/mixture.entity";
@@ -24,6 +25,10 @@ export class AlchemyService {
         private dateService: DateService,
         private errorService: ErrorService,
     ) {}
+
+    async getMixtureRecipes(): Promise<MixtureRecipeDto[]> {
+        return MIXTURE_RECIPES;
+    }
 
     async composeMixture(user: UserDto, dto: MixtureComposeDto): Promise<MixtureDto> {
         const recipe = MIXTURE_RECIPES.find(x => x.uid === dto.recipeUid);

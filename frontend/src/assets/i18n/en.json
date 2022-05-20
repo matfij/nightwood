@@ -105,7 +105,9 @@
     "runesNumberExceeded": "Number of runes exceeded",
     "dragonAlreadyHasThisNature": "Selected dragon already has this nature",
     "incorrectDragonName": "Incorrect dragon name",
-    "alreadyBattled": "Selected dragons has already battled two times"
+    "alreadyBattled": "Selected dragons has already battled twice",
+    "mixtureNotFound": "Mixture not found",
+    "mixtureNotReady": "Mixture is not ready"
   },
   "game": {
     "menu": "Menu",
@@ -116,6 +118,7 @@
     "dragonTamer": "Dragon tamer",
     "inventory": "Inventory",
     "crafting": "Crafting",
+    "alchemy": "Alchemy",
     "expeditions": "Expeditions",
     "arena": "Arena",
     "auctions": "Marketplace",
@@ -240,6 +243,12 @@
     "requiredIngredients": "Required ingredients",
     "craft": "Craft",
     "itemCrafted": "{{ name }} crafted"
+  },
+  "alchemy": {
+    "alchemyHint": "The alchemist is the master of potion crafting. He can craft potions of any type, but now he is limited to the following:",
+    "requiredIngredients": "Required ingredients",
+    "compose": "Compose",
+    "composeStarted": "Compose started"
   },
   "auctions": {
     "availableOffers": "Available offers",

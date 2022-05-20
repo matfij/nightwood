@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdoptDragonComponent } from './adopt-dragon/adopt-dragon.component';
+import { AlchemyComponent } from './alchemy/alchemy.component';
 import { ArenaComponent } from './arena/arena.component';
 import { AuctionsComponent } from './auctions/auctions.component';
 import { CraftingComponent } from './crafting/crafting.component';
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'mail', component: MailComponent },
   { path: 'shoutbox', component: ShoutboxComponent },
   { path: 'crafting', component: CraftingComponent },
+  { path: 'alchemy', component: AlchemyComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 

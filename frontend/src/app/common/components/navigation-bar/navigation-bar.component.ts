@@ -28,6 +28,7 @@ export class NavigationBarComponent {
     { label: 'game.dragonTamer', path: 'dragon-tamer', icon: '', isActive: false },
     { label: 'game.inventory', path: 'inventory', icon: '', isActive: false },
     { label: 'game.crafting', path: 'crafting', icon: '', isActive: false },
+    { label: 'game.alchemy', path: 'alchemy', icon: '', isActive: false },
     { label: 'game.auctions', path: 'auctions', icon: '', isActive: false },
     { label: 'game.expeditions', path: 'expeditions', icon: '', isActive: false },
     { label: 'game.arena', path: 'arena', icon: '', isActive: false },
