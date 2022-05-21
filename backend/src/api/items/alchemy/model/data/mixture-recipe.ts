@@ -1,4 +1,4 @@
-import { BUBULAE_STEAK, ENCHANTER_POTION, IHON_BERRY, MIGHTY_EXTRACT, NIMBUS_NECTAR, RAINBOW_MIXTURE, RELIQUM_EGG, RORIS_LEEFS, SPARKING_AMBROSIA, SPIRAL_NUT, TITAN_BREW } from "src/api/items/item/model/data/food";
+import { BUBULAE_STEAK, ENCHANTER_POTION, IHON_BERRY, MIGHTY_EXTRACT, NIMBUS_NECTAR, RAINBOW_MIXTURE, RELIQUM_EGG, RORIS_LEAVES, SPARKING_AMBROSIA, SPIRAL_NUT, TITAN_BREW } from "src/api/items/item/model/data/food";
 import { ARTICHOKE, CRIMSON_SEED, PALE_GRAINS } from "src/api/items/item/model/data/ingredients";
 import { ALCHEMY_TIME_SCALE } from "src/configuration/backend.config";
 import { MixtureRecipeDto } from "../definitions/mixture-recipe.dto";
@@ -45,7 +45,7 @@ export const RECIPE_MIXTURE_WILL: MixtureRecipeDto = {
     ingredients: [
         { ...PALE_GRAINS, quantity: 6 },
         { ...SPIRAL_NUT, quantity: 12 },
-        { ...RORIS_LEEFS, quantity: 6 },
+        { ...RORIS_LEAVES, quantity: 6 },
         { ...ARTICHOKE, quantity: 1 },
     ],
     prepareTime: ALCHEMY_TIME_SCALE * 8 * 60 * 60 * 1000,
@@ -56,7 +56,7 @@ export const RECIPE_MIXTURE_LUCK: MixtureRecipeDto = {
     product: { ...RAINBOW_MIXTURE, quantity: 1 },
     ingredients: [
         { ...PALE_GRAINS, quantity: 6 },
-        { ...RORIS_LEEFS, quantity: 12 },
+        { ...RORIS_LEAVES, quantity: 12 },
         { ...BUBULAE_STEAK, quantity: 6 },
         { ...ARTICHOKE, quantity: 1 },
     ],
@@ -72,7 +72,7 @@ export const RECIPE_MIXTURE_COMPLETE: MixtureRecipeDto = {
         { ...IHON_BERRY, quantity: 12 },
         { ...RELIQUM_EGG, quantity: 12 },
         { ...BUBULAE_STEAK, quantity: 12 },
-        { ...RORIS_LEEFS, quantity: 12 },
+        { ...RORIS_LEAVES, quantity: 12 },
         { ...ARTICHOKE, quantity: 6 },
         { ...CRIMSON_SEED, quantity: 2 },
     ],

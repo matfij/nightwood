@@ -38,9 +38,9 @@ export const SPIRAL_NUT: ItemDto = {
     foodType: FoodType.Will,
 };
 
-export const RORIS_LEEFS: ItemDto = {
+export const RORIS_LEAVES: ItemDto = {
     uid: 'item-f-5',
-    name: 'Roris Leefs',
+    name: 'Roris Leaves',
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Food,
@@ -76,7 +76,7 @@ export const NIMBUS_NECTAR: ItemDto = {
 
 export const TITAN_BREW: ItemDto = {
     uid: 'item-f-9',
-    name: 'Titan Potion',
+    name: 'Titan Brew',
     level: 10,
     rarity: ItemRarity.Scarce,
     type: ItemType.Food,
@@ -94,7 +94,7 @@ export const ENCHANTER_POTION: ItemDto = {
 
 export const RAINBOW_MIXTURE: ItemDto = {
     uid: 'item-f-11',
-    name: 'Lucky Extract',
+    name: 'Rainbow Mixture',
     level: 10,
     rarity: ItemRarity.Scarce,
     type: ItemType.Food,

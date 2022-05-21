@@ -58,17 +58,33 @@ export const PALE_GRAINS: ItemDto = {
     type: ItemType.Ingredient,
 };
 
-export const ARTICHOKE: ItemDto = {
+export const FILIKO_ROOTS: ItemDto = {
     uid: 'item-i-8',
-    name: '',
+    name: 'Filiko Roots',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Ingredient,
+};
+
+export const SOVAGA_LEAVES: ItemDto = {
+    uid: 'item-i-9',
+    name: 'Sovaga Leaves',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Ingredient,
+};
+
+export const ARTICHOKE: ItemDto = {
+    uid: 'item-i-10',
+    name: 'Artichoke',
     level: 1,
     rarity: ItemRarity.Scarce,
     type: ItemType.Ingredient,
 };
 
 export const CRIMSON_SEED: ItemDto = {
-    uid: 'item-i-9',
-    name: '',
+    uid: 'item-i-11',
+    name: 'Crimson Seed',
     level: 1,
     rarity: ItemRarity.Rare,
     type: ItemType.Ingredient,
