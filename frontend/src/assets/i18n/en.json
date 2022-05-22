@@ -239,16 +239,20 @@
     "quantity": "Quantity"
   },
   "crafting": {
-    "runeCraftingHint": "Versus Goons, the goblin thinkerer is the master of rune crafting. Once, he could craft runes of any type, but now he is limited to the following:",
+    "runeCraftingHint": "Versus Krinks, the goblin tinkerer is the master of rune crafting. Once, he could craft runes of any type, but now he is limited to the following:",
     "requiredIngredients": "Required ingredients",
     "craft": "Craft",
     "itemCrafted": "{{ name }} crafted"
   },
   "alchemy": {
-    "alchemyHint": "The alchemist is the master of potion crafting. He can craft potions of any type, but now he is limited to the following:",
+    "alchemyHint": "Tekno Ziomks, the goblin alchemist, used to prepare meals for the royal court. During the Northen Wars, he decided to explore the secrets of alchemy to give his tribe an advantage in the battle.",
     "requiredIngredients": "Required ingredients",
     "compose": "Compose",
-    "composeStarted": "Compose started"
+    "brewingStarted": "Brewing started",
+    "currentlyBrewing": "Currently brewed",
+    "timeToComplete": "Time to complete",
+    "collect": "Collect",
+    "mixtureCollected": "{{ name }} collected"
   },
   "auctions": {
     "availableOffers": "Available offers",

@@ -161,6 +161,8 @@ export class DragonService {
     }
 
     async feedDragon(item: ItemDto, dragon: DragonDto): Promise<DragonDto> {
+        if (dragon.level < item.level) this.errorService.throw('errors.dragonTooYoung');
+
         let levelGain = 1;
         switch(item.foodType) {
             case FoodType.Strength: { dragon.strength += 1; break; }

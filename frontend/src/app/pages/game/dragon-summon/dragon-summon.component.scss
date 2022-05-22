@@ -20,10 +20,11 @@
 }
 
 .wrapper-lore-img {
-  margin-right: 10px;
+  min-width: 125px;
+  width: 125px;
 
   img {
-    width: 160px;
+    max-width: 100%;
   }
 }
 

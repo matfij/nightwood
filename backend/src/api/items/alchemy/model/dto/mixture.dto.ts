@@ -1,6 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Expose, Transform } from "class-transformer";
-import { MixtureRecipeDto } from "../definitions/mixture-recipe.dto";
+import { Transform } from "class-transformer";
 
 export class MixtureDto {
 
@@ -15,12 +14,15 @@ export class MixtureDto {
     uid: string;
 
     @ApiProperty()
+    startedOn: number;
+
+    @ApiProperty()
     readyOn: number;
 
     @ApiProperty()
     collected: boolean;
 
     @ApiProperty()
-    recipeData?: MixtureRecipeDto;
+    productName?: string;
 
 }

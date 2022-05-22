@@ -13,14 +13,16 @@
 
 .wrapper-lore {
   display: flex;
+  gap: 10px;
   text-align: left;
 }
 
 .wrapper-lore-img {
-  margin-right: 10px;
+  min-width: 125px;
+  width: 125px;
 
   img {
-    width: 160px;
+    max-width: 100%;
   }
 }
 
@@ -77,6 +79,10 @@
     flex-direction: column;
     align-items: center;
     text-align: justify;
+
+    img {
+      max-width: 125px;
+    }
   }
 
   .item-recipe {

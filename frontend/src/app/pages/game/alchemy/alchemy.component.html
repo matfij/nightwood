@@ -1,12 +1,9 @@
 <div class="wrapper-main">
   <app-navigation-bar currentLocation="crafting"></app-navigation-bar>
 
-  <div *ngIf="itemsLoading" class="mt-5">
-    <app-loading-indicator></app-loading-indicator>
-  </div>
-  <div *ngIf="!itemsLoading" class="wrapper-content">
+  <div class="wrapper-content">
 
-    <div class="wrapper-crafting-section">
+    <div class="wrapper-mixtures-section">
       <div class="wrapper-lore">
         <div class="wrapper-lore-img">
           <img src="assets/img/lore/alchemy-potions.png" draggable="false" alt="Goblin alchemist">
@@ -19,7 +16,34 @@
           <app-loading-indicator></app-loading-indicator>
         </div>
       </ng-template>
-      <div *ngIf="(recipes$ | async) as recipes; else loading" class="wrapper-recipes">
+
+      <div *ngIf="!collectingLoading && (mixtures$ | async)?.data as mixtures; else loading" class="wrapper-mixtures">
+        <div class="label-mixtures">{{ 'alchemy.currentlyBrewing' | translate }}</div>
+
+        <div *ngFor="let mixture of mixtures" class="item-mixture">
+          <div style="display: flex; align-items: center; margin-left: 10px;">
+            <div style="width: 130px; text-align: left;">{{ mixture.productName }}</div>
+            <progress class="no-mobile" [value]="currentDate - mixture.startedOn" [max]="mixture.readyOn - mixture.startedOn" ></progress>
+          </div>
+
+          <div *ngIf="!canCollect(mixture)" tooltip>
+            <ng-template #tooltipTemplate>
+              <div class="item-tooltip item-hint">
+                {{ 'alchemy.timeToComplete' | translate }}: {{ mixture.readyOn | timer | async }}<br>
+              </div>
+            </ng-template>
+            <button [disabled]="true" class="btn-base btn-collect">
+              {{ 'alchemy.collect' | translate }}
+            </button>
+          </div>
+          <button *ngIf="canCollect(mixture)" (click)="collectMixture(mixture)" class="btn-base btn-collect">
+            {{ 'alchemy.collect' | translate }}
+          </button>
+
+        </div>
+      </div>
+
+      <div *ngIf="!itemsLoading && (recipes$ | async) as recipes; else loading" class="wrapper-recipes">
 
         <div *ngFor="let recipe of recipes" class="item-recipe">
           <div class="recipe-item">
@@ -37,8 +61,8 @@
           </div>
 
           <div class="break"></div>
-          <button (click)="startMixtureComposing()" [disabled]="checkIngredients(recipe)" class="btn-base btn-craft">
-            {{ 'crafting.craft' | translate }}
+          <button (click)="startMixtureComposing(recipe)" [disabled]="checkIngredients(recipe)" class="btn-base btn-craft">
+            {{ 'alchemy.compose' | translate }}
           </button>
         </div>
 

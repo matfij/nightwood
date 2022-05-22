@@ -15,6 +15,9 @@ export class Mixture {
     uid: string;
 
     @Column({ type: DB_TIMESTAMP_TYPE })
+    startedOn: number;
+
+    @Column({ type: DB_TIMESTAMP_TYPE })
     readyOn: number;
 
     @Column({ default: false })

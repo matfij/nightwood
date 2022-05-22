@@ -5,6 +5,7 @@ import { AuthorizedRequest } from 'src/common/definitions/requests';
 import { ItemDto } from '../item/model/dto/item.dto';
 import { MixtureRecipeDto } from './model/definitions/mixture-recipe.dto';
 import { MixtureComposeDto } from './model/dto/mixture-compose.dto';
+import { MixtureGetDto, MixturePageDto } from './model/dto/mixture-page.dto';
 import { MixtureDto } from './model/dto/mixture.dto';
 import { AlchemyService } from './service/alchemy.service';
 
@@ -29,7 +30,13 @@ export class AlchemyController {
         return this.alchemyService.composeMixture(req.user, dto);
     }
 
-    @Post('prepareMixture/:id')
+    @Post('getOngoingMixtures')
+    @ApiOkResponse({ type: MixturePageDto })
+    getOnGoingMixtures(@Request() req: AuthorizedRequest, @Body() dto: MixtureGetDto): Promise<MixturePageDto> {
+        return this.alchemyService.getOnGoingMixtures(req.user, dto);
+    }
+
+    @Post('collectMixture/:id')
     @ApiOkResponse({ type: ItemDto })
     collectMixture(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<ItemDto> {
         return this.alchemyService.collectMixture(req.user, +id);

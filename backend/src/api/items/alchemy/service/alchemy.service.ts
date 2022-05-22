@@ -10,6 +10,7 @@ import { Booster } from "../model/booster.entity";
 import { MIXTURE_RECIPES } from "../model/data/mixture-recipe";
 import { MixtureRecipeDto } from "../model/definitions/mixture-recipe.dto";
 import { MixtureComposeDto } from "../model/dto/mixture-compose.dto";
+import { MixtureGetDto, MixturePageDto } from "../model/dto/mixture-page.dto";
 import { MixtureDto } from "../model/dto/mixture.dto";
 import { Mixture } from "../model/mixture.entity";
 
@@ -31,6 +32,7 @@ export class AlchemyService {
     }
 
     async composeMixture(user: UserDto, dto: MixtureComposeDto): Promise<MixtureDto> {
+        console.log('uid', dto.recipeUid)
         const recipe = MIXTURE_RECIPES.find(x => x.uid === dto.recipeUid);
         if (!recipe) this.errorService.throw('errors.recipeNotFound');
 
@@ -38,6 +40,7 @@ export class AlchemyService {
 
         const newMixture: MixtureDto = {
             uid: recipe.uid,
+            startedOn: this.dateService.getCurrentDate(),
             readyOn: this.dateService.getCurrentDate() + recipe.prepareTime,
             collected: false,
         };
@@ -45,6 +48,23 @@ export class AlchemyService {
         await this.mixtureRepository.save(mixture);
 
         return mixture;
+    }
+
+    async getOnGoingMixtures(user: UserDto, dto: MixtureGetDto): Promise<MixturePageDto> {
+        const mixtures = await this.mixtureRepository.find({
+            where: { user: user, collected: false },
+            skip: dto.page * dto.limit,
+            take: dto.limit,
+        });
+
+        const page: MixturePageDto = {
+            meta: {},
+            data: mixtures.map(mixture => {
+                return { ...mixture, productName: MIXTURE_RECIPES.find(x => x.uid === mixture.uid).product.name };
+            }),
+        };
+
+        return page;
     }
 
     async collectMixture(user: UserDto, mixtureId: number): Promise<ItemDto> {

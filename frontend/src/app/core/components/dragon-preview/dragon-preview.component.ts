@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActionController, DragonFeedDto, ItemController } from 'src/app/client/api';
+import { ActionController, DragonFeedDto, ItemController, ItemDto } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DateService } from '../../../common/services/date.service';
 import { DragonService } from '../../services/dragons.service';
@@ -66,11 +66,12 @@ export class DragonPreviewComponent implements OnInit {
     }, () => this.foodLoading = false);
   }
 
-  feedDragon(itemId: number) {
+  feedDragon(item: ItemDto) {
     if (!this.dragon) return;
+    if (this.dragon.level < item.level) { this.toastService.showError('errors.error', 'errors.dragonTooYoung'); return; }
 
     const dto: DragonFeedDto = {
-      itemId: itemId,
+      itemId: item.id!,
       dragonId: this.dragon.id!,
     }
     this.feedLoading = true;

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { AlchemyController, ItemDto, MixtureRecipeDto } from 'src/app/client/api';
+import { AlchemyController, ItemController, ItemDto, MixtureComposeDto, MixtureDto, MixtureGetDto, MixturePageDto, MixtureRecipeDto } from 'src/app/client/api';
+import { DateService } from 'src/app/common/services/date.service';
+import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
   selector: 'app-alchemy',
@@ -9,25 +12,42 @@ import { AlchemyController, ItemDto, MixtureRecipeDto } from 'src/app/client/api
 })
 export class AlchemyComponent implements OnInit {
 
+  currentDate: number = Date.now();
   recipes$: Observable<MixtureRecipeDto[]> = new Observable<MixtureRecipeDto[]>();
+  mixtures$: Observable<MixturePageDto> = new Observable<MixturePageDto>();
   items: ItemDto[] = [];
   itemsLoading: boolean = false;
+  collectingLoading: boolean = false;
 
   constructor(
     private alchemyController: AlchemyController,
+    private itemController: ItemController,
+    private dateService: DateService,
+    private toastService: ToastService,
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
     this.getOwnedItems();
     this.getMixtureRecipes();
+    this.getOnGoingMixtures();
   }
 
   getOwnedItems() {
-
+    this.itemsLoading = true;
+    this.itemController.getOwnedItems().subscribe(itemPage => {
+      this.itemsLoading = false;
+      this.items = itemPage.data;
+    }, () => this.itemsLoading = true);
   }
 
   getMixtureRecipes() {
     this.recipes$ = this.alchemyController.getMixtureRecipes();
+  }
+
+  getOnGoingMixtures() {
+    const params: MixtureGetDto = {};
+    this.mixtures$ = this.alchemyController.getOnGoingMixtures(params);
   }
 
   getItemQuantity(uid: string): number {
@@ -35,11 +55,43 @@ export class AlchemyComponent implements OnInit {
     return item?.quantity ?? 0;
   }
 
-  checkIngredients(recipe: MixtureRecipeDto) {
+  checkIngredients(recipe: MixtureRecipeDto): boolean {
+    let canCraft = true;
+    recipe.ingredients.forEach(requiredItem => {
+      const item = this.items.find(y => y.uid === requiredItem.uid);
+      if (!item || item.quantity! < requiredItem.quantity!) {
+        canCraft = false;
+        return;
+      }
+    });
+
+    return !canCraft;
   }
 
-  startMixtureComposing() {
+  startMixtureComposing(recipe: MixtureRecipeDto) {
+    const params: MixtureComposeDto = {
+      recipeUid: recipe.uid,
+    }
+    this.itemsLoading = true;
+    this.alchemyController.composeMixture(params).subscribe(_ => {
+      this.toastService.showSuccess('common.success', 'alchemy.brewingStarted');
+      this.getOwnedItems();
+      this.getOnGoingMixtures();
+    }, () => this.itemsLoading = false);
+  }
 
+  canCollect(mixture: MixtureDto): boolean {
+    return this.dateService.checkIfEventAvailable(mixture.readyOn);
+  }
+
+  collectMixture(mixture: MixtureDto) {
+    this.collectingLoading = true;
+    this.alchemyController.collectMixture(mixture.id!.toString()).subscribe(_ => {
+      const message = this.translateService.instant('crafting.itemCrafted', { name: mixture.productName });
+      this.toastService.showSuccess('common.success', message);
+      this.getOnGoingMixtures();
+      this.collectingLoading = false;
+    }, () => this.collectingLoading = false);
   }
 
 }

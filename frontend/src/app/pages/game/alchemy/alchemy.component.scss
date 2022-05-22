@@ -2,7 +2,7 @@
 @import '../../../core/theme/mixins.scss';
 
 
-.wrapper-crafting-section {
+.wrapper-mixtures-section {
   @include tile(black);
 
   margin: 10px auto;
@@ -13,14 +13,16 @@
 
 .wrapper-lore {
   display: flex;
+  gap: 10px;
   text-align: left;
 }
 
 .wrapper-lore-img {
-  margin-right: 10px;
+  min-width: 125px;
+  width: 125px;
 
   img {
-    width: 160px;
+    max-width: 100%;
   }
 }
 
@@ -46,8 +48,6 @@
 }
 
 .recipe-item {
-  // margin: 10px 10px 10px 0px;
-
   display: flex;
   border-radius: 4px;
 }
@@ -68,6 +68,48 @@
   margin-top: 10px;
 
   line-height: 22px;
+}
+
+.wrapper-mixtures {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .label-mixtures {
+    margin: 10px 0px 0px 0px;
+
+    text-align: left;
+    letter-spacing: 0.75px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .item-mixture {
+    @include tile(black);
+
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+
+    progress {
+      width: 150px;
+      margin-right: 16px;
+    }
+
+    progress::-webkit-progress-value {
+      background-color: $app-tertiary;
+      border-radius: 4px;
+    }
+
+    .btn-collect {
+      width: 120px;
+      height: 20px;
+      line-height: 20px;
+      margin: 0px 10px 0px 0px;
+    }
+  }
 }
 
 

@@ -2452,6 +2452,7 @@ export class AuctionController implements IAuctionController {
 export interface IAlchemyController {
     getMixtureRecipes(): Observable<MixtureRecipeDto[]>;
     composeMixture(body: MixtureComposeDto): Observable<MixtureDto>;
+    getOnGoingMixtures(body: MixtureGetDto): Observable<MixturePageDto>;
     collectMixture(id: string): Observable<ItemDto>;
 }
 
@@ -2566,8 +2567,59 @@ export class AlchemyController implements IAlchemyController {
         return _observableOf<MixtureDto>(<any>null);
     }
 
+    getOnGoingMixtures(body: MixtureGetDto): Observable<MixturePageDto> {
+        let url_ = this.baseUrl + "/api/v1/alchemy/getOngoingMixtures";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOnGoingMixtures(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOnGoingMixtures(<any>response_);
+                } catch (e) {
+                    return <Observable<MixturePageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MixturePageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetOnGoingMixtures(response: HttpResponseBase): Observable<MixturePageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MixturePageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MixturePageDto>(<any>null);
+    }
+
     collectMixture(id: string): Observable<ItemDto> {
-        let url_ = this.baseUrl + "/api/v1/alchemy/prepareMixture/{id}";
+        let url_ = this.baseUrl + "/api/v1/alchemy/collectMixture/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3093,9 +3145,20 @@ export interface MixtureDto {
     id?: number;
     userId?: number;
     uid: string;
+    startedOn: number;
     readyOn: number;
     collected: boolean;
-    recipeData: MixtureRecipeDto;
+    productName: string;
+}
+
+export interface MixtureGetDto {
+    page?: number;
+    limit?: number;
+}
+
+export interface MixturePageDto {
+    meta: PageMetaDto;
+    data: MixtureDto[];
 }
 
 export class SwaggerException extends Error {
