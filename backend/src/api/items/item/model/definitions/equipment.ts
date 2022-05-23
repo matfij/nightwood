@@ -43,4 +43,28 @@ export class EquipmentStatisticsDto {
 
     @ApiProperty()
     mana?: number;
+
+    @ApiProperty()
+    healthBoost?: number;
+
+    @ApiProperty()
+    armorBoost?: number;
+
+    @ApiProperty()
+    physicalAttackBoost?: number;
+
+    @ApiProperty()
+    criticalChanceBoost?: number;
+
+    @ApiProperty()
+    magicalAttackBoost?: number;
+
+    @ApiProperty()
+    manaBoost?: number;
+
+    @ApiProperty()
+    speedBoost?: number;
+
+    @ApiProperty()
+    dodgeBoost?: number;
 }

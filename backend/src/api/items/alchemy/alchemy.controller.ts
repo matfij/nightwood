@@ -3,11 +3,12 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/api/users/auth/util/jwt.guard';
 import { AuthorizedRequest } from 'src/common/definitions/requests';
 import { ItemDto } from '../item/model/dto/item.dto';
-import { MixtureRecipeDto } from './model/definitions/mixture-recipe.dto';
+import { MixtureRecipeDto } from './model/dto/mixture-recipe.dto';
 import { MixtureComposeDto } from './model/dto/mixture-compose.dto';
 import { MixtureGetDto, MixturePageDto } from './model/dto/mixture-page.dto';
 import { MixtureDto } from './model/dto/mixture.dto';
 import { AlchemyService } from './service/alchemy.service';
+import { BoosterRecipeDto } from './model/dto/booster-recipe.dto';
 
 @Controller('alchemy')
 @UseGuards(JwtAuthGuard)
@@ -40,5 +41,11 @@ export class AlchemyController {
     @ApiOkResponse({ type: ItemDto })
     collectMixture(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<ItemDto> {
         return this.alchemyService.collectMixture(req.user, +id);
+    }
+
+    @Post('getBoostersRecipes')
+    @ApiOkResponse({ type: [BoosterRecipeDto] })
+    getBoostersRecipes(): Promise<BoosterRecipeDto[]> {
+        return this.alchemyService.getBoostersRecipes();
     }
 }

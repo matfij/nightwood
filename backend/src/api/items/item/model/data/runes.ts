@@ -208,3 +208,18 @@ export const RUNE_WISDOM_3: ItemDto = {
         mana: 60,
     },
 };
+
+export const RUNES = [
+    RUNE_ATTACK_1,
+    RUNE_ATTACK_2,
+    RUNE_ATTACK_3,
+    RUNE_DEFENSE_1,
+    RUNE_DEFENSE_2,
+    RUNE_DEFENSE_3,
+    RUNE_AGILITY_1,
+    RUNE_AGILITY_2,
+    RUNE_AGILITY_3,
+    RUNE_WISDOM_1,
+    RUNE_WISDOM_2,
+    RUNE_WISDOM_3,
+];

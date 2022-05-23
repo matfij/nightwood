@@ -6,20 +6,19 @@ import { ErrorService } from "src/common/services/error.service";
 import { Repository } from "typeorm";
 import { ItemDto } from "../../item/model/dto/item.dto";
 import { ItemService } from "../../item/service/item.service";
-import { Booster } from "../model/booster.entity";
 import { MIXTURE_RECIPES } from "../model/data/mixture-recipe";
-import { MixtureRecipeDto } from "../model/definitions/mixture-recipe.dto";
+import { MixtureRecipeDto } from "../model/dto/mixture-recipe.dto";
 import { MixtureComposeDto } from "../model/dto/mixture-compose.dto";
 import { MixtureGetDto, MixturePageDto } from "../model/dto/mixture-page.dto";
 import { MixtureDto } from "../model/dto/mixture.dto";
 import { Mixture } from "../model/mixture.entity";
+import { BoosterRecipeDto } from "../model/dto/booster-recipe.dto";
+import { BOOSTER_RECIPES } from "../model/data/booster-recipe";
 
 @Injectable()
 export class AlchemyService {
 
     constructor(
-        @InjectRepository(Booster)
-        private boosterRepository: Repository<Booster>,
         @InjectRepository(Mixture)
         private mixtureRepository: Repository<Mixture>,
         private itemService: ItemService,
@@ -81,6 +80,10 @@ export class AlchemyService {
         await this.mixtureRepository.delete(mixture);
 
         return recipe.product;
+    }
+
+    async getBoostersRecipes(): Promise<BoosterRecipeDto[]> {
+        return BOOSTER_RECIPES;
     }
 
 }

@@ -2,6 +2,7 @@ export enum ItemType {
     Food = 'Food',
     Ingredient = 'Ingredient',
     Equipment = 'Equipment',
+    Booster = 'Booster',
 }
 
 export enum FoodType {
