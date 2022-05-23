@@ -142,6 +142,15 @@ img::selection {
   @include button();
 }
 
+.btn-small {
+  @include button();
+
+  width: 120px;
+  height: 20px;
+
+  line-height: 20px;
+}
+
 /**
  * Toasts
  */

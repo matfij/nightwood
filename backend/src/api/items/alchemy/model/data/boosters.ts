@@ -1,3 +1,4 @@
+import { ItemRarity } from "src/api/items/item/model/definitions/item-rarity";
 import { ItemType } from "src/api/items/item/model/definitions/item-type";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 
@@ -6,6 +7,7 @@ export const BOOSTER_ATTACK: ItemDto = {
     name: 'Attack Booster',
     level: 10,
     type: ItemType.Booster,
+    rarity: ItemRarity.Common,
     statistics: {
         physicalAttackBoost: 0.1,
         criticalChanceBoost: 0.2,
@@ -17,6 +19,7 @@ export const BOOSTER_DEFENSE: ItemDto = {
     name: 'Defense Booster',
     level: 10,
     type: ItemType.Booster,
+    rarity: ItemRarity.Common,
     statistics: {
         healthBoost: 0.2,
         armorBoost: 0.1,
@@ -28,8 +31,9 @@ export const BOOSTER_AGILITY: ItemDto = {
     name: 'Agility Booster',
     level: 10,
     type: ItemType.Booster,
+    rarity: ItemRarity.Common,
     statistics: {
-        speedBoost: 0.1,
+        speedBoost: 0.15,
         dodgeBoost: 0.2,
     }
 };
@@ -39,9 +43,10 @@ export const BOOSTER_WISDOM: ItemDto = {
     name: 'Wisdom Booster',
     level: 10,
     type: ItemType.Booster,
+    rarity: ItemRarity.Common,
     statistics: {
-        manaBoost: 0.1,
-        criticalPower: 0.2,
+        magicalAttackBoost: 0.1,
+        manaBoost: 0.3,
     }
 };
 

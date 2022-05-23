@@ -2454,6 +2454,7 @@ export interface IAlchemyController {
     composeMixture(body: MixtureComposeDto): Observable<MixtureDto>;
     getOnGoingMixtures(body: MixtureGetDto): Observable<MixturePageDto>;
     collectMixture(id: string): Observable<ItemDto>;
+    getBoosterRecipes(): Observable<BoosterRecipeDto[]>;
 }
 
 @Injectable({
@@ -2667,6 +2668,53 @@ export class AlchemyController implements IAlchemyController {
         }
         return _observableOf<ItemDto>(<any>null);
     }
+
+    getBoosterRecipes(): Observable<BoosterRecipeDto[]> {
+        let url_ = this.baseUrl + "/api/v1/alchemy/getBoosterRecipes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBoosterRecipes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBoosterRecipes(<any>response_);
+                } catch (e) {
+                    return <Observable<BoosterRecipeDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BoosterRecipeDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBoosterRecipes(response: HttpResponseBase): Observable<BoosterRecipeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <BoosterRecipeDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BoosterRecipeDto[]>(<any>null);
+    }
 }
 
 export enum DragonNature {
@@ -2737,6 +2785,7 @@ export enum ItemType {
     Food = "Food",
     Ingredient = "Ingredient",
     Equipment = "Equipment",
+    Booster = "Booster",
 }
 
 export enum FoodType {
@@ -2775,6 +2824,14 @@ export interface EquipmentStatisticsDto {
     speed: number;
     initiative: number;
     mana: number;
+    healthBoost: number;
+    armorBoost: number;
+    physicalAttackBoost: number;
+    criticalChanceBoost: number;
+    magicalAttackBoost: number;
+    manaBoost: number;
+    speedBoost: number;
+    dodgeBoost: number;
 }
 
 export interface ItemDto {
@@ -3159,6 +3216,12 @@ export interface MixtureGetDto {
 export interface MixturePageDto {
     meta: PageMetaDto;
     data: MixtureDto[];
+}
+
+export interface BoosterRecipeDto {
+    uid: string;
+    product: ItemDto;
+    ingredients: ItemDto[];
 }
 
 export class SwaggerException extends Error {

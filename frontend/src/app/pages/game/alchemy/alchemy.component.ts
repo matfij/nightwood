@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { AlchemyController, ItemController, ItemDto, MixtureComposeDto, MixtureDto, MixtureGetDto, MixturePageDto, MixtureRecipeDto } from 'src/app/client/api';
+import { AlchemyController, BoosterRecipeDto, ItemController, ItemDto, MixtureComposeDto, MixtureDto, MixtureGetDto, MixturePageDto, MixtureRecipeDto } from 'src/app/client/api';
 import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 
@@ -12,12 +12,15 @@ import { ToastService } from 'src/app/common/services/toast.service';
 })
 export class AlchemyComponent implements OnInit {
 
+  displayPotions: boolean = false;
+  displayBoosters: boolean = false;
   currentDate: number = Date.now();
-  recipes$: Observable<MixtureRecipeDto[]> = new Observable<MixtureRecipeDto[]>();
+  mixtureRecipes$: Observable<MixtureRecipeDto[]> = new Observable<MixtureRecipeDto[]>();
   mixtures$: Observable<MixturePageDto> = new Observable<MixturePageDto>();
   items: ItemDto[] = [];
   itemsLoading: boolean = false;
   collectingLoading: boolean = false;
+  boosterRecipes$: Observable<BoosterRecipeDto[]> = new Observable<BoosterRecipeDto[]>();
 
   constructor(
     private alchemyController: AlchemyController,
@@ -29,7 +32,7 @@ export class AlchemyComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOwnedItems();
-    this.getMixtureRecipes();
+    this.getRecipes();
     this.getOnGoingMixtures();
   }
 
@@ -41,8 +44,9 @@ export class AlchemyComponent implements OnInit {
     }, () => this.itemsLoading = true);
   }
 
-  getMixtureRecipes() {
-    this.recipes$ = this.alchemyController.getMixtureRecipes();
+  getRecipes() {
+    this.mixtureRecipes$ = this.alchemyController.getMixtureRecipes();
+    this.boosterRecipes$ = this.alchemyController.getBoosterRecipes();
   }
 
   getOnGoingMixtures() {
@@ -55,7 +59,7 @@ export class AlchemyComponent implements OnInit {
     return item?.quantity ?? 0;
   }
 
-  checkIngredients(recipe: MixtureRecipeDto): boolean {
+  checkIngredients(recipe: MixtureRecipeDto | BoosterRecipeDto): boolean {
     let canCraft = true;
     recipe.ingredients.forEach(requiredItem => {
       const item = this.items.find(y => y.uid === requiredItem.uid);
@@ -92,6 +96,10 @@ export class AlchemyComponent implements OnInit {
       this.getOnGoingMixtures();
       this.collectingLoading = false;
     }, () => this.collectingLoading = false);
+  }
+
+  activateBooster(recipe: BoosterRecipeDto) {
+
   }
 
 }

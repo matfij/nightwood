@@ -2,13 +2,15 @@
   <ng-template #tooltipTemplate>
     <div class="{{ 'item-tooltip item-hint hint-'+displayItem.rarity }}">
       <h5>{{ displayItem.name }}</h5>
-      {{ displayItem.rarityName | translate }} {{ displayItem.typeName | translate }}<br>
+      <div *ngIf="item.type !== ItemType.Booster">
+        {{ displayItem.rarityName | translate }} {{ displayItem.typeName | translate }}<br>
+      </div>
       {{ 'inventory.level' | translate }}: {{ displayItem.level }} <br>
       <div *ngIf="!simplified && item.type !== ItemType.Equipment">
         {{ 'inventory.quantity' | translate }}: {{ displayItem.quantity }} <br>
       </div>
 
-      <div *ngIf="item.type === ItemType.Equipment && item.statistics" style="margin-top: 8px;">
+      <div *ngIf="(item.type === ItemType.Equipment || item.type === ItemType.Booster) && item.statistics" style="margin-top: 8px;">
         <div *ngIf="item.statistics.armor">
           {{ ('dragon.armor' | translate) + ': ' + item.statistics.armor }}
         </div>
@@ -47,6 +49,31 @@
         </div>
         <div *ngIf="item.statistics.luck">
           {{ ('dragon.will' | translate) + ': ' + item.statistics.luck }}
+        </div>
+
+        <div *ngIf="item.statistics.healthBoost">
+          {{ ('dragon.healthBoost' | translate) + ': +' + 100 * item.statistics.healthBoost + '%' }}
+        </div>
+        <div *ngIf="item.statistics.armorBoost">
+          {{ ('dragon.armorBoost' | translate) + ': +' + 100 * item.statistics.armorBoost + '%' }}
+        </div>
+        <div *ngIf="item.statistics.physicalAttackBoost">
+          {{ ('dragon.physicalAttackBoost' | translate) + ': +' + 100 * item.statistics.physicalAttackBoost + '%' }}
+        </div>
+        <div *ngIf="item.statistics.criticalChanceBoost">
+          {{ ('dragon.criticalChanceBoost' | translate) + ': +' + 100 * item.statistics.criticalChanceBoost + '%' }}
+        </div>
+        <div *ngIf="item.statistics.speedBoost">
+          {{ ('dragon.speedBoost' | translate) + ': +' + 100 * item.statistics.speedBoost + '%' }}
+        </div>
+        <div *ngIf="item.statistics.dodgeBoost">
+          {{ ('dragon.dodgeBoost' | translate) + ': +' + 100 * item.statistics.dodgeBoost + '%' }}
+        </div>
+        <div *ngIf="item.statistics.magicalAttackBoost">
+          {{ ('dragon.magicalAttackBoost' | translate) + ': +' + 100 * item.statistics.magicalAttackBoost + '%' }}
+        </div>
+        <div *ngIf="item.statistics.manaBoost">
+          {{ ('dragon.manaBoost' | translate) + ': +' + 100 * item.statistics.manaBoost + '%' }}
         </div>
       </div>
     </div>

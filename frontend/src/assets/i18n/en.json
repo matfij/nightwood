@@ -181,6 +181,14 @@
     "speed": "Speed",
     "initiative": "Initiative",
     "allAttributes": "All attributes",
+    "healthBoost": "Health",
+    "armorBoost": "Armor",
+    "physicalAttackBoost": "Physical attack",
+    "criticalChanceBoost": "Critical chance",
+    "speedBoost": "Speed",
+    "dodgeBoost": "Dodge",
+    "magicalAttackBoost": "Magical attack",
+    "manaBoost": "Mana",
     "ongoingAction": "Performs",
     "feed": "Feed",
     "nextFeedIn": "Next feeding in",
@@ -245,14 +253,17 @@
     "itemCrafted": "{{ name }} crafted"
   },
   "alchemy": {
-    "alchemyHint": "Tekno Ziomks, the goblin alchemist, used to prepare meals for the royal court. During the Northen Wars, he decided to explore the secrets of alchemy to give his tribe an advantage in the battle.",
+    "mixturesHint": "Tekno Ziomks, the goblin alchemist, used to prepare meals for the royal court. During the Northen Wars, he decided to explore the secrets of alchemy to give his tribe an advantage in the battle.",
+    "boostersHint": "Rikko Ziomks",
     "requiredIngredients": "Required ingredients",
     "compose": "Compose",
+    "activate": "Activate",
     "brewingStarted": "Brewing started",
     "currentlyBrewing": "Currently brewed",
     "timeToComplete": "Time to complete",
     "collect": "Collect",
-    "mixtureCollected": "{{ name }} collected"
+    "mixtureCollected": "{{ name }} collected",
+    "toggleOffer": "Toggle offer"
   },
   "auctions": {
     "availableOffers": "Available offers",

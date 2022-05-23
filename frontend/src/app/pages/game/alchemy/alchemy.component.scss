@@ -2,7 +2,7 @@
 @import '../../../core/theme/mixins.scss';
 
 
-.wrapper-mixtures-section {
+.wrapper-alchemy-section {
   @include tile(black);
 
   margin: 10px auto;
@@ -23,6 +23,16 @@
 
   img {
     max-width: 100%;
+  }
+}
+
+.wrapper-lore-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  button {
+    margin:  10px 0px;
   }
 }
 

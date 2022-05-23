@@ -82,7 +82,7 @@ export class AlchemyService {
         return recipe.product;
     }
 
-    async getBoostersRecipes(): Promise<BoosterRecipeDto[]> {
+    async getBoosterRecipes(): Promise<BoosterRecipeDto[]> {
         return BOOSTER_RECIPES;
     }
 

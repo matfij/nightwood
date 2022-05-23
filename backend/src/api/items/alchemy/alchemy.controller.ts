@@ -43,9 +43,9 @@ export class AlchemyController {
         return this.alchemyService.collectMixture(req.user, +id);
     }
 
-    @Post('getBoostersRecipes')
+    @Post('getBoosterRecipes')
     @ApiOkResponse({ type: [BoosterRecipeDto] })
-    getBoostersRecipes(): Promise<BoosterRecipeDto[]> {
-        return this.alchemyService.getBoostersRecipes();
+    getBoosterRecipes(): Promise<BoosterRecipeDto[]> {
+        return this.alchemyService.getBoosterRecipes();
     }
 }
