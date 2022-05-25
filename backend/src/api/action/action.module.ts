@@ -5,6 +5,7 @@ import { DragonModule } from 'src/api/dragons/dragon/dragon.module';
 import { AuctionModule } from 'src/api/items/auction/auction.module';
 import { ItemModule } from 'src/api/items/item/item.module';
 import { ErrorService } from 'src/common/services/error.service';
+import { AlchemyModule } from '../items/alchemy/alchemy.module';
 import { MailModule } from '../users/mail/mail.module';
 import { User } from '../users/user/model/user.entity';
 import { UserModule } from '../users/user/user.module';
@@ -21,6 +22,7 @@ import { ActionItemService } from './service/action-item.service';
         DragonModule, 
         DragonActionModule,
         ItemModule,
+        AlchemyModule,
         AuctionModule,
         MailModule,
     ],

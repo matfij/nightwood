@@ -21,6 +21,9 @@ export class DragonDto {
     @ApiProperty( { type: [ItemDto] })
     runes: ItemDto[];
 
+    @ApiProperty()
+    boosterUid?: string;
+
     @ApiProperty({ type: [Number] })
     battledWith: number[];
     

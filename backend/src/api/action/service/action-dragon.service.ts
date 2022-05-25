@@ -14,6 +14,11 @@ import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from "src/configuratio
 import { ACTION_CHANGE_NATURE, ACTION_RENAME, ACTION_RESET_SKILLS, ACTION_RESTORE_STAMINA } from "src/api/dragons/dragon/data/dragon-tamer-actions";
 import { DragonSummonDto } from "src/api/dragons/dragon/model/dto/dragon-summon.dto";
 import { DRAGON_SUMMON_ACTIONS } from "src/api/dragons/dragon/data/dragon-summon-actions";
+import { UserDto } from "src/api/users/user/model/dto/user.dto";
+import { BoosterActivateDto } from "src/api/items/alchemy/model/dto/booster-activate.dto";
+import { AlchemyService } from "src/api/items/alchemy/service/alchemy.service";
+import { BOOSTERS } from "src/api/items/alchemy/model/data/boosters";
+import { BOOSTER_RECIPES } from "src/api/items/alchemy/model/data/booster-recipe";
 
 @Injectable()
 export class ActionDragonService {
@@ -22,6 +27,7 @@ export class ActionDragonService {
         private userService: UserService,
         private dragonService: DragonService,
         private itemService: ItemService,
+        private alchemyService: AlchemyService,
         private errorService: ErrorService,
     ) {}
 
@@ -56,11 +62,23 @@ export class ActionDragonService {
     async feedDragon(userId: number, dto: DragonFeedDto): Promise<DragonDto> {
         const item = await this.itemService.checkFeedingItem(userId, dto.itemId);
         const dragon = await this.dragonService.checkFeedingDragon(userId, dto.dragonId);
-
+        
         await this.itemService.consumeItem(item);
         const fedDragon = await this.dragonService.feedDragon(item, dragon);
-
+        
         return fedDragon;
+    }
+    
+    async activateBooster(user: UserDto, dto: BoosterActivateDto): Promise<void> {
+        const boosterRecipe = BOOSTER_RECIPES.find(booster => booster.uid === dto.boosterRecipeUid);
+        if (!boosterRecipe) this.errorService.throw('errors.boosterNotFound');
+        
+        const dragon = await this.dragonService.checkDragon(user.id, dto.dragonId);
+        if (dragon.level < boosterRecipe.product.level) this.errorService.throw('errors.dragonTooYoung');
+
+        const booster = await this.alchemyService.composeBooster(user, boosterRecipe);
+
+        await this.dragonService.activateBooster(dragon, booster);
     }
 
     async releaseDragon(userId: number, dragonId: number): Promise<void> {

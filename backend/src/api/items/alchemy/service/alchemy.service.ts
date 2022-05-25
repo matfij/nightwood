@@ -14,6 +14,7 @@ import { MixtureDto } from "../model/dto/mixture.dto";
 import { Mixture } from "../model/mixture.entity";
 import { BoosterRecipeDto } from "../model/dto/booster-recipe.dto";
 import { BOOSTER_RECIPES } from "../model/data/booster-recipe";
+import { BOOSTERS } from "../model/data/boosters";
 
 @Injectable()
 export class AlchemyService {
@@ -84,6 +85,12 @@ export class AlchemyService {
 
     async getBoosterRecipes(): Promise<BoosterRecipeDto[]> {
         return BOOSTER_RECIPES;
+    }
+
+    async composeBooster(user: UserDto, boosterRecipe: BoosterRecipeDto): Promise<ItemDto> {
+        this.itemService.checkAndConsumeItems(boosterRecipe.ingredients, user.id);
+
+        return boosterRecipe.product;
     }
 
 }

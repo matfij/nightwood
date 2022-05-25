@@ -107,7 +107,8 @@
     "incorrectDragonName": "Incorrect dragon name",
     "alreadyBattled": "Selected dragons has already battled twice",
     "mixtureNotFound": "Mixture not found",
-    "mixtureNotReady": "Mixture is not ready"
+    "mixtureNotReady": "Mixture is not ready",
+    "boosterNotFound": "Booster not found"
   },
   "game": {
     "menu": "Menu",
@@ -253,8 +254,8 @@
     "itemCrafted": "{{ name }} crafted"
   },
   "alchemy": {
-    "mixturesHint": "Tekno Ziomks, the goblin alchemist, used to prepare meals for the royal court. During the Northen Wars, he decided to explore the secrets of alchemy to give his tribe an advantage in the battle.",
-    "boostersHint": "Rikko Ziomks",
+    "mixturesHint": "Tekno Ziomks, the goblin alchemist, used to prepare meals for the royal court. During the Northen Wars, he decided to explore the secrets of alchemy to give his tribe an advantage in the battle. Now Tekno can brew potions that can be used to accelerate dragon growth.",
+    "boostersHint": "Rikko Ziomks, the goblin shaman, keeps lore about the booster scrolls. With the use of some basic ingredients, he can activate the booster scrolls to increase dragon attributes for a limited amount of time.",
     "requiredIngredients": "Required ingredients",
     "compose": "Compose",
     "activate": "Activate",

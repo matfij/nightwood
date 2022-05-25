@@ -15,6 +15,7 @@ import { JwtAuthGuard } from "../users/auth/util/jwt.guard";
 import { DragonEquipDto } from "../dragons/dragon/model/dto/dragon-equip.dto";
 import { DragonChangeNatureDto, DragonRenameDto } from "../dragons/dragon/model/dto/dragon-tamer-params.dto";
 import { DragonSummonDto } from "../dragons/dragon/model/dto/dragon-summon.dto";
+import { BoosterActivateDto } from "../items/alchemy/model/dto/booster-activate.dto";
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -43,6 +44,12 @@ export class ActionController {
     @ApiOkResponse({ type: DragonDto })
     feedDragon(@Request() req: AuthorizedRequest, @Body() dto: DragonFeedDto): Promise<DragonDto> {
         return this.actionDragonService.feedDragon(req.user.id, dto);
+    }
+
+    @Post('activateBooster')
+    @ApiOkResponse()
+    activateBooster(@Request() req: AuthorizedRequest, @Body() dto: BoosterActivateDto): Promise<void> {
+        return this.actionDragonService.activateBooster(req.user, dto);
     }
 
     @Post('equipDragon')

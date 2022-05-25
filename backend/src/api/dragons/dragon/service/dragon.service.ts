@@ -184,9 +184,17 @@ export class DragonService {
 
         dragon.battledWith = [];
         dragon.stamina = FOOD_STAMINA_GAIN;
+        dragon.boosterUid = null;
 
         const fedDragon = await this.dragonRepository.save(dragon);
         return fedDragon;
+    }
+    
+    async activateBooster(dragon: DragonDto, booster: ItemDto): Promise<DragonDto> {
+        dragon.boosterUid = booster.uid;
+        await this.dragonRepository.save(dragon);
+
+        return dragon;
     }
 
     async checkIfEventAvailable(ownerId: number, dragonId: number): Promise<DragonDto> {
@@ -265,7 +273,9 @@ export class DragonService {
     async restoreStamina(dragon: DragonDto): Promise<DragonDto> {
         dragon.battledWith = [];
         dragon.stamina = RESTORE_STAMINA_GAIN;
+        dragon.boosterUid = null;
         dragon.nextFeed = Date.now() + RESTORE_STAMINA_INTERVAL;
+
         return await this.dragonRepository.save(dragon);
     }
 
