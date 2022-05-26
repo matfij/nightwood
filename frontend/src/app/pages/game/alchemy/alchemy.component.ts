@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { AlchemyController, BoosterRecipeDto, ItemController, ItemDto, MixtureComposeDto, MixtureDto, MixtureGetDto, MixturePageDto, MixtureRecipeDto } from 'src/app/client/api';
+import { ActionController, AlchemyController, BoosterActivateDto, BoosterRecipeDto, DragonController, DragonDto, ItemController, ItemDto, MixtureComposeDto, MixtureDto, MixtureGetDto, MixturePageDto, MixtureRecipeDto } from 'src/app/client/api';
 import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 
@@ -20,10 +20,14 @@ export class AlchemyComponent implements OnInit {
   items: ItemDto[] = [];
   itemsLoading: boolean = false;
   collectingLoading: boolean = false;
+  boostersLoading: boolean = false;
   boosterRecipes$: Observable<BoosterRecipeDto[]> = new Observable<BoosterRecipeDto[]>();
+  dragons$: Observable<DragonDto[]> = new Observable<DragonDto[]>();
 
   constructor(
+    private actionController: ActionController,
     private alchemyController: AlchemyController,
+    private dragonController: DragonController,
     private itemController: ItemController,
     private dateService: DateService,
     private toastService: ToastService,
@@ -34,6 +38,7 @@ export class AlchemyComponent implements OnInit {
     this.getOwnedItems();
     this.getRecipes();
     this.getOnGoingMixtures();
+    this.getOwnedDragons();
   }
 
   getOwnedItems() {
@@ -47,6 +52,10 @@ export class AlchemyComponent implements OnInit {
   getRecipes() {
     this.mixtureRecipes$ = this.alchemyController.getMixtureRecipes();
     this.boosterRecipes$ = this.alchemyController.getBoosterRecipes();
+  }
+
+  getOwnedDragons() {
+    this.dragons$ = this.dragonController.getOwned();
   }
 
   getOnGoingMixtures() {
@@ -98,8 +107,16 @@ export class AlchemyComponent implements OnInit {
     }, () => this.collectingLoading = false);
   }
 
-  activateBooster(recipe: BoosterRecipeDto) {
-
+  activateBooster(recipe: BoosterRecipeDto, dragon: DragonDto) {
+    const params: BoosterActivateDto = {
+      boosterRecipeUid: recipe.uid,
+      dragonId: dragon.id,
+    };
+    this.boostersLoading = true;
+    this.actionController.activateBooster(params).subscribe(_ => {
+      this.boostersLoading = false;
+      this.toastService.showSuccess('common.success', 'alchemy.boosterActivated');
+    }, () => this.boostersLoading = false);
   }
 
 }

@@ -7,7 +7,7 @@ export const BOOSTER_ATTACK: ItemDto = {
     name: 'Attack Booster',
     level: 10,
     type: ItemType.Booster,
-    rarity: ItemRarity.Common,
+    rarity: ItemRarity.Scarce,
     statistics: {
         physicalAttackBoost: 0.1,
         criticalChanceBoost: 0.2,
@@ -19,7 +19,7 @@ export const BOOSTER_DEFENSE: ItemDto = {
     name: 'Defense Booster',
     level: 10,
     type: ItemType.Booster,
-    rarity: ItemRarity.Common,
+    rarity: ItemRarity.Scarce,
     statistics: {
         healthBoost: 0.2,
         armorBoost: 0.1,
@@ -31,7 +31,7 @@ export const BOOSTER_AGILITY: ItemDto = {
     name: 'Agility Booster',
     level: 10,
     type: ItemType.Booster,
-    rarity: ItemRarity.Common,
+    rarity: ItemRarity.Scarce,
     statistics: {
         speedBoost: 0.15,
         dodgeBoost: 0.2,
@@ -43,7 +43,7 @@ export const BOOSTER_WISDOM: ItemDto = {
     name: 'Wisdom Booster',
     level: 10,
     type: ItemType.Booster,
-    rarity: ItemRarity.Common,
+    rarity: ItemRarity.Scarce,
     statistics: {
         magicalAttackBoost: 0.1,
         manaBoost: 0.3,

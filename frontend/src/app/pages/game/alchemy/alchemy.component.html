@@ -97,7 +97,8 @@
           </div>
         </ng-template>
 
-        <div *ngIf="!itemsLoading && (boosterRecipes$ | async) as recipes; else loading" class="wrapper-recipes">
+        <div *ngIf="!boostersLoading && !itemsLoading && (boosterRecipes$ | async) as recipes; else loading">
+          <div *ngIf="(dragons$ | async) as dragons; else loading" class="wrapper-recipes">
 
           <div *ngFor="let recipe of recipes" class="item-recipe">
             <div class="recipe-item">
@@ -115,11 +116,20 @@
             </div>
 
             <div class="break"></div>
-            <button (click)="activateBooster(recipe)" [disabled]="checkIngredients(recipe)" class="btn-base btn-craft">
+            <select #dragonSelect (change)="0" class="input-select" style="margin-top: 10px;">
+              <option value=""></option>
+              <option class="input-select-option" *ngFor="let dragon of dragons; let dragonInd = index" [value]="dragonInd">
+                {{ dragon.name }} [{{ dragon.level }}]
+              </option>
+            </select>
+
+            <div class="break"></div>
+            <button (click)="activateBooster(recipe, dragons[+dragonSelect.value])" [disabled]="checkIngredients(recipe) || dragonSelect.value == ''" class="btn-base btn-craft">
               {{ 'alchemy.activate' | translate }}
             </button>
           </div>
 
+        </div>
         </div>
       </div>
 

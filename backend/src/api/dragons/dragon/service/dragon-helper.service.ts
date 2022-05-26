@@ -51,6 +51,7 @@ export class BattleHelperService {
         resistance = resistance + 0.2 * armor;
         speed = speed * (1 + dragon.skills.innateSpeed / 60) * (1 + boosterStats.speedBoost ?? 0);
         physicalAttack = physicalAttack * (1 + boosterStats.physicalAttackBoost ?? 0);
+        magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
         let manaRegen =  mana * (dragon.skills.innerFlow / 40);
 
         const initiative = speed + runeStats.initiative;
@@ -110,6 +111,7 @@ export class BattleHelperService {
         resistance = resistance + 0.2 * armor;
         speed = speed * (1 + dragon.skills.innateSpeed / 60) * (1 + boosterStats.speedBoost ?? 0);
         physicalAttack = physicalAttack * (1 + boosterStats.physicalAttackBoost ?? 0);
+        magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
         let manaRegen =  mana * (dragon.skills.innerFlow / 40);
 
         const initiative = speed + runeStats.initiative;
@@ -182,7 +184,17 @@ export class BattleHelperService {
     }
 
     private getBoosterStats(boosterUid: string): EquipmentStatisticsDto {
+        let boosterStats: EquipmentStatisticsDto = {
+            healthBoost: 0,
+            manaBoost: 0,
+            armorBoost: 0,
+            physicalAttackBoost: 0,
+            magicalAttackBoost: 0,
+            criticalChanceBoost: 0,
+            speedBoost: 0,
+            dodgeBoost: 0,
+        }
         const booster = BOOSTERS.find(b => b.uid === boosterUid);
-        return booster ? booster.statistics : {};
+        return { ...boosterStats, ...booster?.statistics };
     }
 }

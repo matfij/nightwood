@@ -29,6 +29,7 @@ import { DRAGON_SUMMON_ACTIONS } from '../data/dragon-summon-actions';
 import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
 import { BattleDragonDto } from '../model/definitions/dragon-battle';
 import { BattleHelperService } from './dragon-helper.service';
+import { BOOSTERS } from 'src/api/items/alchemy/model/data/boosters';
 
 @Injectable()
 export class DragonService {
@@ -56,9 +57,10 @@ export class DragonService {
     }
 
     async getOne(id: string | number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes'] });
+        const dragon = await this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes'] }) as DragonDto
 
         dragon.runes = dragon.runes.map(rune => { return { ...rune, ...this.dataService.getItemData(rune.uid) } });
+        if (dragon.boosterUid) dragon.booster = BOOSTERS.find(booster => booster.uid === dragon.boosterUid);
 
         return dragon;
     }

@@ -209,7 +209,8 @@
     "actionTraining": "On training",
     "requiredLevel": "Required level",
     "equippedRunes": "Equipped runes",
-    "availableRunes": "Available runes"
+    "availableRunes": "Available runes",
+    "activeBooster": "Active booster"
   },
   "dragonSummon": {
     "dragonSummonerHint": "Lotta zi Ayvalik, a member of the White Rose and the only survivor of the Mirage Island expedition. She discovered the Dimension Gate, which pushed her for further research on dragon summoning.",
@@ -255,7 +256,7 @@
   },
   "alchemy": {
     "mixturesHint": "Tekno Ziomks, the goblin alchemist, used to prepare meals for the royal court. During the Northen Wars, he decided to explore the secrets of alchemy to give his tribe an advantage in the battle. Now Tekno can brew potions that can be used to accelerate dragon growth.",
-    "boostersHint": "Rikko Ziomks, the goblin shaman, keeps lore about the booster scrolls. With the use of some basic ingredients, he can activate the booster scrolls to increase dragon attributes for a limited amount of time.",
+    "boostersHint": "Rikko Ziomks, the goblin shaman, keeps lore about the booster scrolls. With the use of some basic ingredients, he can activate the booster scrolls to increase dragon attributes for a limited amount of time. Each dragon can have only one booster scroll active at a time.",
     "requiredIngredients": "Required ingredients",
     "compose": "Compose",
     "activate": "Activate",
@@ -264,7 +265,8 @@
     "timeToComplete": "Time to complete",
     "collect": "Collect",
     "mixtureCollected": "{{ name }} collected",
-    "toggleOffer": "Toggle offer"
+    "toggleOffer": "Toggle offer",
+    "boosterActivated": "Booster activated"
   },
   "auctions": {
     "availableOffers": "Available offers",

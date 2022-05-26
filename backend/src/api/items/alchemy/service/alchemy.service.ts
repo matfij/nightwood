@@ -88,7 +88,7 @@ export class AlchemyService {
     }
 
     async composeBooster(user: UserDto, boosterRecipe: BoosterRecipeDto): Promise<ItemDto> {
-        this.itemService.checkAndConsumeItems(boosterRecipe.ingredients, user.id);
+        await this.itemService.checkAndConsumeItems(boosterRecipe.ingredients, user.id);
 
         return boosterRecipe.product;
     }
