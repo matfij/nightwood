@@ -29,17 +29,19 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Special dragons & skills [100%]
  - Dragon equipment - runes crafting [100%]
  - Dragon QoL utils - renaming, resting etc. [100%]
- - Alchemy - cooking, extracting [50%]
+ - Alchemy - cooking, extracting [100%]
  - Guilds - diplomacy, constructions [0%]
- - Player profiles - achievements [0%]
+ - Player profiles, achievements [0%]
  - Expedition guardians & progress [0%]
  - User roles & banning [0%]
-
 
 ## Refactoring 1
  - Minimize dependencies
  - Optimization - rendering, db operations, throttling
+ - Player actions - dtos, controllers
+ -
 
 ## Stage 2
  - Mini games
  - Battle tournaments
+ - Dragon vanities

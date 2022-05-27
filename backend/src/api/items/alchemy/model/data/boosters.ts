@@ -50,7 +50,6 @@ export const BOOSTER_WISDOM: ItemDto = {
     }
 };
 
-
 export const BOOSTERS = [
     BOOSTER_ATTACK,
     BOOSTER_DEFENSE,
