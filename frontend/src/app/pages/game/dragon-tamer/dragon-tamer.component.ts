@@ -60,7 +60,7 @@ export class DragonTamerComponent implements OnInit {
   }
 
   performAction(action: DragonTamerActionDto, dragon: DragonDto) {
-    const requiredGold = dragon.level * action.costFactor;
+    const requiredGold = action.baseCost + dragon.level * action.costFactor;
     if (this.user && this.user.gold < requiredGold) { this.toastService.showError('errors.error', 'errors.insufficientsFound'); return; }
     if (dragon.level < action.requiredLevel) { this.toastService.showError('errors.error', 'errors.dragonTooYoung'); return; }
 

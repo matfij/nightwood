@@ -2961,7 +2961,6 @@ export interface StartExpeditionDto {
 export interface ExpeditionReportDto {
     dragonName: string;
     expeditionName: string;
-    gainedExperience: number;
     gainedGold: number;
     loots: ItemDto[];
 }
@@ -3168,7 +3167,7 @@ export interface DragonTamerActionDto {
     uid: string;
     hint: string;
     costFactor: number;
-    maxCost: number;
+    baseCost: number;
     requiredLevel: number;
     requiredItems: ItemDto[];
 }
@@ -3186,7 +3185,6 @@ export interface ExpeditionDto {
     name: string;
     hint: string;
     level: number;
-    experienceAward: number;
     goldAward: number;
     loots: ItemDto[];
     minimumActionTime: number;

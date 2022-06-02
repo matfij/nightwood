@@ -50,7 +50,7 @@
 
           <div class="cost-hint">
             {{ 'dragonTamer.actionCost' | translate }}:
-            {{ dragonSelect.value != '' ? dragons[+dragonSelect.value].level * action.costFactor : '---' }}
+            {{ dragonSelect.value != '' ? action.baseCost + dragons[+dragonSelect.value].level * action.costFactor : '---' }}
           </div>
 
           <button (click)="performAction(action, dragons[+dragonSelect.value])" [disabled]="dragonSelect.value == ''" class="btn-base btn-action">

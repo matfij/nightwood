@@ -13,7 +13,7 @@ export class DragonTamerActionDto {
     costFactor: number;
 
     @ApiProperty()
-    maxCost: number;
+    baseCost: number;
 
     @ApiProperty()
     requiredLevel: number;

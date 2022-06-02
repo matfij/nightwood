@@ -113,7 +113,7 @@ export class ActionDragonService {
 
     async renameDragon(userId: number, dto: DragonRenameDto): Promise<DragonDto> {
         const dragon = await this.dragonService.checkDragon(userId, dto.dragonId);
-        const actionCost = dragon.level * ACTION_RENAME.costFactor;
+        const actionCost = ACTION_RENAME.baseCost + dragon.level * ACTION_RENAME.costFactor;
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
         if (dto.newName.length > DRAGON_NAME_MAX_LENGTH || dto.newName.length < DRAGON_NAME_MIN_LENGTH) this.errorService.throw('errors.incorrectDragonName');
@@ -125,7 +125,7 @@ export class ActionDragonService {
 
     async resetDragonSkills(userId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.dragonService.checkDragon(userId, dragonId);
-        const actionCost = dragon.level * ACTION_RESET_SKILLS.costFactor;
+        const actionCost = ACTION_RESET_SKILLS.baseCost + dragon.level * ACTION_RESET_SKILLS.costFactor;
         const user = await this.userService.getOne(userId);
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
@@ -138,7 +138,7 @@ export class ActionDragonService {
 
     async restoreDragonStamina(userId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.dragonService.checkFeedingDragon(userId, dragonId);
-        const actionCost = dragon.level * ACTION_RESTORE_STAMINA.costFactor;
+        const actionCost = ACTION_RESTORE_STAMINA.baseCost + dragon.level * ACTION_RESTORE_STAMINA.costFactor;
         const user = await this.userService.getOne(userId);
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
@@ -151,7 +151,7 @@ export class ActionDragonService {
     
     async changeDragonNature(userId: number, dto: DragonChangeNatureDto): Promise<DragonDto> {
         const dragon = await this.dragonService.checkDragon(userId, dto.dragonId);
-        const actionCost = dragon.level * ACTION_CHANGE_NATURE.costFactor;
+        const actionCost = ACTION_CHANGE_NATURE.baseCost + dragon.level * ACTION_CHANGE_NATURE.costFactor;
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
         if (dto.newNature === dragon.nature) this.errorService.throw('errors.dragonAlreadyHasThisNature');
