@@ -37,7 +37,6 @@ export class ActionEventService {
             if (expedition) {
                 const user = await this.userService.getOne(userId);
 
-                const gainedExperience = await this.dragonService.awardExpeditionExperience(dragon, expedition);
                 const gainedGold = await this.dragonService.awardExpeditionGold(dragon, expedition);
                 const loots = await this.itemService.awardExpeditionItems(user, dragon, expedition);
 
@@ -46,7 +45,6 @@ export class ActionEventService {
                 results.push ({
                     dragonName: dragon.name,
                     expeditionName: expedition.name,
-                    gainedExperience: gainedExperience,
                     gainedGold: gainedGold,
                     loots: loots,
                 });
@@ -54,9 +52,9 @@ export class ActionEventService {
                 const params: MailSendSystemParams = {
                     receiverId: userId,
                     topic: 'Expedition ended',
-                    message: `${dragon.name} has finished exploring ${expedition.name}, 
-                        gained ${gainedExperience} experience and found: <br> • ${gainedGold} gold,
-                        ${loots.map(loot => `<br> • ${loot.name} (${loot.quantity})`).join(', ')}`,
+                    message: `${dragon.name} has finished exploring ${expedition.name} and found: 
+                        <br> • ${gainedGold} gold,
+                        ${loots.map(loot => `<br> • ${loot.name} (${loot.quantity})`).join(', ')}.`,
                 }
                 this.mailService.sendSystemMail(params);
             }

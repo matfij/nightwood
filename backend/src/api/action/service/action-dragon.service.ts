@@ -126,9 +126,12 @@ export class ActionDragonService {
     async resetDragonSkills(userId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.dragonService.checkDragon(userId, dragonId);
         const actionCost = dragon.level * ACTION_RESET_SKILLS.costFactor;
+        const user = await this.userService.getOne(userId);
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
+        if (user.gold < actionCost) this.errorService.throw('errors.insufficientsFound');
         
+        await this.itemService.checkAndConsumeItems(ACTION_RESET_SKILLS.requiredItems, userId);
         await this.userService.updateGold(userId, -actionCost);
         return await this.dragonService.resetSkills(dragon);
     }
@@ -136,9 +139,12 @@ export class ActionDragonService {
     async restoreDragonStamina(userId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.dragonService.checkFeedingDragon(userId, dragonId);
         const actionCost = dragon.level * ACTION_RESTORE_STAMINA.costFactor;
+        const user = await this.userService.getOne(userId);
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
+        if (user.gold < actionCost) this.errorService.throw('errors.insufficientsFound');
         
+        await this.itemService.checkAndConsumeItems(ACTION_RESTORE_STAMINA.requiredItems, userId);
         await this.userService.updateGold(userId, -actionCost);
         return await this.dragonService.restoreStamina(dragon);
     }

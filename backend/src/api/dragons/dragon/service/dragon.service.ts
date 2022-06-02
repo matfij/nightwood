@@ -207,14 +207,6 @@ export class DragonService {
         return dragon;
     }
 
-    async awardExpeditionExperience(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
-        const gainedExperience = Math.round(this.mathService.randRange(0.9, 1.1) * expedition.experienceAward);
-        dragon.experience += gainedExperience;
-    
-        await this.dragonRepository.update(dragon.id, { experience: dragon.experience });
-        return gainedExperience;
-    }
-
     async awardExpeditionGold(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
         const gainedGold = this.mathService.randRange(0.9, 1.1) * expedition.goldAward * (1 + dragon.skills.beginnersLuck/35);
         return Math.round(gainedGold);

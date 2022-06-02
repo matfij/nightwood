@@ -1,4 +1,4 @@
-import { TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
+import { FEEBLE_MUSHROOMS, TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
 import { DragonTamerActionDto } from "../model/dto/dragon-tamer-actions.dto";
 
 export const ACTION_RENAME: DragonTamerActionDto = {
@@ -16,7 +16,9 @@ export const ACTION_RESET_SKILLS: DragonTamerActionDto = {
     costFactor: 50,
     maxCost: 1000000,
     requiredLevel: 1,
-    requiredItems: [],
+    requiredItems: [
+        { ...FEEBLE_MUSHROOMS, quantity: 5 }
+    ],
 };
 
 export const ACTION_RESTORE_STAMINA: DragonTamerActionDto = {
@@ -25,7 +27,9 @@ export const ACTION_RESTORE_STAMINA: DragonTamerActionDto = {
     costFactor: 15,
     maxCost: 1000000,
     requiredLevel: 1,
-    requiredItems: [],
+    requiredItems: [
+        { ...FEEBLE_MUSHROOMS, quantity: 1 }
+    ],
 };
 
 export const ACTION_CHANGE_NATURE: DragonTamerActionDto = {

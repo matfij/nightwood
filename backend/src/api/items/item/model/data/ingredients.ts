@@ -89,3 +89,11 @@ export const CRIMSON_SEED: ItemDto = {
     rarity: ItemRarity.Rare,
     type: ItemType.Ingredient,
 };
+
+export const FEEBLE_MUSHROOMS: ItemDto = {
+    uid: 'item-i-12',
+    name: 'Feeble Mushrooms',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Ingredient,
+};
