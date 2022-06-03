@@ -3,11 +3,14 @@ import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-
 import { ExpeditionReportDto } from "src/api/dragons/dragon-action/model/dto/expedition-result.dto";
 import { StartExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition-start.dto";
 import { DragonActionService } from "src/api/dragons/dragon-action/service/dragon-action.service";
+import { ACTION_INCREASE_DRAGON_LIMIT } from "src/api/dragons/dragon/data/dragon-tamer-actions";
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
 import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
 import { MailService } from "src/api/users/mail/service/mail.service";
 import { UserService } from "src/api/users/user/service/user.service";
+import { ErrorService } from "src/common/services/error.service";
+import { DRAGON_BASE_LIMIT } from "src/configuration/frontend.config";
 
 @Injectable()
 export class ActionEventService {
@@ -18,6 +21,7 @@ export class ActionEventService {
         private dragonService: DragonService,
         private dragonActionService: DragonActionService,
         private itemService: ItemService,
+        private errorService: ErrorService
     ) {}
 
     async startExpedition(userId: number, dto: StartExpeditionDto): Promise<DragonActionDto> {
@@ -42,7 +46,7 @@ export class ActionEventService {
 
                 await this.userService.updateGold(userId, gainedGold);
 
-                results.push ({
+                results.push({
                     dragonName: dragon.name,
                     expeditionName: expedition.name,
                     gainedGold: gainedGold,
@@ -61,5 +65,22 @@ export class ActionEventService {
         }
 
         return results.filter(result => result != null);
+    }
+
+    async extendDragonLimit(userId: number): Promise<void> {
+        const user = await this.userService.getOne(userId);
+        const dragons = await this.dragonService.getOwnedDragons(userId);
+
+        if (user.maxOwnedDragons >= 5) this.errorService.throw('errors.currentDragonLimitReached');
+        
+        const actionCost = ACTION_INCREASE_DRAGON_LIMIT.baseCost + ACTION_INCREASE_DRAGON_LIMIT.costFactor * (user.maxOwnedDragons - DRAGON_BASE_LIMIT);
+        if (user.gold < actionCost) this.errorService.throw('errors.insufficientsFound');
+
+        const maxDragonLevel = Math.max(...dragons.map(dragon => dragon.level));
+        if (maxDragonLevel < 30) this.errorService.throw('errors.currentDragonLimitReached');
+        if (maxDragonLevel < 100 && user.maxOwnedDragons >= 4) this.errorService.throw('errors.currentDragonLimitReached');
+
+        await this.userService.updateGold(userId, -actionCost);
+        await this.userService.extendDragonLimit(userId);
     }
 }

@@ -21,7 +21,7 @@
             {{ action.hint | translate }}
           </div>
 
-          <select #dragonSelect (change)="0" class="input-select">
+          <select #dragonSelect [hidden]="action.withoutDragon" (change)="0" class="input-select" style="margin-top: 8px;">
             <option value=""></option>
             <option class="input-select-option" *ngFor="let dragon of dragons; let dragonInd = index" [value]="dragonInd">
               {{ dragon.name }} [{{ dragon.level }}]
@@ -48,13 +48,29 @@
             </div>
           </div>
 
-          <div class="cost-hint">
+          <div *ngIf="!action.withoutDragon" class="cost-hint">
             {{ 'dragonTamer.actionCost' | translate }}:
             {{ dragonSelect.value != '' ? action.baseCost + dragons[+dragonSelect.value].level * action.costFactor : '---' }}
           </div>
 
-          <button (click)="performAction(action, dragons[+dragonSelect.value])" [disabled]="dragonSelect.value == ''" class="btn-base btn-action">
+          <div *ngIf="action.withoutDragon" class="cost-hint" style="margin-top: 8px;">
+            {{ 'dragonTamer.actionCost' | translate }}:
+            {{ action.baseCost + action.costFactor * (user?.maxOwnedDragons ? user!.maxOwnedDragons! - DRAGON_BASE_LIMIT : 0) }}
+          </div>
+
+          <button
+            *ngIf="!action.withoutDragon"
+            (click)="performAction(action, dragons[+dragonSelect.value])"
+            [disabled]="dragonSelect.value == ''"
+            class="btn-base btn-action">
             {{ 'common.confirm' | translate }}
+          </button>
+
+          <button
+            *ngIf="action.withoutDragon"
+            (click)="performActionWithoutDragon(action)"
+            class="btn-base btn-action">
+            {{ 'dragonTamer.extend' | translate }}
           </button>
         </div>
 

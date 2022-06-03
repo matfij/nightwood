@@ -105,6 +105,15 @@ export class UserService {
         return user;
     }
 
+    async extendDragonLimit(userId: number): Promise<UserDto> {
+        const user = await this.getOne(userId);
+
+        user.maxOwnedDragons += 1;
+        await this.userRepository.update(userId, { maxOwnedDragons: user.maxOwnedDragons });
+
+        return user;
+    }
+
     private async emailExists(email: string): Promise<boolean> {
         const params: GetUserDto = { email: email };
         const users = await this.userRepository.find(params);

@@ -18,6 +18,9 @@ export class DragonTamerActionDto {
     @ApiProperty()
     requiredLevel: number;
 
+    @ApiProperty()
+    withoutDragon?: boolean;
+
     @ApiProperty({ type: [ItemDto] })
     requiredItems: ItemDto[];
 }

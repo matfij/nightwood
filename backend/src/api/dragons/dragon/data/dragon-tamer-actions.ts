@@ -43,7 +43,18 @@ export const ACTION_CHANGE_NATURE: DragonTamerActionDto = {
     ],
 };
 
+export const ACTION_INCREASE_DRAGON_LIMIT: DragonTamerActionDto = {
+    uid: 'tamer-action-5',
+    hint: 'dragonTamer.increaseDragonLimitHint',
+    withoutDragon: true,
+    costFactor: 3000,
+    baseCost: 3000,
+    requiredLevel: 1,
+    requiredItems: [],
+};
+
 export const DRAGON_TAMER_ACTIONS: DragonTamerActionDto[] = [
+    ACTION_INCREASE_DRAGON_LIMIT,
     ACTION_RESTORE_STAMINA,
     ACTION_RESET_SKILLS,
     ACTION_RENAME,

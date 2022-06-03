@@ -106,6 +106,12 @@ export class ActionController {
         return this.actionEventService.checkExpeditions(req.user.id);
     }
 
+    @Post('extendDragonLimit')
+    @ApiOkResponse()
+    extendDragonLimit(@Request() req: AuthorizedRequest): Promise<void> {
+        return this.actionEventService.extendDragonLimit(req.user.id);
+    }
+
     @Post('buyAuction/:id')
     @ApiOkResponse({ type: AuctionBuyResultDto })
     async buyAuction(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<AuctionBuyResultDto> {

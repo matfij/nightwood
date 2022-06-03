@@ -38,6 +38,7 @@ export const DRAGON_NAME_MAX_LENGTH = 12;
 export const DRAGON_MIN_SEARCH_LEVEL = 1;
 export const DRAGON_MAX_SEARCH_LEVEL = 9999;
 
+export const DRAGON_BASE_LIMIT = 3;
 export const DRAGON_SKILL_DEVELOPMENT_LIMIT = 25;
 export const DRAGON_MAX_RUNES = 3;
 
