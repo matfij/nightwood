@@ -49,7 +49,7 @@ class DragonService:
 
     @classmethod
     def gen_attributes(cls, level):
-        attribute_pool = 5 + random.randint(math.floor(1.1 * level), math.floor(1.6 * level))
+        attribute_pool = 5 + random.randint(math.floor(0.9 * level), math.floor(1.9 * level))
 
         strength = 0
         dexterity = 0
@@ -79,7 +79,7 @@ class DragonService:
 
     @classmethod
     def gen_skills(cls, level, nature):
-        skill_pool = 1 + random.randint(math.floor(1.5 * level), math.floor(2.5 * level))
+        skill_pool = 1 + random.randint(math.floor(1.1 * level), math.floor(2.9 * level))
 
         skills = {}
         if nature == 'Fire':
