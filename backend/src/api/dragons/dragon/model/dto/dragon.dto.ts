@@ -29,6 +29,9 @@ export class DragonDto {
 
     @ApiProperty({ type: [Number] })
     battledWith: number[];
+
+    @ApiProperty({ type: [String] })
+    unlockedExpeditions: string[];
     
     @ApiProperty()
     name: string;

@@ -12,7 +12,7 @@ import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/item-type';
 import { DragonCreateDto } from '../model/dto/dragon-create.dto';
 import { ErrorService } from 'src/common/services/error.service';
-import { BattleStartDto } from '../model/dto/battle-start.dto';
+import { BattleGuardianStartDto, BattleStartDto } from '../model/dto/battle-start.dto';
 import { BattleResultDto } from '../model/dto/battle-result.dto';
 import { DragonBattleService } from './dragon-battle.service';
 import { MathService } from 'src/common/services/math.service';
@@ -30,6 +30,7 @@ import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
 import { BattleDragonDto } from '../model/definitions/dragon-battle';
 import { BattleHelperService } from './dragon-helper.service';
 import { BOOSTERS } from 'src/api/items/alchemy/model/data/boosters';
+import { EXPEDITION_GUARDIANS } from '../../dragon-action/model/data/expedition-guardians';
 
 @Injectable()
 export class DragonService {
@@ -233,6 +234,20 @@ export class DragonService {
             result: partialResult.result,
         }
         return battleResult;
+    }
+
+    async startGuardianBattle(ownerId: number, dto: BattleGuardianStartDto): Promise<BattleResultDto> {
+        const ownedDragon = await this.checkIfEventAvailable(ownerId, dto.ownedDragonId);
+        ownedDragon.action = null;
+        if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
+
+        const guardian = EXPEDITION_GUARDIANS.find(g => g.expeditionUid === dto.expeditionUid);
+        if (!guardian) this.errorService.throw('errors.expeditionNotFound');
+
+        const partialResult = await this.dragonBattleService.executeBattle(ownedDragon, guardian);
+
+
+        return null;
     }
 
     async releaseDragon(ownerId: number, dragonId: number | string): Promise<void> {

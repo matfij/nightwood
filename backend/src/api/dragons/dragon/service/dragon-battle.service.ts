@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { skip } from "rxjs";
 import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
+import { ExpeditionGuardianDto } from "../../dragon-action/model/definitions/guardian";
 import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
 import { AirVector, FireBolt, IceBolt, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
 import { BattleDragonDto, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
@@ -21,7 +21,10 @@ export class DragonBattleService {
         private mathService: MathService,
     ) {}
 
-    async executeBattle(ownedDragon: DragonDto, enemyDragon: DragonDto): Promise<Partial<BattleResultDto>> {
+    async executeBattle(ownedDragon: DragonDto, enemyDragon: Partial<DragonDto> | ExpeditionGuardianDto): Promise<Partial<BattleResultDto>> {
+        if (enemyDragon instanceof ExpeditionGuardianDto) {
+            enemyDragon = this.battleHelperService.createDragonFromGuardian(enemyDragon);
+        }
         let owned = this.battleHelperService.calculateBattleStats(ownedDragon, enemyDragon);
         let enemy = this.battleHelperService.calculateBattleStats(enemyDragon, ownedDragon);
 

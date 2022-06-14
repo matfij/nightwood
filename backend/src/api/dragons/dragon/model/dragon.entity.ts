@@ -32,6 +32,9 @@ export class Dragon {
     @Column('int', { array: true, default: [] })
     battledWith: number[];
 
+    @Column('text', { array: true, default: [] })
+    unlockedExpeditions: string[];
+
     @Column()
     name: string;
 

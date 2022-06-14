@@ -3,6 +3,7 @@ import { BOOSTERS } from "src/api/items/alchemy/model/data/boosters";
 import { EquipmentStatisticsDto } from "src/api/items/item/model/definitions/equipment";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { MathService } from "src/common/services/math.service";
+import { ExpeditionGuardianDto } from "../../dragon-action/model/definitions/guardian";
 import { BattleDragonDto } from "../model/definitions/dragon-battle";
 import { DragonDto } from "../model/dto/dragon.dto";
 
@@ -26,7 +27,7 @@ export class BattleHelperService {
         private mathService: MathService,
     ) {}
 
-    calculateBattleStats(dragon: DragonDto, baseRival: DragonDto): BattleDragonDto {
+    calculateBattleStats(dragon: Partial<DragonDto>, baseRival: Partial<DragonDto>): BattleDragonDto {
         const rival = this.getRawStats(baseRival);
         const runeStats = this.getRunesStats(dragon.runes);
         const boosterStats = this.getBoosterStats(dragon.boosterUid);
@@ -87,7 +88,7 @@ export class BattleHelperService {
         };
     }
 
-    getRawStats(dragon: DragonDto): BattleDragonDto {
+    getRawStats(dragon: Partial<DragonDto>): BattleDragonDto {
         const runeStats = this.getRunesStats(dragon.runes);
         const boosterStats = this.getBoosterStats(dragon.boosterUid);
         
@@ -196,5 +197,13 @@ export class BattleHelperService {
         }
         const booster = BOOSTERS.find(b => b.uid === boosterUid);
         return { ...boosterStats, ...booster?.statistics };
+    }
+
+    createDragonFromGuardian(guardian: ExpeditionGuardianDto): Partial<DragonDto> {
+        const dragon: Partial<DragonDto> = {
+            ...guardian
+        };
+
+        return dragon;
     }
 }
