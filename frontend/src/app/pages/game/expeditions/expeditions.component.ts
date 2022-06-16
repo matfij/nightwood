@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionController, DragonActionController, DragonDto, ExpeditionDto, StartExpeditionDto } from 'src/app/client/api';
+import { ActionController, DragonActionController, DragonDto, ExpeditionDto, ExpeditionGuardianDto, StartExpeditionDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayExpedition } from 'src/app/core/definitions/events';
 
@@ -20,7 +20,11 @@ export class ExpeditionsComponent implements OnInit {
   showDragonChoiceModal: boolean = false;
   modalTitle?: string;
   modalMessage?: string;
-  selectedExpedition?: string;
+  selectedExpedition?: ExpeditionDto;
+  dragonChoiceCallback!: ((dragon: DragonDto, expedition: ExpeditionDto) => void);
+
+  selectedDragon?: DragonDto;
+  displayBattle: boolean = false;
 
   constructor(
     private translateService: TranslateService,
@@ -31,6 +35,7 @@ export class ExpeditionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getExpeditions();
+    this.dragonChoiceCallback = this.startExpedition.bind(this);
   }
 
   getExpeditions() {
@@ -49,10 +54,20 @@ export class ExpeditionsComponent implements OnInit {
   prepareExpedition(expedition: DisplayExpedition) {
     const titleParams = { location: this.translateService.instant(expedition.name) };
     this.modalTitle = this.translateService.instant('explore.startExpeditionOf', titleParams);
-
     this.modalMessage = this.translateService.instant('explore.startExpeditionHint', { level: expedition.level });
 
-    this.selectedExpedition = expedition.name;
+    this.dragonChoiceCallback = this.startExpedition.bind(this);
+    this.selectedExpedition = expedition;
+    this.showDragonChoiceModal = true;
+  }
+
+  prepareGuardianChallenge(expedition: DisplayExpedition) {
+    const titleParams = { location: this.translateService.instant(expedition.name) };
+    this.modalTitle = this.translateService.instant('explore.battleGuardianTitle', titleParams);
+    this.modalMessage = this.translateService.instant('explore.battleGuardianHint', { guardianName: expedition.guardian.name });
+
+    this.dragonChoiceCallback = this.battleGuardian.bind(this);
+    this.selectedExpedition = expedition;
     this.showDragonChoiceModal = true;
   }
 
@@ -68,5 +83,13 @@ export class ExpeditionsComponent implements OnInit {
       this.expeditionsLoading = false;
       this.toastService.showSuccess('explore.expeditionStarted', 'explore.expeditionStartedHint');
     }, () => this.expeditionsLoading = false);
+  }
+
+  battleGuardian(dragon: DragonDto, expedition: ExpeditionDto) {
+    this.selectedDragon = dragon;
+    this.showDragonChoiceModal = false;
+    this.displayBattle = true;
+
+    console.log('battleGuardian', this.displayBattle);
   }
 }

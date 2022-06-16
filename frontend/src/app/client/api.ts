@@ -1725,6 +1725,7 @@ export interface IDragonController {
     getOwned(): Observable<DragonDto[]>;
     calculateStatistics(id: string): Observable<BattleDragonDto>;
     startBattle(body: BattleStartDto): Observable<BattleResultDto>;
+    startGuardianBattle(body: BattleGuardianStartDto): Observable<BattleResultDto>;
     learnSkill(body: SkillLearnDto): Observable<DragonDto>;
     getTamerActions(): Observable<DragonTamerActionDto[]>;
     getSummonActions(): Observable<DragonSummonActionDto[]>;
@@ -2074,6 +2075,57 @@ export class DragonController implements IDragonController {
     }
 
     protected processStartBattle(response: HttpResponseBase): Observable<BattleResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <BattleResultDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BattleResultDto>(<any>null);
+    }
+
+    startGuardianBattle(body: BattleGuardianStartDto): Observable<BattleResultDto> {
+        let url_ = this.baseUrl + "/api/v1/dragon/startGurdianBattle";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStartGuardianBattle(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStartGuardianBattle(<any>response_);
+                } catch (e) {
+                    return <Observable<BattleResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BattleResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processStartGuardianBattle(response: HttpResponseBase): Observable<BattleResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2953,6 +3005,7 @@ export interface DragonDto {
     boosterUid: string;
     booster: ItemDto;
     battledWith: number[];
+    unlockedExpeditions: string[];
     name: string;
     skillPoints: number;
     nextFeed: number;
@@ -3155,26 +3208,27 @@ export interface DragonPageDto {
 }
 
 export interface BattleDragonDto {
-    id: number;
+    id?: number;
     ownerId?: number;
-    action: DragonActionDto;
-    skills: DragonSkillsDto;
-    runes: ItemDto[];
-    boosterUid: string;
-    booster: ItemDto;
-    battledWith: number[];
-    name: string;
-    skillPoints: number;
-    nextFeed: number;
-    nature: DragonNature;
-    level: number;
-    stamina: number;
-    experience: number;
-    strength: number;
-    dexterity: number;
-    endurance: number;
-    will: number;
-    luck: number;
+    action?: DragonActionDto;
+    skills?: DragonSkillsDto;
+    runes?: ItemDto[];
+    boosterUid?: string;
+    booster?: ItemDto;
+    battledWith?: number[];
+    unlockedExpeditions?: string[];
+    name?: string;
+    skillPoints?: number;
+    nextFeed?: number;
+    nature?: DragonNature;
+    level?: number;
+    stamina?: number;
+    experience?: number;
+    strength?: number;
+    dexterity?: number;
+    endurance?: number;
+    will?: number;
+    luck?: number;
     maxHealth: number;
     health: number;
     maxMana: number;
@@ -3203,6 +3257,11 @@ export interface BattleResultDto {
     result: string;
 }
 
+export interface BattleGuardianStartDto {
+    ownedDragonId: number;
+    expeditionUid: string;
+}
+
 export interface SkillLearnDto {
     dragonId: number;
     skillUid: string;
@@ -3226,6 +3285,20 @@ export interface DragonSummonActionDto {
     requiredItems: ItemDto[];
 }
 
+export interface ExpeditionGuardianDto {
+    uid: string;
+    name: string;
+    level: number;
+    strength: number;
+    dexterity: number;
+    endurance: number;
+    will: number;
+    luck: number;
+    skills: DragonSkillsDto;
+    runes: string[];
+    boosterUid: string;
+}
+
 export interface ExpeditionDto {
     uid: string;
     name: string;
@@ -3234,6 +3307,7 @@ export interface ExpeditionDto {
     goldAward: number;
     loots: ItemDto[];
     minimumActionTime: number;
+    guardian: ExpeditionGuardianDto;
 }
 
 export interface ExpeditionPageDto {

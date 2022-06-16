@@ -9,7 +9,7 @@ import { DragonCreateDto } from "./model/dto/dragon-create.dto";
 import { DragonDto } from "./model/dto/dragon.dto";
 import { DragonGetDto } from "./model/dto/dragon-get.dto";
 import { DragonPageDto } from "./model/dto/dragon-page.dto";
-import { BattleStartDto } from "./model/dto/battle-start.dto";
+import { BattleGuardianStartDto, BattleStartDto } from "./model/dto/battle-start.dto";
 import { DragonService } from "./service/dragon.service";
 import { DragonTamerActionDto } from "./model/dto/dragon-tamer-actions.dto";
 import { DragonSummonActionDto } from "./model/dto/dragon-summon.dto";
@@ -68,6 +68,13 @@ export class DragonController {
     @ApiOkResponse({ type: BattleResultDto })
     startBattle(@Request() req: AuthorizedRequest, @Body() dto: BattleStartDto): Promise<BattleResultDto> {
         return this.dragonService.startBattle(req.user.id!, dto);
+    }
+
+    @Post('startGurdianBattle')
+    @UseInterceptors(PaginationInterceptor)
+    @ApiOkResponse({ type: BattleResultDto })
+    startGuardianBattle(@Request() req: AuthorizedRequest, @Body() dto: BattleGuardianStartDto): Promise<BattleResultDto> {
+        return this.dragonService.startGuardianBattle(req.user.id!, dto);
     }
 
     @Post('learnSkill')

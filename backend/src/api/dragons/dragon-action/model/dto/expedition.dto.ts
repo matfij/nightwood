@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
+import { ExpeditionGuardianDto } from "../definitions/guardian";
 
 export class ExpeditionDto {
 
@@ -25,4 +26,7 @@ export class ExpeditionDto {
 
     @ApiProperty()
     minimumActionTime: number;
+
+    @ApiProperty()
+    guardian: ExpeditionGuardianDto;
 }

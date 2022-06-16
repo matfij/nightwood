@@ -32,7 +32,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Alchemy - cooking, extracting [100%]
  - Guilds - diplomacy, constructions [0%]
  - Player profiles, achievements [0%]
- - Expedition guardians & progress [0%]
+ - Expedition guardians & progress [30%]
  - User roles & banning [0%]
 
 ## Refactoring 1

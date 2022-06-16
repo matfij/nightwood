@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { DragonActionType, DragonDto, DragonNature, SkillDto } from "src/app/client/api";
+import { DragonActionDto, DragonActionType, DragonDto, DragonNature, ExpeditionGuardianDto, SkillDto } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
 import { DisplayDragon, DisplaySkill } from "../definitions/dragons";
 
@@ -47,6 +47,38 @@ export class DragonService {
       image: image,
       currentAction: currentAction,
     };
+  }
+
+  toDisplayGuardian(guardian: ExpeditionGuardianDto): DisplayDragon {
+    const dragon: DragonDto = {
+      name: guardian.name,
+      level: guardian.level,
+      skills: guardian.skills,
+      boosterUid: guardian.boosterUid,
+      strength: guardian.strength,
+      dexterity: guardian.dexterity,
+      endurance: guardian.endurance,
+      will: guardian.will,
+      luck: guardian.luck,
+      id: null as any,
+      experience: null as any,
+      skillPoints: null as any,
+      runes: null as any,
+      unlockedExpeditions: null as any,
+      nextFeed: null as any,
+      stamina: null as any,
+      booster: null as any,
+      nature: null as any,
+      battledWith: null as any,
+      action: null as any,
+    };
+
+    const image = `assets/img/expeditions/${guardian.uid}.${this.EXTENSION}`;
+
+    return {
+      ...dragon,
+      image: image,
+    }
   }
 
   getDragonActionName(type: DragonActionType): string {

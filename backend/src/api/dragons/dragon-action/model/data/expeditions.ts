@@ -3,6 +3,7 @@ import { ARTICHOKE, CRIMSON_SEED, ETERNAL_FLOWER, FEEBLE_MUSHROOMS, FILIKO_ROOTS
 import { SHARD_AGILITY, SHARD_ATTACK, SHARD_BLANK, SHARD_DEFENCE, SHARD_UNITY, SHARD_WISDOM } from "src/api/items/item/model/data/runes";
 import { EXPEDITION_TIME_SCALE } from "src/configuration/backend.config";
 import { ExpeditionDto } from "../dto/expedition.dto";
+import { GUARDIAN_GOBLIN_ARCHMAGE, GUARDIAN_SAND_GOLEM } from "./expedition-guardians";
 
 export const ANDREW_FOREST: ExpeditionDto = {
     uid: 'expedition-1',
@@ -21,6 +22,7 @@ export const ANDREW_FOREST: ExpeditionDto = {
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 3 * 60 * 60 * 1000,
+    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
 };
 
 export const CARRAMBA_SANDS: ExpeditionDto = {
@@ -47,6 +49,7 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
         GATE_PARTICLE, GATE_PARTICLE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 6 * 60 * 60 * 1000,
+    guardian: GUARDIAN_SAND_GOLEM,
 };
 
 export const HARNA_PEAKS: ExpeditionDto = {
@@ -66,6 +69,7 @@ export const HARNA_PEAKS: ExpeditionDto = {
         TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 9 * 60 * 60 * 1000,
+    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
 };
 
 export const MIRAGE_ISLAND: ExpeditionDto = {
@@ -86,6 +90,7 @@ export const MIRAGE_ISLAND: ExpeditionDto = {
         TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 7.5 * 60 * 60 * 1000,
+    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
 };
 
 export const TRANSIENT_CAVERNS: ExpeditionDto = {
@@ -109,4 +114,5 @@ export const TRANSIENT_CAVERNS: ExpeditionDto = {
         CRIMSON_SEED,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 6 * 60 * 60 * 1000,
+    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
 };

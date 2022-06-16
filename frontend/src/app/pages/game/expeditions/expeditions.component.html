@@ -23,14 +23,25 @@
           <button (click)="prepareExpedition(expedition)" class="btn-base">
             {{ 'explore.explore' | translate }}
           </button>
+          <button (click)="prepareGuardianChallenge(expedition)" class="btn-base">
+            {{ 'explore.challengeGuardian' | translate }}
+          </button>
+
           <app-dragon-choice-modal
-            *ngIf="showDragonChoiceModal && expedition.name === selectedExpedition"
+            *ngIf="showDragonChoiceModal && expedition.uid === selectedExpedition?.uid"
             [title]="modalTitle!"
             [message]="modalMessage!"
             [level]="expedition.level"
             (close)="showDragonChoiceModal = false"
-            (dragonSelected)="startExpedition($event, expedition)">
+            (dragonSelected)="dragonChoiceCallback($event, expedition)">
           </app-dragon-choice-modal>
+
+          <app-dragon-battle
+            *ngIf="selectedExpedition && displayBattle && expedition.uid === selectedExpedition?.uid"
+            [ownedDragon]="selectedDragon!"
+            [expedition]="selectedExpedition"
+            (updatedDragon)="displayBattle = false">
+          </app-dragon-battle>
         </div>
       </div>
     </div>

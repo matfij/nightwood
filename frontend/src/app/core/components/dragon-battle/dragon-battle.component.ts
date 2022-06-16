@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { BattleResultDto, BattleStartDto, DragonController, DragonDto } from 'src/app/client/api';
+import { BattleGuardianStartDto, BattleResultDto, BattleStartDto, DragonController, DragonDto, ExpeditionDto } from 'src/app/client/api';
 import { FADE_IN } from 'src/app/common/utils/animations';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
@@ -17,8 +17,11 @@ import { DragonService } from '../../services/dragons.service';
 })
 export class DragonBattleComponent implements OnInit, OnDestroy {
 
+  @Input() battleSpeed: number = 500;
   @Input() ownedDragon!: DragonDto;
-  @Input() enemyDragon!: DragonDto;
+  @Input() enemyDragon?: DragonDto;
+  @Input() expedition?: ExpeditionDto;
+
   @Output() updatedDragon: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
   ownedDisplayDragon!: DisplayDragon;
@@ -38,12 +41,18 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (!this.ownedDragon || !this.enemyDragon) { this.closeModal(); return; }
+    if (!this.ownedDragon || (!this.enemyDragon && ! this.expedition)) { this.closeModal(); return; }
 
     this.ownedDisplayDragon = this.dragonService.toDisplayDragon(this.ownedDragon);
-    this.enemyDisplayDragon = this.dragonService.toDisplayDragon(this.enemyDragon);
 
-    this.startBattle();
+    if (this.enemyDragon) {
+      this.enemyDisplayDragon = this.dragonService.toDisplayDragon(this.enemyDragon);
+      this.startBattle();
+    }
+    else if (this.expedition) {
+      this.enemyDisplayDragon = this.dragonService.toDisplayGuardian(this.expedition.guardian);
+      this.startGuardianBattle();
+    }
   }
 
   closeModal() {
@@ -51,25 +60,57 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
   }
 
   startBattle() {
-    if (!this.ownedDragon || !this.enemyDragon) { this.closeModal(); return; }
+    if (!this.enemyDragon) { this.closeModal(); return; }
 
-    const dto: BattleStartDto = {
+    const params: BattleStartDto = {
       ownedDragonId: this.ownedDragon.id,
       enemyDragonId: this.enemyDragon.id,
     };
     this.battleLoading = true;
-    this.dragonController.startBattle(dto).subscribe(result => {
+    this.dragonController.startBattle(params).subscribe(result => {
       this.battleLoading = false;
       this.battleData = result;
 
-      timer(0, 500).pipe(take(result.logs.length), takeUntil(this.isAutoBattle)).subscribe(ind => {
-        this.battleLogs?.push(result.logs[ind]);
-        this.changeDetectorRef.detectChanges();
-        if (ind === result.logs.length - 1) {
-          this.battleResult = result.result;
-        }
-        this.scrollLogs();
-      });
+      timer(0, this.battleSpeed).pipe(
+        take(result.logs.length),
+        takeUntil(this.isAutoBattle)
+        ).subscribe(ind => {
+          this.battleLogs?.push(result.logs[ind]);
+          this.changeDetectorRef.detectChanges();
+          if (ind === result.logs.length - 1) {
+            this.battleResult = result.result;
+          }
+          this.scrollLogs();
+        });
+    }, () =>  {
+      this.battleLoading = false;
+      this.closeModal();
+    });
+  }
+
+  startGuardianBattle() {
+    if (!this.expedition) { this.closeModal(); return; }
+
+    const params: BattleGuardianStartDto = {
+      expeditionUid: this.expedition.uid,
+      ownedDragonId: this.ownedDragon.id,
+    }
+    this.battleLoading = true;
+    this.dragonController.startGuardianBattle(params).subscribe(result => {
+      this.battleLoading = false;
+      this.battleData = result;
+
+      timer(0, this.battleSpeed).pipe(
+        take(result.logs.length),
+        takeUntil(this.isAutoBattle)
+        ).subscribe(ind => {
+          this.battleLogs?.push(result.logs[ind]);
+          this.changeDetectorRef.detectChanges();
+          if (ind === result.logs.length - 1) {
+            this.battleResult = result.result;
+          }
+          this.scrollLogs();
+        });
     }, () =>  {
       this.battleLoading = false;
       this.closeModal();

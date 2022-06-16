@@ -30,7 +30,7 @@ import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
 import { BattleDragonDto } from '../model/definitions/dragon-battle';
 import { BattleHelperService } from './dragon-helper.service';
 import { BOOSTERS } from 'src/api/items/alchemy/model/data/boosters';
-import { EXPEDITION_GUARDIANS } from '../../dragon-action/model/data/expedition-guardians';
+import { REGULAR_EXPEDITIONS } from '../../dragon-action/model/data/expedition-blueprints';
 
 @Injectable()
 export class DragonService {
@@ -241,13 +241,18 @@ export class DragonService {
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
 
-        const guardian = EXPEDITION_GUARDIANS.find(g => g.expeditionUid === dto.expeditionUid);
-        if (!guardian) this.errorService.throw('errors.expeditionNotFound');
+        const expedition = REGULAR_EXPEDITIONS.find(e => e.uid === dto.expeditionUid);
+        if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
-        const partialResult = await this.dragonBattleService.executeGuardianBattle(ownedDragon, guardian);
+        const partialResult = await this.dragonBattleService.executeGuardianBattle(ownedDragon, expedition);
 
-
-        return null;
+        const battleResult: BattleResultDto = {
+            ownedDragon: partialResult.ownedDragon,
+            enemyDragon: partialResult.enemyDragon,
+            logs: partialResult.logs,
+            result: partialResult.result,
+        }
+        return battleResult;
     }
 
     async releaseDragon(ownerId: number, dragonId: number | string): Promise<void> {
