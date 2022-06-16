@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
+import { REGULAR_EXPEDITIONS } from "../../dragon-action/model/data/expedition-blueprints";
 import { ExpeditionGuardianDto } from "../../dragon-action/model/definitions/guardian";
 import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
 import { AirVector, FireBolt, IceBolt, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
@@ -21,10 +22,7 @@ export class DragonBattleService {
         private mathService: MathService,
     ) {}
 
-    async executeBattle(ownedDragon: DragonDto, enemyDragon: Partial<DragonDto> | ExpeditionGuardianDto): Promise<Partial<BattleResultDto>> {
-        if (enemyDragon instanceof ExpeditionGuardianDto) {
-            enemyDragon = this.battleHelperService.createDragonFromGuardian(enemyDragon);
-        }
+    async executeBattle(ownedDragon: DragonDto, enemyDragon: Partial<DragonDto>): Promise<Partial<BattleResultDto>> {
         let owned = this.battleHelperService.calculateBattleStats(ownedDragon, enemyDragon);
         let enemy = this.battleHelperService.calculateBattleStats(enemyDragon, ownedDragon);
 
@@ -58,6 +56,50 @@ export class DragonBattleService {
             const resultExperience = await this.saveBattleResults(BattleResultType.Loss, owned, enemy, logs.length);
             result = `<div class="enemy">${enemy.name} won and gained ${resultExperience.enemyExperience} experience.<br>
                 ${owned.name} lost ${resultExperience.ownedExperience} experience.</div>`;
+        }
+
+        return {
+            ownedDragon: { id: owned.id, name: owned.name, level: owned.level, stamina: owned.stamina, },
+            enemyDragon: { id: enemy.id, name: enemy.name, level: enemy.level, },
+            logs: logs,
+            result: result,
+        };
+    }
+
+    async executeGuardianBattle(ownedDragon: DragonDto, guardian: ExpeditionGuardianDto): Promise<Partial<BattleResultDto>> {
+        let enemyDragon = this.battleHelperService.createDragonFromGuardian(guardian);
+        
+        let owned = this.battleHelperService.calculateBattleStats(ownedDragon, enemyDragon);
+        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon, ownedDragon);
+
+        const logs = [];
+        let result = '';
+
+        while (owned.health > 0 && enemy.health > 0 && logs.length <= 100) {
+            let turnResult: TurnResult;
+
+            if (owned.initiative > enemy.initiative) {
+                turnResult = this.performMovement(owned, enemy, true, logs.length);
+                owned = turnResult.attacker;
+                enemy = turnResult.defender;
+            } else {
+                turnResult = this.performMovement(enemy, owned, false, logs.length);
+                owned = turnResult.defender;
+                enemy = turnResult.attacker;
+            }
+            logs.push(turnResult.log);
+        }
+
+        if (logs.length >= 100) {
+            await this.saveBattleGuardianResults(BattleResultType.Draw, owned, guardian, logs.length);
+            result =`<div class="neither">The battle did not found a winner</div>`;
+        } else if (owned.health > enemy.health) {
+            await this.saveBattleGuardianResults(BattleResultType.Win, owned, guardian, logs.length);
+            let expeditionName = REGULAR_EXPEDITIONS.find(expedition => expedition.uid === guardian.expeditionUid).name;
+            result = `<div class="owned">${owned.name} won and gained access to new areas in ${expeditionName}.</div>`;
+        } else {
+            await this.saveBattleGuardianResults(BattleResultType.Loss, owned, guardian, logs.length);
+            result = `<div class="enemy">${owned.name} failed ${enemyDragon.name}'s challenge.</div>`;
         }
 
         return {
@@ -509,5 +551,19 @@ export class DragonBattleService {
             { experience: enemy.experience },
         );
         return resultExperience;
+    }
+
+    private async saveBattleGuardianResults(result: BattleResultType, owned: BattleDragonDto, guardian: ExpeditionGuardianDto, battleLength: number): Promise<void> {
+        owned.stamina -= 3 + Math.floor(battleLength / 25);
+        if (owned.stamina < 0) owned.stamina = 0;
+
+        if (result === BattleResultType.Win) {
+            owned.unlockedExpeditions.push(guardian.expeditionUid);
+        }
+
+        await this.dragonRepository.update(
+            owned.id, 
+            { stamina: owned.stamina, unlockedExpeditions: owned.unlockedExpeditions },
+        );
     }
 }

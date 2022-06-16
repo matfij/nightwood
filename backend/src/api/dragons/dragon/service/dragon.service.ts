@@ -244,7 +244,7 @@ export class DragonService {
         const guardian = EXPEDITION_GUARDIANS.find(g => g.expeditionUid === dto.expeditionUid);
         if (!guardian) this.errorService.throw('errors.expeditionNotFound');
 
-        const partialResult = await this.dragonBattleService.executeBattle(ownedDragon, guardian);
+        const partialResult = await this.dragonBattleService.executeGuardianBattle(ownedDragon, guardian);
 
 
         return null;
