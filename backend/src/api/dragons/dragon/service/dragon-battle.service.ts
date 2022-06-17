@@ -2,8 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
-import { REGULAR_EXPEDITIONS } from "../../dragon-action/model/data/expedition-blueprints";
-import { ExpeditionGuardianDto } from "../../dragon-action/model/definitions/guardian";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
 import { AirVector, FireBolt, IceBolt, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
@@ -90,8 +88,6 @@ export class DragonBattleService {
             }
             logs.push(turnResult.log);
         }
-
-        console.log(enemy)
 
         if (logs.length >= 100) {
             await this.saveBattleGuardianResults(BattleResultType.Draw, owned, expedition, logs.length);
@@ -489,7 +485,7 @@ export class DragonBattleService {
         }
 
         if (defender.skills.poison > 0) {
-            let poisonDamage = (1 + turn / 50) * Math.log(2 + 2 * defender.skills.poison);
+            let poisonDamage = (1 + attacker.maxHealth / 100) * (1 + turn / 33) * Math.log(2 + 2 * defender.skills.poison);
             attacker.health -= poisonDamage;
             independentLogs.push(`<div class="item-log log-status">${attacker.name} took ${poisonDamage.toFixed(1)} poison damage.</div>`);
         }

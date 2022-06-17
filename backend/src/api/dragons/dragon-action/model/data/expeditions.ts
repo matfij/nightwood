@@ -3,7 +3,7 @@ import { ARTICHOKE, CRIMSON_SEED, ETERNAL_FLOWER, FEEBLE_MUSHROOMS, FILIKO_ROOTS
 import { SHARD_AGILITY, SHARD_ATTACK, SHARD_BLANK, SHARD_DEFENCE, SHARD_UNITY, SHARD_WISDOM } from "src/api/items/item/model/data/runes";
 import { EXPEDITION_TIME_SCALE } from "src/configuration/backend.config";
 import { ExpeditionDto } from "../dto/expedition.dto";
-import { GUARDIAN_GOBLIN_ARCHMAGE, GUARDIAN_SAND_GOLEM } from "./expedition-guardians";
+import { GUARDIAN_FOREST, GUARDIAN_DESERT, GUARDIAN_MOUNTAINS, GUARDIAN_ISLANDS } from "./expedition-guardians";
 
 export const ANDREW_FOREST: ExpeditionDto = {
     uid: 'expedition-1',
@@ -22,7 +22,7 @@ export const ANDREW_FOREST: ExpeditionDto = {
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 3 * 60 * 60 * 1000,
-    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
+    guardian: GUARDIAN_FOREST,
 };
 
 export const CARRAMBA_SANDS: ExpeditionDto = {
@@ -49,7 +49,7 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
         GATE_PARTICLE, GATE_PARTICLE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 6 * 60 * 60 * 1000,
-    guardian: GUARDIAN_SAND_GOLEM,
+    guardian: GUARDIAN_DESERT,
 };
 
 export const HARNA_PEAKS: ExpeditionDto = {
@@ -69,12 +69,12 @@ export const HARNA_PEAKS: ExpeditionDto = {
         TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 9 * 60 * 60 * 1000,
-    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
+    guardian: GUARDIAN_MOUNTAINS,
 };
 
-export const MIRAGE_ISLAND: ExpeditionDto = {
+export const MIRAGE_ISLANDS: ExpeditionDto = {
     uid: 'expedition-4',
-    name: 'Mirage Island',
+    name: 'Mirage Islands',
     hint: `Miraculously discovered lands by the order of the White Rose. The island hides items that are not found anywhere 
         else in the world and may be used for dragon summoning.`,
     level: 30,
@@ -90,29 +90,12 @@ export const MIRAGE_ISLAND: ExpeditionDto = {
         TRANSMUTATION_STONE,
     ],
     minimumActionTime: EXPEDITION_TIME_SCALE * 7.5 * 60 * 60 * 1000,
-    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
+    guardian: GUARDIAN_ISLANDS,
 };
 
-export const TRANSIENT_CAVERNS: ExpeditionDto = {
-    uid: 'expedition-5',
-    name: 'Transient Caverns',
-    hint: `Intricate and vast network of caverns located to the east of Harna Peaks. As a consequence tectonic activity,
-        the liars will cease to exist in near future`,
-    level: 30,
-    goldAward: 60,
-    loots: [
-        FEEBLE_MUSHROOMS, FEEBLE_MUSHROOMS,
-        BUBULAE_STEAK, BUBULAE_STEAK,
-        IHON_BERRY, IHON_BERRY, 
-        RELIQUM_EGG, RELIQUM_EGG, 
-        SPIRAL_NUT, SPIRAL_NUT, 
-        RORIS_LEAVES, RORIS_LEAVES,
-        PALE_GRAINS, PALE_GRAINS, PALE_GRAINS, PALE_GRAINS, PALE_GRAINS,
-        FILIKO_ROOTS, FILIKO_ROOTS, FILIKO_ROOTS, FILIKO_ROOTS, FILIKO_ROOTS,
-        SOVAGA_LEAVES, SOVAGA_LEAVES, SOVAGA_LEAVES, SOVAGA_LEAVES, SOVAGA_LEAVES, 
-        ARTICHOKE, ARTICHOKE, ARTICHOKE,
-        CRIMSON_SEED,
-    ],
-    minimumActionTime: EXPEDITION_TIME_SCALE * 6 * 60 * 60 * 1000,
-    guardian: GUARDIAN_GOBLIN_ARCHMAGE,
-};
+export const EXPEDITIONS = [
+    ANDREW_FOREST, 
+    CARRAMBA_SANDS, 
+    HARNA_PEAKS,
+    MIRAGE_ISLANDS,
+];

@@ -30,7 +30,7 @@ import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
 import { BattleDragonDto } from '../model/definitions/dragon-battle';
 import { BattleHelperService } from './dragon-helper.service';
 import { BOOSTERS } from 'src/api/items/alchemy/model/data/boosters';
-import { REGULAR_EXPEDITIONS } from '../../dragon-action/model/data/expedition-blueprints';
+import { EXPEDITIONS } from '../../dragon-action/model/data/expeditions';
 
 @Injectable()
 export class DragonService {
@@ -241,7 +241,7 @@ export class DragonService {
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
 
-        const expedition = REGULAR_EXPEDITIONS.find(e => e.uid === dto.expeditionUid);
+        const expedition = EXPEDITIONS.find(e => e.uid === dto.expeditionUid);
         if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
         const partialResult = await this.dragonBattleService.executeGuardianBattle(ownedDragon, expedition);

@@ -36,15 +36,15 @@
             (dragonSelected)="dragonChoiceCallback($event, expedition)">
           </app-dragon-choice-modal>
 
-          <app-dragon-battle
-            *ngIf="selectedExpedition && displayBattle && expedition.uid === selectedExpedition?.uid"
-            [ownedDragon]="selectedDragon!"
-            [expedition]="selectedExpedition"
-            (updatedDragon)="displayBattle = false">
-          </app-dragon-battle>
         </div>
       </div>
     </div>
-
   </div>
+
+  <app-dragon-battle
+    *ngIf="selectedExpedition && displayBattle"
+    [ownedDragon]="selectedDragon!"
+    [expedition]="selectedExpedition"
+    (updatedDragon)="displayBattle = false">
+  </app-dragon-battle>
 </div>

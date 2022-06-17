@@ -1,8 +1,8 @@
 import { ExpeditionGuardianDto } from "../definitions/guardian";
 
-export const GUARDIAN_GOBLIN_ARCHMAGE: ExpeditionGuardianDto = {
+export const GUARDIAN_FOREST: ExpeditionGuardianDto = {
     uid: 'guardian-1',
-    name: 'Goblin Archmage',
+    name: 'Lord of the elements',
     level: 10,
     strength: 5,
     dexterity: 5,
@@ -10,37 +10,79 @@ export const GUARDIAN_GOBLIN_ARCHMAGE: ExpeditionGuardianDto = {
     will: 10,
     luck: 5,
     skills: {
-        innerFlow: 10,
-        greatVigor: 30,
-        magicArrow: 10,
-        airVector: 10,
-        fireBolt: 10,
-        iceBolt: 10,
-        rockBlast: 10,
+        innerFlow: 5,
+        greatVigor: 60,
+        magicArrow: 7,
+        airVector: 7,
+        fireBolt: 7,
+        iceBolt: 7,
+        rockBlast: 7,
     },
     runes: [],
     boosterUid: null,
 };
 
-export const GUARDIAN_SAND_GOLEM: ExpeditionGuardianDto = {
+export const GUARDIAN_DESERT: ExpeditionGuardianDto = {
     uid: 'guardian-2',
-    name: 'Sand golem',
+    name: 'Tyrrajnitos',
     level: 30,
-    strength: 25,
+    strength: 45,
     dexterity: 15,
     endurance: 30,
     will: 15,
-    luck: 15,
+    luck: 5,
     skills: {
         roughSkin: 10,
         soundBody: 25,
-        greatVigor: 60,
+        block: 10,
+        greatVigor: 90,
+    },
+    runes: [],
+    boosterUid: null,
+};
+
+export const GUARDIAN_MOUNTAINS: ExpeditionGuardianDto = {
+    uid: 'guardian-3',
+    name: 'Yethnoshik the Great',
+    level: 30,
+    strength: 30,
+    dexterity: 30,
+    endurance: 20,
+    will: 20,
+    luck: 35,
+    skills: {
+        greatVigor: 75,
+        armorPenetration: 25,
+        rage: 50,
+    },
+    runes: [],
+    boosterUid: null,
+};
+
+export const GUARDIAN_ISLANDS: ExpeditionGuardianDto = {
+    uid: 'guardian-4',
+    name: 'Sinus Vectro',
+    level: 60,
+    strength: 50,
+    dexterity: 50,
+    endurance: 40,
+    will: 60,
+    luck: 30,
+    skills: {
+        innerFlow: 10,
+        lifeLink: 20,
+        staticStrike: 20,
+        greatVigor: 100,
+        block: 5,
+        thunderbolt: 10,
+        iceBolt: 10,
     },
     runes: [],
     boosterUid: null,
 };
 
 export const EXPEDITION_GUARDIANS: ExpeditionGuardianDto[] = [
-    GUARDIAN_GOBLIN_ARCHMAGE,
-    GUARDIAN_SAND_GOLEM,
+    GUARDIAN_FOREST,
+    GUARDIAN_DESERT,
+    GUARDIAN_MOUNTAINS,
 ];

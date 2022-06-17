@@ -9,8 +9,8 @@ import { DragonAction } from '../model/dragon-action.entity';
 import { DragonActionDto } from '../model/dto/dragon-action.dto';
 import { ExpeditionDto } from '../model/dto/expedition.dto';
 import { ExpeditionPageDto } from '../model/dto/expedition-page.dto';
-import { REGULAR_EXPEDITIONS } from '../model/data/expedition-blueprints'
 import { MathService } from 'src/common/services/math.service';
+import { EXPEDITIONS } from '../model/data/expeditions';
 
 @Injectable()
 export class DragonActionService {
@@ -36,8 +36,14 @@ export class DragonActionService {
   }
 
   async getExpeditions(): Promise<ExpeditionPageDto> {
-    const expeditions = REGULAR_EXPEDITIONS.map(x => { 
-      return { ...x, loots: [], goldAward: null, experienceAward: null };
+    const expeditions = EXPEDITIONS.map(x => { 
+      return { 
+        ...x, 
+        loots: [], 
+        goldAward: null, 
+        experienceAward: null,
+        guardian: { ...x.guardian, strength: null, dexterity: null, endurance: null, will: null, luck: null, skills: null },
+      };
     });
 
     const page: ExpeditionPageDto = {
@@ -48,7 +54,7 @@ export class DragonActionService {
   }
 
   async startExpedition(expeditionId: string, dragon: DragonDto): Promise<DragonActionDto> {
-    const expedition = REGULAR_EXPEDITIONS.find(x => x.uid === expeditionId);
+    const expedition = EXPEDITIONS.find(x => x.uid === expeditionId);
     if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
     if (expedition.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
@@ -70,7 +76,7 @@ export class DragonActionService {
     dragon.action.awardCollected = true;
     await this.dragonActionRepository.save(dragon.action);
 
-    const expedition = REGULAR_EXPEDITIONS.find(x => x.uid === dragon.action.expeditionId);
+    const expedition = EXPEDITIONS.find(x => x.uid === dragon.action.expeditionId);
     return expedition;
   }
 
