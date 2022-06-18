@@ -18,11 +18,16 @@ export class ExpeditionDto {
     level: number;
 
     @ApiProperty()
-    goldAward: number;
+    gold: number;
 
-    @Exclude()
+    @ApiProperty()
+    extraGold: number;
+
     @ApiProperty({ type: [ItemDto] })
     loots: ItemDto[];
+
+    @ApiProperty({ type: [ItemDto] })
+    extraLoots: ItemDto[];
 
     @ApiProperty()
     minimumActionTime: number;

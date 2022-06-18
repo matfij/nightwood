@@ -150,7 +150,10 @@ export class ItemService {
 
     async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ItemDto[]> {
         const loots: ItemDto[] = [];
-        expedition.loots.forEach(loot => {
+        let baseLoots = expedition.loots;
+        if (dragon.unlockedExpeditions.includes(expedition.uid)) baseLoots = [...baseLoots, ...expedition.extraLoots];
+
+        baseLoots.forEach(loot => {
 
             const dragonChance = Math.random();  // 0 - 1
             const requiredChance = Math.random() * LootChance[loot.rarity];  // 0-1 * 2-44
@@ -164,15 +167,5 @@ export class ItemService {
         await this.updateInventory(user, loots);
 
         return loots;
-    }
-
-    getRarityValue(rarity: ItemRarity): number {
-        switch (rarity) {
-            case ItemRarity.Common: return 1;
-            case ItemRarity.Scarce: return 2;
-            case ItemRarity.Rare: return 4;
-            case ItemRarity.Mythical: return 8;
-            default: return 1;
-        }
     }
 }

@@ -209,7 +209,10 @@ export class DragonService {
     }
 
     async awardExpeditionGold(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
-        const gainedGold = this.mathService.randRange(0.9, 1.1) * expedition.goldAward * (1 + dragon.skills.beginnersLuck/35);
+        let baseGold = expedition.gold;
+        if (dragon.unlockedExpeditions.includes(expedition.uid)) baseGold += expedition.extraGold;
+
+        const gainedGold = this.mathService.randRange(0.9, 1.1) * baseGold * (1 + dragon.skills.beginnersLuck/35);
         return Math.round(gainedGold);
     }
 

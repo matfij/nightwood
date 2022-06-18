@@ -555,7 +555,7 @@ export class DragonBattleService {
         owned.stamina -= 3 + Math.floor(battleLength / 25);
         if (owned.stamina < 0) owned.stamina = 0;
 
-        if (result === BattleResultType.Win) {
+        if (result === BattleResultType.Win && owned.unlockedExpeditions.indexOf(expedition.uid) === -1) {
             owned.unlockedExpeditions.push(expedition.uid);
         }
 
