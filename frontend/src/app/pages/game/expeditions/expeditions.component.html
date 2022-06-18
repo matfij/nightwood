@@ -31,7 +31,8 @@
             *ngIf="showDragonChoiceModal && expedition.uid === selectedExpedition?.uid"
             [title]="modalTitle!"
             [message]="modalMessage!"
-            [level]="expedition.level"
+            [level]="requiredLevel"
+            [expeditionUid]="expedition.uid"
             (close)="showDragonChoiceModal = false"
             (dragonSelected)="dragonChoiceCallback($event, expedition)">
           </app-dragon-choice-modal>

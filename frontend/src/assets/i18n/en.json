@@ -235,6 +235,7 @@
     "natureChanged": "Nature changed",
     "dragonRenamed": "Dragon renamed",
     "dragonLimitExtended": "Dragon limit extended",
+    "currentDragonLimit": "Current dragon limit",
     "extend": "Extend"
   },
   "arena": {
@@ -310,12 +311,13 @@
     "startExpeditionOf": "Start exploration of {{ location }}",
     "startExpeditionHint": "This expedition requires at least [{{ level }}] maturity level.",
     "battleGuardianTitle": "Battle the guardian of {{ location }}",
-    "battleGuardianHint": "Battle with {{ guardianName }} to unlock new areas and find greater treasure.",
+    "battleGuardianHint": "Battle with <b>{{ guardianName }}</b> to unlock new areas and find greater treasure.",
     "expeditionStarted": "Expedition started",
     "expeditionStartedHint": "Your dragon will be busy for a while",
     "expeditionReports": "Expedition reports",
     "expeditionReportDescription": "<b>{{ dragon }}</b> finished exploring the <b>{{ expedition }}</b> gained <b>{{ experience }}</b> experience and found:",
-    "dragonFinishedExpedition": "{{ dragon }} has just finished expedition."
+    "dragonFinishedExpedition": "{{ dragon }} has just finished expedition.",
+    "fullAccess": "Full access"
   },
   "expeditions": {
     "AndrewForest": "Andrew Forest",

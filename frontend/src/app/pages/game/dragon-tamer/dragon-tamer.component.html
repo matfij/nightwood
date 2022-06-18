@@ -48,6 +48,10 @@
             </div>
           </div>
 
+          <div *ngIf="action.uid === 'tamer-action-5'" class="cost-hint" style="margin-top: 8px;">
+            {{ 'dragonTamer.currentDragonLimit' | translate }}: {{ user?.maxOwnedDragons }}
+          </div>
+
           <div *ngIf="!action.withoutDragon" class="cost-hint">
             {{ 'dragonTamer.actionCost' | translate }}:
             {{ dragonSelect.value != '' ? action.baseCost + dragons[+dragonSelect.value].level * action.costFactor : '---' }}

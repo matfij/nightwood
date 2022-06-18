@@ -247,6 +247,8 @@ export class DragonService {
         const expedition = EXPEDITIONS.find(e => e.uid === dto.expeditionUid);
         if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
+        if (ownedDragon.level < expedition.guardian.level) this.errorService.throw('errors.dragonTooYoung');
+
         const partialResult = await this.dragonBattleService.executeGuardianBattle(ownedDragon, expedition);
 
         const battleResult: BattleResultDto = {

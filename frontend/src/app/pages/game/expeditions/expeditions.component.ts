@@ -23,6 +23,7 @@ export class ExpeditionsComponent implements OnInit {
   selectedExpedition?: ExpeditionDto;
   dragonChoiceCallback!: ((dragon: DragonDto, expedition: ExpeditionDto) => void);
 
+  requiredLevel: number = 0;
   selectedDragon?: DragonDto;
   displayBattle: boolean = false;
 
@@ -59,6 +60,7 @@ export class ExpeditionsComponent implements OnInit {
     this.dragonChoiceCallback = this.startExpedition.bind(this);
     this.selectedExpedition = expedition;
     this.showDragonChoiceModal = true;
+    this.requiredLevel = expedition.level;
   }
 
   prepareGuardianChallenge(expedition: DisplayExpedition) {
@@ -69,6 +71,7 @@ export class ExpeditionsComponent implements OnInit {
     this.dragonChoiceCallback = this.battleGuardian.bind(this);
     this.selectedExpedition = expedition;
     this.showDragonChoiceModal = true;
+    this.requiredLevel = expedition.guardian.level;
   }
 
   startExpedition(dragon: DragonDto, expedition: ExpeditionDto) {
