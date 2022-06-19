@@ -11,9 +11,13 @@ import { ToastService } from 'src/app/common/services/toast.service';
 })
 export class CraftingComponent implements OnInit {
 
-  recipe$: Observable<ItemRecipeDto[]> = new Observable();
+  recipesBase$: Observable<ItemRecipeDto[]> = new Observable();
+  recipesSpecial$: Observable<ItemRecipeDto[]> = new Observable();
   items: ItemDto[] = [];
   itemsLoading: boolean = false;
+
+  displayBaseRecipes: boolean = false;
+  displaySpecialRecipes: boolean = false;
 
   constructor(
     private translateService: TranslateService,
@@ -23,7 +27,7 @@ export class CraftingComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOwnedItems();
-    this.getAvailableRecipes();
+    this.getRecipes();
   }
 
   getOwnedItems() {
@@ -34,8 +38,9 @@ export class CraftingComponent implements OnInit {
     }, () => this.itemsLoading = true);
   }
 
-  getAvailableRecipes() {
-    this.recipe$ = this.itemController.getRuneRecipes();
+  getRecipes() {
+    this.recipesBase$ = this.itemController.getRuneBaseRecipes();
+    this.recipesSpecial$ = this.itemController.getRuneSpecialRecipes();
   }
 
   getItemQuantity(uid: string): number {

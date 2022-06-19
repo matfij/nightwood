@@ -31,10 +31,16 @@ export class ItemController {
         return this.itemService.getOwnedFoods(req.user);
     }
 
-    @Post('getRuneRecipes')
+    @Post('getRuneBaseRecipes')
     @ApiOkResponse({ type: [ItemRecipeDto] })
-    getRuneRecipes(): Promise<ItemRecipeDto[]> {
-        return this.itemRuneService.getRuneRecipes();
+    getRuneBaseRecipes(): Promise<ItemRecipeDto[]> {
+        return this.itemRuneService.getRuneBaseRecipes();
+    }
+
+    @Post('getRuneSpecialRecipes')
+    @ApiOkResponse({ type: [ItemRecipeDto] })
+    getRuneSpecialRecipes(): Promise<ItemRecipeDto[]> {
+        return this.itemRuneService.getRuneSpecialRecipes();
     }
 
     @Post('composeRecipe')

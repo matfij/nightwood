@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { ErrorService } from "src/common/services/error.service";
 import { MoreThan, Repository } from "typeorm";
-import { RUNE_RECIPES } from "../model/data/rune-recipes";
+import { RUNE_BASE_RECIPES, RUNE_SPECIAL_RECIPES } from "../model/data/rune-recipes";
 import { ItemRecipeDto } from "../model/dto/item-recipe.dto";
 import { ItemDto } from "../model/dto/item.dto";
 import { RecipeComposeDto } from "../model/dto/recipe-compose.dto";
@@ -18,8 +18,12 @@ export class ItemRuneService {
         private errorService: ErrorService,
     ) {}
 
-    async getRuneRecipes(): Promise<ItemRecipeDto[]> {
-        return RUNE_RECIPES;
+    async getRuneBaseRecipes(): Promise<ItemRecipeDto[]> {
+        return RUNE_BASE_RECIPES;
+    }
+
+    async getRuneSpecialRecipes(): Promise<ItemRecipeDto[]> {
+        return RUNE_SPECIAL_RECIPES;
     }
 
     async composeRecipe(user: UserDto, dto: RecipeComposeDto): Promise<ItemDto> {
@@ -27,7 +31,7 @@ export class ItemRuneService {
             where: { user: user, quantity: MoreThan(0) },
         });
 
-        const recipe = RUNE_RECIPES.find(x => x.uid === dto.recipeUid);
+        const recipe = [...RUNE_BASE_RECIPES, ...RUNE_SPECIAL_RECIPES].find(x => x.uid === dto.recipeUid);
         if (!recipe) this.errorService.throw('errors.recipeNotFound');
 
         const requiredItems = recipe.ingredients;

@@ -254,8 +254,8 @@
     "quantity": "Quantity"
   },
   "crafting": {
-    "runeCraftingHint": "Versus Krinks, the goblin tinkerer is the master of rune crafting. He is knwon for his scrupulousness and engineering diligence which allowed to create solid and reliable runes. Each rune increases selected dragon's attributes.",
-    "runeCraftingSpecialHint": "Ziblet Hertz is a young, zealous mechanic. He is a great asset to the Tinkerer's Guild, and he is always looking for new ideas to improve his craft. Every dragon can equpip up to three runes to boost its power.",
+    "runeCraftingBaseHint": "Versus Krinks, the goblin tinkerer is the master of rune crafting. He is knwon for his scrupulousness and engineering diligence which allowed to create solid and reliable runes. Each rune increases selected dragon's attributes.",
+    "runeCraftingSpecialHint": "Ziblet Hertz is a young and zealous mechanic who specializes in unconventional runes. He is a great asset to the Tinkerer's Guild, and he is always looking for new ideas to improve his craft. Every dragon can equip up to three runes to boost its power.",
     "requiredIngredients": "Required ingredients",
     "craft": "Craft",
     "itemCrafted": "{{ name }} crafted"

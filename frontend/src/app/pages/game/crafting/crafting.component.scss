@@ -26,6 +26,17 @@
   }
 }
 
+.wrapper-lore-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: justify;
+
+  button {
+    margin:  10px 0px;
+  }
+}
+
 .wrapper-recipes {
   margin-top: 8px;
 

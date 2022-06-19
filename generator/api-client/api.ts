@@ -1287,7 +1287,8 @@ export class AuthController implements IAuthController {
 export interface IItemController {
     getOwnedItems(): Observable<ItemPageDto>;
     getOwnedFoods(): Observable<ItemPageDto>;
-    getRuneRecipes(): Observable<ItemRecipeDto[]>;
+    getRuneBaseRecipes(): Observable<ItemRecipeDto[]>;
+    getRuneSpecialRecipes(): Observable<ItemRecipeDto[]>;
     composeRecipe(body: RecipeComposeDto): Observable<ItemDto>;
 }
 
@@ -1398,8 +1399,8 @@ export class ItemController implements IItemController {
         return _observableOf<ItemPageDto>(<any>null);
     }
 
-    getRuneRecipes(): Observable<ItemRecipeDto[]> {
-        let url_ = this.baseUrl + "/api/v1/item/getRuneRecipes";
+    getRuneBaseRecipes(): Observable<ItemRecipeDto[]> {
+        let url_ = this.baseUrl + "/api/v1/item/getRuneBaseRecipes";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1411,11 +1412,11 @@ export class ItemController implements IItemController {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetRuneRecipes(response_);
+            return this.processGetRuneBaseRecipes(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetRuneRecipes(<any>response_);
+                    return this.processGetRuneBaseRecipes(<any>response_);
                 } catch (e) {
                     return <Observable<ItemRecipeDto[]>><any>_observableThrow(e);
                 }
@@ -1424,7 +1425,54 @@ export class ItemController implements IItemController {
         }));
     }
 
-    protected processGetRuneRecipes(response: HttpResponseBase): Observable<ItemRecipeDto[]> {
+    protected processGetRuneBaseRecipes(response: HttpResponseBase): Observable<ItemRecipeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <ItemRecipeDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ItemRecipeDto[]>(<any>null);
+    }
+
+    getRuneSpecialRecipes(): Observable<ItemRecipeDto[]> {
+        let url_ = this.baseUrl + "/api/v1/item/getRuneSpecialRecipes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRuneSpecialRecipes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRuneSpecialRecipes(<any>response_);
+                } catch (e) {
+                    return <Observable<ItemRecipeDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ItemRecipeDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetRuneSpecialRecipes(response: HttpResponseBase): Observable<ItemRecipeDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3304,8 +3352,10 @@ export interface ExpeditionDto {
     name: string;
     hint: string;
     level: number;
-    goldAward: number;
+    gold: number;
+    extraGold: number;
     loots: ItemDto[];
+    extraLoots: ItemDto[];
     minimumActionTime: number;
     guardian: ExpeditionGuardianDto;
 }

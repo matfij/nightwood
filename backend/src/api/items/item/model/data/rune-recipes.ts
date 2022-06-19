@@ -1,7 +1,8 @@
 
 import { ItemRecipeDto } from "../dto/item-recipe.dto";
+import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG } from "./food";
 import { SHARD_BLANK, SHARD_ATTACK, SHARD_UNITY, SHARD_DEFENCE, SHARD_AGILITY, SHARD_WISDOM } from "./ingredients";
-import { RUNE_AGILITY_1, RUNE_AGILITY_2, RUNE_AGILITY_3, RUNE_AGILITY_4, RUNE_ATTACK_1, RUNE_ATTACK_2, RUNE_ATTACK_3, RUNE_ATTACK_4, RUNE_DEFENSE_1, RUNE_DEFENSE_2, RUNE_DEFENSE_3, RUNE_DEFENSE_4, RUNE_WISDOM_1, RUNE_WISDOM_2, RUNE_WISDOM_3, RUNE_WISDOM_4 } from "./runes";
+import { RUNE_AGILITY_0, RUNE_AGILITY_1, RUNE_AGILITY_2, RUNE_AGILITY_3, RUNE_AGILITY_4, RUNE_ATTACK_0, RUNE_ATTACK_1, RUNE_ATTACK_2, RUNE_ATTACK_3, RUNE_ATTACK_4, RUNE_DEFENSE_1, RUNE_DEFENSE_2, RUNE_DEFENSE_3, RUNE_DEFENSE_4, RUNE_WISDOM_0, RUNE_WISDOM_1, RUNE_WISDOM_2, RUNE_WISDOM_3, RUNE_WISDOM_4 } from "./runes";
 
 export const RECIPE_RUNE_ATTACK_1: ItemRecipeDto = {
     uid: 'recipe-r-1',
@@ -163,8 +164,48 @@ export const RECIPE_RUNE_WISDOM_4: ItemRecipeDto = {
     ],
 };
 
+export const RECIPE_RUNE_ATTACK_0: ItemRecipeDto = {
+    uid: 'recipe-r-17',
+    product: RUNE_ATTACK_0,
+    ingredients: [
+        { ...SHARD_BLANK, quantity: 10 },
+        { ...BUBULAE_STEAK, quantity: 10 },
+        { ...SHARD_ATTACK, quantity: 1 },
+    ],
+};
 
-export const RUNE_RECIPES: ItemRecipeDto[] = [
+export const RECIPE_RUNE_DEFENSE_0: ItemRecipeDto = {
+    uid: 'recipe-r-18',
+    product: RUNE_WISDOM_0,
+    ingredients: [
+        { ...SHARD_BLANK, quantity: 10 },
+        { ...RELIQUM_EGG, quantity: 10 },
+        { ...SHARD_DEFENCE, quantity: 1 },
+    ],
+};
+
+export const RECIPE_RUNE_AGILITY_0: ItemRecipeDto = {
+    uid: 'recipe-r-19',
+    product: RUNE_AGILITY_0,
+    ingredients: [
+        { ...SHARD_BLANK, quantity: 10 },
+        { ...IHON_BERRY, quantity: 10 },
+        { ...SHARD_AGILITY, quantity: 1 },
+    ],
+};
+
+export const RECIPE_RUNE_WISDOM_0: ItemRecipeDto = {
+    uid: 'recipe-r-20',
+    product: RUNE_WISDOM_0,
+    ingredients: [
+        { ...SHARD_BLANK, quantity: 10 },
+        { ...RELIQUM_EGG, quantity: 10 },
+        { ...SHARD_WISDOM, quantity: 1 },
+    ],
+};
+
+
+export const RUNE_BASE_RECIPES: ItemRecipeDto[] = [
     RECIPE_RUNE_ATTACK_1,
     RECIPE_RUNE_ATTACK_2,
     RECIPE_RUNE_ATTACK_3,
@@ -181,4 +222,11 @@ export const RUNE_RECIPES: ItemRecipeDto[] = [
     RECIPE_RUNE_WISDOM_2,
     RECIPE_RUNE_WISDOM_3,
     RECIPE_RUNE_WISDOM_4,
+];
+
+export const RUNE_SPECIAL_RECIPES: ItemRecipeDto[] = [
+    RECIPE_RUNE_ATTACK_0,
+    RECIPE_RUNE_DEFENSE_0,
+    RECIPE_RUNE_AGILITY_0,
+    RECIPE_RUNE_WISDOM_0,
 ];

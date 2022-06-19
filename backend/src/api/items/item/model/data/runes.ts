@@ -214,8 +214,60 @@ export const RUNE_WISDOM_4: ItemDto = {
     },
 };
 
+export const RUNE_ATTACK_0: ItemDto = {
+    uid: 'item-r-23',
+    name: 'Pupil\'s Attack',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        strength: 1,
+        criticalChance: 1,
+    },
+};
 
-export const BASE_RUNES = [
+export const RUNE_DEFENSE_0: ItemDto = {
+    uid: 'item-r-24',
+    name: 'Pupil\'s Defense',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        health: 15,
+        armor: 1,
+    },
+};
+
+export const RUNE_AGILITY_0: ItemDto = {
+    uid: 'item-r-25',
+    name: 'Pupil\'s Agility',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        dexterity: 1,
+        speed: 1,
+    },
+};
+
+export const RUNE_WISDOM_0: ItemDto = {
+    uid: 'item-r-26',
+    name: 'Pupil\'s Wisdom',
+    level: 1,
+    rarity: ItemRarity.Common,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        will: 1,
+        mana: 5,
+    },
+};
+
+
+export const RUNES_BASE = [
     RUNE_ATTACK_1,
     RUNE_ATTACK_2,
     RUNE_ATTACK_3,
@@ -232,4 +284,11 @@ export const BASE_RUNES = [
     RUNE_WISDOM_2,
     RUNE_WISDOM_3,
     RUNE_WISDOM_4,
+];
+
+export const RUNES_SPECIAL = [
+    RUNE_ATTACK_0,
+    RUNE_DEFENSE_0,
+    RUNE_AGILITY_0,
+    RUNE_WISDOM_0,
 ];
