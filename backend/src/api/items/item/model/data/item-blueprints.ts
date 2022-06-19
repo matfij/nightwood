@@ -1,7 +1,6 @@
 import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEAVES, SPIRAL_NUT,  } from "./food";
 import { ItemDto } from "../dto/item.dto";
-import { RECIPE_RUNE_AGILITY_1, RECIPE_RUNE_AGILITY_2, RECIPE_RUNE_AGILITY_3, RECIPE_RUNE_ATTACK_1, RECIPE_RUNE_ATTACK_2, RECIPE_RUNE_ATTACK_3, RECIPE_RUNE_DEFENSE_1, RECIPE_RUNE_DEFENSE_2, RECIPE_RUNE_DEFENSE_3, RECIPE_RUNE_WISDOM_1, RECIPE_RUNE_WISDOM_2, RECIPE_RUNE_WISDOM_3 } from "./rune-recipes";
-import { ItemRecipeDto } from "../dto/item-recipe.dto";
+import { FEEBLE_MUSHROOMS } from "./ingredients";
 
 
 export const STARTING_ITEMS: ItemDto[] = [
@@ -10,19 +9,5 @@ export const STARTING_ITEMS: ItemDto[] = [
     { ...RELIQUM_EGG, quantity: 10 },
     { ...SPIRAL_NUT, quantity: 10 },
     { ...RORIS_LEAVES, quantity: 10 },
-];
-
-export const RUNE_RECIPES: ItemRecipeDto[] = [
-    RECIPE_RUNE_ATTACK_1,
-    RECIPE_RUNE_ATTACK_2,
-    RECIPE_RUNE_ATTACK_3,
-    RECIPE_RUNE_DEFENSE_1,
-    RECIPE_RUNE_DEFENSE_2,
-    RECIPE_RUNE_DEFENSE_3,
-    RECIPE_RUNE_AGILITY_1,
-    RECIPE_RUNE_AGILITY_2,
-    RECIPE_RUNE_AGILITY_3,
-    RECIPE_RUNE_WISDOM_1,
-    RECIPE_RUNE_WISDOM_2,
-    RECIPE_RUNE_WISDOM_3,
+    { ...FEEBLE_MUSHROOMS, quantity: 1 },
 ];

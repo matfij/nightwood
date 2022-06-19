@@ -1,10 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { ErrorService } from "src/common/services/error.service";
 import { MoreThan, Repository } from "typeorm";
-import { RUNE_RECIPES } from "../model/data/item-blueprints";
+import { RUNE_RECIPES } from "../model/data/rune-recipes";
 import { ItemRecipeDto } from "../model/dto/item-recipe.dto";
 import { ItemDto } from "../model/dto/item.dto";
 import { RecipeComposeDto } from "../model/dto/recipe-compose.dto";

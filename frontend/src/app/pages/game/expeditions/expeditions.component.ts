@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ActionController, DragonActionController, DragonDto, ExpeditionDto, ExpeditionGuardianDto, StartExpeditionDto } from 'src/app/client/api';
+import { ActionController, DragonActionController, DragonDto, ExpeditionDto, StartExpeditionDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayExpedition } from 'src/app/core/definitions/events';
 
@@ -55,7 +55,8 @@ export class ExpeditionsComponent implements OnInit {
   prepareExpedition(expedition: DisplayExpedition) {
     const titleParams = { location: this.translateService.instant(expedition.name) };
     this.modalTitle = this.translateService.instant('explore.startExpeditionOf', titleParams);
-    this.modalMessage = this.translateService.instant('explore.startExpeditionHint', { level: expedition.level });
+    const messageParams = { level: expedition.level };
+    this.modalMessage = this.translateService.instant('explore.startExpeditionHint', messageParams);
 
     this.dragonChoiceCallback = this.startExpedition.bind(this);
     this.selectedExpedition = expedition;
@@ -66,7 +67,8 @@ export class ExpeditionsComponent implements OnInit {
   prepareGuardianChallenge(expedition: DisplayExpedition) {
     const titleParams = { location: this.translateService.instant(expedition.name) };
     this.modalTitle = this.translateService.instant('explore.battleGuardianTitle', titleParams);
-    this.modalMessage = this.translateService.instant('explore.battleGuardianHint', { guardianName: expedition.guardian.name });
+    const messageParams = { guardianName: expedition.guardian.name, level: expedition.guardian.level };
+    this.modalMessage = this.translateService.instant('explore.battleGuardianHint', messageParams);
 
     this.dragonChoiceCallback = this.battleGuardian.bind(this);
     this.selectedExpedition = expedition;

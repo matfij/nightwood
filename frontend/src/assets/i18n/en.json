@@ -216,8 +216,8 @@
   "dragonSummon": {
     "dragonSummonerHint": "Lotta zi Ayvalik, a member of the White Rose and the only survivor of the Mirage Island expedition. She discovered the Dimension Gate, which pushed her for further research on dragon summoning.",
     "thunderHint": "Summon a dragon of storms",
-    "natureHint": "Summon a dragon of woods",
-    "darkHint": "Summon a dragon of darkness",
+    "natureHint": "Summon a dragon of forest",
+    "darkHint": "Summon a dragon of shadows",
     "summon": "Summon",
     "summonSuccess": "You have summoned a new dragon!"
   },
@@ -254,7 +254,8 @@
     "quantity": "Quantity"
   },
   "crafting": {
-    "runeCraftingHint": "Versus Krinks, the goblin tinkerer is the master of rune crafting. Once, he could craft runes of any type, but now he is limited to the following:",
+    "runeCraftingHint": "Versus Krinks, the goblin tinkerer is the master of rune crafting. He is knwon for his scrupulousness and engineering diligence which allowed to create solid and reliable runes. Each rune increases selected dragon's attributes.",
+    "runeCraftingSpecialHint": "Ziblet Hertz is a young, zealous mechanic. He is a great asset to the Tinkerer's Guild, and he is always looking for new ideas to improve his craft. Every dragon can equpip up to three runes to boost its power.",
     "requiredIngredients": "Required ingredients",
     "craft": "Craft",
     "itemCrafted": "{{ name }} crafted"
@@ -311,7 +312,7 @@
     "startExpeditionOf": "Start exploration of {{ location }}",
     "startExpeditionHint": "This expedition requires at least [{{ level }}] maturity level.",
     "battleGuardianTitle": "Battle the guardian of {{ location }}",
-    "battleGuardianHint": "Battle with <b>{{ guardianName }}</b> to unlock new areas and find greater treasure.",
+    "battleGuardianHint": "Battle with the <i><b>{{ guardianName }}</b></i> to unlock new areas and find greater treasure. This battle requires at least [{{ level }}] maturity level.",
     "expeditionStarted": "Expedition started",
     "expeditionStartedHint": "Your dragon will be busy for a while",
     "expeditionReports": "Expedition reports",
