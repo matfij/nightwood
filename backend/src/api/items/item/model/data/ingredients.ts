@@ -145,3 +145,43 @@ export const SHARD_BLANK: ItemDto = {
     rarity: ItemRarity.Common,
     type: ItemType.Ingredient,
 };
+
+export const SCORIA_ORE: ItemDto = {
+    uid: 'item-i-13',
+    name: 'Scoria Ore',
+    level: 1,
+    rarity: ItemRarity.Scarce,
+    type: ItemType.Ingredient,
+};
+
+export const AZURE_PEBBLE: ItemDto = {
+    uid: 'item-i-14',
+    name: 'Azure Pebble',
+    level: 1,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Ingredient,
+};
+
+
+export const INGREDIENTS = [
+    TRANSMUTATION_STONE,
+    GATE_PARTICLE,
+    GATE_KEY,
+    SUPERCHARGED_CRYSTAL,
+    ETERNAL_FLOWER,
+    MIDNIGHT_ESSENCE,
+    PALE_GRAINS,
+    FILIKO_ROOTS,
+    SOVAGA_LEAVES,
+    ARTICHOKE,
+    CRIMSON_SEED,
+    FEEBLE_MUSHROOMS,
+    SHARD_ATTACK,
+    SHARD_DEFENCE,
+    SHARD_AGILITY,
+    SHARD_WISDOM,
+    SHARD_UNITY,
+    SHARD_BLANK,
+    SCORIA_ORE,
+    AZURE_PEBBLE,
+];

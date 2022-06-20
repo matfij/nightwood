@@ -214,7 +214,8 @@ export const RUNE_WISDOM_4: ItemDto = {
     },
 };
 
-export const RUNE_ATTACK_0: ItemDto = {
+
+export const RUNE_SPECIAL_ATTACK_1: ItemDto = {
     uid: 'item-r-23',
     name: 'Pupil\'s Attack',
     level: 1,
@@ -227,7 +228,22 @@ export const RUNE_ATTACK_0: ItemDto = {
     },
 };
 
-export const RUNE_DEFENSE_0: ItemDto = {
+export const RUNE_SPECIAL_ATTACK_2: ItemDto = {
+    uid: 'item-r-27',
+    name: 'Veteran Strength',
+    level: 50,
+    rarity: ItemRarity.Scarce,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        strength: 30,
+        armor: -15,
+        health: 200,
+        criticalChance: 2,
+    },
+};
+
+export const RUNE_SPECIAL_DEFENSE_1: ItemDto = {
     uid: 'item-r-24',
     name: 'Pupil\'s Defense',
     level: 1,
@@ -240,7 +256,22 @@ export const RUNE_DEFENSE_0: ItemDto = {
     },
 };
 
-export const RUNE_AGILITY_0: ItemDto = {
+export const RUNE_SPECIAL_DEFENSE_2: ItemDto = {
+    uid: 'item-r-28',
+    name: 'Veteran Tenacity',
+    level: 50,
+    rarity: ItemRarity.Scarce,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        speed: 25,
+        armor: 25,
+        resistance: 25,
+        criticalChance: -5,
+    },
+};
+
+export const RUNE_SPECIAL_AGILITY_1: ItemDto = {
     uid: 'item-r-25',
     name: 'Pupil\'s Agility',
     level: 1,
@@ -253,16 +284,45 @@ export const RUNE_AGILITY_0: ItemDto = {
     },
 };
 
-export const RUNE_WISDOM_0: ItemDto = {
+export const RUNE_SPECIAL_AGILITY_2: ItemDto = {
+    uid: 'item-r-29',
+    name: 'Veteran Dexterity',
+    level: 50,
+    rarity: ItemRarity.Scarce,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        initiative: 60,
+        speed: 30,
+        criticalChance: 1,
+        mana: -60,
+    },
+};
+
+export const RUNE_SPECIAL_WISDOM_1: ItemDto = {
     uid: 'item-r-26',
-    name: 'Pupil\'s Wisdom',
+    name: 'Pupil\'s Knwoledge',
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Equipment,
     equipmentType: EquipmentType.Rune,
     statistics: {
         will: 1,
-        mana: 5,
+        mana: 10,
+    },
+};
+
+export const RUNE_SPECIAL_WISDOM_2: ItemDto = {
+    uid: 'item-r-30',
+    name: 'Veteran Balance',
+    level: 50,
+    rarity: ItemRarity.Scarce,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        will: 30,
+        luck: 30,
+        health: -90,
     },
 };
 
@@ -287,8 +347,12 @@ export const RUNES_BASE = [
 ];
 
 export const RUNES_SPECIAL = [
-    RUNE_ATTACK_0,
-    RUNE_DEFENSE_0,
-    RUNE_AGILITY_0,
-    RUNE_WISDOM_0,
+    RUNE_SPECIAL_ATTACK_1,
+    RUNE_SPECIAL_DEFENSE_1,
+    RUNE_SPECIAL_AGILITY_1,
+    RUNE_SPECIAL_WISDOM_1,
+    RUNE_SPECIAL_ATTACK_2,
+    RUNE_SPECIAL_DEFENSE_2,
+    RUNE_SPECIAL_AGILITY_2,
+    RUNE_SPECIAL_WISDOM_2,
 ];

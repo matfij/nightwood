@@ -109,3 +109,19 @@ export const SPARKING_AMBROSIA: ItemDto = {
     type: ItemType.Food,
     foodType: FoodType.CompletePotion,
 };
+
+
+export const FOODS = [
+    BUBULAE_STEAK,
+    IHON_BERRY,
+    RELIQUM_EGG,
+    SPIRAL_NUT,
+    RORIS_LEAVES,
+    MIRACLE_FRUIT,
+    MIGHTY_EXTRACT,
+    NIMBUS_NECTAR,
+    TITAN_BREW,
+    ENCHANTER_POTION,
+    RAINBOW_MIXTURE,
+    SPARKING_AMBROSIA,
+];

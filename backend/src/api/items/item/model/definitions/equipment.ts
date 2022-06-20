@@ -45,6 +45,22 @@ export class EquipmentStatisticsDto {
     mana?: number;
 
     @ApiProperty()
+    manaRegeneration?: number;
+
+    @ApiProperty()
+    healthRegeneration?: number;
+
+    @ApiProperty()
+    physicalAttack?: number;
+
+    @ApiProperty()
+    magicalAttack?: number;
+
+    @ApiProperty()
+    dodge?: number;
+
+
+    @ApiProperty()
     healthBoost?: number;
 
     @ApiProperty()

@@ -475,8 +475,9 @@ export class DragonBattleService {
         let independentLogs = [];
         let cssClasses = turnResult.cssClasses;
 
-        if (defender.skills.soundBody > 0 && defender.health < defender.maxHealth && defender.health > 0) {
-            let restoredHealth = (0.05 * defender.maxHealth * (1 + defender.skills.soundBody / 20)) / (1 + turn / 15);
+        if ((defender.skills.soundBody > 0 || defender.healthRegen > 0) && defender.health < defender.maxHealth && defender.health > 0) {
+            let restoredHealth = (0.05 * defender.maxHealth * (1 + defender.skills.soundBody / 20) + defender.healthRegen)
+                / (1 + turn / 15);
             if (restoredHealth > 0) {
                 defender.health += restoredHealth;
                 if (defender.health > defender.maxHealth) defender.health = defender.maxHealth;

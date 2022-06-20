@@ -43,8 +43,8 @@ export class BattleHelperService {
         let armor = this.BASE_ARMOR + 0.9 * dragon.endurance + runeStats.armor;
         let resistance = this.BASE_RESISTANCE + 0.6 * dragon.will + runeStats.resistance;
         let speed = this.BASE_SPEED + 1.5 * dragon.dexterity + runeStats.speed;
-        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity + 0.1 * dragon.will;
-        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck;
+        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity + 0.1 * dragon.will + runeStats.physicalAttack;
+        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck + runeStats.magicalAttack;
         
         health = health * (1 + (dragon.skills.greatVigor || 0) / 50) * (1 + boosterStats.healthBoost ?? 0);
         mana = mana * (1 + (dragon.skills.innerFlow || 0) / 40) * (1 + boosterStats.manaBoost ?? 0);
@@ -53,7 +53,8 @@ export class BattleHelperService {
         speed = speed * (1 + (dragon.skills.innateSpeed || 0) / 60) * (1 + boosterStats.speedBoost ?? 0);
         physicalAttack = physicalAttack * (1 + boosterStats.physicalAttackBoost ?? 0);
         magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
-        let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40);
+        let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
+        let healthRegen = 0 + runeStats.healthRegeneration;
 
         const initiative = speed + runeStats.initiative;
         const critChance = Math.min(
@@ -68,7 +69,8 @@ export class BattleHelperService {
         );
         const dodgeChance = Math.min(
             this.MAX_DODGE_CHANCE, 
-            (1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20)) 
+            ((1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20)) 
+            + runeStats.dodge / 100)
             * (1 - (rival.skills.thoughtfulStrike || 0) / 50)
         );
 
@@ -88,6 +90,7 @@ export class BattleHelperService {
             critChance: critChance,
             critPower: critPower,
             dodgeChance: dodgeChance,
+            healthRegen: healthRegen,
         };
     }
 
@@ -106,8 +109,8 @@ export class BattleHelperService {
         let armor = this.BASE_ARMOR + 0.9 * dragon.endurance + runeStats.armor;
         let resistance = this.BASE_RESISTANCE + 0.6 * dragon.will + runeStats.resistance;
         let speed = this.BASE_SPEED + 1.5 * dragon.dexterity + runeStats.speed;
-        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity;
-        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck;
+        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity + runeStats.physicalAttack;
+        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck + runeStats.magicalAttack;
         
         health = health * (1 + (dragon.skills.greatVigor || 0) / 50) * (1 + boosterStats.healthBoost ?? 0);
         mana = mana * (1 + (dragon.skills.innerFlow || 0) / 40) * (1 + boosterStats.manaBoost ?? 0);
@@ -116,7 +119,8 @@ export class BattleHelperService {
         speed = speed * (1 + (dragon.skills.innateSpeed || 0) / 60) * (1 + boosterStats.speedBoost ?? 0);
         physicalAttack = physicalAttack * (1 + boosterStats.physicalAttackBoost ?? 0);
         magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
-        let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40);
+        let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
+        let healthRegen = 0 + runeStats.healthRegeneration;
 
         const initiative = speed + runeStats.initiative;
         const critChance = Math.min(
@@ -131,6 +135,7 @@ export class BattleHelperService {
         const dodgeChance = Math.min(
             this.MAX_DODGE_CHANCE, 
             (1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20))
+            + runeStats.dodge / 100
         );
 
         return {
@@ -149,6 +154,7 @@ export class BattleHelperService {
             critChance: critChance,
             critPower: critPower,
             dodgeChance: dodgeChance,
+            healthRegen: healthRegen,
         };
     }
 
@@ -168,6 +174,11 @@ export class BattleHelperService {
             allAttributes: 0,
             criticalChance: 0,
             criticalPower: 0,
+            healthRegeneration: 0,
+            manaRegeneration: 0,
+            physicalAttack: 0,
+            magicalAttack: 0,
+            dodge: 0,
         };
         runes.forEach(rune => {
             runeStats.health += rune.statistics.health ?? 0;
@@ -184,6 +195,11 @@ export class BattleHelperService {
             runeStats.allAttributes += rune.statistics.allAttributes ?? 0;
             runeStats.criticalChance += rune.statistics.criticalChance ?? 0;
             runeStats.criticalPower += rune.statistics.criticalPower ?? 0;
+            runeStats.healthRegeneration += rune.statistics.healthRegeneration ?? 0;
+            runeStats.manaRegeneration += rune.statistics.manaRegeneration ?? 0;
+            runeStats.physicalAttack += rune.statistics.physicalAttack ?? 0;
+            runeStats.magicalAttack += rune.statistics.magicalAttack ?? 0;
+            runeStats.dodge += rune.statistics.dodge ?? 0;
         });
         return runeStats;
     }

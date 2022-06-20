@@ -44,6 +44,9 @@ export class BattleDragonDto extends PartialType(DragonDto) {
 
     @ApiProperty()
     dodgeChance: number;
+
+    @ApiProperty()
+    healthRegen: number;
 }
 
 export interface TurnResult {
