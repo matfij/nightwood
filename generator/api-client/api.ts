@@ -3018,6 +3018,11 @@ export interface EquipmentStatisticsDto {
     speed: number;
     initiative: number;
     mana: number;
+    manaRegeneration: number;
+    healthRegeneration: number;
+    physicalAttack: number;
+    magicalAttack: number;
+    dodge: number;
     healthBoost: number;
     armorBoost: number;
     physicalAttackBoost: number;
@@ -3291,6 +3296,7 @@ export interface BattleDragonDto {
     critChance: number;
     critPower: number;
     dodgeChance: number;
+    healthRegen: number;
 }
 
 export interface BattleStartDto {

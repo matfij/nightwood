@@ -59,27 +59,32 @@ export class ItemService {
     }
 
     async checkItem(userId: number, itemId: number): Promise<ItemDto> {
-        const item = await this.itemRepository.findOne(itemId, { relations: ['user'] });
+        const item = await this.itemRepository.findOne(itemId, { relations: ['user', 'dragon'] });
         
         if (!item) this.errorService.throw('errors.itemNotFound');
         if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
         if (item.quantity < 1) this.errorService.throw('errors.insufficientQuantity');
-        
-        return item;
+
+        let itemDef = this.dataService.getItemData(item.uid);
+        return { ...item, ...itemDef };
     }
 
     async checkFeedingItem(userId: number, itemId: number): Promise<ItemDto> {
         const item = await this.checkItem(userId, itemId);
 
-        if (item.type !== ItemType.Food) this.errorService.throw('errors.itemNotFound')
-        return item;
-    }
+        if (item.type !== ItemType.Food) this.errorService.throw('errors.itemNotFound');
 
+        let itemDef = this.dataService.getItemData(item.uid);
+        return { ...item, ...itemDef };
+    }
+    
     async checkEquippingItem(userId: number, itemId: number): Promise<ItemDto> {
         const item = await this.checkItem(userId, itemId);
-
-        if (item.type !== ItemType.Equipment) this.errorService.throw('errors.itemNotFound')
-        return item;
+        
+        if (item.type !== ItemType.Equipment) this.errorService.throw('errors.itemNotFound');
+        
+        let itemDef = this.dataService.getItemData(item.uid);
+        return { ...item, ...itemDef };
     }
 
     async checkUnequippingItem(userId: number, itemId: number): Promise<ItemDto> {

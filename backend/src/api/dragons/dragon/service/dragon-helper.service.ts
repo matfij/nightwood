@@ -15,7 +15,9 @@ export class BattleHelperService {
     private readonly BASE_ARMOR = 5;
     private readonly BASE_RESISTANCE = 5;
     private readonly BASE_SPEED = 10;
+    private readonly BASE_INITIATIVE = 10;
     private readonly MAX_DODGE_CHANCE = 0.5;
+    private readonly BASE_DODGE_CHANCE = 0.05;
     private readonly BASE_PHYSICAL_ATTACK = 10;
     private readonly BASE_MAGICAL_ATTACK = 10;
     private readonly BASE_CRIT_CHANCE = 0.05;
@@ -56,23 +58,34 @@ export class BattleHelperService {
         let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
         let healthRegen = 0 + runeStats.healthRegeneration;
 
-        const initiative = speed + runeStats.initiative;
-        const critChance = Math.min(
+        let initiative = speed + runeStats.initiative;
+        let critChance = Math.min(
             this.MAX_CRIT_CHANCE, 
             (1 + boosterStats.criticalChanceBoost ?? 0) 
             * (this.BASE_CRIT_CHANCE + dragon.luck / (dragon.level + 10) + runeStats.criticalChance / 100 
             + ((dragon.skills.luckyStrike || 0) / 100))
         );
-        const critPower = Math.min(
+        let critPower = Math.min(
             this.MAX_CRIT_POWER, 
             this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower
         );
-        const dodgeChance = Math.min(
+        let dodgeChance = Math.min(
             this.MAX_DODGE_CHANCE, 
             ((1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20)) 
             + runeStats.dodge / 100)
             * (1 - (rival.skills.thoughtfulStrike || 0) / 50)
         );
+
+        health = Math.max(this.BASE_HEALTH, health);
+        mana = Math.max(this.BASE_MANA, mana);
+        resistance = Math.max(this.BASE_RESISTANCE, resistance);
+        armor = Math.max(this.BASE_ARMOR, armor);
+        critChance = Math.max(this.BASE_CRIT_CHANCE, critChance);
+        speed = Math.max(this.BASE_SPEED, speed);
+        initiative = Math.max(this.BASE_INITIATIVE, initiative);
+        physicalAttack = Math.max(this.BASE_PHYSICAL_ATTACK, physicalAttack);
+        magicalAttack = Math.max(this.BASE_MAGICAL_ATTACK, magicalAttack);
+        dodgeChance = Math.max(this.BASE_DODGE_CHANCE, dodgeChance);
 
         return {
             ...dragon,
@@ -122,21 +135,32 @@ export class BattleHelperService {
         let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
         let healthRegen = 0 + runeStats.healthRegeneration;
 
-        const initiative = speed + runeStats.initiative;
-        const critChance = Math.min(
+        let initiative = speed + runeStats.initiative;
+        let critChance = Math.min(
             this.MAX_CRIT_CHANCE, 
             (1 + boosterStats.criticalChanceBoost ?? 0) * (this.BASE_CRIT_CHANCE + dragon.luck / (dragon.level + 10) 
             + runeStats.criticalChance / 100 + ((dragon.skills.luckyStrike || 0) / 100))
         );
-        const critPower = Math.min(
+        let critPower = Math.min(
             this.MAX_CRIT_POWER, 
             this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower
         );
-        const dodgeChance = Math.min(
+        let dodgeChance = Math.min(
             this.MAX_DODGE_CHANCE, 
             (1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20))
             + runeStats.dodge / 100
         );
+
+        health = Math.max(this.BASE_HEALTH, health);
+        mana = Math.max(this.BASE_MANA, mana);
+        resistance = Math.max(this.BASE_RESISTANCE, resistance);
+        armor = Math.max(this.BASE_ARMOR, armor);
+        critChance = Math.max(this.BASE_CRIT_CHANCE, critChance);
+        speed = Math.max(this.BASE_SPEED, speed);
+        initiative = Math.max(this.BASE_INITIATIVE, initiative);
+        physicalAttack = Math.max(this.BASE_PHYSICAL_ATTACK, physicalAttack);
+        magicalAttack = Math.max(this.BASE_MAGICAL_ATTACK, magicalAttack);
+        dodgeChance = Math.max(this.BASE_DODGE_CHANCE, dodgeChance);
 
         return {
             ...dragon,

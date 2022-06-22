@@ -14,11 +14,23 @@
         <div *ngIf="item.statistics.armor">
           {{ ('dragon.armor' | translate) + ': ' + item.statistics.armor }}
         </div>
+        <div *ngIf="item.statistics.physicalAttack">
+          {{ ('dragon.physicalAttack' | translate) + ': ' + item.statistics.physicalAttack }}
+        </div>
+        <div *ngIf="item.statistics.magicalAttack">
+          {{ ('dragon.magicalAttack' | translate) + ': ' + item.statistics.magicalAttack }}
+        </div>
         <div *ngIf="item.statistics.health">
           {{ ('dragon.health' | translate) + ': ' + item.statistics.health }}
         </div>
+        <div *ngIf="item.statistics.healthRegeneration">
+          {{ ('dragon.healthRegeneration' | translate) + ': ' + item.statistics.healthRegeneration }}
+        </div>
         <div *ngIf="item.statistics.mana">
           {{ ('dragon.mana' | translate) + ': ' + item.statistics.mana }}
+        </div>
+        <div *ngIf="item.statistics.manaRegeneration">
+          {{ ('dragon.manaRegeneration' | translate) + ': ' + item.statistics.manaRegeneration }}
         </div>
         <div *ngIf="item.statistics.criticalChance">
           {{ ('dragon.criticalChance' | translate) + ': ' + item.statistics.criticalChance + '%' }}
@@ -28,6 +40,9 @@
         </div>
         <div *ngIf="item.statistics.speed">
           {{ ('dragon.speed' | translate) + ': ' + item.statistics.speed }}
+        </div>
+        <div *ngIf="item.statistics.dodge">
+          {{ ('dragon.dodge' | translate) + ': ' + item.statistics.dodge + '%' }}
         </div>
         <div *ngIf="item.statistics.initiative">
           {{ ('dragon.initiative' | translate) + ': ' + item.statistics.initiative }}

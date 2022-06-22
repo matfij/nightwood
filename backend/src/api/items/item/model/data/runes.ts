@@ -214,6 +214,9 @@ export const RUNE_WISDOM_4: ItemDto = {
     },
 };
 
+/**
+ * Special runes
+ */
 
 export const RUNE_SPECIAL_ATTACK_1: ItemDto = {
     uid: 'item-r-23',
@@ -240,6 +243,21 @@ export const RUNE_SPECIAL_ATTACK_2: ItemDto = {
         armor: -15,
         health: 200,
         criticalChance: 2,
+    },
+};
+
+export const RUNE_SPECIAL_ATTACK_3: ItemDto = {
+    uid: 'item-r-31',
+    name: 'Tauro Forto',
+    level: 1,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        strength: 45,
+        health: -200,
+        criticalChance: 5,
+        allAttributes: 10,
     },
 };
 
@@ -271,6 +289,22 @@ export const RUNE_SPECIAL_DEFENSE_2: ItemDto = {
     },
 };
 
+export const RUNE_SPECIAL_DEFENSE_3: ItemDto = {
+    uid: 'item-r-32',
+    name: 'Cevala Sano',
+    level: 100,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        health: 300,
+        healthRegeneration: 100,
+        armor: 30,
+        resistance: 30,
+        speed: -30,
+    },
+};
+
 export const RUNE_SPECIAL_AGILITY_1: ItemDto = {
     uid: 'item-r-25',
     name: 'Pupil\'s Agility',
@@ -299,6 +333,22 @@ export const RUNE_SPECIAL_AGILITY_2: ItemDto = {
     },
 };
 
+export const RUNE_SPECIAL_AGILITY_3: ItemDto = {
+    uid: 'item-r-33',
+    name: 'Kata Lerteco',
+    level: 100,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        initiative: 45,
+        speed: 45,
+        criticalChance: 5,
+        dodge: 10,
+        armor: -30,
+    },
+};
+
 export const RUNE_SPECIAL_WISDOM_1: ItemDto = {
     uid: 'item-r-26',
     name: 'Pupil\'s Knwoledge',
@@ -314,7 +364,7 @@ export const RUNE_SPECIAL_WISDOM_1: ItemDto = {
 
 export const RUNE_SPECIAL_WISDOM_2: ItemDto = {
     uid: 'item-r-30',
-    name: 'Veteran Balance',
+    name: 'Veteran Wisdom',
     level: 50,
     rarity: ItemRarity.Scarce,
     type: ItemType.Equipment,
@@ -326,6 +376,23 @@ export const RUNE_SPECIAL_WISDOM_2: ItemDto = {
     },
 };
 
+export const RUNE_SPECIAL_WISDOM_3: ItemDto = {
+    uid: 'item-r-34',
+    name: 'Strigo Sago',
+    level: 100,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        will: 45,
+        healthRegeneration: 100,
+        luck: -30,
+    },
+};
+
+/**
+ * Blueprints
+ */
 
 export const RUNES_BASE = [
     RUNE_ATTACK_1,
@@ -355,4 +422,8 @@ export const RUNES_SPECIAL = [
     RUNE_SPECIAL_DEFENSE_2,
     RUNE_SPECIAL_AGILITY_2,
     RUNE_SPECIAL_WISDOM_2,
+    RUNE_SPECIAL_ATTACK_3,
+    RUNE_SPECIAL_DEFENSE_3,
+    RUNE_SPECIAL_AGILITY_3,
+    RUNE_SPECIAL_WISDOM_3,
 ];
