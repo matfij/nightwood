@@ -77,4 +77,34 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     lifeLink: number;
+
+    @Column({ default: 0 })
+    dodge: number;
+
+    @Column({ default: 0 })
+    treasureHunter: number;
+
+    @Column({ default: 0 })
+    lethalBlow: number;
+
+    @Column({ default: 0 })
+    inferialBlessing: number;
+
+    @Column({ default: 0 })
+    freeze: number;
+
+    @Column({ default: 0 })
+    zeal: number;
+
+    @Column({ default: 0 })
+    deepWounds: number;
+
+    @Column({ default: 0 })
+    superCharge: number;
+
+    @Column({ default: 0 })
+    enchantedBarrier: number;
+
+    @Column({ default: 0 })
+    terribleOmen: number;
 }

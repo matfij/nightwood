@@ -3,6 +3,7 @@ import { Skill } from "../definitions/dragon-skills";
 /**
  * Level 1
  */
+
 export const InnateSpeed: Skill = {
     uid: 'innateSpeed',
     name: 'Innate Speed',
@@ -38,6 +39,7 @@ export const GreatVigor: Skill = {
 /**
  * Level 10
  */
+
 export const ThoughtfulStrike: Skill = {
     uid: 'thoughtfulStrike',
     name: 'Thoughtful Strike',
@@ -57,7 +59,7 @@ export const ThoughtfulStrike: Skill = {
 export const MagicArrow: Skill = {
     uid: 'magicArrow',
     name: 'Magic Arrow',
-    hint: 'Enables the dragon to cast magic arrows that reduce magic resistance (require mana)',
+    hint: 'Enables a dragon to cast magic arrows that reduce magic resistance. Base mana cost: 10, grows with skill level.',
     level: 10,
     requiredNature: [],
     castChance: 0.25,
@@ -67,6 +69,7 @@ export const MagicArrow: Skill = {
 /**
  * Level 30
  */
+
 export const Block: Skill = {
     uid: 'block',
     name: 'Block',
@@ -86,7 +89,35 @@ export const ArmorPenetration: Skill = {
 export const Rage: Skill = {
     uid: 'rage',
     name: 'Rage',
-    hint: 'Increases dragon damage when low on health',
+    hint: 'Increasesa dragon damage when low on health',
     level: 30,
+    requiredNature: [],
+}
+
+/**
+ * Level 60
+ */
+
+export const Dodge: Skill = {
+    uid: 'dodge',
+    name: 'Dodge',
+    hint: 'Increasesa dragon dodge chance',
+    level: 60,
+    requiredNature: [],
+}
+
+export const TreasureHunter: Skill = {
+    uid: 'treasureHunter',
+    name: 'Treasure Hunter',
+    hint: 'Allowsa dragon to get more loot from expeditions',
+    level: 60,
+    requiredNature: [],
+}
+
+export const LethalBlow: Skill = {
+    uid: 'lethalBlow',
+    name: 'Lethal Blow',
+    hint: 'Gives a chance land ten times stronger hit.',
+    level: 60,
     requiredNature: [],
 }

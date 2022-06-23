@@ -76,4 +76,34 @@ export class DragonSkillsDto {
 
     @ApiProperty()
     lifeLink?: number;
+
+    @ApiProperty()
+    dodge?: number;
+
+    @ApiProperty()
+    treasureHunter?: number;
+
+    @ApiProperty()
+    lethalBlow?: number;
+
+    @ApiProperty()
+    inferialBlessing?: number;
+
+    @ApiProperty()
+    freeze?: number;
+
+    @ApiProperty()
+    zeal?: number;
+
+    @ApiProperty()
+    deepWounds?: number;
+
+    @ApiProperty()
+    superCharge?: number;
+
+    @ApiProperty()
+    enchantedBarrier?: number;
+
+    @ApiProperty()
+    terribleOmen?: number;
 }

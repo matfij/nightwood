@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
-import { AirVector, FireBolt, IceBolt, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
+import { AirVector, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
 import { BattleDragonDto, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -430,7 +430,7 @@ export class DragonBattleService {
             }
         }
 
-        let leafCutCost = 5 * (1 + attacker.skills.leafCut / 50);
+        let leafCutCost = LeafCut.castMana * (1 + attacker.skills.leafCut / 50);
         if (attacker.skills.leafCut > 0 && attacker.mana > leafCutCost) {
             const baseLeafComponent = Math.log(2 + attacker.skills.leafCut) * (0.6 * attacker.magicalAttack);
             let leafHit = critFactor * rageFactor * baseLeafComponent - defender.resistance;
