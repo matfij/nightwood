@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
-import { AirVector, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
+import { AirVector, DeepWounds, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
 import { BattleDragonDto, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -126,7 +126,7 @@ export class DragonBattleService {
         /**
          * Dodge chance
          */
-        const dodgeChance = turnResult.defender.dodgeChance * (1 - attacker.skills.thoughtfulStrike / 5);
+        const dodgeChance = turnResult.defender.dodgeChance * (1 - attacker.skills.thoughtfulStrike / 70);
         if (!turnResult.skip && dodgeChance > Math.random()) {
             turnResult.log = `
                 <div class="item-log log-miss">
@@ -345,14 +345,14 @@ export class DragonBattleService {
         /**
          * Pre-offensive effects
          */
-        if (attacker.skills.armorPenetration > 0) {
+        if (attacker.skills.armorPenetration) {
             const penetrationChance = 0.05 + attacker.skills.armorPenetration / 75;
             if (penetrationChance > Math.random()) {
                 isArmorPenetrated = true;
                 extraLogs.push(`<div class="log-extra">+ armor penetration</div>`);
             }
         }
-        if (attacker.skills.rage > 0) {
+        if (attacker.skills.rage) {
             if (attacker.health < 0.5 * attacker.maxHealth) {
                 rageFactor = 1 + attacker.skills.rage / 75;
                 extraLogs.push(`<div class="log-extra">+ rage</div>`);
@@ -362,11 +362,21 @@ export class DragonBattleService {
         /**
          * Pre-defensive skills
          */
-        if (defender.skills.block > 0) {
+        if (defender.skills.block) {
             const blockChance = 0.05 + defender.skills.block / 100;
             if (blockChance > Math.random()) {
                 blockedHit = this.mathService.randRange(0.95, 1.05) * (50 + defender.skills.block) / 100;
                 extraLogs.push(`<div class="log-extra">- blocked ${(100*blockedHit).toFixed(1)}% damage</div>`);
+            }
+        }
+
+        if (defender.skills.enchantedBarrier) {
+            const barrierCost = EnchantedBarrier.castMana + defender.skills.enchantedBarrier / 8;
+            if (defender.mana >= barrierCost) {
+                defender.mana -= barrierCost;
+                let absorbedHit = (10 + defender.skills.enchantedBarrier / 3) / 100;
+                blockedHit += absorbedHit;
+                extraLogs.push(`<div class="log-extra">- absorbed ${(100*absorbedHit).toFixed(1)}% damage</div>`);
             }
         }
 
@@ -382,11 +392,49 @@ export class DragonBattleService {
         /**
          * Lethal blow
          */
-        const lethalHitChance = attacker.skills.lethalBlow / 300;
-        if (lethalHitChance > Math.random()) {
-            lethalFactor = 10;
-            cssClasses += ' log-crit';
-            extraLogs.push(`<div class="log-extra">+ lethal blow</div>`);
+        if (attacker.skills.lethalBlow) {
+            const lethalHitChance = attacker.skills.lethalBlow / 300;
+            if (lethalHitChance > Math.random()) {
+                lethalFactor = 10;
+                cssClasses += ' log-crit';
+                extraLogs.push(`<div class="log-extra">+ lethal blow</div>`);
+            }
+        }
+
+        /**
+         * Freeze
+         */
+        if (attacker.skills.freeze) {
+            const freezeChance = 0.03 + attacker.skills.freeze / 125;
+            if (freezeChance > Math.random()) {
+                defender.initiative -= defender.speed;
+                extraLogs.push(`<div class="log-extra">+ freeze</div>`);
+            }
+        }
+
+        /**
+         * Super Charge
+         */
+        if (attacker.skills.superCharge) {
+            const chargeChance = attacker.skills.superCharge / 250;
+            if (chargeChance > Math.random()) {
+                const chargedHealth = 0.2 * attacker.maxHealth * (1 + attacker.skills.superCharge / 100);
+                attacker.health += chargedHealth;
+                extraLogs.push(`<div class="log-extra">+ Thunder God's blessing (gained ${chargedHealth.toFixed(1)} health)</div>`);
+            }
+        }
+
+        /**
+         * Terrible omen
+         */
+        if (attacker.skills.terribleOmen) {
+            const omenChance = attacker.skills.terribleOmen / 150;
+            if (omenChance > Math.random() && attacker.dodgeChance < 0.8) {
+                const extraDodge = 0.13;
+                attacker.dodgeChance += extraDodge;
+                attacker.dodgeChance = Math.min(attacker.dodgeChance, 0.8);
+                extraLogs.push(`<div class="log-extra">+ terrible omen</div>`);
+            }
         }
 
         /**
@@ -401,24 +449,33 @@ export class DragonBattleService {
         /**
          * Post-offensive effects
          */
-        if (isCrit && attacker.skills.criticalDrain > 0) {
-            const drainedHealth = baseHit * (0.15 + attacker.skills.criticalDrain / 60);
-            attacker.health += drainedHealth;
-            defender.health -= drainedHealth;
-            const drainedMana = baseHit * (0.075 + attacker.skills.criticalDrain / 80);
-            attacker.mana += drainedMana;
-            defender.mana -= drainedMana;
-            extraLogs.push(`<div class="log-extra">+ drained ${drainedHealth.toFixed(1)} health, ${drainedMana.toFixed(1)} mana</div>`);
+        if (isCrit) {
+
+            if (attacker.skills.criticalDrain) {
+                const drainedHealth = baseHit * (0.15 + attacker.skills.criticalDrain / 60);
+                attacker.health += drainedHealth;
+                defender.health -= drainedHealth;
+                const drainedMana = baseHit * (0.075 + attacker.skills.criticalDrain / 80);
+                attacker.mana += drainedMana;
+                defender.mana -= drainedMana;
+                extraLogs.push(`<div class="log-extra">+ drained ${drainedHealth.toFixed(1)} health, ${drainedMana.toFixed(1)} mana</div>`);
+            }
+
+            if (attacker.skills.zeal) {
+                const acceleration = attacker.speed * (attacker.skills.zeal / 50);
+                attacker.initiative += acceleration;
+                extraLogs.push(`<div class="log-extra">+ critical acceleration (${acceleration.toFixed(1)}) initiative</div>`);
+            }
         }
 
-        if (attacker.skills.lifeLink > 0) {
+        if (attacker.skills.lifeLink) {
             const drainedHealth = baseHit * (0.04 + attacker.skills.lifeLink / 80);
             attacker.health += drainedHealth;
             defender.health -= drainedHealth;
             extraLogs.push(`<div class="log-extra">+ drained ${drainedHealth.toFixed(1)} health</div>`);
         }
 
-        if (attacker.skills.fireBreath > 0) {
+        if (attacker.skills.fireBreath) {
             const baseFireComponent = Math.log(2 + attacker.skills.fireBreath) * (0.4 * attacker.magicalAttack);
             let fireHit = critFactor * rageFactor * baseFireComponent - defender.resistance;
             fireHit *= (1 - blockedHit);
@@ -427,7 +484,7 @@ export class DragonBattleService {
             extraLogs.push(`<div class="log-extra">+ ${fireHit.toFixed(1)} fire damage</div>`);
         }
 
-        if (attacker.skills.staticStrike > 0) {
+        if (attacker.skills.staticStrike) {
             const baseStaticComponent = Math.log(2 + attacker.skills.staticStrike) * (0.3 * attacker.magicalAttack);
             let staticHit = critFactor * rageFactor * baseStaticComponent - defender.resistance;
             staticHit *= (1 - blockedHit);
@@ -436,7 +493,7 @@ export class DragonBattleService {
             extraLogs.push(`<div class="log-extra">+ ${staticHit.toFixed(1)} electric damage</div>`);
 
             if (defender.armor > 0) {
-                const armorBreak = this.mathService.randRange(0.9, 1.1) * (1 + 0.02 * defender.armor * attacker.skills.staticStrike);
+                const armorBreak = 0.5 + 0.1 * defender.armor * attacker.skills.staticStrike / 50;
                 defender.armor -= armorBreak;
                 extraLogs.push(`<div class="log-extra">+ broken ${armorBreak.toFixed(1)} armor</div>`);
             }
@@ -453,16 +510,25 @@ export class DragonBattleService {
             extraLogs.push(`<div class="log-extra">+ leaf cut ${leafHit.toFixed(1)} damage</div>`);
         }
         
-        if (attacker.skills.pugnaciousStrike > 0 && defender.armor > 0) {
-            const armorBreak = this.mathService.randRange(0.9, 1.1) * (1 + 0.03 * defender.armor * attacker.skills.pugnaciousStrike);
+        if (attacker.skills.pugnaciousStrike && defender.armor > 0) {
+            const armorBreak = 0.5 + 0.1 * defender.armor * attacker.skills.pugnaciousStrike / 40;
             defender.armor -= armorBreak;
             extraLogs.push(`<div class="log-extra">+ broken ${armorBreak.toFixed(1)} armor</div>`);
+        }
+
+        if (attacker.skills.deepWounds) {
+            const woundChance = 0.1 + attacker.skills.deepWounds / 75;
+            if (woundChance > Math.random()) {
+                const newWound = defender.maxHealth * (attacker.skills.deepWounds / 150);
+                defender.deepWounds += newWound;
+                extraLogs.push(`<div class="log-extra">+ deep wound ${newWound.toFixed(1)} damage</div>`);
+            }
         }
         
         /**
          * Post-defensive skills
          */
-        if (defender.skills.roughSkin > 0) {
+        if (defender.skills.roughSkin) {
             const reflectedHit = baseHit * defender.skills.roughSkin / 50;
             attacker.health -= reflectedHit;
             extraLogs.push(`<div class="log-extra">- ${defender.name} reflected ${reflectedHit.toFixed(1)} damage</div>`);
@@ -501,6 +567,12 @@ export class DragonBattleService {
             let poisonDamage = (1 + attacker.maxHealth / 100) * (1 + turn / 33) * Math.log(2 + 2 * defender.skills.poison);
             attacker.health -= poisonDamage;
             independentLogs.push(`<div class="item-log log-status">${attacker.name} took ${poisonDamage.toFixed(1)} poison damage.</div>`);
+        }
+        
+        if (attacker.deepWounds > 0) {
+            attacker.health -= attacker.deepWounds;
+            attacker.deepWounds *= 0.82;
+            independentLogs.push(`<div class="item-log log-status">${attacker.name} suffered ${attacker.deepWounds.toFixed(1)} internal damage.</div>`);
         }
 
         independentLogs.forEach(independentLog => log += independentLog);

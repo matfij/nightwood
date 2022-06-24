@@ -49,8 +49,8 @@ export class BattleHelperService {
         
         health = health * (1 + (dragon.skills.greatVigor || 0) / 50) * (1 + boosterStats.healthBoost ?? 0);
         mana = mana * (1 + (dragon.skills.innerFlow || 0) / 40) * (1 + boosterStats.manaBoost ?? 0);
-        armor = armor * (1 + boosterStats.armorBoost ?? 0);
-        resistance = resistance + 0.2 * armor;
+        armor = armor * (1 + boosterStats.armorBoost ?? 0) * (1 + (dragon.skills.inferialBlessing || 0) / 50);
+        resistance = (resistance + 0.2 * armor) * (1 + (dragon.skills.inferialBlessing || 0) / 50);
         speed = speed * (1 + (dragon.skills.innateSpeed || 0) / 60) * (1 + boosterStats.speedBoost ?? 0);
         physicalAttack = physicalAttack * (1 + boosterStats.physicalAttackBoost ?? 0);
         magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
@@ -102,6 +102,7 @@ export class BattleHelperService {
             critPower: critPower,
             dodgeChance: dodgeChance,
             healthRegen: healthRegen,
+            deepWounds: 0,
         };
     }
 

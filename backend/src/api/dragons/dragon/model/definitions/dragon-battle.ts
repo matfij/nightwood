@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional, PartialType } from "@nestjs/swagger";
 import { DragonDto } from "../dto/dragon.dto"
 
 export class BattleDragonDto extends PartialType(DragonDto) {
@@ -47,6 +47,9 @@ export class BattleDragonDto extends PartialType(DragonDto) {
 
     @ApiProperty()
     healthRegen: number;
+
+    @ApiPropertyOptional()
+    deepWounds: number;
 }
 
 export interface TurnResult {
