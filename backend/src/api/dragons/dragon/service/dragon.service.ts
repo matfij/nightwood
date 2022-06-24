@@ -158,7 +158,7 @@ export class DragonService {
     async calculateStatistics(ownerId: number, dragonId: number): Promise<BattleDragonDto> {
         const dragon = await this.checkDragon(ownerId, dragonId);
 
-        const battleDragon = this.battleHelperService.getRawStats(dragon);
+        const battleDragon = this.battleHelperService.calculateBattleStats(dragon);
 
         return battleDragon;
     }

@@ -29,8 +29,7 @@ export class BattleHelperService {
         private mathService: MathService,
     ) {}
 
-    calculateBattleStats(dragon: Partial<DragonDto>, baseRival: Partial<DragonDto>): BattleDragonDto {
-        const rival = this.getRawStats(baseRival);
+    calculateBattleStats(dragon: Partial<DragonDto>): BattleDragonDto {
         const runeStats = this.getRunesStats(dragon.runes);
         const boosterStats = this.getBoosterStats(dragon.boosterUid);
 
@@ -72,83 +71,7 @@ export class BattleHelperService {
         let dodgeChance = Math.min(
             this.MAX_DODGE_CHANCE, 
             ((1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20)) 
-            + runeStats.dodge / 100)
-            * (1 - (rival.skills.thoughtfulStrike || 0) / 50)
-        );
-
-        health = Math.max(this.BASE_HEALTH, health);
-        mana = Math.max(this.BASE_MANA, mana);
-        resistance = Math.max(this.BASE_RESISTANCE, resistance);
-        armor = Math.max(this.BASE_ARMOR, armor);
-        critChance = Math.max(this.BASE_CRIT_CHANCE, critChance);
-        speed = Math.max(this.BASE_SPEED, speed);
-        initiative = Math.max(this.BASE_INITIATIVE, initiative);
-        physicalAttack = Math.max(this.BASE_PHYSICAL_ATTACK, physicalAttack);
-        magicalAttack = Math.max(this.BASE_MAGICAL_ATTACK, magicalAttack);
-        dodgeChance = Math.max(this.BASE_DODGE_CHANCE, dodgeChance);
-
-        return {
-            ...dragon,
-            maxHealth: health,
-            health: health,
-            maxMana: mana,
-            mana: mana,
-            manaRegen: manaRegen,
-            physicalAttack: physicalAttack,
-            magicalAttack: magicalAttack,
-            armor: armor,
-            resistance: resistance,
-            speed: speed,
-            initiative: initiative,
-            critChance: critChance,
-            critPower: critPower,
-            dodgeChance: dodgeChance,
-            healthRegen: healthRegen,
-        };
-    }
-
-    getRawStats(dragon: Partial<DragonDto>): BattleDragonDto {
-        const runeStats = this.getRunesStats(dragon.runes);
-        const boosterStats = this.getBoosterStats(dragon.boosterUid);
-        
-        dragon.strength += runeStats.strength + runeStats.allAttributes;
-        dragon.dexterity += runeStats.dexterity + runeStats.allAttributes;
-        dragon.endurance += runeStats.endurance + runeStats.allAttributes;
-        dragon.will += runeStats.will + runeStats.allAttributes;
-        dragon.luck += runeStats.luck + runeStats.allAttributes;
-
-        let health = this.BASE_HEALTH + 5 * dragon.endurance + dragon.strength + dragon.will + runeStats.health;
-        let mana = this.BASE_MANA + 4 * dragon.will + runeStats.mana;
-        let armor = this.BASE_ARMOR + 0.9 * dragon.endurance + runeStats.armor;
-        let resistance = this.BASE_RESISTANCE + 0.6 * dragon.will + runeStats.resistance;
-        let speed = this.BASE_SPEED + 1.5 * dragon.dexterity + runeStats.speed;
-        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity + runeStats.physicalAttack;
-        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck + runeStats.magicalAttack;
-        
-        health = health * (1 + (dragon.skills.greatVigor || 0) / 50) * (1 + boosterStats.healthBoost ?? 0);
-        mana = mana * (1 + (dragon.skills.innerFlow || 0) / 40) * (1 + boosterStats.manaBoost ?? 0);
-        armor = armor * (1 + boosterStats.armorBoost ?? 0);
-        resistance = resistance + 0.2 * armor;
-        speed = speed * (1 + (dragon.skills.innateSpeed || 0) / 60) * (1 + boosterStats.speedBoost ?? 0);
-        physicalAttack = physicalAttack * (1 + boosterStats.physicalAttackBoost ?? 0);
-        magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
-        let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
-        let healthRegen = 0 + runeStats.healthRegeneration;
-
-        let initiative = speed + runeStats.initiative;
-        let critChance = Math.min(
-            this.MAX_CRIT_CHANCE, 
-            (1 + boosterStats.criticalChanceBoost ?? 0) * (this.BASE_CRIT_CHANCE + dragon.luck / (dragon.level + 10) 
-            + runeStats.criticalChance / 100 + ((dragon.skills.luckyStrike || 0) / 100))
-        );
-        let critPower = Math.min(
-            this.MAX_CRIT_POWER, 
-            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower
-        );
-        let dodgeChance = Math.min(
-            this.MAX_DODGE_CHANCE, 
-            (1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20))
-            + runeStats.dodge / 100
+            + runeStats.dodge / 100 + dragon.skills.dodge / 170)
         );
 
         health = Math.max(this.BASE_HEALTH, health);

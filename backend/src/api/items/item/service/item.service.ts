@@ -160,7 +160,7 @@ export class ItemService {
 
         baseLoots.forEach(loot => {
 
-            const dragonChance = Math.random();  // 0 - 1
+            const dragonChance = Math.random() * (1 + dragon.skills.treasureHunter / 40);  // 0 - 1 * 1 - 1.5
             const requiredChance = Math.random() * LootChance[loot.rarity];  // 0-1 * 2-44
 
             if (dragonChance > requiredChance) {

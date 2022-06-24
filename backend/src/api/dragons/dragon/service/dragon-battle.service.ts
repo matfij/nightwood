@@ -22,8 +22,8 @@ export class DragonBattleService {
     ) {}
 
     async executeBattle(ownedDragon: DragonDto, enemyDragon: Partial<DragonDto>): Promise<Partial<BattleResultDto>> {
-        let owned = this.battleHelperService.calculateBattleStats(ownedDragon, enemyDragon);
-        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon, ownedDragon);
+        let owned = this.battleHelperService.calculateBattleStats(ownedDragon);
+        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon);
 
         const logs = [];
         let result = '';
@@ -68,8 +68,8 @@ export class DragonBattleService {
     async executeGuardianBattle(ownedDragon: DragonDto, expedition: ExpeditionDto): Promise<Partial<BattleResultDto>> {
         let enemyDragon = this.battleHelperService.createDragonFromGuardian(expedition.guardian);
         
-        let owned = this.battleHelperService.calculateBattleStats(ownedDragon, enemyDragon);
-        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon, ownedDragon);
+        let owned = this.battleHelperService.calculateBattleStats(ownedDragon);
+        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon);
 
         const logs = [];
         let result = '';
@@ -126,7 +126,8 @@ export class DragonBattleService {
         /**
          * Dodge chance
          */
-        if (!turnResult.skip && turnResult.defender.dodgeChance > Math.random()) {
+        const dodgeChance = turnResult.defender.dodgeChance * (1 - attacker.skills.thoughtfulStrike / 5);
+        if (!turnResult.skip && dodgeChance > Math.random()) {
             turnResult.log = `
                 <div class="item-log log-miss">
                     ${turnResult.attacker.name} (${turnResult.attacker.health.toFixed(1)}) 
@@ -339,6 +340,7 @@ export class DragonBattleService {
         let isArmorPenetrated = false;
         let rageFactor = 1;
         let blockedHit = 0;
+        let lethalFactor = 1;
 
         /**
          * Pre-offensive effects
@@ -378,9 +380,19 @@ export class DragonBattleService {
         }
 
         /**
+         * Lethal blow
+         */
+        const lethalHitChance = attacker.skills.lethalBlow / 300;
+        if (lethalHitChance > Math.random()) {
+            lethalFactor = 10;
+            cssClasses += ' log-crit';
+            extraLogs.push(`<div class="log-extra">+ lethal blow</div>`);
+        }
+
+        /**
          * Regular hit
          */
-        let baseHit = critFactor * rageFactor * attacker.physicalAttack;
+        let baseHit = critFactor * rageFactor * attacker.physicalAttack * lethalFactor;
         baseHit = isArmorPenetrated ? baseHit : baseHit - defender.armor;
         baseHit *= (1 - blockedHit);
         baseHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(1 + attacker.level / 10, baseHit, baseHit);
@@ -459,7 +471,7 @@ export class DragonBattleService {
         log += `
             <div class="${cssClasses}">
                 ${attacker.name} (${attacker.health.toFixed(1)}) 
-                ${isCrit ? 'critically strikes' : 'strikes'} 
+                ${isCrit ? 'critically strikes' : 'strikes'}
                 ${defender.name} (${defender.health.toFixed(1)}) 
                 for ${baseHit.toFixed(1)}`;
         extraLogs.forEach(extraLog => log += extraLog);
