@@ -2,7 +2,7 @@
  * General
  */
 
-export const EXPEDITION_TIME_SCALE = 1 / 9991;
+export const EXPEDITION_TIME_SCALE = 1 / 1;
 export const FEED_TIME_SCALE = 1 / 1;
 export const ALCHEMY_TIME_SCALE = 1 / 1;
 
