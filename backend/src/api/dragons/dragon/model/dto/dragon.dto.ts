@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-action.dto";
 import { DragonSkillsDto } from "src/api/dragons/dragon-skills/model/dto/dragon-skills.dto";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
+import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { DragonNature } from "../definitions/dragon-nature";
 
 export class DragonDto {
@@ -10,7 +11,10 @@ export class DragonDto {
     id: number;
 
     @ApiPropertyOptional()
-    ownerId?: number;
+    userId?: number;
+
+    @ApiPropertyOptional()
+    user?: Partial<UserDto>;
 
     @ApiProperty()
     action: DragonActionDto;

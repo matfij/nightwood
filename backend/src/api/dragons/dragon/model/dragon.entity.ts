@@ -1,7 +1,8 @@
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { Item } from "src/api/items/item/model/item.entity";
+import { User } from "src/api/users/user/model/user.entity";
 import { DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
 import { DragonSkills } from "../../dragon-skills/model/dragon-skills.entity";
 import { DragonNature } from "./definitions/dragon-nature";
@@ -12,8 +13,8 @@ export class Dragon {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: true })
-    ownerId?: number;
+    @ManyToOne(_ => User, x => x.dragons)
+    user: User;
 
     @OneToOne(_ => DragonAction)
     @JoinColumn()

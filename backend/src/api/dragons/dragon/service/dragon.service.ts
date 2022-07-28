@@ -31,6 +31,8 @@ import { BattleDragonDto } from '../model/definitions/dragon-battle';
 import { BattleHelperService } from './dragon-helper.service';
 import { BOOSTERS } from 'src/api/items/alchemy/model/data/boosters';
 import { EXPEDITIONS } from '../../dragon-action/model/data/expeditions';
+import { DragonBestDto } from '../model/dto/dragon-best.dto';
+import { UserDto } from 'src/api/users/user/model/dto/user.dto';
 
 @Injectable()
 export class DragonService {
@@ -58,12 +60,16 @@ export class DragonService {
     }
 
     async getOne(id: string | number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes'] }) as DragonDto
+        const dragon = await this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes', 'user'] });
+        const dragonDto: DragonDto = {
+            ...dragon
+        };
 
         dragon.runes = dragon.runes.map(rune => { return { ...rune, ...this.dataService.getItemData(rune.uid) } });
-        if (dragon.boosterUid) dragon.booster = BOOSTERS.find(booster => booster.uid === dragon.boosterUid);
+        if (dragon.boosterUid) dragonDto.booster = BOOSTERS.find(booster => booster.uid === dragon.boosterUid);
+        if (dragon.user) dragonDto.userId = dragon.user.id;
 
-        return dragon;
+        return dragonDto;
     }
 
     async getAll(dto: DragonGetDto): Promise<DragonPageDto> {
@@ -89,34 +95,33 @@ export class DragonService {
         return dragonPage;
     }
 
-    async getBest(dto: DragonGetDto): Promise<DragonPageDto> {
+    async getBest(): Promise<DragonBestDto[]> {
         const filterOptions: FindManyOptions<Dragon> = {
-            where: { level: Between(dto.minLevel ?? DRAGON_MIN_SEARCH_LEVEL, dto.maxLevel ?? DRAGON_MAX_SEARCH_LEVEL) },
-            select: ['name', 'level', 'nature', 'experience'],
+            relations: ['user'],
             order: { experience: 'DESC' },
         };
 
         const dragons = await this.dragonRepository.find({
             ...filterOptions,
-            skip: dto.page * dto.limit,
-            take: dto.limit,
-        });
-        const count = await this.dragonRepository.count({
-            ...filterOptions,
+            take: 10,
         });
 
-        const dragonPage: DragonPageDto = {
-            data: dragons,
-            meta: { totalItems: count },
-        };
-        return dragonPage;
+        const bestDragons: DragonBestDto[] = dragons.map((dragon) => ({
+            id: dragon.id,
+            name: dragon.name,
+            level: dragon.level,
+            experience: dragon.experience,
+            userId: dragon.user?.id ?? null,
+            userNickname: dragon.user?.nickname ?? null,
+        }));
+        return bestDragons;
     }
 
-    async adopt(ownerId: number, dto: DragonAdoptDto): Promise<DragonDto> {
+    async adopt(user: UserDto, dto: DragonAdoptDto): Promise<DragonDto> {
         if (dto.name.length < DRAGON_NAME_MIN_LENGTH || dto.name.length > DRAGON_NAME_MAX_LENGTH) this.errorService.throw('errors.incorrectDragonName');
         if (!this.errorService.checkBannedWords(dto.name)) this.errorService.throw('errors.bannedWordUse');
 
-        const dragon = this.dragonRepository.create({ ...dto, ownerId: ownerId }) as DragonDto;
+        const dragon = this.dragonRepository.create({ ...dto, user }) as DragonDto;
         dragon.action = await this.dragonActionService.createAction();
         dragon.skills = await this.dragonSkillsService.createSkills(null);
         const savedDragon = await this.dragonRepository.save(dragon);
@@ -124,9 +129,9 @@ export class DragonService {
         return savedDragon;
     }
 
-    async getOwnedDragons(ownerId: number): Promise<DragonDto[]> {
+    async getOwnedDragons(user: UserDto): Promise<DragonDto[]> {
         const filterOptions: FindManyOptions<Dragon> = {
-            where: { ownerId: ownerId },
+            where: { user: user },
             relations: ['action', 'skills'],
             order: { experience: 'DESC' },
         };
@@ -142,7 +147,7 @@ export class DragonService {
         const dragon = await this.getOne(dragonId);
 
         if (!dragon) this.errorService.throw('errors.dragonNotFound');
-        if (dragon.ownerId !== ownerId) this.errorService.throw('errors.dragonNotFound');
+        if (dragon.userId !== ownerId) this.errorService.throw('errors.dragonNotFound');
 
         return dragon;
     }
@@ -263,7 +268,7 @@ export class DragonService {
     async releaseDragon(ownerId: number, dragonId: number | string): Promise<void> {
         const dragon = await this.checkDragon(ownerId, +dragonId);
 
-        await this.dragonRepository.update(dragon.id, { ownerId: null });
+        await this.dragonRepository.update(dragon.id, { user: null });
     }
 
     async learnSkill(ownerId: number, dto: SkillLearnDto): Promise<DragonDto> {

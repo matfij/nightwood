@@ -32,9 +32,10 @@ export class ActionDragonService {
     ) {}
 
     async adoptDragon(userId: number, dto: DragonAdoptDto): Promise<DragonDto> {
+        const user = await this.userService.getOne(userId);
         await this.userService.updateOwnedDragons(userId, true);
         
-        const dragon = await this.dragonService.adopt(userId, dto);
+        const dragon = await this.dragonService.adopt(user, dto);
 
         return dragon;
     }
@@ -54,7 +55,7 @@ export class ActionDragonService {
         await this.userService.updateOwnedDragons(userId, true);
         await this.userService.updateGold(userId, -action.cost);
         
-        const dragon = await this.dragonService.adopt(userId, dto);
+        const dragon = await this.dragonService.adopt(user, dto);
 
         return dragon;
     }

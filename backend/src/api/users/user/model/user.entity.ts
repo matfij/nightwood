@@ -1,3 +1,4 @@
+import { Dragon } from "src/api/dragons/dragon/model/dragon.entity";
 import { Mixture } from "src/api/items/alchemy/model/mixture.entity";
 import { Item } from "src/api/items/item/model/item.entity";
 import { DB_MONEY_TYPE, DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
@@ -8,6 +9,9 @@ export class User {
 
     @PrimaryGeneratedColumn()
     id: number;
+
+    @OneToMany(_ => Dragon, x => x.user)
+    dragons: Dragon[];
 
     @OneToMany(_ => Item, x => x.user)
     items: Item[];
