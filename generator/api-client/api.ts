@@ -1769,7 +1769,7 @@ export interface IDragonController {
     create(body: DragonCreateDto): Observable<DragonDto>;
     getOne(id: string): Observable<DragonDto>;
     getAll(body: DragonGetDto): Observable<DragonPageDto>;
-    getBest(body: DragonGetDto): Observable<DragonPageDto>;
+    getBest(): Observable<DragonBestDto[]>;
     getOwned(): Observable<DragonDto[]>;
     calculateStatistics(id: string): Observable<BattleDragonDto>;
     startBattle(body: BattleStartDto): Observable<BattleResultDto>;
@@ -1944,18 +1944,14 @@ export class DragonController implements IDragonController {
         return _observableOf<DragonPageDto>(<any>null);
     }
 
-    getBest(body: DragonGetDto): Observable<DragonPageDto> {
+    getBest(): Observable<DragonBestDto[]> {
         let url_ = this.baseUrl + "/api/v1/dragon/getBest";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -1967,14 +1963,14 @@ export class DragonController implements IDragonController {
                 try {
                     return this.processGetBest(<any>response_);
                 } catch (e) {
-                    return <Observable<DragonPageDto>><any>_observableThrow(e);
+                    return <Observable<DragonBestDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<DragonPageDto>><any>_observableThrow(response_);
+                return <Observable<DragonBestDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetBest(response: HttpResponseBase): Observable<DragonPageDto> {
+    protected processGetBest(response: HttpResponseBase): Observable<DragonBestDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1984,7 +1980,7 @@ export class DragonController implements IDragonController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <DragonPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <DragonBestDto[]>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1992,7 +1988,7 @@ export class DragonController implements IDragonController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<DragonPageDto>(<any>null);
+        return _observableOf<DragonBestDto[]>(<any>null);
     }
 
     getOwned(): Observable<DragonDto[]> {
@@ -2966,6 +2962,16 @@ export interface DragonSkillsDto {
     criticalDrain: number;
     poison: number;
     lifeLink: number;
+    dodge: number;
+    treasureHunter: number;
+    lethalBlow: number;
+    inferialBlessing: number;
+    freeze: number;
+    zeal: number;
+    deepWounds: number;
+    superCharge: number;
+    enchantedBarrier: number;
+    terribleOmen: number;
 }
 
 export enum ItemRarity {
@@ -3051,7 +3057,8 @@ export interface ItemDto {
 
 export interface DragonDto {
     id: number;
-    ownerId?: number;
+    userId?: number;
+    user?: any;
     action: DragonActionDto;
     skills: DragonSkillsDto;
     runes: ItemDto[];
@@ -3260,9 +3267,19 @@ export interface DragonPageDto {
     data: DragonDto[];
 }
 
+export interface DragonBestDto {
+    id: number;
+    name: string;
+    level: number;
+    experience: number;
+    userId: number;
+    userNickname: string;
+}
+
 export interface BattleDragonDto {
     id?: number;
-    ownerId?: number;
+    userId?: number;
+    user?: any;
     action?: DragonActionDto;
     skills?: DragonSkillsDto;
     runes?: ItemDto[];
@@ -3297,6 +3314,7 @@ export interface BattleDragonDto {
     critPower: number;
     dodgeChance: number;
     healthRegen: number;
+    deepWounds?: number;
 }
 
 export interface BattleStartDto {

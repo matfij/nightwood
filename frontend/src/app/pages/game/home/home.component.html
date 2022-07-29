@@ -99,11 +99,14 @@
       </div>
       <div class="reports-scroll">
         <div
-          *ngFor="let dragon of (dragons$ | async)?.data; index as i"
+          *ngFor="let dragon of (dragons$ | async); index as i"
           [ngStyle]="{'font-size': 'clamp(13px, '+(18-1.5*i)+'px, 18px)'}"
           [ngClass]="{ 'dragon-first': i === 0 }"
           class="item-dragon">
           {{ i+1 }}. {{ dragon.name }} [{{ dragon.level }}] | {{ dragon.experience }} {{ 'dragon.exp' | translate }}
+          <span *ngIf="dragon.userNickname">
+            | <a (click)="showUserDetails(dragon.userId)">{{ dragon.userNickname }}</a>
+          </span>
         </div>
       </div>
     </div>

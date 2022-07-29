@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DragonController, DragonGetDto, DragonPageDto } from 'src/app/client/api';
+import { DragonBestDto, DragonController, DragonGetDto, DragonPageDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +9,7 @@ import { DragonController, DragonGetDto, DragonPageDto } from 'src/app/client/ap
 })
 export class HomeComponent implements OnInit {
 
-  dragons$: Observable<DragonPageDto> = new Observable<DragonPageDto>();
+  dragons$: Observable<DragonBestDto[]> = new Observable<DragonBestDto[]>();
   dragonsLoading: boolean = false;
 
   constructor(
@@ -21,10 +21,12 @@ export class HomeComponent implements OnInit {
   }
 
   getTopDragons() {
-    const params: DragonGetDto = {
-      limit: 10,
-    };
-    this.dragons$ = this.dragonController.getBest(params);
+    this.dragons$ = this.dragonController.getBest();
+  }
+
+  showUserDetails(userId: number) {
+    // todo - navigate to user profile
+    console.log(userId);
   }
 
 }

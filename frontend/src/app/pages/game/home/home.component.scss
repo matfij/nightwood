@@ -45,6 +45,14 @@
   &:hover {
     box-shadow: inset 1px 1px 12px 1px lighten($app-primary, 10);
   }
+
+  a {
+    cursor: pointer;
+  }
+  a:hover {
+    color: white;
+    text-decoration: underline;
+  }
 }
 
 .dragon-first {
