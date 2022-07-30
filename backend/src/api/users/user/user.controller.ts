@@ -1,5 +1,9 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Request, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { AuthorizedRequest } from 'src/common/definitions/requests';
 import { PaginationInterceptor } from 'src/common/interceptors/pagination.interceptor';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
 import { CreateUserDto } from './model/dto/create-user.dto';
@@ -41,6 +45,21 @@ export class UserController {
     @ApiOkResponse({ type: PageUserDto })
     getAll(@Body() dto: GetUserDto): Promise<PageUserDto> {
         return this.userService.getAll(dto);
+    }
+
+    @Post('setAvatar')
+    @UseInterceptors(FileInterceptor('avatar', {
+        storage: diskStorage({
+          destination: './uploads'
+          , filename: (req, file, cb) => {
+            // Generating a 32 random chars long string
+            const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
+            //Calling the callback passing the random name generated with the original extension name
+            cb(null, `${randomName}${extname(file.originalname)}`)
+          }
+        })}))
+    setAvatar(@Request() req: AuthorizedRequest, @UploadedFile() file:  Express.Multer.File): Promise<void> {
+        return this.userService.setAvatar(req.user.id, file);
     }
 
 }    

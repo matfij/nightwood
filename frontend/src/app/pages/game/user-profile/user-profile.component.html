@@ -10,5 +10,14 @@
     <h2>Achievements</h2>
     <h2>Friends</h2>
 
+    <input #fileUpload class="gone" type="file" (change)="setAvatarPreview($event)">
+    <div (click)="fileUpload.click()" class="btn-base">
+      Set avatar
+    </div>
+
+    <div (click)="uploadAvatar()" class="btn-base">
+      Confirm
+    </div>
+
   </div>
 </div>

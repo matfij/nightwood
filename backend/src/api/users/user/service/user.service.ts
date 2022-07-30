@@ -1,4 +1,4 @@
-import { BadRequestException,Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { ItemService } from 'src/api/items/item/service/item.service';
@@ -11,6 +11,8 @@ import { PageUserDto } from '../model/dto/page-user.dto';
 import { UpdateUserDto } from '../model/dto/update-user.dto';
 import { UserDto } from '../model/dto/user.dto';
 import { User } from '../model/user.entity';
+import fs from 'fs';
+import { promisify } from 'util';
 
 @Injectable()
 export class UserService {
@@ -112,6 +114,14 @@ export class UserService {
         await this.userRepository.update(userId, { maxOwnedDragons: user.maxOwnedDragons });
 
         return user;
+    }
+
+    async setAvatar(userId: number, file: Express.Multer.File) {
+        if (file.size > 200 * 1000) this.errorService.throw('errors.fileTooLarge');
+        if (!['image/jpeg', 'image/png'].includes(file.mimetype)) this.errorService.throw('errors.fileIncorrectFormat');
+
+        const fileName = `${userId}.png`;
+        fs.writeFile(fileName, file.buffer, () => {});
     }
 
     private async emailExists(email: string): Promise<boolean> {
