@@ -13,9 +13,11 @@ import { InventoryComponent } from './inventory/inventory.component';
 import { MailComponent } from './mail/mail.component';
 import { MyDragonsComponent } from './my-dragons/my-dragons.component';
 import { ShoutboxComponent } from './shoutbox/shoutbox.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
+  { path: 'profile', component: UserProfileComponent },
   { path: 'adopt-dragon', component: AdoptDragonComponent },
   { path: 'my-dragons', component: MyDragonsComponent },
   { path: 'summon-dragon', component: DragonSummonComponent },

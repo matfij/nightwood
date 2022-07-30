@@ -114,6 +114,7 @@
   "game": {
     "menu": "Menu",
     "home": "Home",
+    "profile": "Profile",
     "adoptDragon": "Adopt dragon",
     "summonDragon": "Summon dragon",
     "myDragons": "My dragons",

@@ -16,6 +16,7 @@ import { CraftingComponent } from './crafting/crafting.component';
 import { DragonTamerComponent } from './dragon-tamer/dragon-tamer.component';
 import { DragonSummonComponent } from './dragon-summon/dragon-summon.component';
 import { AlchemyComponent } from './alchemy/alchemy.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AlchemyComponent } from './alchemy/alchemy.component';
     DragonTamerComponent,
     DragonSummonComponent,
     AlchemyComponent,
+    UserProfileComponent,
   ],
   imports: [
     CommonModule,
