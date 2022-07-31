@@ -1,6 +1,7 @@
-import { Body, Request, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Request, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors, StreamableFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { createReadStream } from 'fs';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { AuthorizedRequest } from 'src/common/definitions/requests';
@@ -48,18 +49,15 @@ export class UserController {
     }
 
     @Post('setAvatar')
-    @UseInterceptors(FileInterceptor('avatar', {
-        storage: diskStorage({
-          destination: './uploads'
-          , filename: (req, file, cb) => {
-            // Generating a 32 random chars long string
-            const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
-            //Calling the callback passing the random name generated with the original extension name
-            cb(null, `${randomName}${extname(file.originalname)}`)
-          }
-        })}))
+    @UseInterceptors(FileInterceptor('avatar'))
     setAvatar(@Request() req: AuthorizedRequest, @UploadedFile() file:  Express.Multer.File): Promise<void> {
         return this.userService.setAvatar(req.user.id, file);
+    }
+
+    @Post('getAvatar')
+    getAvatar(@Request() req: AuthorizedRequest): StreamableFile {
+        const avatar = createReadStream(`uploads/${req.user.id}.png`);
+        return new StreamableFile(avatar);
     }
 
 }    

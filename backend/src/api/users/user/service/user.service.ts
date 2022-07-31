@@ -11,7 +11,6 @@ import { PageUserDto } from '../model/dto/page-user.dto';
 import { UpdateUserDto } from '../model/dto/update-user.dto';
 import { UserDto } from '../model/dto/user.dto';
 import { User } from '../model/user.entity';
-import fs from 'fs';
 import { promisify } from 'util';
 
 @Injectable()
@@ -121,7 +120,9 @@ export class UserService {
         if (!['image/jpeg', 'image/png'].includes(file.mimetype)) this.errorService.throw('errors.fileIncorrectFormat');
 
         const fileName = `${userId}.png`;
-        fs.writeFile(fileName, file.buffer, () => {});
+        
+        const fs = require('fs')
+        fs.writeFile(`uploads/${fileName}`, file.buffer, () => {});
     }
 
     private async emailExists(email: string): Promise<boolean> {

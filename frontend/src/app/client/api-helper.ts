@@ -35,7 +35,20 @@ export class UserControllerHelper implements IUserControllerHelper {
     };
 
     return this.http.request("post", url_, options_)
-}
+  }
+
+  getAvatar(): Observable<any> {
+    let url_ = this.baseUrl + "/api/v1/user/getAvatar";
+    url_ = url_.replace(/[?&]$/, "");
+
+    let options_ : any = {
+      body: {},
+      observe: "response",
+      responseType: "blob",
+    };
+
+    return this.http.request("post", url_, options_)
+  }
 
 protected processSetAvatar(response: HttpResponseBase): Observable<void> {
     const status = response.status;

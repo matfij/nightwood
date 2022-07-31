@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserController } from 'src/app/client/api';
+import { DomSanitizer } from '@angular/platform-browser';
 import { UserControllerHelper } from 'src/app/client/api-helper';
 
 @Component({
@@ -9,30 +9,30 @@ import { UserControllerHelper } from 'src/app/client/api-helper';
 })
 export class UserProfileComponent implements OnInit {
 
-  file?: any;
+  avatarSrc: any;
 
   constructor(
-    private userController: UserControllerHelper
+    private userController: UserControllerHelper,
+    private sanitizer: DomSanitizer,
   ) {}
 
   ngOnInit(): void {
+    this.getAvatar();
   }
 
-  setAvatarPreview(event: any) {
+  getAvatar() {
+    this.userController.getAvatar().subscribe((data) => {
+      var binaryData = [];
+      binaryData.push(data.body);
+      let objectURL = URL.createObjectURL(new Blob(binaryData, {type: 'application/octet-stream' }));
+      this.avatarSrc = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      console.log(objectURL, this.avatarSrc)
+    });
+  }
+
+  setAvatar(event: any) {
     if (!event.target.files[0]) return;
-
-    this.file = event.target.files[0];
-
-    console.log(event.target.files[0])
-
-    // const formData = new FormData()
-    // formData.append('file', event.target.files[0].name)
-
     this.userController.setAvatar(event.target.files[0]).subscribe();
-  }
-
-  uploadAvatar() {
-    console.log(this.file)
   }
 
 }
