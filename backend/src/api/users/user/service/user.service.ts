@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { ItemService } from 'src/api/items/item/service/item.service';
@@ -11,7 +11,8 @@ import { PageUserDto } from '../model/dto/page-user.dto';
 import { UpdateUserDto } from '../model/dto/update-user.dto';
 import { UserDto } from '../model/dto/user.dto';
 import { User } from '../model/user.entity';
-import { promisify } from 'util';
+import { createReadStream } from 'fs';
+import { AVATARS_PATH } from 'src/configuration/app.config';
 
 @Injectable()
 export class UserService {
@@ -116,13 +117,29 @@ export class UserService {
     }
 
     async setAvatar(userId: number, file: Express.Multer.File) {
-        if (file.size > 200 * 1000) this.errorService.throw('errors.fileTooLarge');
-        if (!['image/jpeg', 'image/png'].includes(file.mimetype)) this.errorService.throw('errors.fileIncorrectFormat');
+        if (file.size > 100 * 1000) this.errorService.throw('errors.fileTooLarge');
+        if (!['image/jpeg', 'image/png'].includes(file.mimetype)) this.errorService.throw('errors.avatarIncorrectFormat');
 
-        const fileName = `${userId}.png`;
+        const path = `${AVATARS_PATH}/${userId}.png`;
         
         const fs = require('fs')
-        fs.writeFile(`uploads/${fileName}`, file.buffer, () => {});
+        if (!fs.existsSync(AVATARS_PATH)) fs.mkdirSync(AVATARS_PATH, { recursive: true });
+        fs.writeFile(path, file.buffer, () => {});
+    }
+
+    async getAvatar(userId: number): Promise<StreamableFile | void> {
+        const fs = require('fs');
+        const path = `${AVATARS_PATH}/${userId}.png`;
+
+        try {
+            if (fs.existsSync(path)) {
+                const avatar = createReadStream(path);
+                return new StreamableFile(avatar);
+            }
+            return null;
+        } catch(err) {
+            return null;
+        }
     }
 
     private async emailExists(email: string): Promise<boolean> {

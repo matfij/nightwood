@@ -1,9 +1,6 @@
 import { Body, Request, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors, StreamableFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { createReadStream } from 'fs';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorizedRequest } from 'src/common/definitions/requests';
 import { PaginationInterceptor } from 'src/common/interceptors/pagination.interceptor';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
@@ -50,14 +47,13 @@ export class UserController {
 
     @Post('setAvatar')
     @UseInterceptors(FileInterceptor('avatar'))
-    setAvatar(@Request() req: AuthorizedRequest, @UploadedFile() file:  Express.Multer.File): Promise<void> {
+    setAvatar(@Request() req: AuthorizedRequest, @UploadedFile() file: Express.Multer.File): Promise<void> {
         return this.userService.setAvatar(req.user.id, file);
     }
-
+    
     @Post('getAvatar')
-    getAvatar(@Request() req: AuthorizedRequest): StreamableFile {
-        const avatar = createReadStream(`uploads/${req.user.id}.png`);
-        return new StreamableFile(avatar);
+    getAvatar(@Request() req: AuthorizedRequest): Promise<StreamableFile | void> {
+        return this.userService.getAvatar(req.user.id);
     }
 
 }    

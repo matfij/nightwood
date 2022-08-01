@@ -109,7 +109,9 @@
     "mixtureNotFound": "Mixture not found",
     "mixtureNotReady": "Mixture is not ready",
     "boosterNotFound": "Booster not found",
-    "currentDragonLimitReached": "Current dragon limit reached"
+    "currentDragonLimitReached": "Current dragon limit reached",
+    "fileTooLarge": "File too large",
+    "avatarIncorrectFormat": "Avatar must be in JPG or PNG format"
   },
   "game": {
     "menu": "Menu",
@@ -130,6 +132,11 @@
     "logout": "Logout",
     "recentChanges": "Recent changes",
     "bestDragons": "Best dragons"
+  },
+  "user": {
+    "dragons": "Dragons",
+    "achievements": "Achievements",
+    "friends": "Friends"
   },
   "dragon": {
     "adoptDragonTilte": "Who are you fated to encounter?",

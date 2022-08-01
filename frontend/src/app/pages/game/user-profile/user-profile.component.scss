@@ -1,0 +1,33 @@
+@import '../../../core/theme/variables.scss';
+
+
+.wrapper-content {
+  padding: 1rem;
+  text-align: left;
+
+  hr {
+    margin: 5px 0;
+    border: 0;
+    border-top: 0.5px dashed $app-light;
+    opacity: 0.5;
+  }
+}
+
+.wrapper-avatar {
+
+  img {
+    height: 200px;
+    width: 200px;
+
+    object-fit: cover;
+  }
+}
+
+.btn-avatar {
+  width: 160px;
+  height: 18px;
+  margin: 10px 0px;
+
+  line-height: 16px;
+  text-align: center;
+}

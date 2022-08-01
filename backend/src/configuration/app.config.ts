@@ -11,6 +11,11 @@ export const DB_TIMESTAMP_TYPE = 'int8';
 export const DB_MONEY_TYPE = 'decimal';
 
 /**
+ * Local files
+ */
+export const AVATARS_PATH = 'uploads/avatars';
+
+/**
  * Localization
  */
 export const DEFAULT_LANG = 'en';

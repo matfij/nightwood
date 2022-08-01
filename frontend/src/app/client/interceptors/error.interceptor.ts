@@ -71,14 +71,14 @@ export class ErrorInterceptor {
 
   private showError(error: Blob) {
     if (error instanceof Blob) {
-      this.utilsService.blobToJsonObject<any>(error).subscribe((x) => {
-        if (x.message) {
-          if (typeof x.message === 'string') {
-            const message = this.translateService.instant(x.message);
+      this.utilsService.blobToJsonObject<any>(error).subscribe((res) => {
+        if (res.message) {
+          if (typeof res.message === 'string') {
+            const message = this.translateService.instant(res.message);
             this.toastService.showError('errors.error', message);
           } else {
             try {
-              const message = this.translateService.instant(x.message[0]);
+              const message = this.translateService.instant(res.message[0]);
               this.toastService.showError('errors.error', message);
             } catch (_) {
               this.toastService.showError('errors.error', 'errors.unknown');

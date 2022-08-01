@@ -1,20 +1,34 @@
 <div class="wrapper-main">
   <app-navigation-bar currentLocation="profile"></app-navigation-bar>
 
-  <div class="wrapper-content">
+  <div *ngIf="(user$ | async) as user" class="wrapper-content">
 
-    <h2>User name</h2>
-    <h2>Avatar</h2>
-    <h2>Gold</h2>
-    <h2>Dragons</h2>
-    <h2>Achievements</h2>
-    <h2>Friends</h2>
-
-    <img *ngIf="avatarSrc" [src]="avatarSrc" alt="avatar">
+    <h2>{{ user.nickname }}</h2>
+    <h2> {{ 'inventory.gold' | translate }}: {{ user.gold }}</h2>
+    <div *ngIf="(avatar$ | async) as avatar; else noAvatar">
+      <div class="wrapper-avatar">
+        <img [src]="avatar" alt="avatar" draggable="false">
+      </div>
+    </div>
+    <ng-template #noAvatar>
+      <div class="wrapper-avatar">
+        <img src="assets/img/lore/player.png" alt="avatar" draggable="false">
+      </div>
+    </ng-template>
     <input #fileUpload class="gone" type="file" (change)="setAvatar($event)">
-    <div (click)="fileUpload.click()" class="btn-base">
+    <div (click)="fileUpload.click()" class="btn-base btn-avatar">
       Set avatar
     </div>
+    <hr>
+    <h2>{{ 'user.dragons' | translate }}</h2>
+
+    <hr>
+    <h2>{{ 'user.achievements' | translate }}</h2>
+
+    <hr>
+    <h2>{{ 'user.friends' | translate }}</h2>
+
+
 
   </div>
 </div>
