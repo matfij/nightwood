@@ -5,6 +5,12 @@
   padding: 1rem;
   text-align: left;
 
+  h2 {
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
   hr {
     margin: 5px 0;
     border: 0;
@@ -30,4 +36,21 @@
 
   line-height: 16px;
   text-align: center;
+}
+
+.wrapper-dragon {
+  width: fit-content;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.dragon-tooltip {
+  width: 220px;
+
+  padding: 10px 5px 0px 5px;
+  text-align: center;
+
+  img {
+    width: 120px;
+  }
 }

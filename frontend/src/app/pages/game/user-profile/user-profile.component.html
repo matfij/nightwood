@@ -3,6 +3,7 @@
 
   <div *ngIf="(user$ | async) as user" class="wrapper-content">
 
+    <hr>
     <h2>{{ user.nickname }}</h2>
     <h2> {{ 'inventory.gold' | translate }}: {{ user.gold }}</h2>
     <div *ngIf="(avatar$ | async) as avatar; else noAvatar">
@@ -19,8 +20,27 @@
     <div (click)="fileUpload.click()" class="btn-base btn-avatar">
       Set avatar
     </div>
+
     <hr>
     <h2>{{ 'user.dragons' | translate }}</h2>
+    <div *ngIf="(dragons$ | async) as dragons">
+      <div *ngFor="let dragon of dragons" class="wrapper-dragon">
+        <div tooltip>
+          <ng-template #tooltipTemplate>
+            <div class="item-tooltip dragon-tooltip">
+              <h5>{{ dragon.name }}</h5>
+              <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
+              <p>
+                {{ 'dragon.nature' | translate }}: {{ dragon.nature }} <br>
+                {{ 'dragon.experience' | translate }}: {{ dragon.experience }}
+              </p>
+            </div>
+          </ng-template>
+
+          <b>{{ dragon.name }}</b> [{{ dragon.level }}]
+        </div>
+      </div>
+    </div>
 
     <hr>
     <h2>{{ 'user.achievements' | translate }}</h2>
@@ -28,7 +48,7 @@
     <hr>
     <h2>{{ 'user.friends' | translate }}</h2>
 
-
+    <hr>
 
   </div>
 </div>

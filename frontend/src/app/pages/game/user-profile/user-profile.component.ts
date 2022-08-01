@@ -27,6 +27,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserData();
+    this.getDragonData();
   }
 
   getUserData() {
