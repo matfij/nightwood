@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../user/model/user.entity';
 import { UserLoginDto } from '../dto/user-login.dto';
 import { UserRegisterDto } from '../dto/user-register.dto';
-import { GetUserDto } from '../../user/model/dto/get-user.dto';
 import { UserAuthDto } from '../dto/user-auth.dto';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
@@ -15,6 +14,7 @@ import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
 import { EmailReplaceToken, EmailType } from 'src/common/definitions/emails';
 import { UserConfirmDto } from '../dto/user-confirm.dto';
+import { AchievementsService } from '../../achievements/service/achievements.service';
 
 const bcrypt = require('bcrypt');
 
@@ -24,6 +24,7 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
+        private achievementsService: AchievementsService,
         private jwtService: JwtService,
         private itemService: ItemService,
         private errorService: ErrorService,
@@ -31,7 +32,21 @@ export class AuthService {
         private emailService: EmailService,
     ) {}
 
+    private async __maintnanceCreateMissingFields() {
+        const users = await this.userRepository.find();
+
+        for (const user of users) {
+            if (!user.achievements) {
+                user.achievements = await this.achievementsService.createAchievements();
+                await this.userRepository.save(user);
+            }
+        }
+    }
+
     async login(dto: UserLoginDto): Promise<UserAuthDto> {
+        // TODO - remove after maintnance
+        this.__maintnanceCreateMissingFields()
+
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
         if (!user) this.errorService.throw('errors.loginNotFound');
         if (!user.isConfirmed) this.errorService.throw('errors.userNotConfirmed');
@@ -62,10 +77,12 @@ export class AuthService {
             password: hashedPassword,
             nickname: dto.nickname,
             actionToken: confirmationCode,
-            actionTokenValidity: this.dateService.getFutureDate(0, 1),
+            actionTokenValidity: this.dateService.getFutureDate(0, 1)
         };
-
-        this.userRepository.save(newUser);
+        
+        const createdUser = this.userRepository.create(newUser);
+        createdUser.achievements = await this.achievementsService.createAchievements();
+        await this.userRepository.save(createdUser);
 
         const emailData: EmailReplaceToken[] = [
             { token: '$user_name', value: dto.nickname },
@@ -110,7 +127,7 @@ export class AuthService {
         return user;
     }
 
-    async generateJwt(user: UserDto): Promise<string> {
+    async generateJwt(user: Partial<UserDto>): Promise<string> {
         user.password = '';
         return this.jwtService.signAsync({user});
     }

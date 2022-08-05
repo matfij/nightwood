@@ -26,7 +26,7 @@ export const FireBolt: Skill = {
 export const InferialBlessing: Skill = {
     uid: 'inferialBlessing',
     name: 'Inferial Blessing',
-    hint: 'Enhances a ragon armor and resistance.',
+    hint: 'Enhances a dragon armor and resistance.',
     level: 60,
     requiredNature: [DragonNature.Fire],
 }
@@ -46,7 +46,7 @@ export const SoundBody: Skill = {
 export const IceBolt: Skill = {
     uid: 'iceBolt',
     name: 'Ice Bolt',
-    hint: 'Enables the dragon to cast ice bolts that slow down enemies. Base mana cost: 20, grows with skill level.',
+    hint: 'Enables a dragon to cast ice bolts that slow down enemies. Base mana cost: 20, grows with skill level.',
     level: 30,
     requiredNature: [DragonNature.Water],
     castMana: 20,
@@ -76,7 +76,7 @@ export const PugnaciousStrike: Skill = {
 export const AirVector: Skill = {
     uid: 'airVector',
     name: 'Air Vector',
-    hint: 'Enables the dragon to cast air vectors that accelerate the caster. Base mana cost: 20, grows with skill level.',
+    hint: 'Enables a dragon to cast air vectors that accelerate the caster. Base mana cost: 20, grows with skill level.',
     level: 30,
     requiredNature: [DragonNature.Wind],
     castMana: 20,
@@ -106,7 +106,7 @@ export const RoughSkin: Skill = {
 export const RockBlast: Skill = {
     uid: 'rockBlast',
     name: 'Rock Blast',
-    hint: 'Enables the dragon to cast rock blasts that can stun enemies. Base mana cost: 20, grows with skill level.',
+    hint: 'Enables a dragon to cast rock blasts that can stun enemies. Base mana cost: 20, grows with skill level.',
     level: 30,
     requiredNature: [DragonNature.Earth],
     castMana: 20,
@@ -137,7 +137,7 @@ export const StaticStrike: Skill = {
 export const Thunderbolt: Skill = {
     uid: 'thunderbolt',
     name: 'Thunderbolt',
-    hint: 'Enables the dragon to cast thunder bolts that can paralyze enemies. Base mana cost: 20, grows with skill level.',
+    hint: 'Enables a dragon to cast thunder bolts that can paralyze enemies. Base mana cost: 20, grows with skill level.',
     level: 30,
     requiredNature: [DragonNature.Electric],
     castMana: 20,

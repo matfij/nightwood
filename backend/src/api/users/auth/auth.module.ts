@@ -11,6 +11,8 @@ import { JwtAuthGuard } from './util/jwt.guard';
 import { JwtStrategy } from './util/jwt.strategy';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
+import { AchievementsModule } from '../achievements/achievements.module';
+import { AchievementsService } from '../achievements/service/achievements.service';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { EmailService } from 'src/common/services/email.service';
       }),
     }),
     ItemModule,
+    AchievementsModule,
   ],
   controllers: [AuthController],
   providers: [

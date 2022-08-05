@@ -21,6 +21,7 @@ export class User {
     mixtures: Mixture[];
 
     @OneToOne(_ => Achievements)
+    @JoinColumn()
     achievements: Achievements;
 
     @Column({ unique: true })

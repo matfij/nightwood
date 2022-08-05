@@ -90,7 +90,7 @@ export const CROESUS_III: Achievement = {
     hint: 'Gather 100000 gold.'
 };
 
-export const ACHIEVEMENTS: Achievement[] = [
+export const ACHIEVEMENTS_ALL: Achievement[] = [
     DRAGON_OWNER_I,
     DRAGON_OWNER_II,
     DRAGON_OWNER_III,

@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { AchievementsDto } from "src/api/users/achievements/model/dto/achievements.dto";
 
 export class UserDto {
 
@@ -13,6 +14,9 @@ export class UserDto {
 
     @ApiProperty()
     nickname?: string;
+
+    @ApiPropertyOptional()
+    achievements?: AchievementsDto;
 
     @ApiProperty()
     gold?: number;

@@ -796,6 +796,7 @@ export interface IUserController {
     getOne(id: string): Observable<UserDto>;
     getAll(body: GetUserDto): Observable<PageUserDto>;
     setAvatar(): Observable<void>;
+    getAvatar(): Observable<void>;
 }
 
 @Injectable({
@@ -1043,6 +1044,50 @@ export class UserController implements IUserController {
     }
 
     protected processSetAvatar(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    getAvatar(): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/user/getAvatar";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAvatar(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAvatar(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAvatar(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2952,6 +2997,119 @@ export class AuctionController implements IAuctionController {
     }
 }
 
+export interface IAchievementsController {
+    getUserAchievements(): Observable<AchievementsDto>;
+    getAllAchievements(): Observable<AchievementDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AchievementsController implements IAchievementsController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getUserAchievements(): Observable<AchievementsDto> {
+        let url_ = this.baseUrl + "/api/v1/achievements/getUserAchievements";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserAchievements(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserAchievements(<any>response_);
+                } catch (e) {
+                    return <Observable<AchievementsDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AchievementsDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserAchievements(response: HttpResponseBase): Observable<AchievementsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <AchievementsDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AchievementsDto>(<any>null);
+    }
+
+    getAllAchievements(): Observable<AchievementDto[]> {
+        let url_ = this.baseUrl + "/api/v1/achievements/getAllAchievements";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllAchievements(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllAchievements(<any>response_);
+                } catch (e) {
+                    return <Observable<AchievementDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AchievementDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllAchievements(response: HttpResponseBase): Observable<AchievementDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <AchievementDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AchievementDto[]>(<any>null);
+    }
+}
+
 export enum DragonNature {
     Fire = "Fire",
     Water = "Water",
@@ -3517,6 +3675,30 @@ export interface AuctionGetDto {
 export interface AuctionPageDto {
     meta: PageMetaDto;
     data: AuctionDto[];
+}
+
+export interface AchievementsDto {
+    dragonOwnerI: boolean;
+    dragonOwnerII: boolean;
+    dragonOwnerIII: boolean;
+    persistentBreederI: boolean;
+    persistentBreederII: boolean;
+    persistentBreederIII: boolean;
+    curiousExplorerI: boolean;
+    curiousExplorerII: boolean;
+    curiousExplorerIII: boolean;
+    dragonTrainerI: boolean;
+    dragonTrainerII: boolean;
+    dragonTrainerIII: boolean;
+    croesusI: boolean;
+    croesusII: boolean;
+    croesusIII: boolean;
+}
+
+export interface AchievementDto {
+    uid: string;
+    name: string;
+    hint: string;
 }
 
 export class SwaggerException extends Error {

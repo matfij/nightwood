@@ -3,7 +3,6 @@
 
   <div *ngIf="(user$ | async) as user" class="wrapper-content">
 
-    <hr>
     <h2>{{ user.nickname }}</h2>
     <h2> {{ 'inventory.gold' | translate }}: {{ user.gold }}</h2>
     <div *ngIf="(avatar$ | async) as avatar; else noAvatar">
@@ -44,11 +43,13 @@
 
     <hr>
     <h2>{{ 'user.achievements' | translate }}</h2>
-
+    <div *ngIf="{ all: allAchievements$ | async, user: userAchievements$ | async } as achievements">
+      <div *ngFor="let achievement of achievements.all">
+        {{ achievement.name }}
+      </div>
+    </div>
     <hr>
     <h2>{{ 'user.friends' | translate }}</h2>
-
-    <hr>
 
   </div>
 </div>
