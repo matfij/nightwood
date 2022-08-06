@@ -4,8 +4,10 @@ import { map } from 'rxjs/operators';
 import { AchievementDto, AchievementsController, AchievementsDto, DragonController, UserAuthDto } from 'src/app/client/api';
 import { UserControllerHelper } from 'src/app/client/api-helper';
 import { DisplayDragon } from 'src/app/core/definitions/dragons';
+import { DisplayAchievement } from 'src/app/core/definitions/items';
 import { DragonService } from 'src/app/core/services/dragons.service';
 import { EngineService } from 'src/app/core/services/engine.service';
+import { ItemsService } from 'src/app/core/services/items.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,7 +19,7 @@ export class UserProfileComponent implements OnInit {
   user$?: Observable<UserAuthDto>;
   avatar$?: Observable<string>;
   dragons$?: Observable<DisplayDragon[]>;
-  allAchievements$?: Observable<AchievementDto[]>;
+  allAchievements$?: Observable<DisplayAchievement[]>;
   userAchievements$?: Observable<AchievementsDto>;
 
   constructor(
@@ -26,6 +28,7 @@ export class UserProfileComponent implements OnInit {
     private userController: UserControllerHelper,
     private engineService: EngineService,
     private dragonService: DragonService,
+    private itemService: ItemsService,
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +39,9 @@ export class UserProfileComponent implements OnInit {
   getUserData() {
     this.user$ = this.engineService.getUser();
     this.avatar$ = this.userController.getAvatar();
-    this.allAchievements$ = this.achievementsController.getAllAchievements();
+    this.allAchievements$ = this.achievementsController.getAllAchievements().pipe(
+      map((achievements) => achievements.map((achievement) => this.itemService.toDisplayAchievement(achievement)))
+    );
     this.userAchievements$ = this.achievementsController.getUserAchievements();
   }
 
@@ -51,6 +56,10 @@ export class UserProfileComponent implements OnInit {
     this.userController.setAvatar(event.target.files[0]).subscribe(() => {
       this.avatar$ = this.userController.getAvatar();
     });
+  }
+
+  checkCompleted(achievement: AchievementDto, userAchievements: AchievementsDto): boolean {
+    return userAchievements[achievement.uid as keyof AchievementsDto];
   }
 
 }

@@ -85,7 +85,7 @@ export const CROESUS_II: Achievement = {
 };
 
 export const CROESUS_III: Achievement = {
-    uid: 'CroesusIII',
+    uid: 'croesusIII',
     name: 'Croesus',
     hint: 'Gather 100000 gold.'
 };

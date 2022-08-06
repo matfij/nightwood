@@ -54,3 +54,36 @@
     width: 120px;
   }
 }
+
+.wrapper-achievements {
+  padding: 5px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.item-achievement {
+  width: 60px;
+
+  img {
+    border-radius: 50%;
+  }
+}
+
+.achievement-I {
+  img {
+    border: 2px solid $app-common;
+  }
+}
+
+.achievement-II {
+  img {
+    border: 2px solid $app-scarce;
+  }
+}
+
+.achievement-III {
+  img {
+    border: 2px solid $app-rare;
+  }
+}

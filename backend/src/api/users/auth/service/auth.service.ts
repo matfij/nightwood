@@ -45,7 +45,7 @@ export class AuthService {
 
     async login(dto: UserLoginDto): Promise<UserAuthDto> {
         // TODO - remove after maintnance
-        this.__maintnanceCreateMissingFields()
+        // this.__maintnanceCreateMissingFields()
 
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
         if (!user) this.errorService.throw('errors.loginNotFound');

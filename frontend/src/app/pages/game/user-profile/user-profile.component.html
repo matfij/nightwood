@@ -23,8 +23,9 @@
     <hr>
     <h2>{{ 'user.dragons' | translate }}</h2>
     <div *ngIf="(dragons$ | async) as dragons">
-      <div *ngFor="let dragon of dragons" class="wrapper-dragon">
+      <div *ngFor="let dragon of dragons; let i = index" class="wrapper-dragon">
         <div tooltip>
+          {{ i+1 }}. <b>{{ dragon.name }}</b> [{{ dragon.level }}]
           <ng-template #tooltipTemplate>
             <div class="item-tooltip dragon-tooltip">
               <h5>{{ dragon.name }}</h5>
@@ -35,17 +36,26 @@
               </p>
             </div>
           </ng-template>
-
-          <b>{{ dragon.name }}</b> [{{ dragon.level }}]
         </div>
       </div>
     </div>
 
     <hr>
     <h2>{{ 'user.achievements' | translate }}</h2>
-    <div *ngIf="{ all: allAchievements$ | async, user: userAchievements$ | async } as achievements">
+    <div *ngIf="{ all: allAchievements$ | async, user: userAchievements$ | async } as achievements" class="wrapper-achievements">
       <div *ngFor="let achievement of achievements.all">
-        {{ achievement.name }}
+        <div
+          *ngIf="achievements.user && checkCompleted(achievement, achievements.user)"
+          class="item-achievement {{achievement.cssClass}}"
+          tooltip>
+          <img [src]="achievement.image" [alt]="achievement.name" draggable="false">
+          <ng-template #tooltipTemplate>
+            <div class="item-tooltip dragon-tooltip">
+              <h5>{{ achievement.name }}</h5>
+              <p>{{ achievement.hint }}</p>
+            </div>
+          </ng-template>
+        </div>
       </div>
     </div>
     <hr>
