@@ -6,6 +6,7 @@ import { AuctionModule } from 'src/api/items/auction/auction.module';
 import { ItemModule } from 'src/api/items/item/item.module';
 import { ErrorService } from 'src/common/services/error.service';
 import { AlchemyModule } from '../items/alchemy/alchemy.module';
+import { AchievementsModule } from '../users/achievements/achievements.module';
 import { MailModule } from '../users/mail/mail.module';
 import { User } from '../users/user/model/user.entity';
 import { UserModule } from '../users/user/user.module';
@@ -18,6 +19,7 @@ import { ActionItemService } from './service/action-item.service';
     imports: [
         TypeOrmModule.forFeature([User]),
         UserModule,
+        AchievementsModule,
         MailModule,
         DragonModule, 
         DragonActionModule,

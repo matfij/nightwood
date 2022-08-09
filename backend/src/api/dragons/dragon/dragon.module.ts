@@ -11,12 +11,14 @@ import { MathService } from 'src/common/services/math.service';
 import { DragonSkillsModule } from '../dragon-skills/dragon-skills.module';
 import { DataService } from 'src/common/services/data.service';
 import { BattleHelperService } from './service/dragon-helper.service';
+import { AchievementsModule } from 'src/api/users/achievements/achievements.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Dragon]),
     DragonActionModule,
     DragonSkillsModule,
+    AchievementsModule,
   ],
   controllers: [
     DragonController,

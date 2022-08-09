@@ -56,18 +56,22 @@
 }
 
 .wrapper-achievements {
-  padding: 5px 0px;
+  padding: 6px 0px;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
 }
 
 .item-achievement {
   width: 60px;
+  margin-right: 6px;
 
   img {
     border-radius: 50%;
   }
+}
+
+.achievement-tooltip {
+  box-shadow: inset 0px 0px 2px 1px black;
 }
 
 .achievement-I {

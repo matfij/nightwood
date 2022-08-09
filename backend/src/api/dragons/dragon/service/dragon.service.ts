@@ -33,6 +33,7 @@ import { BOOSTERS } from 'src/api/items/alchemy/model/data/boosters';
 import { EXPEDITIONS } from '../../dragon-action/model/data/expeditions';
 import { DragonBestDto } from '../model/dto/dragon-best.dto';
 import { UserDto } from 'src/api/users/user/model/dto/user.dto';
+import { AchievementsService } from 'src/api/users/achievements/service/achievements.service';
 
 @Injectable()
 export class DragonService {
@@ -44,6 +45,7 @@ export class DragonService {
         private battleHelperService: BattleHelperService,
         private dragonActionService: DragonActionService,
         private dragonSkillsService: DragonSkillsService,
+        private achievementsService: AchievementsService,
         private errorService: ErrorService,
         private dataService: DataService,
         private dateService: DateService,
@@ -234,6 +236,10 @@ export class DragonService {
         enemyDragon.action = null;
 
         const partialResult = await this.dragonBattleService.executeBattle(ownedDragon, enemyDragon);
+
+        this.checkDragon(ownerId, dto.ownedDragonId).then(updatedDragon => {
+            this.achievementsService.checkDragonTrainerAchievements(ownerId, updatedDragon);
+        });
 
         const battleResult: BattleResultDto = {
             ownedDragon: partialResult.ownedDragon,

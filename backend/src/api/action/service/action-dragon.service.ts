@@ -17,13 +17,14 @@ import { DRAGON_SUMMON_ACTIONS } from "src/api/dragons/dragon/data/dragon-summon
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { BoosterActivateDto } from "src/api/items/alchemy/model/dto/booster-activate.dto";
 import { AlchemyService } from "src/api/items/alchemy/service/alchemy.service";
-import { BOOSTERS } from "src/api/items/alchemy/model/data/boosters";
 import { BOOSTER_RECIPES } from "src/api/items/alchemy/model/data/booster-recipe";
+import { AchievementsService } from "src/api/users/achievements/service/achievements.service";
 
 @Injectable()
 export class ActionDragonService {
 
     constructor(
+        private achievementsService: AchievementsService,
         private userService: UserService,
         private dragonService: DragonService,
         private itemService: ItemService,
@@ -36,6 +37,8 @@ export class ActionDragonService {
         await this.userService.updateOwnedDragons(userId, true);
         
         const dragon = await this.dragonService.adopt(user, dto);
+
+        this.achievementsService.checkDragonOwnerAchievements(userId);
 
         return dragon;
     }
@@ -57,6 +60,8 @@ export class ActionDragonService {
         
         const dragon = await this.dragonService.adopt(user, dto);
 
+        this.achievementsService.checkDragonOwnerAchievements(userId);
+
         return dragon;
     }
 
@@ -66,6 +71,8 @@ export class ActionDragonService {
         
         await this.itemService.consumeItem(item);
         const fedDragon = await this.dragonService.feedDragon(item, dragon);
+
+        this.achievementsService.checkPersistentBreederAchievements(userId, fedDragon);
         
         return fedDragon;
     }
