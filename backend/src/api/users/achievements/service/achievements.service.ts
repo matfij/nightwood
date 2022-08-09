@@ -2,9 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { Repository } from "typeorm";
-import { UserDto } from "../../user/model/dto/user.dto";
 import { User } from "../../user/model/user.entity";
-import { ACHIEVEMENTS_ALL, DRAGON_OWNER_I, DRAGON_OWNER_II, DRAGON_OWNER_III, DRAGON_TRAINER_I, DRAGON_TRAINER_II, DRAGON_TRAINER_III, PERSISTENT_BREEDER_I, PERSISTENT_BREEDER_II, PERSISTENT_BREEDER_III } from "../data/achievements";
+import { ACHIEVEMENTS_ALL, CROESUS_I, CROESUS_II, CROESUS_III, CURIOUS_EXPLORER_I, CURIOUS_EXPLORER_II, CURIOUS_EXPLORER_III, DRAGON_OWNER_I, DRAGON_OWNER_II, DRAGON_OWNER_III, DRAGON_TRAINER_I, DRAGON_TRAINER_II, DRAGON_TRAINER_III, PERSISTENT_BREEDER_I, PERSISTENT_BREEDER_II, PERSISTENT_BREEDER_III } from "../data/achievements";
 import { Achievements } from "../model/achievements.entity";
 import { AchievementDto } from "../model/dto/achievement.dto";
 import { AchievementsDto } from "../model/dto/achievements.dto";
@@ -96,6 +95,45 @@ export class AchievementsService {
         }
         if (dragon.experience >= DRAGON_TRAINER_III.requiredPoints && !user.achievements.dragonTrainerIII) {
             user.achievements.dragonTrainerIII = true;
+            achievementsChanged = true;
+        }
+
+        if (achievementsChanged) {
+            await this.achievementsRepository.save(user.achievements);
+        }
+    }
+
+    async checkCuriousExplorerAchievements(userId: number, gainedTime: number = 0) {
+        const user = await this.getUserData(userId);
+        user.achievements.expeditionTime += gainedTime;
+
+        if (user.achievements.expeditionTime >= CURIOUS_EXPLORER_I.requiredPoints) {
+            user.achievements.curiousExplorerI = true;
+        }
+        if (user.achievements.expeditionTime >= CURIOUS_EXPLORER_II.requiredPoints) {
+            user.achievements.curiousExplorerII = true;
+        }
+        if (user.achievements.expeditionTime >= CURIOUS_EXPLORER_III.requiredPoints) {
+            user.achievements.curiousExplorerIII = true;
+        }
+
+        await this.achievementsRepository.save(user.achievements);
+    }
+
+    async checkCroesusAchievements(userId: number) {
+        const user = await this.getUserData(userId);
+
+        let achievementsChanged = false;
+        if (user.gold >= CROESUS_I.requiredPoints && !user.achievements.croesusI) {
+            user.achievements.croesusI = true;
+            achievementsChanged = true;
+        }
+        if (user.gold >= CROESUS_II.requiredPoints && !user.achievements.croesusII) {
+            user.achievements.croesusII = true;
+            achievementsChanged = true;
+        }
+        if (user.gold >= CROESUS_III.requiredPoints && !user.achievements.croesusIII) {
+            user.achievements.croesusIII = true;
             achievementsChanged = true;
         }
 

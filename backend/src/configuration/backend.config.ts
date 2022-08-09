@@ -2,8 +2,8 @@
  * General
  */
 
-export const EXPEDITION_TIME_SCALE = 1 / 1000;
-export const FEED_TIME_SCALE = 1 / 10000;
+export const EXPEDITION_TIME_SCALE = 1 / 1;
+export const FEED_TIME_SCALE = 1 / 1;
 export const ALCHEMY_TIME_SCALE = 1 / 1;
 
 export const PAGINATION_DEFAULT_PAGE = 0;

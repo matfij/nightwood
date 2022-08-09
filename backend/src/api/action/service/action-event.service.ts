@@ -6,6 +6,7 @@ import { DragonActionService } from "src/api/dragons/dragon-action/service/drago
 import { ACTION_INCREASE_DRAGON_LIMIT } from "src/api/dragons/dragon/data/dragon-tamer-actions";
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
+import { AchievementsService } from "src/api/users/achievements/service/achievements.service";
 import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
 import { MailService } from "src/api/users/mail/service/mail.service";
 import { UserService } from "src/api/users/user/service/user.service";
@@ -16,6 +17,7 @@ import { DRAGON_BASE_LIMIT } from "src/configuration/frontend.config";
 export class ActionEventService {
 
     constructor(
+        private achievementsService: AchievementsService,
         private userService: UserService,
         private mailService: MailService,
         private dragonService: DragonService,
@@ -37,6 +39,7 @@ export class ActionEventService {
         const dragons = await this.dragonService.getOwnedDragons(user);
 
         let results: ExpeditionReportDto[] = [];
+        let totalExpeditionTime = 0;
         for (const dragon of dragons) {
             const expedition = await this.dragonActionService.checkExpedition(dragon);
             if (expedition) {
@@ -54,6 +57,8 @@ export class ActionEventService {
                     loots: loots,
                 });
 
+                totalExpeditionTime += expedition.minimumActionTime / (60 * 60 * 1000);
+
                 const params: MailSendSystemParams = {
                     receiverId: userId,
                     topic: 'Expedition ended',
@@ -64,6 +69,9 @@ export class ActionEventService {
                 this.mailService.sendSystemMail(params);
             }
         }
+
+        this.achievementsService.checkCroesusAchievements(userId);
+        this.achievementsService.checkCuriousExplorerAchievements(userId, totalExpeditionTime);
 
         return results.filter(result => result != null);
     }

@@ -3,6 +3,7 @@ import { AuctionBuyResultDto } from "src/api/items/auction/model/dto/auction-buy
 import { AuctionService } from "src/api/items/auction/service/auction.service";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { ItemService } from "src/api/items/item/service/item.service";
+import { AchievementsService } from "src/api/users/achievements/service/achievements.service";
 import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
 import { MailService } from "src/api/users/mail/service/mail.service";
 import { UserService } from "src/api/users/user/service/user.service";
@@ -12,6 +13,7 @@ import { ErrorService } from "src/common/services/error.service";
 export class ActionItemService {
 
     constructor(
+        private achievementsService: AchievementsService,
         private errorService: ErrorService,
         private userService: UserService,
         private mailService: MailService,
@@ -39,6 +41,8 @@ export class ActionItemService {
             message: `Your item ${auction.item.name} (${auction.quantity}) was sold. ${auction.totalGoldPrice} gold has been deposited into your account.`,
         };
         await this.mailService.sendSystemMail(mailParams);
+
+        this.achievementsService.checkCroesusAchievements(seller.id);
 
         return { consumedGold: auction.totalGoldPrice };
     }

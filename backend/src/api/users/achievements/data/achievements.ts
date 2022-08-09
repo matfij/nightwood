@@ -46,18 +46,21 @@ export const CURIOUS_EXPLORER_I: Achievement = {
     uid: 'curiousExplorerI',
     name: 'Curious explorer',
     hint: 'Your dragons have spent 100 hours on expeditions.',
+    requiredPoints: 100,
 };
 
 export const CURIOUS_EXPLORER_II: Achievement = {
     uid: 'curiousExplorerII',
     name: 'Cartographer',
     hint: 'Your dragons have spent 1000 hours on expeditions.',
+    requiredPoints: 1000,
 };
 
 export const CURIOUS_EXPLORER_III: Achievement = {
     uid: 'curiousExplorerIII',
     name: 'Great conqueror',
-    hint: 'Your dragons have spent 2000 hours on expeditions.',
+    hint: 'Your dragons have spent 3000 hours on expeditions.',
+    requiredPoints: 3000,
 };
 
 export const DRAGON_TRAINER_I: Achievement = {
@@ -85,18 +88,21 @@ export const CROESUS_I: Achievement = {
     uid: 'croesusI',
     name: 'Bargain collector',
     hint: 'Gather 1000 gold.',
+    requiredPoints: 1000,
 };
 
 export const CROESUS_II: Achievement = {
     uid: 'croesusII',
     name: 'Agile trader',
     hint: 'Gather 10000 gold.',
+    requiredPoints: 10000,
 };
 
 export const CROESUS_III: Achievement = {
     uid: 'croesusIII',
     name: 'Croesus',
     hint: 'Gather 100000 gold.',
+    requiredPoints: 100000,
 };
 
 export const ACHIEVEMENTS_ALL: Achievement[] = [

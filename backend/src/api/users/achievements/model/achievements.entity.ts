@@ -6,6 +6,9 @@ export class Achievements {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ default: 0 })
+    expeditionTime: number;
+
     @Column({ default: false })
     dragonOwnerI: boolean;
 

@@ -6,6 +6,9 @@ export class AchievementsDto {
     id: number;
 
     @ApiProperty()
+    expeditionTime: number;
+
+    @ApiProperty()
     dragonOwnerI: boolean;
 
     @ApiProperty()
