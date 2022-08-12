@@ -15,9 +15,11 @@
         <img src="assets/img/lore/player.png" alt="avatar" draggable="false">
       </div>
     </ng-template>
-    <input #fileUpload class="gone" type="file" (change)="setAvatar($event)">
-    <div (click)="fileUpload.click()" class="btn-base btn-avatar">
-      Set avatar
+    <div *ngIf="ownProfile">
+      <input #fileUpload class="gone" type="file" (change)="setAvatar($event)">
+      <div (click)="fileUpload.click()" class="btn-base btn-avatar">
+        Set avatar
+      </div>
     </div>
 
     <hr>

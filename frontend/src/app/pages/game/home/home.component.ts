@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DragonBestDto, DragonController, DragonGetDto, DragonPageDto } from 'src/app/client/api';
+import { DragonBestDto, DragonController } from 'src/app/client/api';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ export class HomeComponent implements OnInit {
   dragonsLoading: boolean = false;
 
   constructor(
+    private router: Router,
     private dragonController: DragonController,
   ) {}
 
@@ -25,8 +27,7 @@ export class HomeComponent implements OnInit {
   }
 
   showUserDetails(userId: number) {
-    // todo - navigate to user profile
-    console.log(userId);
+    this.router.navigate(['game', 'profile', userId]);
   }
 
 }

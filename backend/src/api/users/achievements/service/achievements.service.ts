@@ -28,6 +28,11 @@ export class AchievementsService {
         return user.achievements;
     }
 
+    async getUserPublicAchievements(publicUserId: number): Promise<AchievementsDto> {
+        const user = await this.getUserData(publicUserId);
+        return user.achievements;
+    }
+
     async getAllAchievements(): Promise<AchievementDto[]> {
         return ACHIEVEMENTS_ALL;
     }

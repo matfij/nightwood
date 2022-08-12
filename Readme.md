@@ -30,7 +30,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Dragon equipment - runes crafting [100%]
  - Dragon QoL utils - renaming, resting etc. [100%]
  - Alchemy - cooking, extracting [100%]
- - Player profiles, achievements [0%]
+ - Player profiles, achievements [75%]
  - Expedition guardians & progress [100%]
  - User roles & banning [0%]
 

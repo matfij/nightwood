@@ -1,4 +1,4 @@
-import { DragonDto, DragonNature, SkillDto } from "src/app/client/api";
+import { DragonDto, DragonNature, DragonPublicDto, SkillDto } from "src/app/client/api";
 
 export interface AdoptStage {
   step: AdoptStep;
@@ -29,6 +29,10 @@ export interface DisplayDragon extends DragonDto {
   currentAction?: string;
   actionTime?: number;
   isSelected?: boolean;
+}
+
+export interface DisplayDragonPublic extends DragonPublicDto {
+  image?: string;
 }
 
 export interface DisplaySkill extends SkillDto {

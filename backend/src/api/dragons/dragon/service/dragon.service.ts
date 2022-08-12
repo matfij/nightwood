@@ -34,6 +34,7 @@ import { EXPEDITIONS } from '../../dragon-action/model/data/expeditions';
 import { DragonBestDto } from '../model/dto/dragon-best.dto';
 import { UserDto } from 'src/api/users/user/model/dto/user.dto';
 import { AchievementsService } from 'src/api/users/achievements/service/achievements.service';
+import { DragonPublicDto } from '../model/dto/dragon-public.dto';
 
 @Injectable()
 export class DragonService {
@@ -143,6 +144,25 @@ export class DragonService {
         });
 
         return dragons;
+    }
+
+    async getPublicPlayerDragons(publicUserId: number): Promise<DragonPublicDto[]> {
+        const filterOptions: FindManyOptions<Dragon> = {
+            where: { user: publicUserId },
+            order: { experience: 'DESC' },
+        };
+
+        const dragons = await this.dragonRepository.find({
+            ...filterOptions,
+        });
+
+        return dragons.map((dragon) => ({
+            id: dragon.id,
+            name: dragon.name,
+            level: dragon.level,
+            nature: dragon.nature,
+            experience: dragon.experience,
+        }));
     }
 
     async checkDragon(ownerId: number, dragonId: number): Promise<DragonDto> {

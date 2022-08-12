@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request } from "@nestjs/common";
+import { Controller, Post, UseGuards, Request, Param, Get } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { JwtAuthGuard } from "../auth/util/jwt.guard";
@@ -19,6 +19,12 @@ export class AchievementsController {
     @ApiOkResponse({ type: AchievementsDto})
     getUserAchievements(@Request() req: AuthorizedRequest): Promise<AchievementsDto> {
         return this.achievementsService.getUserAchievements(req.user.id);
+    }
+
+    @Get('getUserPublicAchievements/:id')
+    @ApiOkResponse({ type: AchievementsDto})
+    getUserPublicAchievements(@Param('id') id: string): Promise<AchievementsDto> {
+        return this.achievementsService.getUserPublicAchievements(+id);
     }
 
     @Post('getAllAchievements')

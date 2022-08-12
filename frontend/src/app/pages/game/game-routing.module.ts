@@ -18,6 +18,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'profile', component: UserProfileComponent },
+  { path: 'profile/:id', component: UserProfileComponent },
   { path: 'adopt-dragon', component: AdoptDragonComponent },
   { path: 'my-dragons', component: MyDragonsComponent },
   { path: 'summon-dragon', component: DragonSummonComponent },

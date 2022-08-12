@@ -15,6 +15,7 @@ import { DragonTamerActionDto } from "./model/dto/dragon-tamer-actions.dto";
 import { DragonSummonActionDto } from "./model/dto/dragon-summon.dto";
 import { BattleDragonDto } from "./model/definitions/dragon-battle";
 import { DragonBestDto } from "./model/dto/dragon-best.dto";
+import { DragonPublicDto } from "./model/dto/dragon-public.dto";
 
 @Controller('dragon')
 @UseGuards(JwtAuthGuard)
@@ -52,10 +53,15 @@ export class DragonController {
     }
 
     @Post('getOwned')
-    @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: [DragonDto] })
     getOwned(@Request() req: AuthorizedRequest): Promise<DragonDto[]> {
         return this.dragonService.getOwnedDragons(req.user);
+    }
+
+    @Get('getPublicPlayerDragons/:id')
+    @ApiOkResponse({ type: [DragonPublicDto] })
+    getPublicPlayerDragons(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<DragonPublicDto[]> {
+        return this.dragonService.getPublicPlayerDragons(+id);
     }
 
     @Post('calculateStatistics/:id')

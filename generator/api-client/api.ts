@@ -797,6 +797,7 @@ export interface IUserController {
     getAll(body: GetUserDto): Observable<PageUserDto>;
     setAvatar(): Observable<void>;
     getAvatar(): Observable<void>;
+    getPublicData(id: string): Observable<UserPublicDto>;
 }
 
 @Injectable({
@@ -1104,6 +1105,56 @@ export class UserController implements IUserController {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    getPublicData(id: string): Observable<UserPublicDto> {
+        let url_ = this.baseUrl + "/api/v1/user/getPublicData/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPublicData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPublicData(<any>response_);
+                } catch (e) {
+                    return <Observable<UserPublicDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserPublicDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPublicData(response: HttpResponseBase): Observable<UserPublicDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserPublicDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserPublicDto>(<any>null);
     }
 }
 
@@ -1635,6 +1686,170 @@ export class ItemController implements IItemController {
     }
 }
 
+export interface IAchievementsController {
+    getUserAchievements(): Observable<AchievementsDto>;
+    getUserPublicAchievements(id: string): Observable<AchievementsDto>;
+    getAllAchievements(): Observable<AchievementDto[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AchievementsController implements IAchievementsController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getUserAchievements(): Observable<AchievementsDto> {
+        let url_ = this.baseUrl + "/api/v1/achievements/getUserAchievements";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserAchievements(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserAchievements(<any>response_);
+                } catch (e) {
+                    return <Observable<AchievementsDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AchievementsDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserAchievements(response: HttpResponseBase): Observable<AchievementsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <AchievementsDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AchievementsDto>(<any>null);
+    }
+
+    getUserPublicAchievements(id: string): Observable<AchievementsDto> {
+        let url_ = this.baseUrl + "/api/v1/achievements/getUserPublicAchievements/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserPublicAchievements(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserPublicAchievements(<any>response_);
+                } catch (e) {
+                    return <Observable<AchievementsDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AchievementsDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUserPublicAchievements(response: HttpResponseBase): Observable<AchievementsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <AchievementsDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AchievementsDto>(<any>null);
+    }
+
+    getAllAchievements(): Observable<AchievementDto[]> {
+        let url_ = this.baseUrl + "/api/v1/achievements/getAllAchievements";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllAchievements(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllAchievements(<any>response_);
+                } catch (e) {
+                    return <Observable<AchievementDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AchievementDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllAchievements(response: HttpResponseBase): Observable<AchievementDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <AchievementDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AchievementDto[]>(<any>null);
+    }
+}
+
 export interface IMailController {
     send(body: MailSendDto): Observable<MailDto>;
     read(id: string): Observable<MailDto>;
@@ -1861,6 +2076,7 @@ export interface IDragonController {
     getAll(body: DragonGetDto): Observable<DragonPageDto>;
     getBest(): Observable<DragonBestDto[]>;
     getOwned(): Observable<DragonDto[]>;
+    getPublicPlayerDragons(id: string): Observable<DragonPublicDto[]>;
     calculateStatistics(id: string): Observable<BattleDragonDto>;
     startBattle(body: BattleStartDto): Observable<BattleResultDto>;
     startGuardianBattle(body: BattleGuardianStartDto): Observable<BattleResultDto>;
@@ -2126,6 +2342,56 @@ export class DragonController implements IDragonController {
             }));
         }
         return _observableOf<DragonDto[]>(<any>null);
+    }
+
+    getPublicPlayerDragons(id: string): Observable<DragonPublicDto[]> {
+        let url_ = this.baseUrl + "/api/v1/dragon/getPublicPlayerDragons/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPublicPlayerDragons(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPublicPlayerDragons(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonPublicDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonPublicDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPublicPlayerDragons(response: HttpResponseBase): Observable<DragonPublicDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonPublicDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonPublicDto[]>(<any>null);
     }
 
     calculateStatistics(id: string): Observable<BattleDragonDto> {
@@ -2997,119 +3263,6 @@ export class AuctionController implements IAuctionController {
     }
 }
 
-export interface IAchievementsController {
-    getUserAchievements(): Observable<AchievementsDto>;
-    getAllAchievements(): Observable<AchievementDto[]>;
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class AchievementsController implements IAchievementsController {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-    }
-
-    getUserAchievements(): Observable<AchievementsDto> {
-        let url_ = this.baseUrl + "/api/v1/achievements/getUserAchievements";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUserAchievements(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetUserAchievements(<any>response_);
-                } catch (e) {
-                    return <Observable<AchievementsDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<AchievementsDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetUserAchievements(response: HttpResponseBase): Observable<AchievementsDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <AchievementsDto>JSON.parse(_responseText, this.jsonParseReviver);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<AchievementsDto>(<any>null);
-    }
-
-    getAllAchievements(): Observable<AchievementDto[]> {
-        let url_ = this.baseUrl + "/api/v1/achievements/getAllAchievements";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllAchievements(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAllAchievements(<any>response_);
-                } catch (e) {
-                    return <Observable<AchievementDto[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<AchievementDto[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAllAchievements(response: HttpResponseBase): Observable<AchievementDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <AchievementDto[]>JSON.parse(_responseText, this.jsonParseReviver);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<AchievementDto[]>(<any>null);
-    }
-}
-
 export enum DragonNature {
     Fire = "Fire",
     Water = "Water",
@@ -3336,11 +3489,32 @@ export interface CreateUserDto {
     nickname: string;
 }
 
+export interface AchievementsDto {
+    id: number;
+    expeditionTime: number;
+    dragonOwnerI: boolean;
+    dragonOwnerII: boolean;
+    dragonOwnerIII: boolean;
+    persistentBreederI: boolean;
+    persistentBreederII: boolean;
+    persistentBreederIII: boolean;
+    curiousExplorerI: boolean;
+    curiousExplorerII: boolean;
+    curiousExplorerIII: boolean;
+    dragonTrainerI: boolean;
+    dragonTrainerII: boolean;
+    dragonTrainerIII: boolean;
+    croesusI: boolean;
+    croesusII: boolean;
+    croesusIII: boolean;
+}
+
 export interface UserDto {
     id?: number;
     email: string;
     password?: string;
     nickname: string;
+    achievements?: AchievementsDto;
     gold: number;
     ownedDragons: number;
     maxOwnedDragons: number;
@@ -3375,6 +3549,13 @@ export interface PageMetaDto {
 export interface PageUserDto {
     meta: PageMetaDto;
     data: UserDto[];
+}
+
+export interface UserPublicDto {
+    id?: number;
+    nickname: string;
+    achievements?: AchievementsDto;
+    gold: number;
 }
 
 export interface UserLoginDto {
@@ -3416,6 +3597,12 @@ export interface ItemRecipeDto {
 
 export interface RecipeComposeDto {
     recipeUid: string;
+}
+
+export interface AchievementDto {
+    uid: string;
+    name: string;
+    hint: string;
 }
 
 export interface MailSendDto {
@@ -3477,6 +3664,15 @@ export interface DragonBestDto {
     experience: number;
     userId: number;
     userNickname: string;
+}
+
+export interface DragonPublicDto {
+    id: number;
+    userId?: number;
+    name: string;
+    nature: DragonNature;
+    level: number;
+    experience: number;
 }
 
 export interface BattleDragonDto {
@@ -3675,30 +3871,6 @@ export interface AuctionGetDto {
 export interface AuctionPageDto {
     meta: PageMetaDto;
     data: AuctionDto[];
-}
-
-export interface AchievementsDto {
-    dragonOwnerI: boolean;
-    dragonOwnerII: boolean;
-    dragonOwnerIII: boolean;
-    persistentBreederI: boolean;
-    persistentBreederII: boolean;
-    persistentBreederIII: boolean;
-    curiousExplorerI: boolean;
-    curiousExplorerII: boolean;
-    curiousExplorerIII: boolean;
-    dragonTrainerI: boolean;
-    dragonTrainerII: boolean;
-    dragonTrainerIII: boolean;
-    croesusI: boolean;
-    croesusII: boolean;
-    croesusIII: boolean;
-}
-
-export interface AchievementDto {
-    uid: string;
-    name: string;
-    hint: string;
 }
 
 export class SwaggerException extends Error {

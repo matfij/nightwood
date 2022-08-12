@@ -13,6 +13,7 @@ import { UserDto } from '../model/dto/user.dto';
 import { User } from '../model/user.entity';
 import { createReadStream } from 'fs';
 import { AVATARS_PATH } from 'src/configuration/app.config';
+import { UserPublicDto } from '../model/dto/user-public.dto';
 
 @Injectable()
 export class UserService {
@@ -140,6 +141,19 @@ export class UserService {
         } catch(err) {
             return null;
         }
+    }
+
+    async getPublicData(id: number | string): Promise<UserPublicDto> {
+        const user = await this.userRepository.findOne(id);
+
+        if (!user) this.errorService.throw('errors.userNotFound');
+
+        const publicUser: UserPublicDto = {
+            id: user.id,
+            nickname: user.nickname,
+            gold: user.gold,
+        };
+        return publicUser;
     }
 
     private async emailExists(email: string): Promise<boolean> {

@@ -1,6 +1,6 @@
 import { Body, Request, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors, StreamableFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags, PartialType } from '@nestjs/swagger';
 import { AuthorizedRequest } from 'src/common/definitions/requests';
 import { PaginationInterceptor } from 'src/common/interceptors/pagination.interceptor';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
@@ -8,6 +8,7 @@ import { CreateUserDto } from './model/dto/create-user.dto';
 import { GetUserDto } from './model/dto/get-user.dto';
 import { PageUserDto } from './model/dto/page-user.dto';
 import { UpdateUserDto } from './model/dto/update-user.dto';
+import { UserPublicDto } from './model/dto/user-public.dto';
 import { UserDto } from './model/dto/user.dto';
 import { UserService } from './service/user.service';
 
@@ -54,6 +55,12 @@ export class UserController {
     @Post('getAvatar')
     getAvatar(@Request() req: AuthorizedRequest): Promise<StreamableFile | void> {
         return this.userService.getAvatar(req.user.id);
+    }
+
+    @Get('getPublicData/:id')
+    @ApiOkResponse({ type: UserPublicDto })
+    getPublicData(@Param('id') id: string): Promise<UserPublicDto> {
+        return this.userService.getPublicData(id);
     }
 
 }    

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { DragonActionDto, DragonActionType, DragonDto, DragonNature, ExpeditionGuardianDto, SkillDto } from "src/app/client/api";
+import { DragonActionDto, DragonActionType, DragonDto, DragonNature, DragonPublicDto, ExpeditionGuardianDto, SkillDto } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
-import { DisplayDragon, DisplaySkill } from "../definitions/dragons";
+import { DisplayDragon, DisplayDragonPublic, DisplaySkill } from "../definitions/dragons";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,7 @@ export class DragonService {
 
   private readonly BASE_IMG_PATH = 'assets/img/dragons';
   private readonly BASE_SKILL_IMG_PATH = 'assets/img/skills';
+  private readonly VERSION = 1;
   private readonly EXTENSION = 'png';
 
   constructor(
@@ -18,25 +19,21 @@ export class DragonService {
     private dateService: DateService,
   ) {}
 
+  getDragonAge(level: number): number {
+    let age: number;
+    if (level < 10) age = 1;
+    else if (level < 45) age = 2;
+    else if (level < 100) age = 3;
+    else age = 4;
+
+    return age;
+  }
+
   toDisplayDragon(dragon: DragonDto): DisplayDragon {
-    let nature: string;
-    switch (dragon.nature) {
-      case DragonNature.Fire: { nature = 'fire'; break; }
-      case DragonNature.Water: { nature = 'water'; break; }
-      case DragonNature.Wind: { nature = 'wind'; break; }
-      case DragonNature.Earth: { nature = 'earth'; break; }
-      case DragonNature.Electric: { nature = 'electric'; break; }
-      case DragonNature.Nature: { nature = 'nature'; break; }
-      case DragonNature.Dark: { nature = 'dark'; break; }
-    };
+    let nature = dragon.nature.toLowerCase();
+    const age = this.getDragonAge(dragon.level);
 
-    let adulthood: number;
-    if (dragon.level < 10) adulthood = 1;
-    else if (dragon.level < 45) adulthood = 2;
-    else if (dragon.level < 100) adulthood = 3;
-    else adulthood = 4;
-
-    const image = `${this.BASE_IMG_PATH}/${nature}-1-${adulthood}.${this.EXTENSION}`;
+    const image = `${this.BASE_IMG_PATH}/${nature}-${this.VERSION}-${age}.${this.EXTENSION}`;
 
     const currentAction = (dragon.action && dragon.action.type !== DragonActionType.None && !this.dateService.checkIfEventAvailable(dragon.action.nextAction))
       ? this.getDragonActionName(dragon.action.type)
@@ -46,6 +43,18 @@ export class DragonService {
       ...dragon,
       image: image,
       currentAction: currentAction,
+    };
+  }
+
+  toDisplayDragonPublic(dragon: DragonPublicDto): DisplayDragonPublic {
+    let nature = dragon.nature.toLowerCase();
+    const age = this.getDragonAge(dragon.level);
+
+    const image = `${this.BASE_IMG_PATH}/${nature}-${this.VERSION}-${age}.${this.EXTENSION}`;
+
+    return {
+      ...dragon,
+      image: image,
     };
   }
 
