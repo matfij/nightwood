@@ -14,6 +14,9 @@ import { User } from '../model/user.entity';
 import { createReadStream } from 'fs';
 import { AVATARS_PATH } from 'src/configuration/app.config';
 import { UserPublicDto } from '../model/dto/user-public.dto';
+import { FriendshipRequestDto } from '../model/dto/friendship-request.dto';
+import { FriendshipPendingRequestDto } from '../model/dto/friendship-pending-request.dto';
+import { FriendshipRespondDto } from '../model/dto/friendship-respond.dto';
 
 @Injectable()
 export class UserService {
@@ -145,7 +148,6 @@ export class UserService {
 
     async getPublicData(id: number | string): Promise<UserPublicDto> {
         const user = await this.userRepository.findOne(id);
-
         if (!user) this.errorService.throw('errors.userNotFound');
 
         const publicUser: UserPublicDto = {
@@ -154,6 +156,57 @@ export class UserService {
             gold: user.gold,
         };
         return publicUser;
+    }
+
+    async requestFriendship(userId: number, dto: FriendshipRequestDto) {
+        const user = await this.userRepository.findOne(userId);
+
+        const targetUser = await this.userRepository.findOne(dto.targetUserId, { relations: ['friends', 'friendRequests'] });
+        if (!targetUser) this.errorService.throw('errors.userNotFound');
+
+        if (targetUser.friends.includes(user)) this.errorService.throw('errors.alreadyFriend');
+        if (targetUser.friendRequests.includes(user)) this.errorService.throw('errors.alreadyFriendRequest');
+
+        targetUser.friendRequests.push(user);
+        await this.userRepository.save(targetUser);
+    }
+
+    async getPendingFriendshipRequests(userId: number): Promise<FriendshipPendingRequestDto[]> {
+        const user = await this.userRepository.findOne(userId, { relations: ['friendRequests'] });
+        
+        return user.friendRequests.map((requester) => ({
+            requesterId: requester.id,
+            requesterNick: requester.nickname,
+        }));
+    }
+
+    async respondToFriendshipRequest(userId: number, dto: FriendshipRespondDto): Promise<UserPublicDto> {
+        const user = await this.userRepository.findOne(userId, { relations: ['friends', 'friendRequests'] });
+        const requester = await this.userRepository.findOne(dto.requesterId, { relations: ['friends', 'friendRequests'] });
+        
+        if (!user.friendRequests.includes(requester)) this.errorService.throw('errors.friendRequestNotFound');
+
+        const requestInd = user.friendRequests.findIndex((request) => request.id === requester.id);
+        user.friendRequests.splice(requestInd);
+
+        if (dto.accept) user.friends.push(requester);
+
+        const requesterPublic: UserPublicDto = {
+            id: requester.id,
+            nickname: requester.nickname,
+            gold: requester.gold,
+        };
+        return requesterPublic;
+    }
+
+    async getFriends(userId: number): Promise<UserPublicDto[]> {
+        const user = await this.userRepository.findOne(userId, { relations: ['friends'] });
+        
+        return user.friends.map((friend) => ({
+            id: friend.id,
+            nickname: friend.nickname,
+            gold: friend.gold,
+        }));
     }
 
     private async emailExists(email: string): Promise<boolean> {

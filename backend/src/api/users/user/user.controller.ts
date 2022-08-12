@@ -5,6 +5,9 @@ import { AuthorizedRequest } from 'src/common/definitions/requests';
 import { PaginationInterceptor } from 'src/common/interceptors/pagination.interceptor';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
 import { CreateUserDto } from './model/dto/create-user.dto';
+import { FriendshipPendingRequestDto } from './model/dto/friendship-pending-request.dto';
+import { FriendshipRequestDto } from './model/dto/friendship-request.dto';
+import { FriendshipRespondDto } from './model/dto/friendship-respond.dto';
 import { GetUserDto } from './model/dto/get-user.dto';
 import { PageUserDto } from './model/dto/page-user.dto';
 import { UpdateUserDto } from './model/dto/update-user.dto';
@@ -61,6 +64,30 @@ export class UserController {
     @ApiOkResponse({ type: UserPublicDto })
     getPublicData(@Param('id') id: string): Promise<UserPublicDto> {
         return this.userService.getPublicData(id);
+    }
+
+    @Post('requestFriendship')
+    @ApiOkResponse()
+    requestFriendship(@Request() req: AuthorizedRequest, @Body() dto: FriendshipRequestDto): Promise<void> {
+        return this.userService.requestFriendship(req.user.id, dto);
+    }
+
+    @Post('getPendingFriendshipRequests')
+    @ApiOkResponse({ type: [FriendshipPendingRequestDto] })
+    getPendingFriendshipRequests(@Request() req: AuthorizedRequest): Promise<FriendshipPendingRequestDto[]> {
+        return this.userService.getPendingFriendshipRequests(req.user.id);
+    }
+
+    @Post('respondToFriendshipRequest')
+    @ApiOkResponse({ type: UserPublicDto })
+    respondToFriendshipRequest(@Request() req: AuthorizedRequest, @Body() dto: FriendshipRespondDto): Promise<UserPublicDto> {
+        return this.userService.respondToFriendshipRequest(req.user.id, dto);
+    }
+
+    @Post('getFriends')
+    @ApiOkResponse({ type: [UserPublicDto] })
+    getFriends(@Request() req: AuthorizedRequest): Promise<UserPublicDto[]> {
+        return this.userService.getFriends(req.user.id);
     }
 
 }    

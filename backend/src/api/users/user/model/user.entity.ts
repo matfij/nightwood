@@ -27,6 +27,9 @@ export class User {
     @ManyToMany(_ => User)
     friends: User[];
 
+    @ManyToMany(_ => User)
+    friendRequests: User[];
+
     @Column({ unique: true })
     email: string;
 
