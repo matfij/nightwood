@@ -8,9 +8,9 @@
 }
 
 .expedition {
-  width: 100%;
+  width: 95%;
   max-width: 828px;
-  margin: 10px;
+  margin: 10px auto;
 
   display: grid;
   gap: 0px 8px;
@@ -22,7 +22,8 @@
 }
 
 .expedition-img {
-  max-width: 400px;
+  width: 100%;
+  max-width: 200px;
   max-height: 200px;
   margin: auto;
 
@@ -34,8 +35,8 @@
 }
 
 .expedition-hint {
-  min-width: 200px;
-  max-width: 100%;
+  min-width: 100px;
+  max-width: 400px;
 
   padding: 8px;
   text-align: justify;

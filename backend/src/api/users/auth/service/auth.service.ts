@@ -32,21 +32,7 @@ export class AuthService {
         private emailService: EmailService,
     ) {}
 
-    private async __maintnanceCreateMissingFields() {
-        const users = await this.userRepository.find();
-
-        for (const user of users) {
-            if (!user.achievements) {
-                user.achievements = await this.achievementsService.createAchievements();
-                await this.userRepository.save(user);
-            }
-        }
-    }
-
     async login(dto: UserLoginDto): Promise<UserAuthDto> {
-        // TODO - remove after maintnance
-        // this.__maintnanceCreateMissingFields()
-
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
         if (!user) this.errorService.throw('errors.loginNotFound');
         if (!user.isConfirmed) this.errorService.throw('errors.userNotConfirmed');
