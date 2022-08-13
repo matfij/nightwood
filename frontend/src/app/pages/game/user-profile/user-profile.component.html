@@ -6,26 +6,31 @@
     <h2>{{ user.nickname }}</h2>
     <h2> {{ 'inventory.gold' | translate }}: {{ user.gold }}</h2>
     <div *ngIf="(avatar$ | async) as avatar; else noAvatar">
-      <div class="wrapper-avatar">
+      <div class="item-avatar">
         <img [src]="avatar" alt="avatar" draggable="false">
       </div>
     </div>
     <ng-template #noAvatar>
-      <div class="wrapper-avatar">
+      <div class="item-avatar">
         <img src="assets/img/lore/player.png" alt="avatar" draggable="false">
       </div>
     </ng-template>
     <div *ngIf="ownProfile">
       <input #fileUpload class="gone" type="file" (change)="setAvatar($event)">
       <div (click)="fileUpload.click()" class="btn-base btn-avatar">
-        Set avatar
+        {{ 'user.setAvatar' | translate }}
+      </div>
+    </div>
+    <div *ngIf="!ownProfile">
+      <div (click)="requestFriend(user.id!)" class="btn-base btn-avatar">
+        {{ 'user.inviteFriend' | translate }}
       </div>
     </div>
 
     <hr>
     <h2>{{ 'user.dragons' | translate }}</h2>
     <div *ngIf="(dragons$ | async) as dragons">
-      <div *ngFor="let dragon of dragons; let i = index" class="wrapper-dragon">
+      <div *ngFor="let dragon of dragons; let i = index" class="item-dragon">
         <div tooltip>
           {{ i+1 }}. <b>{{ dragon.name }}</b> [{{ dragon.level }}]
           <ng-template #tooltipTemplate>
@@ -61,7 +66,38 @@
       </div>
     </div>
     <hr>
-    <h2>{{ 'user.friends' | translate }}</h2>
 
+    <h2>{{ 'user.friends' | translate }}</h2>
+    <div *ngIf="(friends$ | async) as friends" class="wrapper-friends">
+      <div *ngFor="let friend of friends" (click)="showFriendDetails(friend.id!)" class="item-friend">
+          <div *ngIf="(friend.avatar$ | async) as avatar else noAvatar">
+            <div class="item-friend-avatar">
+              <img [src]="avatar" alt="avatar" draggable="false">
+            </div>
+          </div>
+          <ng-template #noAvatar>
+            <div class="item-friend-avatar">
+              <img src="assets/img/lore/player.png" alt="avatar" draggable="false">
+            </div>
+          </ng-template>
+
+          {{ friend.nickname }}
+      </div>
+    </div>
+
+    <div *ngIf="ownProfile">
+      <div (click)="displayFriendInvitations = true" class="btn-base btn-avatar">
+        {{ 'user.seeInvitations' | translate }}
+      </div>
+
+      <div *ngIf="(friendInvitations$ | async) as friendInvitations">
+        <app-user-friend-requests
+          *ngIf="displayFriendInvitations"
+          (close)="displayFriendInvitations = false"
+          (friendshipAccepted)="updateFriends($event)"
+          [friendInvitations]="friendInvitations">
+        </app-user-friend-requests>
+      </div>
+    </div>
   </div>
 </div>

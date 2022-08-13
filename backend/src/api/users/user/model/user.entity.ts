@@ -2,7 +2,7 @@ import { Dragon } from "src/api/dragons/dragon/model/dragon.entity";
 import { Mixture } from "src/api/items/alchemy/model/mixture.entity";
 import { Item } from "src/api/items/item/model/item.entity";
 import { DB_MONEY_TYPE, DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
-import { AfterLoad, Column, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { AfterLoad, Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Achievements } from "../../achievements/model/achievements.entity";
 
 @Entity()
@@ -25,9 +25,11 @@ export class User {
     achievements: Achievements;
 
     @ManyToMany(_ => User)
+    @JoinTable()
     friends: User[];
-
+    
     @ManyToMany(_ => User)
+    @JoinTable()
     friendRequests: User[];
 
     @Column({ unique: true })

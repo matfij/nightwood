@@ -1,0 +1,35 @@
+<div class="container-modal">
+
+  <div class="title">
+    {{ 'user.pendingInvitations' | translate }}
+  </div>
+
+  <div *ngFor="let invitation of _friendInvitations" class="item-invitation">
+    <div class="item-user-data">
+      <div *ngIf="(invitation.avatar$ | async) as avatar; else noAvatar">
+        <div class="wrapper-avatar">
+          <img [src]="avatar" alt="avatar" draggable="false">
+        </div>
+      </div>
+      <ng-template #noAvatar>
+        <div class="wrapper-avatar">
+          <img src="assets/img/lore/player.png" alt="avatar" draggable="false">
+        </div>
+      </ng-template>
+
+      {{ invitation.requesterNick }}
+    </div>
+
+    <div (click)="respondToFriendshipRequest(invitation.requesterId, true)" class="btn-base btn-small">
+      {{ 'user.accept' | translate }}
+    </div>
+    <div (click)="respondToFriendshipRequest(invitation.requesterId, false)" class="btn-base btn-small">
+      {{ 'user.decline' | translate }}
+    </div>
+  </div>
+
+  <button (click)="closeModal()" class="btn-base mt-5">
+    {{ 'common.close' | translate }}
+  </button>
+
+</div>

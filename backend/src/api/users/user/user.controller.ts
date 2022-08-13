@@ -59,6 +59,11 @@ export class UserController {
     getAvatar(@Request() req: AuthorizedRequest): Promise<StreamableFile | void> {
         return this.userService.getAvatar(req.user.id);
     }
+    
+    @Get('getAvatarPublic/:id')
+    getAvatarPublic(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<StreamableFile | void> {
+        return this.userService.getAvatar(+id);
+    }
 
     @Get('getPublicData/:id')
     @ApiOkResponse({ type: UserPublicDto })
@@ -88,6 +93,12 @@ export class UserController {
     @ApiOkResponse({ type: [UserPublicDto] })
     getFriends(@Request() req: AuthorizedRequest): Promise<UserPublicDto[]> {
         return this.userService.getFriends(req.user.id);
+    }
+
+    @Get('getFriendsPublic/:id')
+    @ApiOkResponse({ type: [UserPublicDto] })
+    getFriendsPublic(@Param('id') id: string): Promise<UserPublicDto[]> {
+        return this.userService.getFriends(+id);
     }
 
 }    

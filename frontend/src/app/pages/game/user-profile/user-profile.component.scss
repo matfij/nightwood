@@ -19,7 +19,7 @@
   }
 }
 
-.wrapper-avatar {
+.item-avatar {
 
   img {
     height: 200px;
@@ -38,7 +38,7 @@
   text-align: center;
 }
 
-.wrapper-dragon {
+.item-dragon {
   width: fit-content;
   letter-spacing: 0.5px;
   cursor: help;
@@ -89,5 +89,28 @@
 .achievement-III {
   img {
     border: 2px solid $app-rare;
+  }
+}
+
+.wrapper-friends {
+  display: flex;
+}
+
+.item-friend {
+  width: 60px;
+  margin: 3px 6px 3px 0px;
+
+  text-align: center;
+  cursor: pointer;
+}
+
+.item-friend-avatar {
+
+  img {
+    height: 60px;
+    width: 60px;
+
+    border: 2px solid $app-light;
+    border-radius: 50%;
   }
 }

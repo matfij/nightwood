@@ -17,7 +17,7 @@ export class ValidatorService {
     if (!isChat) text = text.toLowerCase().replace(/ /g, '');
 
     BANNED_WORDS.forEach((word) => {
-      if (text.includes(word)) { clear = false; console.log(word); }
+      if (text.includes(word)) { clear = false; }
     });
 
     if (!clear) this.toastService.showError('errors.error', 'errors.bannedWordUse');

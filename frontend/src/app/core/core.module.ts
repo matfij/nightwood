@@ -20,6 +20,7 @@ import { MailSendModalComponent } from './components/mail-send-modal/mail-send-m
 import { TimerPipe } from '../common/utils/timer.pipe';
 import { DragonEquipComponent } from './components/dragon-equip/dragon-equip.component';
 import { DragonStatsComponent } from './components/dragon-stats/dragon-stats.component';
+import { UserFriendRequestsComponent } from './components/user-friend-requests/user-friend-requests.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -36,6 +37,7 @@ const COMPONENTS = [
   MailSendModalComponent,
   DragonEquipComponent,
   DragonStatsComponent,
+  UserFriendRequestsComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

@@ -1,0 +1,30 @@
+@import '../../theme/mixins.scss';
+@import '../../theme/variables.scss';
+
+
+.item-invitation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-user-data {
+  text-align: center;
+
+  font-size: 16px;
+}
+
+.wrapper-avatar {
+
+  img {
+    height: 60px;
+    width: 60px;
+
+    border: 2px solid $app-light;
+    border-radius: 50%;
+  }
+}
+
+.btn-small {
+  text-align: center;
+}

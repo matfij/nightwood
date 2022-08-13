@@ -5,5 +5,5 @@ export class FriendshipRequestDto {
 
     @IsNumber()
     @ApiProperty()
-    targetUserId: string;
+    targetUserId: number;
 }

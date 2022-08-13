@@ -111,7 +111,11 @@
     "boosterNotFound": "Booster not found",
     "currentDragonLimitReached": "Current dragon limit reached",
     "fileTooLarge": "File too large",
-    "avatarIncorrectFormat": "Avatar must be in JPG or PNG format"
+    "avatarIncorrectFormat": "Avatar must be in JPG or PNG format",
+    "friendRequestNotFound": "Friend request not found",
+    "alreadyFriend": "You are already friends",
+    "alreadyFriendRequest": "The invitation has already been sent",
+    "cannotInviteSelf": "You can not invite yourself"
   },
   "game": {
     "menu": "Menu",
@@ -136,7 +140,16 @@
   "user": {
     "dragons": "Dragons",
     "achievements": "Achievements",
-    "friends": "Friends"
+    "friends": "Friends",
+    "setAvatar": "Set avatar",
+    "inviteFriend": "Invite to friends",
+    "seeInvitations": "See invitations",
+    "accept": "Accept",
+    "decline": "Decline",
+    "friendInvitationSent": "Invitation sent",
+    "pendingInvitations": "Pending invitations",
+    "requestAccepted": "Request accepted",
+    "requestDeclined": "Request declined"
   },
   "dragon": {
     "adoptDragonTilte": "Who are you fated to encounter?",

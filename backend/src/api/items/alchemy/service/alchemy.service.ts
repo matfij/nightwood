@@ -32,7 +32,6 @@ export class AlchemyService {
     }
 
     async composeMixture(user: UserDto, dto: MixtureComposeDto): Promise<MixtureDto> {
-        console.log('uid', dto.recipeUid)
         const recipe = MIXTURE_RECIPES.find(x => x.uid === dto.recipeUid);
         if (!recipe) this.errorService.throw('errors.recipeNotFound');
 

@@ -163,9 +163,10 @@ export class UserService {
 
         const targetUser = await this.userRepository.findOne(dto.targetUserId, { relations: ['friends', 'friendRequests'] });
         if (!targetUser) this.errorService.throw('errors.userNotFound');
+        if (user.id === targetUser.id) this.errorService.throw('errors.cannotInviteSelf');
 
-        if (targetUser.friends.includes(user)) this.errorService.throw('errors.alreadyFriend');
-        if (targetUser.friendRequests.includes(user)) this.errorService.throw('errors.alreadyFriendRequest');
+        if (targetUser.friends.map((x) => x.id).includes(user.id)) this.errorService.throw('errors.alreadyFriend');
+        if (targetUser.friendRequests.map((x) => x.id).includes(user.id)) this.errorService.throw('errors.alreadyFriendRequest');
 
         targetUser.friendRequests.push(user);
         await this.userRepository.save(targetUser);
@@ -184,12 +185,18 @@ export class UserService {
         const user = await this.userRepository.findOne(userId, { relations: ['friends', 'friendRequests'] });
         const requester = await this.userRepository.findOne(dto.requesterId, { relations: ['friends', 'friendRequests'] });
         
-        if (!user.friendRequests.includes(requester)) this.errorService.throw('errors.friendRequestNotFound');
+        if (!user.friendRequests.map((x) => x.id).includes(requester.id)) this.errorService.throw('errors.friendRequestNotFound');
 
-        const requestInd = user.friendRequests.findIndex((request) => request.id === requester.id);
+        const requestInd = user.friendRequests.findIndex((x) => x.id === requester.id);
         user.friendRequests.splice(requestInd);
 
-        if (dto.accept) user.friends.push(requester);
+        if (dto.accept) {
+            user.friends.push(requester);
+            requester.friends.push(user);
+        }
+
+        await this.userRepository.save(user);
+        await this.userRepository.save(requester);
 
         const requesterPublic: UserPublicDto = {
             id: requester.id,
@@ -201,7 +208,7 @@ export class UserService {
 
     async getFriends(userId: number): Promise<UserPublicDto[]> {
         const user = await this.userRepository.findOne(userId, { relations: ['friends'] });
-        
+
         return user.friends.map((friend) => ({
             id: friend.id,
             nickname: friend.nickname,

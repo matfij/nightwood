@@ -797,7 +797,13 @@ export interface IUserController {
     getAll(body: GetUserDto): Observable<PageUserDto>;
     setAvatar(): Observable<void>;
     getAvatar(): Observable<void>;
+    getAvatarPublic(id: string): Observable<void>;
     getPublicData(id: string): Observable<UserPublicDto>;
+    requestFriendship(body: FriendshipRequestDto): Observable<void>;
+    getPendingFriendshipRequests(): Observable<FriendshipPendingRequestDto[]>;
+    respondToFriendshipRequest(body: FriendshipRespondDto): Observable<UserPublicDto>;
+    getFriends(): Observable<UserPublicDto[]>;
+    getFriendsPublic(id: string): Observable<UserPublicDto[]>;
 }
 
 @Injectable({
@@ -1107,6 +1113,53 @@ export class UserController implements IUserController {
         return _observableOf<void>(<any>null);
     }
 
+    getAvatarPublic(id: string): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/user/getAvatarPublic/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAvatarPublic(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAvatarPublic(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAvatarPublic(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
     getPublicData(id: string): Observable<UserPublicDto> {
         let url_ = this.baseUrl + "/api/v1/user/getPublicData/{id}";
         if (id === undefined || id === null)
@@ -1155,6 +1208,249 @@ export class UserController implements IUserController {
             }));
         }
         return _observableOf<UserPublicDto>(<any>null);
+    }
+
+    requestFriendship(body: FriendshipRequestDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/user/requestFriendship";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRequestFriendship(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRequestFriendship(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRequestFriendship(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    getPendingFriendshipRequests(): Observable<FriendshipPendingRequestDto[]> {
+        let url_ = this.baseUrl + "/api/v1/user/getPendingFriendshipRequests";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPendingFriendshipRequests(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPendingFriendshipRequests(<any>response_);
+                } catch (e) {
+                    return <Observable<FriendshipPendingRequestDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FriendshipPendingRequestDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPendingFriendshipRequests(response: HttpResponseBase): Observable<FriendshipPendingRequestDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <FriendshipPendingRequestDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FriendshipPendingRequestDto[]>(<any>null);
+    }
+
+    respondToFriendshipRequest(body: FriendshipRespondDto): Observable<UserPublicDto> {
+        let url_ = this.baseUrl + "/api/v1/user/respondToFriendshipRequest";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRespondToFriendshipRequest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRespondToFriendshipRequest(<any>response_);
+                } catch (e) {
+                    return <Observable<UserPublicDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserPublicDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRespondToFriendshipRequest(response: HttpResponseBase): Observable<UserPublicDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserPublicDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserPublicDto>(<any>null);
+    }
+
+    getFriends(): Observable<UserPublicDto[]> {
+        let url_ = this.baseUrl + "/api/v1/user/getFriends";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFriends(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFriends(<any>response_);
+                } catch (e) {
+                    return <Observable<UserPublicDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserPublicDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFriends(response: HttpResponseBase): Observable<UserPublicDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserPublicDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserPublicDto[]>(<any>null);
+    }
+
+    getFriendsPublic(id: string): Observable<UserPublicDto[]> {
+        let url_ = this.baseUrl + "/api/v1/user/getFriendsPublic/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFriendsPublic(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFriendsPublic(<any>response_);
+                } catch (e) {
+                    return <Observable<UserPublicDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserPublicDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFriendsPublic(response: HttpResponseBase): Observable<UserPublicDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <UserPublicDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserPublicDto[]>(<any>null);
     }
 }
 
@@ -3556,6 +3852,20 @@ export interface UserPublicDto {
     nickname: string;
     achievements?: AchievementsDto;
     gold: number;
+}
+
+export interface FriendshipRequestDto {
+    targetUserId: number;
+}
+
+export interface FriendshipPendingRequestDto {
+    requesterId: number;
+    requesterNick: string;
+}
+
+export interface FriendshipRespondDto {
+    requesterId: number;
+    accept: boolean;
 }
 
 export interface UserLoginDto {

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AchievementDto, AchievementsController, AchievementsDto, DragonController, DragonDto, UserAuthDto, UserController, UserDto, UserPublicDto } from 'src/app/client/api';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin, Observable, of } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+import { AchievementDto, AchievementsController, AchievementsDto, DragonController, FriendshipPendingRequestDto, FriendshipRequestDto, UserController, UserPublicDto } from 'src/app/client/api';
 import { UserControllerHelper } from 'src/app/client/api-helper';
-import { DisplayDragon, DisplayDragonPublic } from 'src/app/core/definitions/dragons';
+import { ToastService } from 'src/app/common/services/toast.service';
+import { DisplayDragonPublic } from 'src/app/core/definitions/dragons';
 import { DisplayAchievement } from 'src/app/core/definitions/items';
+import { DisplayUserPublic } from 'src/app/core/definitions/user';
 import { DragonService } from 'src/app/core/services/dragons.service';
 import { EngineService } from 'src/app/core/services/engine.service';
 import { ItemsService } from 'src/app/core/services/items.service';
@@ -21,11 +23,16 @@ export class UserProfileComponent implements OnInit {
   user$?: Observable<UserPublicDto>;
   avatar$?: Observable<string>;
   dragons$?: Observable<DisplayDragonPublic[]>;
+  friends$?: Observable<DisplayUserPublic[]>;
+  friendInvitations$?: Observable<FriendshipPendingRequestDto[]>;
   allAchievements$?: Observable<DisplayAchievement[]>;
   userAchievements$?: Observable<AchievementsDto>;
 
+  displayFriendInvitations: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private achievementsController: AchievementsController,
     private dragonController: DragonController,
     private userController: UserController,
@@ -33,13 +40,15 @@ export class UserProfileComponent implements OnInit {
     private engineService: EngineService,
     private dragonService: DragonService,
     private itemService: ItemsService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe( paramMap => {
+      const userId = this.engineService.user.id;
       const otherUserId = paramMap.get('id');
 
-      if (otherUserId) {
+      if (otherUserId && userId !== +otherUserId) {
         this.getOtherUserData(otherUserId);
       } else {
         this.ownProfile = true;
@@ -56,6 +65,15 @@ export class UserProfileComponent implements OnInit {
     this.user$ = this.engineService.getUser();
     this.avatar$ = this.userControllerHelper.getAvatar();
     this.userAchievements$ = this.achievementsController.getUserAchievements();
+    this.friends$ = this.userController.getFriends().pipe(
+      mergeMap((friends) => (
+        forkJoin(friends.map((friend) => of({
+          ...friend,
+          avatar$: this.userControllerHelper.getAvatarPublic(friend.id!),
+        })))
+      )),
+    );
+    this.friendInvitations$ = this.userController.getPendingFriendshipRequests();
 
     this.dragons$ = this.dragonController.getOwned().pipe(
       map((dragons) => dragons.map((dragon => this.dragonService.toDisplayDragon(dragon))))
@@ -64,10 +82,48 @@ export class UserProfileComponent implements OnInit {
 
   getOtherUserData(id: string) {
     this.user$ = this.userController.getPublicData(id);
+    this.avatar$ = this.userControllerHelper.getAvatarPublic(id);
     this.userAchievements$ = this.achievementsController.getUserPublicAchievements(id);
+    this.friends$ = this.userController.getFriendsPublic(id).pipe(
+      mergeMap((friends) => (
+        forkJoin(friends.map((friend) => of({
+          ...friend,
+          avatar$: this.userControllerHelper.getAvatarPublic(friend.id!),
+        })))
+      )),
+    );
 
     this.dragons$ = this.dragonController.getPublicPlayerDragons(id).pipe(
       map((dragons) => dragons.map((dragon => this.dragonService.toDisplayDragonPublic(dragon))))
+    );
+  }
+
+  requestFriend(id: number) {
+    const params: FriendshipRequestDto = {
+      targetUserId: id,
+    };
+    this.userController.requestFriendship(params).subscribe(() => {
+      this.toastService.showSuccess('common.success', 'user.friendInvitationSent');
+    });
+  }
+
+  updateFriends(friendAccepted: boolean) {
+    this.displayFriendInvitations = false;
+
+    this.friendInvitations$ = this.userController.getPendingFriendshipRequests();
+
+    if (!friendAccepted) {
+      this.toastService.showSuccess('common.success', 'user.requestDeclined');
+      return;
+    }
+    this.toastService.showSuccess('common.success', 'user.requestAccepted');
+    this.friends$ = this.userController.getFriends().pipe(
+      mergeMap((friends) => (
+        forkJoin(friends.map((friend) => of({
+          ...friend,
+          avatar$: this.userControllerHelper.getAvatarPublic(friend.id!),
+        })))
+      )),
     );
   }
 
@@ -76,6 +132,10 @@ export class UserProfileComponent implements OnInit {
     this.userControllerHelper.setAvatar(event.target.files[0]).subscribe(() => {
       this.avatar$ = this.userControllerHelper.getAvatar();
     });
+  }
+
+  showFriendDetails(userId: number) {
+    this.router.navigate(['game', 'profile', userId]);
   }
 
   checkCompleted(achievement: AchievementDto, userAchievements: AchievementsDto): boolean | number {

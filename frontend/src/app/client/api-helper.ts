@@ -57,6 +57,28 @@ export class UserControllerHelper {
       })
     );
   }
+
+  getAvatarPublic(id: string | number): Observable<any> {
+    let url_ = this.baseUrl + '/api/v1/user/getAvatarPublic/' + id;
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_ : any = {
+      body: {},
+      observe: 'response',
+      responseType: 'blob',
+    };
+
+    return this.http.request('get', url_, options_).pipe(
+      map((data) => {
+        if (!(data as any).body.size) return null;
+
+        var binaryData = [];
+        binaryData.push((data as any).body);
+        let objectURL = URL.createObjectURL(new Blob(binaryData, {type: 'application/octet-stream' }));
+        return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      })
+    );
+  }
 }
 
 export interface FileParameter {
