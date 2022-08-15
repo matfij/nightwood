@@ -4,9 +4,9 @@
     {{ 'user.pendingInvitations' | translate }}
   </div>
 
-  <div *ngFor="let invitation of _friendInvitations" class="item-invitation">
+  <div *ngFor="let invitation of friendInvitations" class="item-invitation">
     <div class="item-user-data">
-      <div *ngIf="(invitation.avatar$ | async) as avatar; else noAvatar">
+      <div *ngIf="invitation.avatar as avatar; else noAvatar">
         <div class="wrapper-avatar">
           <img [src]="avatar" alt="avatar" draggable="false">
         </div>

@@ -110,7 +110,7 @@ export class AchievementsService {
 
     async checkCuriousExplorerAchievements(userId: number, gainedTime: number = 0) {
         const user = await this.getUserData(userId);
-        user.achievements.expeditionTime += gainedTime;
+        user.achievements.expeditionTime += Math.round(gainedTime);
 
         if (user.achievements.expeditionTime >= CURIOUS_EXPLORER_I.requiredPoints) {
             user.achievements.curiousExplorerI = true;

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { AchievementDto, AchievementsController, AchievementsDto, DragonController, FriendshipPendingRequestDto, FriendshipRequestDto, UserController, UserPublicDto } from 'src/app/client/api';
 import { UserControllerHelper } from 'src/app/client/api-helper';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragonPublic } from 'src/app/core/definitions/dragons';
 import { DisplayAchievement } from 'src/app/core/definitions/items';
-import { DisplayUserPublic } from 'src/app/core/definitions/user';
+import { DisplayFriendshipPendingRequestDto, DisplayUserPublic } from 'src/app/core/definitions/user';
 import { DragonService } from 'src/app/core/services/dragons.service';
 import { EngineService } from 'src/app/core/services/engine.service';
 import { ItemsService } from 'src/app/core/services/items.service';
@@ -24,7 +24,7 @@ export class UserProfileComponent implements OnInit {
   avatar$?: Observable<string>;
   dragons$?: Observable<DisplayDragonPublic[]>;
   friends$?: Observable<DisplayUserPublic[]>;
-  friendInvitations$?: Observable<FriendshipPendingRequestDto[]>;
+  friendInvitations$?: Observable<DisplayFriendshipPendingRequestDto[]>;
   allAchievements$?: Observable<DisplayAchievement[]>;
   userAchievements$?: Observable<AchievementsDto>;
 
@@ -67,13 +67,23 @@ export class UserProfileComponent implements OnInit {
     this.userAchievements$ = this.achievementsController.getUserAchievements();
     this.friends$ = this.userController.getFriends().pipe(
       mergeMap((friends) => (
-        forkJoin(friends.map((friend) => of({
-          ...friend,
-          avatar$: this.userControllerHelper.getAvatarPublic(friend.id!),
-        })))
-      )),
-    );
-    this.friendInvitations$ = this.userController.getPendingFriendshipRequests();
+        forkJoin(friends.map((friend) =>
+        this.userControllerHelper.getAvatarPublic(friend.id!).pipe(
+          map((avatar) => ({
+            ...friend,
+            avatar,
+          })),
+    ))))));
+
+    this.friendInvitations$ = this.userController.getPendingFriendshipRequests().pipe(
+      mergeMap((invitations) => (
+        forkJoin(invitations.map((invitation) =>
+        this.userControllerHelper.getAvatarPublic(invitation.requesterId).pipe(
+          map((avatar) => ({
+            ...invitation,
+            avatar,
+          })),
+    ))))));
 
     this.dragons$ = this.dragonController.getOwned().pipe(
       map((dragons) => dragons.map((dragon => this.dragonService.toDisplayDragon(dragon))))
@@ -86,12 +96,13 @@ export class UserProfileComponent implements OnInit {
     this.userAchievements$ = this.achievementsController.getUserPublicAchievements(id);
     this.friends$ = this.userController.getFriendsPublic(id).pipe(
       mergeMap((friends) => (
-        forkJoin(friends.map((friend) => of({
-          ...friend,
-          avatar$: this.userControllerHelper.getAvatarPublic(friend.id!),
-        })))
-      )),
-    );
+        forkJoin(friends.map((friend) =>
+        this.userControllerHelper.getAvatarPublic(friend.id!).pipe(
+          map((avatar) => ({
+            ...friend,
+            avatar,
+          })),
+    ))))));
 
     this.dragons$ = this.dragonController.getPublicPlayerDragons(id).pipe(
       map((dragons) => dragons.map((dragon => this.dragonService.toDisplayDragonPublic(dragon))))
@@ -110,7 +121,15 @@ export class UserProfileComponent implements OnInit {
   updateFriends(friendAccepted: boolean) {
     this.displayFriendInvitations = false;
 
-    this.friendInvitations$ = this.userController.getPendingFriendshipRequests();
+    this.friendInvitations$ = this.userController.getPendingFriendshipRequests().pipe(
+      mergeMap((invitations) => (
+        forkJoin(invitations.map((invitation) =>
+        this.userControllerHelper.getAvatarPublic(invitation.requesterId).pipe(
+          map((avatar) => ({
+            ...invitation,
+            avatar,
+          })),
+    ))))));
 
     if (!friendAccepted) {
       this.toastService.showSuccess('common.success', 'user.requestDeclined');
@@ -119,12 +138,13 @@ export class UserProfileComponent implements OnInit {
     this.toastService.showSuccess('common.success', 'user.requestAccepted');
     this.friends$ = this.userController.getFriends().pipe(
       mergeMap((friends) => (
-        forkJoin(friends.map((friend) => of({
-          ...friend,
-          avatar$: this.userControllerHelper.getAvatarPublic(friend.id!),
-        })))
-      )),
-    );
+        forkJoin(friends.map((friend) =>
+        this.userControllerHelper.getAvatarPublic(friend.id!).pipe(
+          map((avatar) => ({
+            ...friend,
+            avatar,
+          })),
+    ))))));
   }
 
   setAvatar(event: any) {

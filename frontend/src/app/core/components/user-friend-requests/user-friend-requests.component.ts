@@ -14,13 +14,7 @@ import { DisplayFriendshipPendingRequestDto } from '../../definitions/user';
 })
 export class UserFriendRequestsComponent extends AbstractModalComponent implements OnInit {
 
-  _friendInvitations: DisplayFriendshipPendingRequestDto[] = [];
-  @Input() set friendInvitations(invitations: FriendshipPendingRequestDto[]) {
-    this._friendInvitations = invitations.map((invitation) => ({
-      ...invitation,
-      avatar$: this.userControllerHelper.getAvatarPublic(invitation.requesterId)
-    }))
-  };
+  @Input() friendInvitations: DisplayFriendshipPendingRequestDto[] = [];
   @Output() friendshipAccepted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
