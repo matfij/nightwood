@@ -590,7 +590,7 @@ export class DragonBattleService {
                 let lostExperience = gainedExperience / 3;
                 lostExperience = Math.round(this.mathService.randRange(0.8, 1.2) * this.mathService.limit(1, lostExperience, 10));
 
-                owned.experience += 111 * gainedExperience;
+                owned.experience += gainedExperience;
                 enemy.experience -= lostExperience;
                 resultExperience = { ownedExperience: gainedExperience, enemyExperience: lostExperience };
                 break;

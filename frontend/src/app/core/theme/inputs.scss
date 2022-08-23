@@ -1,6 +1,34 @@
 @import 'variables.scss';
 
 
+.label {
+  color: $app-light;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 0.25px;
+}
+
+.input {
+  width: 100%;
+
+  padding: 2px;
+  border: none;
+  border-radius: 4px;
+  color: $app-light;
+  background-color: $app-dark;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.error {
+  color: $app-red;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 0.25px;
+}
+
 .input-label {
   width: clamp(0px, 100%, 240px);
   margin: 0px;

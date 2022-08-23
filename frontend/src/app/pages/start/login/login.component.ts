@@ -18,16 +18,14 @@ export class LoginComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     login: new FormControl(
-      null, [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
+      '', [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
     ),
     password: new FormControl(
-      null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
+      '', [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
+  }, {
+    updateOn: 'blur',
   });
-  fields: FormInputOptions[] = [
-    { form: this.form, key: 'login', label: 'start.nickname', type: 'text' },
-    { form: this.form, key: 'password', label: 'start.password', type: 'password' },
-  ];
   confirmLoading: boolean = false;
   submitLoading: boolean = false;
 

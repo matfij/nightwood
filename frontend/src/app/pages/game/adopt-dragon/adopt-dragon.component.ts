@@ -50,7 +50,6 @@ export class AdoptDragonComponent implements OnInit {
   currentStep: AdoptStep = AdoptStep.Trait;
   chosenAnswers: AdoptAnswer[] = [];
 
-
   form: FormGroup = new FormGroup({
     name: new FormControl(
       null,

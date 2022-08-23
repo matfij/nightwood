@@ -8,14 +8,6 @@
   margin: 10px auto;
 }
 
-.label {
-  color: $app-light;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: left;
-  letter-spacing: 0.25px;
-}
-
 .hint {
   display: inline;
   padding: 2px;
@@ -27,36 +19,15 @@
   }
 }
 
-.input {
-  width: 100%;
-  margin: auto;
-
-  padding: 2px;
-  border: none;
-  border-radius: 4px;
-  color: $app-light;
-  background-color: $app-dark;
-  font-size: 14px;
-  font-weight: 500;
-}
-
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 input[type="number"] {
-  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 textarea {
   resize: none;
-}
-
-.error {
-  color: $app-red;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: left;
-  letter-spacing: 0.25px;
 }
