@@ -16,4 +16,5 @@ export interface FormInputOptions {
 
   hint?: string;
   fieldType?: FieldType;
+  autocomplete?: string;
 }

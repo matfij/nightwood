@@ -32,10 +32,10 @@ export class RegisterComponent implements OnInit {
     ),
   });
   fields: FormInputOptions[] = [
-    { form: this.form, key: 'email', label: 'start.email', type: 'email' },
-    { form: this.form, key: 'nickname', label: 'start.nickname', type: 'text' },
-    { form: this.form, key: 'password', label: 'start.password', type: 'password' },
-    { form: this.form, key: 'passwordConfirm', label: 'start.passwordConfirm', type: 'password' },
+    { form: this.form, key: 'email', label: 'start.email', type: 'email', autocomplete: 'email' },
+    { form: this.form, key: 'nickname', label: 'start.nickname', type: 'text', autocomplete: 'off' },
+    { form: this.form, key: 'password', label: 'start.password', type: 'password', autocomplete: 'new-password' },
+    { form: this.form, key: 'passwordConfirm', label: 'start.passwordConfirm', type: 'password', autocomplete: 'new-password' },
   ];
   submitLoading: boolean = false;
 

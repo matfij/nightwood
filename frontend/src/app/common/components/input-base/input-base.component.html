@@ -13,15 +13,15 @@
   </div>
 
   <div *ngIf="options.fieldType === FieldType.SIMPLE">
-    <input class="input" [type]="options.type" [formControlName]="options.key">
+    <input class="input" [type]="options.type" [formControlName]="options.key" [autocomplete]="options.autocomplete || 'off'">
   </div>
 
   <div *ngIf="options.fieldType === FieldType.INTEGER">
-    <input class="input" type="text" pattern="\d*" [formControlName]="options.key">
+    <input class="input" type="text" pattern="\d*" [formControlName]="options.key" [autocomplete]="options.autocomplete || 'off'">
   </div>
 
   <div *ngIf="options.fieldType === FieldType.TEXTAREA">
-    <textarea class="input" [formControlName]="options.key" rows="3"></textarea>
+    <textarea class="input" [formControlName]="options.key" rows="3" [autocomplete]="options.autocomplete || 'off'"></textarea>
   </div>
 
   <div *ngIf="field && (field.touched || field.dirty) && !field.valid" class="error">
