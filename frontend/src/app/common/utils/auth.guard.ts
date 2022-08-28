@@ -14,7 +14,13 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    if (this.repositoryService.getAccessToken()) {
+    if (state.url.includes('start') && this.repositoryService.getAccessToken()) {
+      this.router.navigate(['game']);
+      return false;
+    } else if (state.url.includes('start') && !this.repositoryService.getAccessToken()) {
+      return true;
+    }
+    else if (this.repositoryService.getAccessToken()) {
       return true;
     } else {
       this.router.navigate(['login']);
