@@ -1,9 +1,12 @@
 import { Body, Request, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors, StreamableFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOkResponse, ApiTags, PartialType } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthorizedRequest } from 'src/common/definitions/requests';
 import { PaginationInterceptor } from 'src/common/interceptors/pagination.interceptor';
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
+import { Roles } from '../auth/util/roles.decorator';
+import { RolesGuard } from '../auth/util/roles.guard';
+import { UserRole } from './model/definitions/user-role';
 import { CreateUserDto } from './model/dto/create-user.dto';
 import { FriendshipPendingRequestDto } from './model/dto/friendship-pending-request.dto';
 import { FriendshipRequestDto } from './model/dto/friendship-request.dto';
@@ -25,24 +28,32 @@ export class UserController {
     ) {}
 
     @Post('create')
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.Administrator)
     @ApiOkResponse({ type: UserDto })
     create(@Body() dto: CreateUserDto): Promise<UserDto> {
         return this.userService.create(dto);
     }
 
     @Put('update/:id')
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.Administrator)
     @ApiOkResponse({ type: UserDto })
     update(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<UserDto> {
         return this.userService.update(id, dto);
     }
 
     @Get('getOne/:id')
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.Administrator)
     @ApiOkResponse({ type: UserDto })
     getOne(@Param('id') id: string): Promise<UserDto> {
         return this.userService.getOne(id);
     }
 
     @Post('getAll')
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.Administrator)
     @UseInterceptors(PaginationInterceptor)
     @ApiOkResponse({ type: PageUserDto })
     getAll(@Body() dto: GetUserDto): Promise<PageUserDto> {

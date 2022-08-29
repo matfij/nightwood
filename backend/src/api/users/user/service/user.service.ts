@@ -152,6 +152,7 @@ export class UserService {
 
         const publicUser: UserPublicDto = {
             id: user.id,
+            role: user.role,
             nickname: user.nickname,
             gold: user.gold,
         };

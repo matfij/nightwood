@@ -4,6 +4,7 @@ import { Item } from "src/api/items/item/model/item.entity";
 import { DB_MONEY_TYPE, DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
 import { AfterLoad, Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Achievements } from "../../achievements/model/achievements.entity";
+import { UserRole } from "./definitions/user-role";
 
 @Entity()
 export class User {
@@ -37,6 +38,9 @@ export class User {
 
     @Column()
     password: string;
+
+    @Column({ default: UserRole.Player })
+    role: UserRole;
 
     @Column({ unique: true })
     nickname: string;

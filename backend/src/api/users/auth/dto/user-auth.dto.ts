@@ -1,38 +1,32 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsDateString, IsEmail, IsNumber, IsOptional, IsString } from "class-validator";
+import { UserRole } from "../../user/model/definitions/user-role";
 
 export class UserAuthDto {
 
-    @IsNumber()
     @ApiProperty()
     id: number;
 
-    @IsEmail()
+    @ApiProperty({ enum: UserRole, enumName: 'UserRole' })
+    role?: UserRole;
+
     @ApiProperty()
     email: string;
 
-    @IsString()
     @ApiProperty()
     nickname: string;
 
-    @IsString()
     @ApiProperty()
     accessToken: string;
 
-    @IsOptional()
-    @IsDateString()
     @ApiPropertyOptional({ type: Date })
     expires?: string;
     
-    @IsNumber()
     @ApiProperty()
     gold?: number;
 
-    @IsNumber()
     @ApiProperty()
     ownedDragons?: number;
 
-    @IsNumber()
     @ApiProperty()
     maxOwnedDragons?: number;
 }

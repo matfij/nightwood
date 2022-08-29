@@ -3785,6 +3785,12 @@ export interface CreateUserDto {
     nickname: string;
 }
 
+export enum UserRole {
+    Player = "Player",
+    Moderator = "Moderator",
+    Administrator = "Administrator",
+}
+
 export interface AchievementsDto {
     id: number;
     expeditionTime: number;
@@ -3809,6 +3815,7 @@ export interface UserDto {
     id?: number;
     email: string;
     password?: string;
+    role: UserRole;
     nickname: string;
     achievements?: AchievementsDto;
     gold: number;
@@ -3849,6 +3856,7 @@ export interface PageUserDto {
 
 export interface UserPublicDto {
     id?: number;
+    role: UserRole;
     nickname: string;
     achievements?: AchievementsDto;
     gold: number;
@@ -3875,6 +3883,7 @@ export interface UserLoginDto {
 
 export interface UserAuthDto {
     id: number;
+    role: UserRole;
     email: string;
     nickname: string;
     accessToken: string;

@@ -3,7 +3,7 @@
 
   <div *ngIf="(user$ | async) as user" class="wrapper-content">
 
-    <h2>{{ user.nickname }}</h2>
+    <h2>{{ user.nickname }} [{{ user.role }}]</h2>
     <h2> {{ 'inventory.gold' | translate }}: {{ user.gold }}</h2>
     <div *ngIf="(avatar$ | async) as avatar; else noAvatar">
       <div class="item-avatar">
