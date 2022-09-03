@@ -63,6 +63,12 @@ export class User {
     @Column({ default: 0, type: DB_TIMESTAMP_TYPE })
     actionTokenValidity: number;
 
+    @Column({ default: 0, type: DB_TIMESTAMP_TYPE })
+    mutedUntil: number;
+
+    @Column({ default: 0, type: DB_TIMESTAMP_TYPE })
+    bannedUnitl: number;
+
     @AfterLoad() 
     convertGold() {
         this.gold = Math.floor(parseFloat(this.gold as any));

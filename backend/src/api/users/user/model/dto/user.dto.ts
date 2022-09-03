@@ -39,4 +39,10 @@ export class UserDto {
 
     @ApiPropertyOptional()
     actionTokenValidity?: number;
+
+    @ApiPropertyOptional()
+    mutedUntil?: number;
+
+    @ApiPropertyOptional()
+    bannedUnitl?: number;
 }

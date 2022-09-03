@@ -9,8 +9,8 @@ export class UserAuthDto {
     @ApiProperty({ enum: UserRole, enumName: 'UserRole' })
     role?: UserRole;
 
-    @ApiProperty()
-    email: string;
+    @ApiPropertyOptional()
+    email?: string;
 
     @ApiProperty()
     nickname: string;

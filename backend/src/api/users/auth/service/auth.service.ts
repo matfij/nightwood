@@ -40,10 +40,11 @@ export class AuthService {
         const match: boolean = await this.validatePassword(dto.password, user.password);
         if (!match) this.errorService.throw('errors.passwordIncorrect');
 
+        if (!this.dateService.checkIfEventAvailable(user.bannedUnitl)) this.errorService.throw('errors.userBanned');
+
         const token = await this.generateJwt(user);
         return {
             id: user.id,
-            email: user.email,
             nickname: user.nickname,
             accessToken: token,
             gold: user.gold,

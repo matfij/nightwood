@@ -1,7 +1,10 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { DateService } from 'src/common/services/date.service';
+import { ErrorService } from 'src/common/services/error.service';
 import { AuthService } from '../auth/service/auth.service';
+import { UserDto } from '../user/model/dto/user.dto';
 import { ChatMessage, ChatMode } from './model/chat.definitions';
 import { ChatService } from './service/chat.service';
 
@@ -19,6 +22,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   constructor(
     private chatService: ChatService,
     private authService: AuthService,
+    private dateService: DateService,
+    private errorService: ErrorService,
   ) {}
 
   async handleConnection(socket: Socket) {
@@ -29,8 +34,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage(ChatMode.General)
   async handleMessage(client: Socket, message: ChatMessage) {
-    if (!await this.authorize(client)) return;
+    const user = await this.authorize(client);
+    if (user === null) return;
     if (!this.chatService.validateMessage(message.data)) return;
+    if (!this.dateService.checkIfEventAvailable(user.mutedUntil)) return;
 
     this.savedMessages.push(message);
     if (this.savedMessages.length > this.SAVED_MESSAGES_LIMIT) this.savedMessages.shift();
@@ -41,10 +48,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.disconnect(client);
   }
 
-  private async authorize(socket: Socket): Promise<boolean> {
+  private async authorize(socket: Socket): Promise<UserDto | null> {
     const user = await this.authService.getUser(socket.handshake.headers.authorization);
-    if (!user) { this.disconnect(socket); return false; };
-    return true;
+    if (!user) { this.disconnect(socket); return null; };
+    return user;
   }
 
   private disconnect(socket: Socket) {

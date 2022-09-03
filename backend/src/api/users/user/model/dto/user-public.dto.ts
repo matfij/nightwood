@@ -18,4 +18,10 @@ export class UserPublicDto {
 
     @ApiProperty()
     gold?: number;
+
+    @ApiPropertyOptional()
+    mutedUntil?: number;
+
+    @ApiPropertyOptional()
+    bannedUnitl?: number;
 }
