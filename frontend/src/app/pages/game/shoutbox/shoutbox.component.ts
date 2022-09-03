@@ -65,6 +65,7 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
 
     const chatMessage: ChatMessage = {
       date: Date.now(),
+      userId: this.user.id,
       nickname: this.user.nickname,
       data: this.message,
       mode: this.chatMode,
