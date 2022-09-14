@@ -26,7 +26,7 @@ export const FireBolt: Skill = {
 export const InferialBlessing: Skill = {
     uid: 'inferialBlessing',
     name: 'Inferial Blessing',
-    hint: 'Enhances a dragon armor and resistance.',
+    hint: 'Enhances dragon\'s armor and resistance.',
     level: 60,
     requiredNature: [DragonNature.Fire],
 }
@@ -176,7 +176,7 @@ export const CriticalDrain: Skill = {
 export const EnchantedBarrier: Skill = {
     uid: 'enchantedBarrier',
     name: 'Enchanted Barrier',
-    hint: 'Grants protectiong against magic and base attack. Base mana cost: 5, grows with skill level.',
+    hint: 'Grants protectiong against magic and physical attacks. Base mana cost: 5, grows with skill level.',
     level: 60,
     requiredNature: [DragonNature.Nature],
     castMana: 5,

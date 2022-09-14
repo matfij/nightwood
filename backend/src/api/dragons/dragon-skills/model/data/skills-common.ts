@@ -89,7 +89,7 @@ export const ArmorPenetration: Skill = {
 export const Rage: Skill = {
     uid: 'rage',
     name: 'Rage',
-    hint: 'Increasesa dragon damage when low on health',
+    hint: 'Increases dragon damage when low on health',
     level: 30,
     requiredNature: [],
 }
@@ -101,7 +101,7 @@ export const Rage: Skill = {
 export const Dodge: Skill = {
     uid: 'dodge',
     name: 'Dodge',
-    hint: 'Increasesa dragon dodge chance',
+    hint: 'Increases dragon dodge chance',
     level: 60,
     requiredNature: [],
 }
@@ -109,7 +109,7 @@ export const Dodge: Skill = {
 export const TreasureHunter: Skill = {
     uid: 'treasureHunter',
     name: 'Treasure Hunter',
-    hint: 'Allowsa dragon to get more loot from expeditions',
+    hint: 'Allows dragon to find more loot during expeditions',
     level: 60,
     requiredNature: [],
 }
@@ -117,7 +117,7 @@ export const TreasureHunter: Skill = {
 export const LethalBlow: Skill = {
     uid: 'lethalBlow',
     name: 'Lethal Blow',
-    hint: 'Gives a chance land ten times stronger hit.',
+    hint: 'Gives chance to hit ten times as much.',
     level: 60,
     requiredNature: [],
 }
