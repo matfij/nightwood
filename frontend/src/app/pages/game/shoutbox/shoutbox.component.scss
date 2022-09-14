@@ -32,14 +32,16 @@
   margin: auto;
 
   overflow-y: auto;
-  padding-bottom: 4px;
+  padding: 4px 2px;
   background: $app-dark;
   border-radius: 2px;
 }
 
 .item-message {
-  margin: 2px;
+  width: 100%;
+  margin: -2px auto;
 
+  display: inline-block;
   letter-spacing: 0.5px;
   text-align: left;
   overflow: hidden;
@@ -48,6 +50,19 @@
 
 .message-own {
   background: lighten($color: $app-dark, $amount: 8);
+}
+
+.message-Moderator {
+  color: greenyellow;
+}
+
+.message-Administrator {
+  color: coral;
+}
+
+.item-ban {
+  display: inline;
+  cursor: pointer;
 }
 
 .wrapper-form {

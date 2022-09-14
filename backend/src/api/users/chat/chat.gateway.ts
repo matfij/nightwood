@@ -37,6 +37,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (!this.chatService.validateMessage(message.data)) return;
     if (!this.dateService.checkIfEventAvailable(user.mutedUntil)) return;
 
+    message = {
+      ...message,
+      nickname: user.nickname,
+      userId: user.id,
+      userRole: user.role,
+    }
     this.savedMessages.push(message);
     if (this.savedMessages.length > this.SAVED_MESSAGES_LIMIT) this.savedMessages.shift();
     this.wsServer.emit(this.chatMode, [message]);

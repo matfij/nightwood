@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
-import { UserAuthDto, UserDto } from 'src/app/client/api';
+import { UserAuthDto, UserDto, UserRole } from 'src/app/client/api';
 import { CHAT_MESSAGE_MAX_LENGTH, CHAT_MESSAGE_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { ChatMessage, ChatMode } from 'src/app/common/definitions/chat';
 import { ChatService } from 'src/app/common/services/chat.service';
@@ -66,12 +66,22 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
     const chatMessage: ChatMessage = {
       date: Date.now(),
       userId: this.user.id,
+      userRole: this.user.role,
       nickname: this.user.nickname,
       data: this.message,
       mode: this.chatMode,
     }
     this.chatService.sendMessage(ChatMode.General, chatMessage);
     this.message = '';
+  }
+
+  canMute(message: ChatMessage): boolean {
+    return message.userRole !== UserRole.Administrator && message.userId !== this.user.id
+      && (this.user.role === UserRole.Moderator || this.user.role === UserRole.Administrator);
+  }
+
+  canBan(message: ChatMessage): boolean {
+    return message.userId !== this.user.id && this.user.role === UserRole.Administrator;
   }
 
   ngOnDestroy(): void {

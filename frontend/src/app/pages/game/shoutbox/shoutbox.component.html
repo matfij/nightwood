@@ -14,8 +14,16 @@
       </div>
 
       <div #messagesWrapper class="wrapper-messages">
-        <div *ngFor="let message of messages">
-          <div *ngIf="message.mode === chatMode" class="item-message" [ngClass]="{'message-own': message.nickname === user.nickname}">
+        <div *ngFor="let message of messages" class="item-message message-{{message.userRole}}">
+          <div
+            *ngIf="message.mode === chatMode"
+            [ngClass]="{'message-own': message.nickname === user.nickname}">
+            <div *ngIf="canBan(message)" class="item-ban">
+              ({{ 'shoutbox.ban' | translate }}) |
+            </div>
+            <div *ngIf="canMute(message)" class="item-ban">
+              ({{ 'shoutbox.mute' | translate }}) |
+            </div>
             <b>{{ message.nickname }}</b> | {{ message.data }}
           </div>
         </div>

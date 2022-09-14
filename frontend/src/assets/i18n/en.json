@@ -365,6 +365,8 @@
     "chats": "Chats",
     "general": "General",
     "offtopic": "Off-topic",
-    "send": "Send"
+    "send": "Send",
+    "ban": "block",
+    "mute": "mute"
   }
 }
