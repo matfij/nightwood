@@ -14,15 +14,16 @@
       </div>
 
       <div #messagesWrapper class="wrapper-messages">
-        <div *ngFor="let message of messages" class="item-message message-{{message.userRole}}">
+        <div *ngFor="let message of messages">
           <div
             *ngIf="message.mode === chatMode"
+            class="item-message message-{{message.userRole}}"
             [ngClass]="{'message-own': message.nickname === user.nickname}">
-            <div *ngIf="canBan(message)" class="item-ban">
-              ({{ 'shoutbox.ban' | translate }}) |
+            <div *ngIf="canBan(message)" (click)="openPenaltyModal(message, PenaltyType.Ban)" class="item-ban">
+              <img src="assets/img/icons/ban-user.svg" alt="ban"> |
             </div>
-            <div *ngIf="canMute(message)" class="item-ban">
-              ({{ 'shoutbox.mute' | translate }}) |
+            <div *ngIf="canMute(message)" (click)="openPenaltyModal(message, PenaltyType.Mute)" class="item-ban">
+              <img src="assets/img/icons/mute-user.svg" alt="mute"> |
             </div>
             <b>{{ message.nickname }}</b> | {{ message.data }}
           </div>
@@ -39,3 +40,10 @@
 
   </div>
 </div>
+
+<app-shoutbox-penalty-modal
+  *ngIf="displayPenaltyModal"
+  [message]="penaltyMessage!"
+  [penaltyType]="penaltyType!"
+  (close)="displayPenaltyModal=false">
+</app-shoutbox-penalty-modal>

@@ -367,6 +367,10 @@
     "offtopic": "Off-topic",
     "send": "Send",
     "ban": "block",
-    "mute": "mute"
+    "mute": "mute",
+    "duration": "Duration (hours)",
+    "comment": "Comment",
+    "muteUser": "Mute user",
+    "banUser": "Ban user"
   }
 }

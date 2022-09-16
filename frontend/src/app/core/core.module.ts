@@ -21,6 +21,7 @@ import { TimerPipe } from '../common/utils/timer.pipe';
 import { DragonEquipComponent } from './components/dragon-equip/dragon-equip.component';
 import { DragonStatsComponent } from './components/dragon-stats/dragon-stats.component';
 import { UserFriendRequestsComponent } from './components/user-friend-requests/user-friend-requests.component';
+import { ShoutboxPenaltyModalComponent } from './components/shoutbox-penalty-modal/shoutbox-penalty-modal.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -38,6 +39,7 @@ const COMPONENTS = [
   DragonEquipComponent,
   DragonStatsComponent,
   UserFriendRequestsComponent,
+  ShoutboxPenaltyModalComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

@@ -41,6 +41,7 @@
   width: 100%;
   margin: -2px auto;
 
+  padding-left: 4px;
   display: inline-block;
   letter-spacing: 0.5px;
   text-align: left;
@@ -61,8 +62,15 @@
 }
 
 .item-ban {
+  margin-top: 0%;
   display: inline;
   cursor: pointer;
+
+  img {
+    display: inline-block;
+    max-height: 100%;
+    height: 16px;
+  }
 }
 
 .wrapper-form {
