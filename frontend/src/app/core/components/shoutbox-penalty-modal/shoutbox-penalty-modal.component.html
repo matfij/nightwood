@@ -1,10 +1,13 @@
 <div class="container-modal">
   <div class="wrapper-form">
 
-    <div *ngIf="penaltyType === PenaltyType.Mute" class="title mb-4">{{ 'shoutbox.muteUser' | translate }}</div>
-    <div *ngIf="penaltyType === PenaltyType.Ban" class="title mb-4">{{ 'shoutbox.banUser' | translate }}</div>
+    <div class="title mb-4">
+      <span *ngIf="penaltyType === PenaltyType.Ban">{{ 'shoutbox.banUser' | translate }}</span>
+      <span *ngIf="penaltyType === PenaltyType.Mute">{{ 'shoutbox.muteUser' | translate }}</span>
+       {{ message.nickname }}
+    </div>
 
-    <form [formGroup]="form" (ngSubmit)="banUser()">
+    <form [formGroup]="form" (ngSubmit)="imposePenalty()">
       <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
       <button *ngIf="!submitLoading" [disabled]="!form.valid" class="btn-base">

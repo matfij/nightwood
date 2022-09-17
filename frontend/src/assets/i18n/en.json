@@ -115,7 +115,11 @@
     "friendRequestNotFound": "Friend request not found",
     "alreadyFriend": "You are already friends",
     "alreadyFriendRequest": "The invitation has already been sent",
-    "cannotInviteSelf": "You can not invite yourself"
+    "cannotInviteSelf": "You can not invite yourself",
+    "insufficientPermissions": "Insufficient permissions",
+    "incorrectPenaltyDuration": "Incorrect penalty duration",
+    "commentTooLong": "Comment too long",
+    "userBanned": "Accound banned"
   },
   "game": {
     "menu": "Menu",
@@ -366,11 +370,10 @@
     "general": "General",
     "offtopic": "Off-topic",
     "send": "Send",
-    "ban": "block",
-    "mute": "mute",
     "duration": "Duration (hours)",
     "comment": "Comment",
-    "muteUser": "Mute user",
-    "banUser": "Ban user"
+    "muteUser": "Mute",
+    "banUser": "Ban",
+    "penaltyImposed": "Penalty imposed"
   }
 }

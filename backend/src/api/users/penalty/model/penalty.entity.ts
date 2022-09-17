@@ -6,7 +6,7 @@ import { PenaltyType } from "./definitions/penalties";
 export class Penalty {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
     imposingUserId: number;
@@ -20,9 +20,9 @@ export class Penalty {
     @Column()
     duration: number;
 
-    @Column()
-    message: string;
+    @Column({ nullable: true })
+    comment?: string;
 
     @Column()
-    comment: string;
+    message: string;
 }

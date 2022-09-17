@@ -33,6 +33,15 @@ export const MAIL_MESSAGE_MIN_LENGTH = 3;
 export const MAIL_MESSAGE_MAX_LENGTH = 1000;
 
 /**
+ * Penalties
+ */
+export const MUTE_MIN_TIME = 1;
+export const MUTE_MAX_TIME = 200;
+export const BAN_MIN_TIME = 1;
+export const BAN_MAX_TIME = 1000;
+export const PENALTY_COMMENT_MAX_LENGTH = 1000;
+
+/**
  * Dragons
  */
 

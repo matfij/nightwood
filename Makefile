@@ -17,7 +17,7 @@ clear:
 	docker system prune --all --volumes --force
 
 
-gen.config:
+copy.config:
 	cp backend/src/configuration/frontend.config.ts frontend/src/app/client/config/frontend.config.ts
 	cp backend/src/common/definitions/banned-words.ts frontend/src/app/client/config/banned-words.ts
 

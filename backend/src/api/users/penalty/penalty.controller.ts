@@ -1,7 +1,11 @@
-import { Controller, UseGuards, Post, Request } from "@nestjs/common";
+import { Controller, UseGuards, Post, Request, Body } from "@nestjs/common";
 import { ApiTags, ApiOkResponse } from "@nestjs/swagger";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { JwtAuthGuard } from "../auth/util/jwt.guard";
+import { Roles } from "../auth/util/roles.decorator";
+import { RolesGuard } from "../auth/util/roles.guard";
+import { UserRole } from "../user/model/definitions/user-role";
+import { ImposePenaltyDto } from "./model/dto/impose-penalty.dto";
 import { PenaltyService } from "./service/penalty.service";
 
 @Controller('penalty')
@@ -13,9 +17,11 @@ export class PenaltyController {
         private penaltyService: PenaltyService,
     ) {}
 
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.Administrator, UserRole.Moderator)
     @Post('imposePenalty')
     @ApiOkResponse()
-    imposePenalty(@Request() req: AuthorizedRequest): Promise<void> {
-        return this.penaltyService.imposePenalty(req.user);
+    imposePenalty(@Request() req: AuthorizedRequest, @Body() dto: ImposePenaltyDto): Promise<void> {
+        return this.penaltyService.imposePenalty(req.user, dto);
     }
 }
