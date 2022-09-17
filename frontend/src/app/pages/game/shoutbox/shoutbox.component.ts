@@ -45,7 +45,7 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
   }
 
   initializeChat() {
-    this.message$ = this.chatService.getMessage(ChatMode.General).subscribe(data => {
+    this.message$ = this.chatService.getMessages(ChatMode.General).subscribe(data => {
       this.messages.push(...data);
       timer(0).subscribe(() => {
         if (this.messagesWrapper) {

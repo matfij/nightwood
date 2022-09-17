@@ -17,12 +17,14 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { AlchemyModule } from './api/items/alchemy/alchemy.module';
 import { AchievementsModule } from './api/users/achievements/achievements.module';
+import { PenaltyModule } from './api/users/penalty/penalty.module';
 
 const API_MODULES = [
   ActionModule,
   AuthModule,
   UserModule,
   AchievementsModule,
+  PenaltyModule,
   MailModule,
   ChatModule,
   DragonModule,

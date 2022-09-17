@@ -16,7 +16,7 @@ export class ChatService {
     this.socket.emit(mode, message)
   }
 
-  getMessage(mode: ChatMode): Observable<ChatMessage[]> {
+  getMessages(mode: ChatMode): Observable<ChatMessage[]> {
     this.socket.connect();
     return this.socket.fromEvent(mode);
   }
