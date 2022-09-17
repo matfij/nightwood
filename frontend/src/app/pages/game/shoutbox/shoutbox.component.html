@@ -45,5 +45,6 @@
   *ngIf="displayPenaltyModal"
   [message]="penaltyMessage!"
   [penaltyType]="penaltyType!"
+  (penaltyInfo)="notifyPenaltyInfo($event)"
   (close)="displayPenaltyModal=false">
 </app-shoutbox-penalty-modal>

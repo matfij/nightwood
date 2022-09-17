@@ -29,7 +29,10 @@ export class PenaltyService {
         
         if (!imposingUser || !punishedUser) this.errorService.throw('errors.userNotFound');
         if (imposingUser.role === UserRole.Moderator && punishedUser.role === UserRole.Administrator) this.errorService.throw('errors.insufficientPermissions');
-        if (dto.type === PenaltyType.Ban && (BAN_MIN_TIME > dto.duration || BAN_MAX_TIME < dto.duration)) this.errorService.throw('errors.insufficientPermissions');
+        if (imposingUser.role === UserRole.Moderator && dto.type === PenaltyType.Ban) this.errorService.throw('errors.insufficientPermissions');
+        if (dto.type === PenaltyType.Ban && !this.dateService.checkIfEventAvailable(punishedUser.bannedUnitl)) this.errorService.throw('errors.alreadyBanned');
+        if (dto.type === PenaltyType.Mute && !this.dateService.checkIfEventAvailable(punishedUser.mutedUntil)) this.errorService.throw('errors.alreadyMuted');
+        if (dto.type === PenaltyType.Ban && (BAN_MIN_TIME > dto.duration || BAN_MAX_TIME < dto.duration)) this.errorService.throw('errors.incorrectPenaltyDuration');
         if (dto.type === PenaltyType.Mute && (MUTE_MIN_TIME > dto.duration || MUTE_MAX_TIME < dto.duration)) this.errorService.throw('errors.incorrectPenaltyDuration');
         if (dto.message.length > PENALTY_COMMENT_MAX_LENGTH) this.errorService.throw('errors.commentTooLong');
 

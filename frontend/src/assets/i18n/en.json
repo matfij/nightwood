@@ -119,7 +119,9 @@
     "insufficientPermissions": "Insufficient permissions",
     "incorrectPenaltyDuration": "Incorrect penalty duration",
     "commentTooLong": "Comment too long",
-    "userBanned": "Accound banned"
+    "userBanned": "Accound banned",
+    "alreadyBanned": "User already banned",
+    "alreadyMuted": "User already muted"
   },
   "game": {
     "menu": "Menu",
@@ -374,6 +376,8 @@
     "comment": "Comment",
     "muteUser": "Mute",
     "banUser": "Ban",
-    "penaltyImposed": "Penalty imposed"
+    "penaltyImposed": "Penalty imposed",
+    "banInfo": "{{nickname}} was banned for {{duration}} hours.",
+    "muteInfo": "{{nickname}} was muted for {{duration}} hours."
   }
 }
