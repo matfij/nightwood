@@ -27,7 +27,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const user = await this.authService.getUserData(message.userId);
   
     const savedMessage = this.chatService.addMessage(user, message);
-    if (savedMessage) this.wsServer.emit(savedMessage.mode, [savedMessage]);
+    if (savedMessage) this.wsServer.emit(ChatMode.General, [savedMessage]);
   }
 
   async handleDisconnect(client: Socket) {

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, timer } from 'rxjs';
 import { ImposePenaltyDto, PenaltyType, UserAuthDto, UserRole } from 'src/app/client/api';
@@ -33,6 +34,7 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
     private translateService: TranslateService,
     private chatService: ChatService,
     private repositoryService: RepositoryService,
@@ -116,6 +118,10 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
       mode: this.chatMode,
     }
     this.chatService.sendMessage(ChatMode.General, chatMessage);
+  }
+
+  showUserDetails(userId: number) {
+    this.router.navigate(['game', 'profile', userId]);
   }
 
   ngOnDestroy(): void {

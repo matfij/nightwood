@@ -47,20 +47,20 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
   }
 
   ngOnInit(): void {
-    // switch(this.penaltyType) {
-    //   case this.PenaltyType.Ban: {
-    //     this.form.controls['duration'].addValidators([
-    //       Validators.min(BAN_MIN_TIME), Validators.max(BAN_MAX_TIME)
-    //     ]);
-    //     break;
-    //   }
-    //   case this.PenaltyType.Mute: {
-    //     this.form.controls['duration'].addValidators([
-    //       Validators.min(MUTE_MIN_TIME), Validators.max(MUTE_MAX_TIME)
-    //     ]);
-    //     break;
-    //   }
-    // }
+    switch(this.penaltyType) {
+      case this.PenaltyType.Ban: {
+        this.form.controls['duration'].addValidators([
+          Validators.min(BAN_MIN_TIME), Validators.max(BAN_MAX_TIME)
+        ]);
+        break;
+      }
+      case this.PenaltyType.Mute: {
+        this.form.controls['duration'].addValidators([
+          Validators.min(MUTE_MIN_TIME), Validators.max(MUTE_MAX_TIME)
+        ]);
+        break;
+      }
+    }
   }
 
   imposePenalty() {

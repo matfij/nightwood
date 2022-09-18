@@ -85,19 +85,17 @@
       </div>
     </div>
 
-    <div *ngIf="ownProfile">
+    <div *ngIf="ownProfile && (friendInvitations$ | async) as friendInvitations">
       <div (click)="displayFriendInvitations = true" class="btn-base btn-avatar">
         {{ 'user.seeInvitations' | translate }}
       </div>
 
-      <div *ngIf="(friendInvitations$ | async) as friendInvitations">
-        <app-user-friend-requests
-          *ngIf="displayFriendInvitations"
-          (close)="displayFriendInvitations = false"
-          (friendshipAccepted)="updateFriends($event)"
-          [friendInvitations]="friendInvitations">
-        </app-user-friend-requests>
-      </div>
+      <app-user-friend-requests
+        *ngIf="displayFriendInvitations"
+        (close)="displayFriendInvitations = false"
+        (friendshipAccepted)="updateFriends($event)"
+        [friendInvitations]="friendInvitations">
+      </app-user-friend-requests>
     </div>
   </div>
 </div>

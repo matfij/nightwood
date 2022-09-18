@@ -25,7 +25,7 @@
             <div *ngIf="canMute(message)" (click)="openPenaltyModal(message, PenaltyType.Mute)" class="item-ban">
               <img src="assets/img/icons/mute-user.svg" alt="mute"> |
             </div>
-            <b>{{ message.nickname }}</b> | {{ message.data }}
+            <a (click)="showUserDetails(message.userId)">{{ message.nickname }}</a> ({{ message.date | date:'hh:mm' }}) | {{ message.data }}
           </div>
         </div>
       </div>

@@ -47,6 +47,15 @@
   text-align: left;
   overflow: hidden;
   background: lighten($color: $app-dark, $amount: 4);
+
+  a {
+    cursor: pointer;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .message-own {
@@ -54,11 +63,11 @@
 }
 
 .message-Moderator {
-  color: greenyellow;
+  color: $app-green;
 }
 
 .message-Administrator {
-  color: coral;
+  color: $app-red;
 }
 
 .item-ban {
