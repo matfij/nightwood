@@ -3,6 +3,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { BehaviorSubject, Observable, Subscription, timer } from "rxjs";
 import { map, tap } from "rxjs/operators";
 import { ActionController, AuthController, ExpeditionReportDto, MailController, UserAuthDto } from "src/app/client/api";
+import { DateService } from "src/app/common/services/date.service";
 import { RepositoryService } from "src/app/common/services/repository.service";
 import { ToastService } from "src/app/common/services/toast.service";
 
@@ -20,6 +21,7 @@ export class EngineService {
     private mailController: MailController,
     private translateService: TranslateService,
     private toastService: ToastService,
+    private dateService: DateService,
     private repositoryService: RepositoryService,
   ) {}
 
@@ -63,6 +65,10 @@ export class EngineService {
 
   private updateUserData() {
     this.authController.getUserData().subscribe(data => {
+      if (!this.dateService.checkIfEventAvailable(this.user.bannedUnitl || 0)) {
+        this.toastService.showError('errors.error', 'errors.userBanned');
+        this.repositoryService.logout();
+      }
       this.repositoryService.setUserData(data);
       this.user$.next(data);
     });

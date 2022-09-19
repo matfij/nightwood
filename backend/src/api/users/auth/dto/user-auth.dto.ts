@@ -29,4 +29,10 @@ export class UserAuthDto {
 
     @ApiProperty()
     maxOwnedDragons?: number;
+
+    @ApiPropertyOptional()
+    bannedUnitl?: number;
+
+    @ApiPropertyOptional()
+    mutedUntil?: number;
 }

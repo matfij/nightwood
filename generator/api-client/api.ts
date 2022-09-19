@@ -3961,6 +3961,8 @@ export interface UserAuthDto {
     gold: number;
     ownedDragons: number;
     maxOwnedDragons: number;
+    bannedUnitl?: number;
+    mutedUntil?: number;
 }
 
 export interface UserRegisterDto {
