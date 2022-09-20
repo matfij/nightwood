@@ -2,8 +2,8 @@
  * General
  */
 
-export const EXPEDITION_TIME_SCALE = 1 / 2;
-export const FEED_TIME_SCALE = 1 / 2;
+export const EXPEDITION_TIME_SCALE = 1 / 1;
+export const FEED_TIME_SCALE = 1 / 1;
 export const ALCHEMY_TIME_SCALE = 1 / 1;
 
 export const PAGINATION_DEFAULT_PAGE = 0;
@@ -35,6 +35,7 @@ export const MAIL_MESSAGE_MAX_LENGTH = 1000;
 /**
  * Penalties
  */
+
 export const MUTE_MIN_TIME = 1;
 export const MUTE_MAX_TIME = 200;
 export const BAN_MIN_TIME = 1;

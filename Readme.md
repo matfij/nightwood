@@ -34,11 +34,15 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Expedition guardians & progress [100%]
  - User roles & banning [100%]
 
+## Finished - 20.09.2022 (beta)
+
 ## Refactoring 1
  - Minimize dependencies
  - Optimization - rendering, db operations, throttling
- - Player actions - dtos, controllers
+ - Player actions - dtos, controllers, JWT
  - Frontend components - generic, skeletons
+ - Unit tests, CI/CD
+ - Production release
 
 ## Stage 2
  - Guilds - diplomacy, constructions 
