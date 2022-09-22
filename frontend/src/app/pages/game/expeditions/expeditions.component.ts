@@ -94,7 +94,5 @@ export class ExpeditionsComponent implements OnInit {
     this.selectedDragon = dragon;
     this.showDragonChoiceModal = false;
     this.displayBattle = true;
-
-    console.log('battleGuardian', this.displayBattle);
   }
 }

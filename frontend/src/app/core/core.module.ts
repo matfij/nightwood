@@ -22,6 +22,7 @@ import { DragonEquipComponent } from './components/dragon-equip/dragon-equip.com
 import { DragonStatsComponent } from './components/dragon-stats/dragon-stats.component';
 import { UserFriendRequestsComponent } from './components/user-friend-requests/user-friend-requests.component';
 import { ShoutboxPenaltyModalComponent } from './components/shoutbox-penalty-modal/shoutbox-penalty-modal.component';
+import { CraftingItemListComponent } from './components/crafting-item-list/crafting-item-list.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -40,6 +41,7 @@ const COMPONENTS = [
   DragonStatsComponent,
   UserFriendRequestsComponent,
   ShoutboxPenaltyModalComponent,
+  CraftingItemListComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

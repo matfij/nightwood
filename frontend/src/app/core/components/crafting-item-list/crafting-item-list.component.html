@@ -1,0 +1,24 @@
+<div *ngIf="recipes" class="wrapper-recipes">
+
+  <div *ngFor="let recipe of recipes" class="item-recipe">
+    <div class="item-recipe-img">
+      <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
+    </div>
+
+    <div class="recipe-info">
+      <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
+      <div *ngFor="let ingredient of recipe.ingredients">
+        {{ ingredient.name }} ({{ ingredient.quantity }})
+        <div *ngIf="items.length" class="inline">
+          <progress class="progress-crafting" [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity" ></progress>
+        </div>
+      </div>
+    </div>
+
+    <div class="break"></div>
+    <button (click)="craftRecipe(recipe)" [disabled]="checkIngredients(recipe) || itemsLoading" class="btn-base btn-craft">
+      {{ 'crafting.craft' | translate }}
+    </button>
+  </div>
+
+</div>

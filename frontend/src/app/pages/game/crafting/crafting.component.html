@@ -22,30 +22,12 @@
             <app-loading-indicator></app-loading-indicator>
           </div>
         </ng-template>
-        <div *ngIf="!itemsLoading && (recipesBase$ | async) as recipes; else loading" class="wrapper-recipes">
-
-          <div *ngFor="let recipe of recipes" class="item-recipe">
-            <div class="recipe-item">
-              <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
-            </div>
-
-            <div class="recipe-info">
-              <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
-              <div *ngFor="let ingredient of recipe.ingredients">
-                {{ ingredient.name }} ({{ ingredient.quantity }})
-                <div *ngIf="items.length" class="inline">
-                  <progress class="progress-crafting" [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity" ></progress>
-                </div>
-              </div>
-            </div>
-
-            <div class="break"></div>
-            <button (click)="craftRecipe(recipe)" [disabled]="checkIngredients(recipe)" class="btn-base btn-craft">
-              {{ 'crafting.craft' | translate }}
-            </button>
-          </div>
-
-        </div>
+        <app-crafting-item-list
+          *ngIf="!itemsLoading && (recipesBase$ | async) as recipes; else loading"
+          [items]="items"
+          [recipes]="recipes"
+          (refreshItems)="getOwnedItems()">
+        </app-crafting-item-list>
       </div>
 
     </div>
@@ -69,30 +51,12 @@
             <app-loading-indicator></app-loading-indicator>
           </div>
         </ng-template>
-        <div *ngIf="!itemsLoading && (recipesSpecial$ | async) as recipes; else loading" class="wrapper-recipes">
-
-          <div *ngFor="let recipe of recipes" class="item-recipe">
-            <div class="recipe-item">
-              <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
-            </div>
-
-            <div class="recipe-info">
-              <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
-              <div *ngFor="let ingredient of recipe.ingredients">
-                {{ ingredient.name }} ({{ ingredient.quantity }})
-                <div *ngIf="items.length" class="inline">
-                  <progress class="progress-crafting" [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity" ></progress>
-                </div>
-              </div>
-            </div>
-
-            <div class="break"></div>
-            <button (click)="craftRecipe(recipe)" [disabled]="checkIngredients(recipe)" class="btn-base btn-craft">
-              {{ 'crafting.craft' | translate }}
-            </button>
-          </div>
-
-        </div>
+        <app-crafting-item-list
+          *ngIf="!itemsLoading && (recipesSpecial$ | async) as recipes; else loading"
+          [items]="items"
+          [recipes]="recipes"
+          (refreshItems)="getOwnedItems()">
+        </app-crafting-item-list>
       </div>
     </div>
 
