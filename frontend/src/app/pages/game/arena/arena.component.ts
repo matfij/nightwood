@@ -61,7 +61,8 @@ export class ArenaComponent implements OnInit {
     if (!this.validateSearchParams()) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
     if (next === true) this.enemyDragonPage += 1;
-    if (next === false) this.enemyDragonPage -= 1;
+    else if (next === false) this.enemyDragonPage -= 1;
+    else this.enemyDragonPage = 0;
     if (this.enemyDragonPage < 0) this.enemyDragonPage = 0;
 
     const dto: DragonGetDto = {
@@ -76,7 +77,7 @@ export class ArenaComponent implements OnInit {
       this.enemyDragons = dragonPage.data;
 
       this.canGetPrev = this.enemyDragonPage !== 0;
-      this.canGetNext = (this.enemyDragonPage + 1) * this.enemyDragonLimit <= dragonPage.meta.totalItems!;
+      this.canGetNext = (this.enemyDragonPage + 1) * this.enemyDragonLimit < dragonPage.meta.totalItems!;
     }, () => this.enemyDragonsLoading = false);
   }
 

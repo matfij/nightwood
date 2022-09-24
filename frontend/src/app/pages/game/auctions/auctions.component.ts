@@ -72,8 +72,9 @@ export class AuctionsComponent implements OnInit {
   getAuctions(next?: boolean) {
     if (!this.validateSearchParams()) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
-    if (next) this.currentPage += 1;
-    if (next === false) this.currentPage -= 1;
+    if (next === true) this.currentPage += 1;
+    else if (next === false) this.currentPage -= 1;
+    else this.currentPage = 0;
     if (this.currentPage < 0) this.currentPage = 0;
 
     const params: AuctionGetDto = {
@@ -93,7 +94,7 @@ export class AuctionsComponent implements OnInit {
       else this.auctions = auctionPage.data;
 
       this.canGetPrev = this.currentPage !== 0;
-      this.canGetNext = (this.currentPage + 1) * this.pageLimit <= auctionPage.meta.totalItems!;
+      this.canGetNext = (this.currentPage + 1) * this.pageLimit < auctionPage.meta.totalItems!;
     }, () => this.auctionsLoading = false);
   }
 
