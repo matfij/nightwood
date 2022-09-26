@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { Repository } from "typeorm";
 import { User } from "../../user/model/user.entity";
-import { ACHIEVEMENTS_ALL, CROESUS_I, CROESUS_II, CROESUS_III, CURIOUS_EXPLORER_I, CURIOUS_EXPLORER_II, CURIOUS_EXPLORER_III, DRAGON_OWNER_I, DRAGON_OWNER_II, DRAGON_OWNER_III, DRAGON_TRAINER_I, DRAGON_TRAINER_II, DRAGON_TRAINER_III, PERSISTENT_BREEDER_I, PERSISTENT_BREEDER_II, PERSISTENT_BREEDER_III } from "../data/achievements";
+import { ACHIEVEMENTS_ALL, ACHIEVEMENTS_CROESUS, ACHIEVEMENTS_CURIOUS_EXPLORER, ACHIEVEMENTS_DRAGON_OWNER, ACHIEVEMENTS_DRAGON_TRAINER, ACHIEVEMENTS_PERSISTENT_BREEDER } from "../data/achievements";
 import { Achievements } from "../model/achievements.entity";
 import { AchievementDto } from "../model/dto/achievement.dto";
 import { AchievementsDto } from "../model/dto/achievements.dto";
@@ -46,18 +46,12 @@ export class AchievementsService {
         const user = await this.getUserData(userId);
 
         let achievementsChanged = false;
-        if (user.ownedDragons >= DRAGON_OWNER_I.requiredPoints && !user.achievements.dragonOwnerI) {
-            user.achievements.dragonOwnerI = true;
-            achievementsChanged = true;
-        }
-        if (user.ownedDragons >= DRAGON_OWNER_II.requiredPoints && !user.achievements.dragonOwnerII) {
-            user.achievements.dragonOwnerII = true;
-            achievementsChanged = true;
-        }
-        if (user.ownedDragons >= DRAGON_OWNER_III.requiredPoints && !user.achievements.dragonOwnerIII) {
-            user.achievements.dragonOwnerIII = true;
-            achievementsChanged = true;
-        }
+        ACHIEVEMENTS_DRAGON_OWNER.forEach(achievement => {
+            if (user.ownedDragons >= achievement.requiredPoints && user.achievements.dragonOwner < achievement.tier) {
+                user.achievements.dragonOwner = achievement.tier;
+                achievementsChanged = true;
+            }
+        });
 
         if (achievementsChanged) {
             await this.achievementsRepository.save(user.achievements);
@@ -68,18 +62,12 @@ export class AchievementsService {
         const user = await this.getUserData(userId);
 
         let achievementsChanged = false;
-        if (dragon.level >= PERSISTENT_BREEDER_I.requiredPoints && !user.achievements.persistentBreederI) {
-            user.achievements.persistentBreederI = true;
-            achievementsChanged = true;
-        }
-        if (dragon.level >= PERSISTENT_BREEDER_II.requiredPoints && !user.achievements.persistentBreederII) {
-            user.achievements.persistentBreederII = true;
-            achievementsChanged = true;
-        }
-        if (dragon.level >= PERSISTENT_BREEDER_III.requiredPoints && !user.achievements.persistentBreederIII) {
-            user.achievements.persistentBreederIII = true;
-            achievementsChanged = true;
-        }
+        ACHIEVEMENTS_PERSISTENT_BREEDER.forEach(achievement => {
+            if (dragon.level >= achievement.requiredPoints && user.achievements.persistentBreeder < achievement.tier) {
+                user.achievements.persistentBreeder = achievement.tier;
+                achievementsChanged = true;
+            }
+        });
 
         if (achievementsChanged) {
             await this.achievementsRepository.save(user.achievements);
@@ -90,18 +78,12 @@ export class AchievementsService {
         const user = await this.getUserData(userId);
 
         let achievementsChanged = false;
-        if (dragon.experience >= DRAGON_TRAINER_I.requiredPoints && !user.achievements.dragonTrainerI) {
-            user.achievements.dragonTrainerI = true;
-            achievementsChanged = true;
-        }
-        if (dragon.experience >= DRAGON_TRAINER_II.requiredPoints && !user.achievements.dragonTrainerII) {
-            user.achievements.dragonTrainerII = true;
-            achievementsChanged = true;
-        }
-        if (dragon.experience >= DRAGON_TRAINER_III.requiredPoints && !user.achievements.dragonTrainerIII) {
-            user.achievements.dragonTrainerIII = true;
-            achievementsChanged = true;
-        }
+        ACHIEVEMENTS_DRAGON_TRAINER.forEach(achievement => {
+            if (dragon.experience >= achievement.requiredPoints && user.achievements.dragonTrainer < achievement.tier) {
+                user.achievements.dragonTrainer = achievement.tier;
+                achievementsChanged = true;
+            }
+        });
 
         if (achievementsChanged) {
             await this.achievementsRepository.save(user.achievements);
@@ -112,15 +94,11 @@ export class AchievementsService {
         const user = await this.getUserData(userId);
         user.achievements.expeditionTime += Math.round(gainedTime);
 
-        if (user.achievements.expeditionTime >= CURIOUS_EXPLORER_I.requiredPoints) {
-            user.achievements.curiousExplorerI = true;
-        }
-        if (user.achievements.expeditionTime >= CURIOUS_EXPLORER_II.requiredPoints) {
-            user.achievements.curiousExplorerII = true;
-        }
-        if (user.achievements.expeditionTime >= CURIOUS_EXPLORER_III.requiredPoints) {
-            user.achievements.curiousExplorerIII = true;
-        }
+        ACHIEVEMENTS_CURIOUS_EXPLORER.forEach(achievement => {
+            if (user.achievements.expeditionTime >= achievement.requiredPoints) {
+                user.achievements.curiousExplorer = achievement.tier;
+            }
+        });
 
         await this.achievementsRepository.save(user.achievements);
     }
@@ -129,18 +107,12 @@ export class AchievementsService {
         const user = await this.getUserData(userId);
 
         let achievementsChanged = false;
-        if (user.gold >= CROESUS_I.requiredPoints && !user.achievements.croesusI) {
-            user.achievements.croesusI = true;
-            achievementsChanged = true;
-        }
-        if (user.gold >= CROESUS_II.requiredPoints && !user.achievements.croesusII) {
-            user.achievements.croesusII = true;
-            achievementsChanged = true;
-        }
-        if (user.gold >= CROESUS_III.requiredPoints && !user.achievements.croesusIII) {
-            user.achievements.croesusIII = true;
-            achievementsChanged = true;
-        }
+        ACHIEVEMENTS_CROESUS.forEach(achievement => {
+            if (user.gold >= achievement.requiredPoints && user.achievements.croesus < achievement.tier) {
+                user.achievements.croesus = achievement.tier;
+                achievementsChanged = true;
+            }
+        });
 
         if (achievementsChanged) {
             await this.achievementsRepository.save(user.achievements);

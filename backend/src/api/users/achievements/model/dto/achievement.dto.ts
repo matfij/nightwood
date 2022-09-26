@@ -9,5 +9,8 @@ export class AchievementDto {
     name: string;
 
     @ApiProperty()
+    tier: number;
+
+    @ApiProperty()
     hint: string;
 }

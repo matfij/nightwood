@@ -9,47 +9,17 @@ export class AchievementsDto {
     expeditionTime: number;
 
     @ApiProperty()
-    dragonOwnerI: boolean;
+    dragonOwner: number;
 
     @ApiProperty()
-    dragonOwnerII: boolean;
+    persistentBreeder: number;
 
     @ApiProperty()
-    dragonOwnerIII: boolean;
+    curiousExplorer: number;
 
     @ApiProperty()
-    persistentBreederI: boolean;
+    dragonTrainer: number;
 
     @ApiProperty()
-    persistentBreederII: boolean;
-
-    @ApiProperty()
-    persistentBreederIII: boolean;
-
-    @ApiProperty()
-    curiousExplorerI: boolean;
-
-    @ApiProperty()
-    curiousExplorerII: boolean;
-
-    @ApiProperty()
-    curiousExplorerIII: boolean;
-
-    @ApiProperty()
-    dragonTrainerI: boolean;
-
-    @ApiProperty()
-    dragonTrainerII: boolean;
-
-    @ApiProperty()
-    dragonTrainerIII: boolean;
-
-    @ApiProperty()
-    croesusI: boolean;
-
-    @ApiProperty()
-    croesusII: boolean;
-
-    @ApiProperty()
-    croesusIII: boolean;
+    croesus: number;
 }

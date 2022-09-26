@@ -30,6 +30,7 @@ export class PageDto<T> {
 }
 
 export abstract class PaginationBaseDto {
+    
     @ApiProperty({ type: () => PageMetaDto })
     readonly meta: PageMetaDto;
 }
