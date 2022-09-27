@@ -23,6 +23,7 @@ import { DragonStatsComponent } from './components/dragon-stats/dragon-stats.com
 import { UserFriendRequestsComponent } from './components/user-friend-requests/user-friend-requests.component';
 import { ShoutboxPenaltyModalComponent } from './components/shoutbox-penalty-modal/shoutbox-penalty-modal.component';
 import { CraftingItemListComponent } from './components/crafting-item-list/crafting-item-list.component';
+import { ShortNumberPipe } from '../common/utils/short-number.pipe';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -54,6 +55,7 @@ const MODULES = [
 const UTILS = [
   TooltipDirective,
   TimerPipe,
+  ShortNumberPipe,
 ];
 const CHILD_PROVIDERS = [
   ...(TranslateModule.forChild().providers ?? []),
