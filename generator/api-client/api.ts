@@ -3860,21 +3860,11 @@ export enum UserRole {
 export interface AchievementsDto {
     id: number;
     expeditionTime: number;
-    dragonOwnerI: boolean;
-    dragonOwnerII: boolean;
-    dragonOwnerIII: boolean;
-    persistentBreederI: boolean;
-    persistentBreederII: boolean;
-    persistentBreederIII: boolean;
-    curiousExplorerI: boolean;
-    curiousExplorerII: boolean;
-    curiousExplorerIII: boolean;
-    dragonTrainerI: boolean;
-    dragonTrainerII: boolean;
-    dragonTrainerIII: boolean;
-    croesusI: boolean;
-    croesusII: boolean;
-    croesusIII: boolean;
+    dragonOwner: number;
+    persistentBreeder: number;
+    curiousExplorer: number;
+    dragonTrainer: number;
+    croesus: number;
 }
 
 export interface UserDto {
@@ -3993,6 +3983,7 @@ export interface RecipeComposeDto {
 export interface AchievementDto {
     uid: string;
     name: string;
+    tier: number;
     hint: string;
 }
 

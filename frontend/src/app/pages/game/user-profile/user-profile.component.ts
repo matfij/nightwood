@@ -159,7 +159,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   checkCompleted(achievement: AchievementDto, userAchievements: AchievementsDto): boolean | number {
-    return userAchievements[achievement.uid as keyof AchievementsDto];
+    return userAchievements[achievement.uid as keyof AchievementsDto] >= achievement.tier;
   }
 
 }

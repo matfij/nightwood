@@ -2,21 +2,21 @@ import { Achievement } from '../model/definitions/achievement';
 
 export const ACHIEVEMENTS_DRAGON_OWNER: Achievement[]= [
     {
-        uid: 'dragonOwnerI',
+        uid: 'dragonOwner',
         name: 'Dragon owner',
         tier: 1,
         hint: 'Adopt your first dragon.',
         requiredPoints: 1,
     },
     {
-        uid: 'dragonOwnerII',
+        uid: 'dragonOwner',
         name: 'Dragon sympathizer',
         tier: 2,
         hint: 'Have at least 3 dragons.',
         requiredPoints: 3,
     },
     {
-        uid: 'dragonOwnerIII',
+        uid: 'dragonOwner',
         name: 'Dragon fan',
         tier: 3,
         hint: 'Have at least 5 dragons.',
@@ -26,21 +26,21 @@ export const ACHIEVEMENTS_DRAGON_OWNER: Achievement[]= [
 
 export const ACHIEVEMENTS_PERSISTENT_BREEDER: Achievement[] = [
     {
-        uid: 'persistentBreederI',
+        uid: 'persistentBreeder',
         name: 'Keen breeder',
         tier: 1,
         hint: 'One of your dragons reached [10] level of maturity.',
         requiredPoints: 10,
     },
     {
-        uid: 'persistentBreederII',
+        uid: 'persistentBreeder',
         name: 'Persistent breeder',
         tier: 2,
         hint: 'One of your dragons reached [50] level of maturity.',
         requiredPoints: 50,
     },
     {
-        uid: 'persistentBreederIII',
+        uid: 'persistentBreeder',
         name: 'Tireless breeder',
         tier: 3,
         hint: 'One of your dragons reached [100] level of maturity.',
@@ -50,21 +50,21 @@ export const ACHIEVEMENTS_PERSISTENT_BREEDER: Achievement[] = [
 
 export const ACHIEVEMENTS_CURIOUS_EXPLORER: Achievement[] = [
     {
-        uid: 'curiousExplorerI',
+        uid: 'curiousExplorer',
         name: 'Curious explorer',
         tier: 1,
         hint: 'Your dragons have spent 100 hours on expeditions.',
         requiredPoints: 100,
     },
     {
-        uid: 'curiousExplorerII',
+        uid: 'curiousExplorer',
         name: 'Cartographer',
         tier: 2,
         hint: 'Your dragons have spent 1000 hours on expeditions.',
         requiredPoints: 1000,
     },
     {
-        uid: 'curiousExplorerIII',
+        uid: 'curiousExplorer',
         name: 'Great conqueror',
         tier: 3,
         hint: 'Your dragons have spent 3000 hours on expeditions.',
@@ -74,21 +74,21 @@ export const ACHIEVEMENTS_CURIOUS_EXPLORER: Achievement[] = [
 
 export const ACHIEVEMENTS_DRAGON_TRAINER: Achievement[] = [
     {
-        uid: 'dragonTrainerI',
+        uid: 'dragonTrainer',
         name: 'Greenhorn',
         tier: 1,
         hint: 'One of yout dragons collected 500 experience points.',
         requiredPoints: 500,
     },
     {
-        uid: 'dragonTrainerII',
+        uid: 'dragonTrainer',
         name: 'Rising star',
         tier: 2,
         hint: 'One of yout dragons collected 2500 experience points.',
         requiredPoints: 2500,
     },
     {
-        uid: 'dragonTrainerIII',
+        uid: 'dragonTrainer',
         name: 'Undefeated',
         tier: 3,
         hint: 'One of yout dragons collected 10000 experience points.',

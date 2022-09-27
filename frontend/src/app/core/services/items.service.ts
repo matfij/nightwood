@@ -34,17 +34,8 @@ export class ItemsService {
   }
 
   toDisplayAchievement(achievement: AchievementDto): DisplayAchievement {
-    let nameBase = '';
-    let cssClass = '';
-
-    const NAME_SUFFIXES = ['III', 'II', 'I'];
-
-    NAME_SUFFIXES.forEach((suffix) => {
-      if (achievement.uid.endsWith(suffix) && !nameBase.length) {
-        nameBase = achievement.uid.replace(suffix, '');
-        cssClass = `achievement-${suffix}`;
-      }
-    });
+    let nameBase = achievement.uid;
+    let cssClass = `achievement-${achievement.tier}`;
 
     const image = `${this.BASE_ACHIEVEMENT_IMG_PATH}/${nameBase}.svg`;
 
