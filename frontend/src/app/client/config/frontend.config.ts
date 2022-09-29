@@ -32,6 +32,7 @@ export const MAIL_MESSAGE_MAX_LENGTH = 1000;
 /**
  * Penalties
  */
+
 export const MUTE_MIN_TIME = 1;
 export const MUTE_MAX_TIME = 200;
 export const BAN_MIN_TIME = 1;
@@ -56,7 +57,7 @@ export const DRAGON_MAX_RUNES = 3;
  */
 
 export const AUCTION_MIN_DURATION = 1;
-export const AUCTION_MAX_DURATION = 72;
+export const AUCTION_MAX_DURATION = 336;
 export const AUCTION_MIN_PRICE = 10;
 export const AUCTION_MAX_PRICE = 1000000;
 export const AUCTION_MIN_QUANTITY = 1;

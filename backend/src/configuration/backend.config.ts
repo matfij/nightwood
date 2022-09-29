@@ -59,8 +59,9 @@ export const MAX_RUNES = 3;
  */
 
 export const MIN_AUCTION_TIME = 1;
-export const MAX_AUCTION_TIME = 72;
+export const MAX_AUCTION_TIME = 336;
 export const MIN_AUCTION_PRICE = 10;
 export const MAX_AUCTION_PRICE = 1000000;
 export const MIN_AUCTION_QUANTITY = 1;
 export const MAX_AUCTION_QUANTITY = 1000;
+export const AUCTION_OUT_OF_DATE_DAYS = 30;

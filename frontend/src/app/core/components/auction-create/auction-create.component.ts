@@ -22,10 +22,10 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
 
   form: FormGroup = new FormGroup({
     duration: new FormControl(
-      null, [Validators.required, Validators.min(AUCTION_MIN_DURATION), Validators.max(AUCTION_MAX_DURATION)],
+      AUCTION_MAX_DURATION, [Validators.required, Validators.min(AUCTION_MIN_DURATION), Validators.max(AUCTION_MAX_DURATION)],
     ),
     quantity: new FormControl(
-      null, [Validators.required, Validators.min(AUCTION_MIN_QUANTITY), Validators.max(AUCTION_MAX_QUANTITY)],
+      AUCTION_MIN_QUANTITY, [Validators.required, Validators.min(AUCTION_MIN_QUANTITY), Validators.max(AUCTION_MAX_QUANTITY)],
     ),
     unitPrice: new FormControl(
       null, [Validators.required, Validators.min(AUCTION_MIN_PRICE), Validators.max(AUCTION_MAX_PRICE)],

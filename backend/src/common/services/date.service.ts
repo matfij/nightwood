@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class DateService {
 
-    getCurrentDate() {
+    getCurrentDate(): number {
         return Date.now();
     }
 
@@ -23,5 +23,9 @@ export class DateService {
 
     isTokenValid(expDate: number, maxAge: number): boolean {
         return 1000 * (expDate + maxAge) > this.getCurrentDate();
+    }
+
+    checkDateAgeInDays(date: number): number {
+        return (this.getCurrentDate() - date) / (1000 * 60 * 60 * 24);
     }
 }

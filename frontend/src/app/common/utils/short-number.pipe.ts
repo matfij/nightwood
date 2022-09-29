@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DEFAULT_LANG } from 'src/app/core/configuration';
-import { StoreService } from '../services/store.service';
 
 @Pipe({
   name: 'shortNumber',
