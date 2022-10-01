@@ -32,6 +32,8 @@ export const MAIL_TOPIC_MAX_LENGTH = 100;
 export const MAIL_MESSAGE_MIN_LENGTH = 3;
 export const MAIL_MESSAGE_MAX_LENGTH = 1000;
 
+export const MAIL_OUT_OF_DATE_DAYS = 30;
+
 /**
  * Penalties
  */
@@ -64,4 +66,5 @@ export const MIN_AUCTION_PRICE = 10;
 export const MAX_AUCTION_PRICE = 1000000;
 export const MIN_AUCTION_QUANTITY = 1;
 export const MAX_AUCTION_QUANTITY = 1000;
+
 export const AUCTION_OUT_OF_DATE_DAYS = 30;

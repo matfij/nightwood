@@ -5,6 +5,7 @@ import { ErrorService } from "src/common/services/error.service";
 import { UserModule } from "../user/user.module";
 import { MailController } from "./mail.controller";
 import { Mail } from "./model/mail.entity";
+import { MailJobService } from "./service/mail-job.service";
 import { MailService } from "./service/mail.service";
 
 @Module({
@@ -17,6 +18,7 @@ import { MailService } from "./service/mail.service";
     ],
     providers: [
         MailService,
+        MailJobService,
         DateService,
         ErrorService,
     ],
