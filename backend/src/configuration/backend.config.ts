@@ -25,6 +25,11 @@ export const NICKNAME_MAX_LENGTH = 16;
 export const CHAT_MESSAGE_MIN_LENGTH = 1;
 export const CHAT_MESSAGE_MAX_LENGTH = 500;
 
+/**
+ * Mails
+ */
+export const MAIL_SYSTEM_SENDER = 'SYSTEM';
+
 export const MAIL_RECEIVER_MIN_LENGTH = 4;
 export const MAIL_RECEIVER_MAX_LENGTH = 12;
 export const MAIL_TOPIC_MIN_LENGTH = 1;

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
-import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
+import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mails";
 import { MailService } from "src/api/users/mail/service/mail.service";
 import { DateService } from "src/common/services/date.service";
 import { AUCTION_OUT_OF_DATE_DAYS } from "src/configuration/backend.config";

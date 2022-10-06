@@ -1,25 +1,21 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsEmail, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsEmail, IsNumber, IsString } from "class-validator";
 
-export class GetUserDto {
+export class UserGetDto {
 
     @IsEmail()
-    @IsOptional()
     @ApiPropertyOptional()
     email?: string;
 
     @IsString()
-    @IsOptional()
     @ApiPropertyOptional()
     nickname?: string;
 
     @IsNumber()
-    @IsOptional()
     @ApiPropertyOptional()
     page?: number;
     
     @IsNumber()
-    @IsOptional()
     @ApiPropertyOptional()
     limit?: number;
 }

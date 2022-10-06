@@ -2,10 +2,10 @@ import { Body, Controller, Post, UseGuards, Request } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { UserDto } from "../user/model/dto/user.dto";
-import { UserAuthDto } from "./dto/user-auth.dto";
-import { UserConfirmDto } from "./dto/user-confirm.dto";
-import { UserLoginDto } from "./dto/user-login.dto";
-import { UserRegisterDto } from "./dto/user-register.dto";
+import { UserAuthDto } from "./model/dto/user-auth.dto";
+import { UserConfirmDto } from "./model/dto/user-confirm.dto";
+import { UserLoginDto } from "./model/dto/user-login.dto";
+import { UserRegisterDto } from "./model/dto/user-register.dto";
 import { AuthService } from "./service/auth.service";
 import { JwtAuthGuard } from "./util/jwt.guard";
 

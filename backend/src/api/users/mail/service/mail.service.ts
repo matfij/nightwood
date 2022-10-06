@@ -2,10 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DateService } from "src/common/services/date.service";
 import { ErrorService } from "src/common/services/error.service";
-import { PAGINATION_DEFAULT_LIMIT } from "src/configuration/backend.config";
+import { MAIL_SYSTEM_SENDER, PAGINATION_DEFAULT_LIMIT } from "src/configuration/backend.config";
 import { FindManyOptions, Repository } from "typeorm";
 import { UserService } from "../../user/service/user.service";
-import { MailSendSystemParams } from "../model/definitions/mail-params";
+import { MailSendSystemParams } from "../model/definitions/mails";
 import { MailGetDto } from "../model/dto/mail-get.dto";
 import { MailPageDto } from "../model/dto/mail-page.dto";
 import { MailSendDto } from "../model/dto/mail-send.dto";
@@ -43,7 +43,7 @@ export class MailService {
     async sendSystemMail(params: MailSendSystemParams): Promise<MailDto> {
         const mail: MailDto = {
             sentDate: this.dateService.getCurrentDate(),
-            senderName: params.senderName ?? 'System',
+            senderName: params.senderName ?? MAIL_SYSTEM_SENDER,
             receiverId: params.receiverId,
             topic: params.topic,
             message: params.message,

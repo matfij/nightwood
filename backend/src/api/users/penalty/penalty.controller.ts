@@ -4,8 +4,8 @@ import { AuthorizedRequest } from "src/common/definitions/requests";
 import { JwtAuthGuard } from "../auth/util/jwt.guard";
 import { Roles } from "../auth/util/roles.decorator";
 import { RolesGuard } from "../auth/util/roles.guard";
-import { UserRole } from "../user/model/definitions/user-role";
-import { ImposePenaltyDto } from "./model/dto/impose-penalty.dto";
+import { UserRole } from "../user/model/definitions/users";
+import { PenaltyImposeDto } from "./model/dto/penalty-impose.dto";
 import { PenaltyService } from "./service/penalty.service";
 
 @Controller('penalty')
@@ -21,7 +21,7 @@ export class PenaltyController {
     @Roles(UserRole.Administrator, UserRole.Moderator)
     @Post('imposePenalty')
     @ApiOkResponse()
-    imposePenalty(@Request() req: AuthorizedRequest, @Body() dto: ImposePenaltyDto): Promise<void> {
+    imposePenalty(@Request() req: AuthorizedRequest, @Body() dto: PenaltyImposeDto): Promise<void> {
         return this.penaltyService.imposePenalty(req.user, dto);
     }
 }

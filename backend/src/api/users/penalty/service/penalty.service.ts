@@ -4,11 +4,11 @@ import { DateService } from "src/common/services/date.service";
 import { ErrorService } from "src/common/services/error.service";
 import { BAN_MAX_TIME, BAN_MIN_TIME, MUTE_MAX_TIME, MUTE_MIN_TIME, PENALTY_COMMENT_MAX_LENGTH } from "src/configuration/backend.config";
 import { Repository } from "typeorm";
-import { UserRole } from "../../user/model/definitions/user-role";
+import { UserRole } from "../../user/model/definitions/users";
 import { UserDto } from "../../user/model/dto/user.dto";
 import { User } from "../../user/model/user.entity";
 import { PenaltyType } from "../model/definitions/penalties";
-import { ImposePenaltyDto } from "../model/dto/impose-penalty.dto";
+import { PenaltyImposeDto } from "../model/dto/penalty-impose.dto";
 import { Penalty } from "../model/penalty.entity";
 
 @Injectable()
@@ -23,7 +23,7 @@ export class PenaltyService {
         private errorService: ErrorService,
     ) {}
 
-    async imposePenalty(user: UserDto, dto: ImposePenaltyDto): Promise<void> {
+    async imposePenalty(user: UserDto, dto: PenaltyImposeDto): Promise<void> {
         const imposingUser = await this.userRepository.findOne(user.id);
         const punishedUser = await this.userRepository.findOne(dto.punishedUserId);
         

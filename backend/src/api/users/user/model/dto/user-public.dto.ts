@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { AchievementsDto } from "src/api/users/achievements/model/dto/achievements.dto";
-import { UserRole } from "../definitions/user-role";
+import { UserRole } from "../definitions/users";
 
 export class UserPublicDto {
 

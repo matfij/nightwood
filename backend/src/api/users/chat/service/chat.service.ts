@@ -3,7 +3,7 @@ import { DateService } from "src/common/services/date.service";
 import { ErrorService } from "src/common/services/error.service";
 import { CHAT_MESSAGE_MAX_LENGTH, CHAT_MESSAGE_MIN_LENGTH } from "src/configuration/backend.config";
 import { UserDto } from "../../user/model/dto/user.dto";
-import { ChatMessage, ChatMode } from "../model/chat.definitions";
+import { ChatMessage, ChatMode } from "../model/chat";
 
 @Injectable()
 export class ChatService {

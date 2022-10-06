@@ -5,10 +5,10 @@ import { ItemService } from 'src/api/items/item/service/item.service';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/service/auth.service';
 import { ErrorService } from '../../../../common/services/error.service';
-import { CreateUserDto } from '../model/dto/create-user.dto';
-import { GetUserDto } from '../model/dto/get-user.dto';
-import { PageUserDto } from '../model/dto/page-user.dto';
-import { UpdateUserDto } from '../model/dto/update-user.dto';
+import { UserCreateDto } from '../model/dto/user-create.dto';
+import { UserGetDto } from '../model/dto/user-get.dto';
+import { UserPageDto } from '../model/dto/user-page.dto';
+import { UserUpdateDto } from '../model/dto/user-update.dto';
 import { UserDto } from '../model/dto/user.dto';
 import { User } from '../model/user.entity';
 import { createReadStream } from 'fs';
@@ -30,7 +30,7 @@ export class UserService {
         private errorService: ErrorService,
     ) {}
 
-    async create(dto: CreateUserDto): Promise<UserDto> {
+    async create(dto: UserCreateDto): Promise<UserDto> {
         if (await this.emailExists(dto.email)) this.errorService.throw('errors.emailNotUnique');
         if (await this.nicknameExists(dto.nickname)) this.errorService.throw('errors.nicknameNotUnique');
 
@@ -49,7 +49,7 @@ export class UserService {
         return savedUser;
     }
 
-    async update(id: string | number, dto: UpdateUserDto): Promise<UserDto> {
+    async update(id: string | number, dto: UserUpdateDto): Promise<UserDto> {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new NotFoundException();
 
@@ -81,10 +81,10 @@ export class UserService {
         return user;
     }
 
-    async getAll(dto: GetUserDto): Promise<PageUserDto> {
+    async getAll(dto: UserGetDto): Promise<UserPageDto> {
         const page = await paginate<UserDto>(this.userRepository, { page: dto.page, limit: dto.limit });
         
-        const pageUser: PageUserDto = {
+        const pageUser: UserPageDto = {
             data: page.items,
             meta: page.meta,
         };
@@ -221,14 +221,14 @@ export class UserService {
     }
 
     private async emailExists(email: string): Promise<boolean> {
-        const params: GetUserDto = { email: email };
+        const params: UserGetDto = { email: email };
         const users = await this.userRepository.find(params);
 
         return users.length > 0;
     }
 
     private async nicknameExists(nickname: string): Promise<boolean> {
-        const params: GetUserDto = { nickname: nickname };
+        const params: UserGetDto = { nickname: nickname };
         const users = await this.userRepository.find(params);
 
         return users.length > 0;

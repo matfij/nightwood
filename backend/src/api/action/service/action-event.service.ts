@@ -7,7 +7,7 @@ import { ACTION_INCREASE_DRAGON_LIMIT } from "src/api/dragons/dragon/data/dragon
 import { DragonService } from "src/api/dragons/dragon/service/dragon.service";
 import { ItemService } from "src/api/items/item/service/item.service";
 import { AchievementsService } from "src/api/users/achievements/service/achievements.service";
-import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mail-params";
+import { MailSendSystemParams } from "src/api/users/mail/model/definitions/mails";
 import { MailService } from "src/api/users/mail/service/mail.service";
 import { UserService } from "src/api/users/user/service/user.service";
 import { ErrorService } from "src/common/services/error.service";

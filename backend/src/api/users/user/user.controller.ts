@@ -6,14 +6,14 @@ import { PaginationInterceptor } from 'src/common/interceptors/pagination.interc
 import { JwtAuthGuard } from '../auth/util/jwt.guard';
 import { Roles } from '../auth/util/roles.decorator';
 import { RolesGuard } from '../auth/util/roles.guard';
-import { UserRole } from './model/definitions/user-role';
-import { CreateUserDto } from './model/dto/create-user.dto';
+import { UserRole } from './model/definitions/users';
+import { UserCreateDto } from './model/dto/user-create.dto';
 import { FriendshipPendingRequestDto } from './model/dto/friendship-pending-request.dto';
 import { FriendshipRequestDto } from './model/dto/friendship-request.dto';
 import { FriendshipRespondDto } from './model/dto/friendship-respond.dto';
-import { GetUserDto } from './model/dto/get-user.dto';
-import { PageUserDto } from './model/dto/page-user.dto';
-import { UpdateUserDto } from './model/dto/update-user.dto';
+import { UserGetDto } from './model/dto/user-get.dto';
+import { UserPageDto } from './model/dto/user-page.dto';
+import { UserUpdateDto } from './model/dto/user-update.dto';
 import { UserPublicDto } from './model/dto/user-public.dto';
 import { UserDto } from './model/dto/user.dto';
 import { UserService } from './service/user.service';
@@ -31,7 +31,7 @@ export class UserController {
     @UseGuards(RolesGuard)
     @Roles(UserRole.Administrator)
     @ApiOkResponse({ type: UserDto })
-    create(@Body() dto: CreateUserDto): Promise<UserDto> {
+    create(@Body() dto: UserCreateDto): Promise<UserDto> {
         return this.userService.create(dto);
     }
 
@@ -39,7 +39,7 @@ export class UserController {
     @UseGuards(RolesGuard)
     @Roles(UserRole.Administrator)
     @ApiOkResponse({ type: UserDto })
-    update(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<UserDto> {
+    update(@Param('id') id: string, @Body() dto: UserUpdateDto): Promise<UserDto> {
         return this.userService.update(id, dto);
     }
 
@@ -55,8 +55,8 @@ export class UserController {
     @UseGuards(RolesGuard)
     @Roles(UserRole.Administrator)
     @UseInterceptors(PaginationInterceptor)
-    @ApiOkResponse({ type: PageUserDto })
-    getAll(@Body() dto: GetUserDto): Promise<PageUserDto> {
+    @ApiOkResponse({ type: UserPageDto })
+    getAll(@Body() dto: UserGetDto): Promise<UserPageDto> {
         return this.userService.getAll(dto);
     }
 

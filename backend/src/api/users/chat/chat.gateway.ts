@@ -1,9 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
 import { UserDto } from '../user/model/dto/user.dto';
-import { ChatMessage, ChatMode } from './model/chat.definitions';
+import { ChatMessage, ChatMode } from './model/chat';
 import { ChatService } from './service/chat.service';
 
 @WebSocketGateway({ cors: { origin: '*' } })

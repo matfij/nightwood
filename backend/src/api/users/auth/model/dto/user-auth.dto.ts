@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { UserRole } from "../../user/model/definitions/user-role";
+import { UserRole } from "../../../user/model/definitions/users";
 
 export class UserAuthDto {
 

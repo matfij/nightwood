@@ -1,4 +1,4 @@
-import { UserRole } from "../../user/model/definitions/user-role";
+import { UserRole } from "../../user/model/definitions/users";
 
 export interface ChatMessage {
     date: number;

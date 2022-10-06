@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { PenaltyType } from "../definitions/penalties";
 
-export class ImposePenaltyDto {
+export class PenaltyImposeDto {
 
     @ApiProperty()
     punishedUserId: number;
