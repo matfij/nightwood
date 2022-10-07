@@ -1,7 +1,7 @@
-import { BUBULAE_STEAK, ENCHANTER_POTION, IHON_BERRY, MIGHTY_EXTRACT, NIMBUS_NECTAR, RAINBOW_MIXTURE, RELIQUM_EGG, RORIS_LEAVES, SPARKING_AMBROSIA, SPIRAL_NUT, TITAN_BREW } from "src/api/items/item/model/data/food";
-import { ARTICHOKE, CRIMSON_SEED, FILIKO_ROOTS, PALE_GRAINS } from "src/api/items/item/model/data/ingredients";
+import { BUBULAE_STEAK, ENCHANTER_POTION, IHON_BERRY, MIGHTY_EXTRACT, NIMBUS_NECTAR, RAINBOW_MIXTURE, RELIQUM_EGG, RORIS_LEAVES, SPARKING_AMBROSIA, SPIRAL_NUT, TITAN_BREW } from "src/api/items/item/data/food";
+import { ARTICHOKE, CRIMSON_SEED, FILIKO_ROOTS, PALE_GRAINS } from "src/api/items/item/data/ingredients";
 import { ALCHEMY_TIME_SCALE } from "src/configuration/backend.config";
-import { MixtureRecipeDto } from "../dto/mixture-recipe.dto";
+import { MixtureRecipeDto } from "../model/dto/mixture-recipe.dto";
 
 export const RECIPE_MIXTURE_STRENGTH: MixtureRecipeDto = {
     uid: 'recipe-m-1',

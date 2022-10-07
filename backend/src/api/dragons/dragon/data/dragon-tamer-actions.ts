@@ -1,4 +1,4 @@
-import { FEEBLE_MUSHROOMS, TRANSMUTATION_STONE } from "src/api/items/item/model/data/ingredients";
+import { FEEBLE_MUSHROOMS, TRANSMUTATION_STONE } from "src/api/items/item/data/ingredients";
 import { DragonTamerActionDto } from "../model/dto/dragon-tamer-actions.dto";
 
 export const ACTION_RENAME: DragonTamerActionDto = {

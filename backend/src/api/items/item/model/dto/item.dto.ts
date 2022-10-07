@@ -1,8 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose, Transform } from "class-transformer";
-import { EquipmentStatisticsDto } from "../definitions/equipment";
-import { ItemRarity } from "../definitions/item-rarity";
-import { EquipmentType, FoodType, ItemType } from "../definitions/item-type";
+import { EquipmentStatisticsDto } from "./equipment-statistics.dto";
+import { EquipmentType, FoodType, ItemRarity, ItemType } from "../definitions/items";
 
 export class ItemDto {
 

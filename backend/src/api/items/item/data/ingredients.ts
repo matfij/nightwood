@@ -1,6 +1,5 @@
-import { ItemRarity } from "../definitions/item-rarity";
-import { ItemType } from "../definitions/item-type";
-import { ItemDto } from "../dto/item.dto";
+import { ItemRarity, ItemType } from "../model/definitions/items";
+import { ItemDto } from "../model/dto/item.dto";
 
 export const TRANSMUTATION_STONE: ItemDto = {
     uid: 'item-i-1',

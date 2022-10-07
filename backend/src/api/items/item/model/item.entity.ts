@@ -1,9 +1,8 @@
 import { Dragon } from "src/api/dragons/dragon/model/dragon.entity";
 import { User } from "src/api/users/user/model/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { EquipmentStatisticsDto } from "./definitions/equipment";
-import { ItemRarity } from "./definitions/item-rarity";
-import { EquipmentType, FoodType, ItemType } from "./definitions/item-type";
+import { EquipmentStatisticsDto } from "./dto/equipment-statistics.dto";
+import { EquipmentType, FoodType, ItemRarity, ItemType } from "./definitions/items";
 
 @Entity()
 export class Item {

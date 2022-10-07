@@ -1,6 +1,6 @@
-import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEAVES, SPIRAL_NUT } from "src/api/items/item/model/data/food";
-import { ARTICHOKE, SOVAGA_LEAVES } from "src/api/items/item/model/data/ingredients";
-import { BoosterRecipeDto } from "../dto/booster-recipe.dto";
+import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEAVES, SPIRAL_NUT } from "src/api/items/item/data/food";
+import { ARTICHOKE, SOVAGA_LEAVES } from "src/api/items/item/data/ingredients";
+import { BoosterRecipeDto } from "../model/dto/booster-recipe.dto";
 import { BOOSTER_AGILITY, BOOSTER_ATTACK, BOOSTER_DEFENSE, BOOSTER_FULL, BOOSTER_SPECIAL, BOOSTER_WISDOM } from "./boosters";
 
 export const RECIPE_BOOSTER_ATTACK: BoosterRecipeDto = {

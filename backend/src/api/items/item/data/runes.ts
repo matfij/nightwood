@@ -1,6 +1,5 @@
-import { ItemRarity } from "../definitions/item-rarity";
-import { EquipmentType, ItemType } from "../definitions/item-type";
-import { ItemDto } from "../dto/item.dto";
+import { EquipmentType, ItemRarity, ItemType } from "../model/definitions/items";
+import { ItemDto } from "../model/dto/item.dto";
 
 export const RUNE_ATTACK_1: ItemDto = {
     uid: 'item-r-7',
@@ -390,10 +389,6 @@ export const RUNE_SPECIAL_WISDOM_3: ItemDto = {
     },
 };
 
-/**
- * Blueprints
- */
-
 export const RUNES_BASE = [
     RUNE_ATTACK_1,
     RUNE_ATTACK_2,
@@ -426,4 +421,9 @@ export const RUNES_SPECIAL = [
     RUNE_SPECIAL_DEFENSE_3,
     RUNE_SPECIAL_AGILITY_3,
     RUNE_SPECIAL_WISDOM_3,
+];
+
+export const RUNES = [
+    ...RUNES_BASE,
+    ...RUNES_SPECIAL,
 ];

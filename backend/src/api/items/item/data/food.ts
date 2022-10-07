@@ -1,6 +1,5 @@
-import { ItemRarity } from "../definitions/item-rarity";
-import { FoodType, ItemType } from "../definitions/item-type";
-import { ItemDto } from "../dto/item.dto"
+import { FoodType, ItemRarity, ItemType } from "../model/definitions/items";
+import { ItemDto } from "../model/dto/item.dto"
 
 export const BUBULAE_STEAK: ItemDto = {
     uid: 'item-f-1',

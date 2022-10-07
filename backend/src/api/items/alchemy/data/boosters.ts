@@ -1,5 +1,4 @@
-import { ItemRarity } from "src/api/items/item/model/definitions/item-rarity";
-import { ItemType } from "src/api/items/item/model/definitions/item-type";
+import { ItemRarity, ItemType } from "src/api/items/item/model/definitions/items";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 
 export const BOOSTER_ATTACK: ItemDto = {

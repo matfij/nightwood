@@ -17,7 +17,7 @@ import { DRAGON_SUMMON_ACTIONS } from "src/api/dragons/dragon/data/dragon-summon
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { BoosterActivateDto } from "src/api/items/alchemy/model/dto/booster-activate.dto";
 import { AlchemyService } from "src/api/items/alchemy/service/alchemy.service";
-import { BOOSTER_RECIPES } from "src/api/items/alchemy/model/data/booster-recipe";
+import { BOOSTER_RECIPES } from "src/api/items/alchemy/data/booster-recipe";
 import { AchievementsService } from "src/api/users/achievements/service/achievements.service";
 
 @Injectable()

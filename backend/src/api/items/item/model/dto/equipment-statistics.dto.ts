@@ -59,7 +59,6 @@ export class EquipmentStatisticsDto {
     @ApiProperty()
     dodge?: number;
 
-
     @ApiProperty()
     healthBoost?: number;
 

@@ -1,3 +1,10 @@
+export enum ItemRarity {
+    Common = 'Common',
+    Scarce = 'Scarce',
+    Rare = 'Rare',
+    Mythical = 'Mythical',
+}
+
 export enum ItemType {
     Food = 'Food',
     Ingredient = 'Ingredient',
@@ -24,4 +31,11 @@ export enum EquipmentType {
     Armor = 'Armor',
     Charm = 'Charm',
     Rune = 'Rune',
+}
+
+export const LootChance = {
+    Common: 2,
+    Scarce: 5,
+    Rare: 15,
+    Mythical: 40,
 }

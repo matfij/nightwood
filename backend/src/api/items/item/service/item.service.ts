@@ -3,14 +3,13 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ErrorService } from "src/common/services/error.service";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { MoreThan, Repository } from "typeorm";
-import { STARTING_ITEMS } from "../model/data/item-blueprints";
+import { STARTING_ITEMS } from "../data/_blueprints";
 import { ItemDto } from "../model/dto/item.dto";
 import { ItemPageDto } from "../model/dto/item-page.dto";
 import { Item } from "../model/item.entity";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
-import { ItemType } from "../model/definitions/item-type";
-import { ItemRarity, LootChance } from "../model/definitions/item-rarity";
+import { ItemType, LootChance } from "../model/definitions/items";
 import { MathService } from "src/common/services/math.service";
 import { DataService } from "src/common/services/data.service";
 

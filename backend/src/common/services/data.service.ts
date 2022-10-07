@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ALL_ITEMS } from "src/api/items/item/model/data/_all";
+import { ALL_ITEMS } from "src/api/items/item/data/_blueprints";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { ErrorService } from "./error.service";
 

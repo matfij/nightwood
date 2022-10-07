@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { BOOSTERS } from "src/api/items/alchemy/model/data/boosters";
-import { EquipmentStatisticsDto } from "src/api/items/item/model/definitions/equipment";
+import { BOOSTERS } from "src/api/items/alchemy/data/boosters";
+import { EquipmentStatisticsDto } from "src/api/items/item/model/dto/equipment-statistics.dto";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { MathService } from "src/common/services/math.service";
 import { ExpeditionGuardianDto } from "../../dragon-action/model/definitions/guardian";

@@ -9,7 +9,6 @@ import { DragonGetDto } from '../model/dto/dragon-get.dto';
 import { DragonPageDto } from '../model/dto/dragon-page.dto';
 import { DateService } from 'src/common/services/date.service';
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
-import { FoodType } from 'src/api/items/item/model/definitions/item-type';
 import { DragonCreateDto } from '../model/dto/dragon-create.dto';
 import { ErrorService } from 'src/common/services/error.service';
 import { BattleGuardianStartDto, BattleStartDto } from '../model/dto/battle-start.dto';
@@ -29,12 +28,13 @@ import { DRAGON_SUMMON_ACTIONS } from '../data/dragon-summon-actions';
 import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
 import { BattleDragonDto } from '../model/definitions/dragon-battle';
 import { BattleHelperService } from './dragon-helper.service';
-import { BOOSTERS } from 'src/api/items/alchemy/model/data/boosters';
+import { BOOSTERS } from 'src/api/items/alchemy/data/boosters';
 import { EXPEDITIONS } from '../../dragon-action/model/data/expeditions';
 import { DragonBestDto } from '../model/dto/dragon-best.dto';
 import { UserDto } from 'src/api/users/user/model/dto/user.dto';
 import { AchievementsService } from 'src/api/users/achievements/service/achievements.service';
 import { DragonPublicDto } from '../model/dto/dragon-public.dto';
+import { FoodType } from 'src/api/items/item/model/definitions/items';
 
 @Injectable()
 export class DragonService {

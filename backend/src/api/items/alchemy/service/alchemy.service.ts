@@ -6,15 +6,15 @@ import { ErrorService } from "src/common/services/error.service";
 import { Repository } from "typeorm";
 import { ItemDto } from "../../item/model/dto/item.dto";
 import { ItemService } from "../../item/service/item.service";
-import { MIXTURE_RECIPES } from "../model/data/mixture-recipe";
+import { MIXTURE_RECIPES } from "../data/mixture-recipe";
 import { MixtureRecipeDto } from "../model/dto/mixture-recipe.dto";
 import { MixtureComposeDto } from "../model/dto/mixture-compose.dto";
 import { MixtureGetDto, MixturePageDto } from "../model/dto/mixture-page.dto";
 import { MixtureDto } from "../model/dto/mixture.dto";
 import { Mixture } from "../model/mixture.entity";
 import { BoosterRecipeDto } from "../model/dto/booster-recipe.dto";
-import { BOOSTER_RECIPES } from "../model/data/booster-recipe";
-import { BOOSTERS } from "../model/data/boosters";
+import { BOOSTER_RECIPES } from "../data/booster-recipe";
+import { BOOSTERS } from "../data/boosters";
 
 @Injectable()
 export class AlchemyService {
