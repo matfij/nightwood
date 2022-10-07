@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { DragonNature } from "../definitions/dragon-nature";
+import { DragonNature } from "../definitions/dragons";
 
 export class DragonPublicDto {
 

@@ -3,7 +3,7 @@ import { DragonActionDto } from "src/api/dragons/dragon-action/model/dto/dragon-
 import { DragonSkillsDto } from "src/api/dragons/dragon-skills/model/dto/dragon-skills.dto";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
-import { DragonNature } from "../definitions/dragon-nature";
+import { DragonNature } from "../definitions/dragons";
 
 export class DragonDto {
 

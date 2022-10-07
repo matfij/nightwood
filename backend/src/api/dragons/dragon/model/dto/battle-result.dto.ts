@@ -1,13 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { BattleDragonDto } from "../definitions/dragon-battle";
+import { DragonBattleDto } from "./dragon-battle.dto";
 
 export class BattleResultDto {
 
     @ApiProperty()
-    ownedDragon: Partial<BattleDragonDto>;
+    ownedDragon: Partial<DragonBattleDto>;
 
     @ApiProperty()
-    enemyDragon: Partial<BattleDragonDto>;
+    enemyDragon: Partial<DragonBattleDto>;
 
     @ApiProperty()
     logs: string[];

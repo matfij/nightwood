@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
-import { DragonNature } from "../definitions/dragon-nature";
+import { DragonNature } from "../definitions/dragons";
 
 export class DragonSummonActionDto {
 

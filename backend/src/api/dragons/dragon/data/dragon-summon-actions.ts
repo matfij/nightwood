@@ -1,5 +1,5 @@
 import { ETERNAL_FLOWER, GATE_KEY, GATE_PARTICLE, MIDNIGHT_ESSENCE, SUPERCHARGED_CRYSTAL } from "src/api/items/item/data/ingredients";
-import { DragonNature } from "../model/definitions/dragon-nature";
+import { DragonNature } from "../model/definitions/dragons";
 import { DragonSummonActionDto } from "../model/dto/dragon-summon.dto";
 
 export const SUMMON_THUNDER: DragonSummonActionDto = {

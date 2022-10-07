@@ -5,7 +5,7 @@ import { DB_TIMESTAMP_TYPE } from "src/configuration/app.config";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { DragonAction } from "../../dragon-action/model/dragon-action.entity";
 import { DragonSkills } from "../../dragon-skills/model/dragon-skills.entity";
-import { DragonNature } from "./definitions/dragon-nature";
+import { DragonNature } from "./definitions/dragons";
 
 @Entity()
 export class Dragon {

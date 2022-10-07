@@ -1,4 +1,4 @@
-import { ExpeditionGuardianDto } from "../definitions/guardian";
+import { ExpeditionGuardianDto } from "../model/dto/expedition-guardian.dto";
 
 export const GUARDIAN_FOREST: ExpeditionGuardianDto = {
     uid: 'guardian-1',

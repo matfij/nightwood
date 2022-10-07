@@ -1,5 +1,5 @@
-import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragon-nature"
-import { Skill } from "../definitions/dragon-skills"
+import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragons"
+import { Skill } from "../model/definitions/dragons-skills"
 
 /**
  * Fire

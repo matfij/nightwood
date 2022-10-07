@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragon-nature";
+import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragons";
 
 export class SkillDto {
 

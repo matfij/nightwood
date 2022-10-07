@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
-import { ExpeditionGuardianDto } from "../definitions/guardian";
+import { ExpeditionGuardianDto } from "./expedition-guardian.dto";
 
 export class ExpeditionDto {
 

@@ -1,4 +1,4 @@
-import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragon-nature";
+import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragons";
 
 export interface Skill {
     uid: string;

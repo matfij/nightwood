@@ -10,7 +10,7 @@ import { DragonActionDto } from '../model/dto/dragon-action.dto';
 import { ExpeditionDto } from '../model/dto/expedition.dto';
 import { ExpeditionPageDto } from '../model/dto/expedition-page.dto';
 import { MathService } from 'src/common/services/math.service';
-import { EXPEDITIONS } from '../model/data/expeditions';
+import { EXPEDITIONS } from '../data/expeditions';
 
 @Injectable()
 export class DragonActionService {

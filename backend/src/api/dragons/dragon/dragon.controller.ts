@@ -13,7 +13,7 @@ import { BattleGuardianStartDto, BattleStartDto } from "./model/dto/battle-start
 import { DragonService } from "./service/dragon.service";
 import { DragonTamerActionDto } from "./model/dto/dragon-tamer-actions.dto";
 import { DragonSummonActionDto } from "./model/dto/dragon-summon.dto";
-import { BattleDragonDto } from "./model/definitions/dragon-battle";
+import { DragonBattleDto } from "./model/dto/dragon-battle.dto";
 import { DragonBestDto } from "./model/dto/dragon-best.dto";
 import { DragonPublicDto } from "./model/dto/dragon-public.dto";
 
@@ -65,8 +65,8 @@ export class DragonController {
     }
 
     @Post('calculateStatistics/:id')
-    @ApiOkResponse({ type: BattleDragonDto })
-    calculateStatistics(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<BattleDragonDto> {
+    @ApiOkResponse({ type: DragonBattleDto })
+    calculateStatistics(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<DragonBattleDto> {
         return this.dragonService.calculateStatistics(req.user.id, +id);
     }
 

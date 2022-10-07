@@ -3,13 +3,14 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
-import { MagicArrow } from "../../dragon-skills/model/data/skills-common";
-import { AirVector, DeepWounds, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/model/data/skills-exclusive";
-import { BattleDragonDto, BattleResultExperience, BattleResultType, TurnResult } from "../model/definitions/dragon-battle";
+import { MagicArrow } from "../../dragon-skills/data/skills-common";
+import { AirVector, DeepWounds, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
+import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
 import { BattleHelperService } from "./dragon-helper.service";
+import { TurnResult, BattleResultType, BattleResultExperience } from "../model/definitions/dragon-battle";
 
 @Injectable()
 export class DragonBattleService {
@@ -108,7 +109,7 @@ export class DragonBattleService {
         };
     }
 
-    private performMovement(attacker: BattleDragonDto, defender: BattleDragonDto, ownedTurn: boolean, turn: number): TurnResult {
+    private performMovement(attacker: DragonBattleDto, defender: DragonBattleDto, ownedTurn: boolean, turn: number): TurnResult {
         let cssClasses = ownedTurn ? 'item-log log-owned' : 'item-log log-enemy';
         let turnResult: TurnResult = { attacker: attacker, defender: defender, log: '', cssClasses: cssClasses };
 
@@ -580,7 +581,7 @@ export class DragonBattleService {
         return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
     }
 
-    private async saveBattleResults(result: BattleResultType, owned: BattleDragonDto, enemy: BattleDragonDto, battleLength: number): Promise<BattleResultExperience> {
+    private async saveBattleResults(result: BattleResultType, owned: DragonBattleDto, enemy: DragonBattleDto, battleLength: number): Promise<BattleResultExperience> {
         let resultExperience: BattleResultExperience = { ownedExperience: 0, enemyExperience: 0 };
 
         switch (result) {
@@ -636,7 +637,7 @@ export class DragonBattleService {
         return resultExperience;
     }
 
-    private async saveBattleGuardianResults(result: BattleResultType, owned: BattleDragonDto, expedition: ExpeditionDto, battleLength: number): Promise<void> {
+    private async saveBattleGuardianResults(result: BattleResultType, owned: DragonBattleDto, expedition: ExpeditionDto, battleLength: number): Promise<void> {
         owned.stamina -= 3 + Math.floor(battleLength / 25);
         if (owned.stamina < 0) owned.stamina = 0;
 

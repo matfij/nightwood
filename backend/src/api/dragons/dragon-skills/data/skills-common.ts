@@ -1,4 +1,4 @@
-import { Skill } from "../definitions/dragon-skills";
+import { Skill } from "../model/definitions/dragons-skills";
 
 /**
  * Level 1

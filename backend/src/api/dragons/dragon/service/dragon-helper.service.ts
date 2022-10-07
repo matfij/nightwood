@@ -3,8 +3,8 @@ import { BOOSTERS } from "src/api/items/alchemy/data/boosters";
 import { EquipmentStatisticsDto } from "src/api/items/item/model/dto/equipment-statistics.dto";
 import { ItemDto } from "src/api/items/item/model/dto/item.dto";
 import { MathService } from "src/common/services/math.service";
-import { ExpeditionGuardianDto } from "../../dragon-action/model/definitions/guardian";
-import { BattleDragonDto } from "../model/definitions/dragon-battle";
+import { ExpeditionGuardianDto } from "../../dragon-action/model/dto/expedition-guardian.dto";
+import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
 
 @Injectable()
@@ -29,7 +29,7 @@ export class BattleHelperService {
         private mathService: MathService,
     ) {}
 
-    calculateBattleStats(dragon: Partial<DragonDto>): BattleDragonDto {
+    calculateBattleStats(dragon: Partial<DragonDto>): DragonBattleDto {
         const runeStats = this.getRunesStats(dragon.runes);
         const boosterStats = this.getBoosterStats(dragon.boosterUid);
 

@@ -1,7 +1,7 @@
 import { BUBULAE_STEAK, IHON_BERRY, RELIQUM_EGG, RORIS_LEAVES, SPIRAL_NUT } from "src/api/items/item/data/food";
 import { ARTICHOKE, AZURE_PEBBLE, CRIMSON_SEED, ETERNAL_FLOWER, FEEBLE_MUSHROOMS, FILIKO_ROOTS, GATE_KEY, GATE_PARTICLE, MIDNIGHT_ESSENCE, PALE_GRAINS, SCORIA_ORE, SHARD_AGILITY, SHARD_ATTACK, SHARD_BLANK, SHARD_DEFENCE, SHARD_UNITY, SHARD_WISDOM, SOVAGA_LEAVES, SUPERCHARGED_CRYSTAL, TRANSMUTATION_STONE } from "src/api/items/item/data/ingredients";
 import { EXPEDITION_TIME_SCALE } from "src/configuration/backend.config";
-import { ExpeditionDto } from "../dto/expedition.dto";
+import { ExpeditionDto } from "../model/dto/expedition.dto";
 import { GUARDIAN_FOREST, GUARDIAN_DESERT, GUARDIAN_MOUNTAINS, GUARDIAN_ISLANDS } from "./expedition-guardians";
 
 export const ANDREW_FOREST: ExpeditionDto = {

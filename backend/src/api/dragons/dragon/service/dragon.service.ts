@@ -23,13 +23,13 @@ import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL, DRAGON_NAME_MAX_LENGT
 import { DataService } from 'src/common/services/data.service';
 import { DRAGON_TAMER_ACTIONS } from '../data/dragon-tamer-actions';
 import { DragonTamerActionDto } from '../model/dto/dragon-tamer-actions.dto';
-import { DragonNature } from '../model/definitions/dragon-nature';
+import { DragonNature } from '../model/definitions/dragons';
 import { DRAGON_SUMMON_ACTIONS } from '../data/dragon-summon-actions';
 import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
-import { BattleDragonDto } from '../model/definitions/dragon-battle';
+import { DragonBattleDto } from '../model/dto/dragon-battle.dto';
 import { BattleHelperService } from './dragon-helper.service';
 import { BOOSTERS } from 'src/api/items/alchemy/data/boosters';
-import { EXPEDITIONS } from '../../dragon-action/model/data/expeditions';
+import { EXPEDITIONS } from '../../dragon-action/data/expeditions';
 import { DragonBestDto } from '../model/dto/dragon-best.dto';
 import { UserDto } from 'src/api/users/user/model/dto/user.dto';
 import { AchievementsService } from 'src/api/users/achievements/service/achievements.service';
@@ -182,7 +182,7 @@ export class DragonService {
         return dragon;
     }
 
-    async calculateStatistics(ownerId: number, dragonId: number): Promise<BattleDragonDto> {
+    async calculateStatistics(ownerId: number, dragonId: number): Promise<DragonBattleDto> {
         const dragon = await this.checkDragon(ownerId, dragonId);
 
         const battleDragon = this.battleHelperService.calculateBattleStats(dragon);
