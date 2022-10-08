@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDe
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, timer } from 'rxjs';
-import { ImposePenaltyDto, PenaltyType, UserAuthDto, UserRole } from 'src/app/client/api';
+import { PenaltyType, UserAuthDto, UserRole } from 'src/app/client/api';
 import { CHAT_MESSAGE_MAX_LENGTH, CHAT_MESSAGE_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { ChatMessage, ChatMode } from 'src/app/common/definitions/chat';
 import { ChatService } from 'src/app/common/services/chat.service';

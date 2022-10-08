@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ImposePenaltyDto, PenaltyController, PenaltyType } from 'src/app/client/api';
+import { PenaltyController, PenaltyImposeDto, PenaltyType } from 'src/app/client/api';
 import { BAN_MAX_TIME, BAN_MIN_TIME, MUTE_MAX_TIME, MUTE_MIN_TIME, PENALTY_COMMENT_MAX_LENGTH } from 'src/app/client/config/frontend.config';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
 import { ChatMessage } from 'src/app/common/definitions/chat';
@@ -66,7 +66,7 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
   imposePenalty() {
     if (!this.form.valid) return;
 
-    const params: ImposePenaltyDto = {
+    const params: PenaltyImposeDto = {
       punishedUserId: this.message.userId,
       type: this.penaltyType,
       duration: +this.form.controls['duration'].value,
@@ -87,6 +87,6 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
 
 }
 
-export interface FullPenaltyInfo extends ImposePenaltyDto {
+export interface FullPenaltyInfo extends PenaltyImposeDto {
   punishedNickname: string;
 }

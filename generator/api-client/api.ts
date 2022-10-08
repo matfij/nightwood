@@ -791,10 +791,10 @@ export class ActionController implements IActionController {
 }
 
 export interface IUserController {
-    create(body: CreateUserDto): Observable<UserDto>;
-    update(id: string, body: UpdateUserDto): Observable<UserDto>;
+    create(body: UserCreateDto): Observable<UserDto>;
+    update(id: string, body: UserUpdateDto): Observable<UserDto>;
     getOne(id: string): Observable<UserDto>;
-    getAll(body: GetUserDto): Observable<PageUserDto>;
+    getAll(body: UserGetDto): Observable<UserPageDto>;
     setAvatar(): Observable<void>;
     getAvatar(): Observable<void>;
     getAvatarPublic(id: string): Observable<void>;
@@ -819,7 +819,7 @@ export class UserController implements IUserController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    create(body: CreateUserDto): Observable<UserDto> {
+    create(body: UserCreateDto): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/v1/user/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -870,7 +870,7 @@ export class UserController implements IUserController {
         return _observableOf<UserDto>(<any>null);
     }
 
-    update(id: string, body: UpdateUserDto): Observable<UserDto> {
+    update(id: string, body: UserUpdateDto): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/v1/user/update/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -974,7 +974,7 @@ export class UserController implements IUserController {
         return _observableOf<UserDto>(<any>null);
     }
 
-    getAll(body: GetUserDto): Observable<PageUserDto> {
+    getAll(body: UserGetDto): Observable<UserPageDto> {
         let url_ = this.baseUrl + "/api/v1/user/getAll";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -997,14 +997,14 @@ export class UserController implements IUserController {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<PageUserDto>><any>_observableThrow(e);
+                    return <Observable<UserPageDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PageUserDto>><any>_observableThrow(response_);
+                return <Observable<UserPageDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<PageUserDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<UserPageDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1014,7 +1014,7 @@ export class UserController implements IUserController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <PageUserDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <UserPageDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1022,7 +1022,7 @@ export class UserController implements IUserController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PageUserDto>(<any>null);
+        return _observableOf<UserPageDto>(<any>null);
     }
 
     setAvatar(): Observable<void> {
@@ -2373,7 +2373,7 @@ export interface IDragonController {
     getBest(): Observable<DragonBestDto[]>;
     getOwned(): Observable<DragonDto[]>;
     getPublicPlayerDragons(id: string): Observable<DragonPublicDto[]>;
-    calculateStatistics(id: string): Observable<BattleDragonDto>;
+    calculateStatistics(id: string): Observable<DragonBattleDto>;
     startBattle(body: BattleStartDto): Observable<BattleResultDto>;
     startGuardianBattle(body: BattleGuardianStartDto): Observable<BattleResultDto>;
     learnSkill(body: SkillLearnDto): Observable<DragonDto>;
@@ -2690,7 +2690,7 @@ export class DragonController implements IDragonController {
         return _observableOf<DragonPublicDto[]>(<any>null);
     }
 
-    calculateStatistics(id: string): Observable<BattleDragonDto> {
+    calculateStatistics(id: string): Observable<DragonBattleDto> {
         let url_ = this.baseUrl + "/api/v1/dragon/calculateStatistics/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2712,14 +2712,14 @@ export class DragonController implements IDragonController {
                 try {
                     return this.processCalculateStatistics(<any>response_);
                 } catch (e) {
-                    return <Observable<BattleDragonDto>><any>_observableThrow(e);
+                    return <Observable<DragonBattleDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<BattleDragonDto>><any>_observableThrow(response_);
+                return <Observable<DragonBattleDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processCalculateStatistics(response: HttpResponseBase): Observable<BattleDragonDto> {
+    protected processCalculateStatistics(response: HttpResponseBase): Observable<DragonBattleDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2729,7 +2729,7 @@ export class DragonController implements IDragonController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <BattleDragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <DragonBattleDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2737,7 +2737,7 @@ export class DragonController implements IDragonController {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<BattleDragonDto>(<any>null);
+        return _observableOf<DragonBattleDto>(<any>null);
     }
 
     startBattle(body: BattleStartDto): Observable<BattleResultDto> {
@@ -3560,7 +3560,7 @@ export class AuctionController implements IAuctionController {
 }
 
 export interface IPenaltyController {
-    imposePenalty(body: ImposePenaltyDto): Observable<void>;
+    imposePenalty(body: PenaltyImposeDto): Observable<void>;
 }
 
 @Injectable({
@@ -3576,7 +3576,7 @@ export class PenaltyController implements IPenaltyController {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    imposePenalty(body: ImposePenaltyDto): Observable<void> {
+    imposePenalty(body: PenaltyImposeDto): Observable<void> {
         let url_ = this.baseUrl + "/api/v1/penalty/imposePenalty";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3845,7 +3845,7 @@ export interface AuctionBuyResultDto {
     consumedGold: number;
 }
 
-export interface CreateUserDto {
+export interface UserCreateDto {
     email: string;
     password: string;
     nickname: string;
@@ -3884,7 +3884,7 @@ export interface UserDto {
     bannedUnitl?: number;
 }
 
-export interface UpdateUserDto {
+export interface UserUpdateDto {
     email?: string;
     password?: string;
     nickname?: string;
@@ -3892,7 +3892,7 @@ export interface UpdateUserDto {
     maxOwnedDragons?: number;
 }
 
-export interface GetUserDto {
+export interface UserGetDto {
     email?: string;
     nickname?: string;
     page?: number;
@@ -3907,7 +3907,7 @@ export interface PageMetaDto {
     currentPage?: number;
 }
 
-export interface PageUserDto {
+export interface UserPageDto {
     meta: PageMetaDto;
     data: UserDto[];
 }
@@ -4057,7 +4057,7 @@ export interface DragonPublicDto {
     experience: number;
 }
 
-export interface BattleDragonDto {
+export interface DragonBattleDto {
     id?: number;
     userId?: number;
     user?: any;
@@ -4260,7 +4260,7 @@ export enum PenaltyType {
     Mute = "Mute",
 }
 
-export interface ImposePenaltyDto {
+export interface PenaltyImposeDto {
     punishedUserId: number;
     type: PenaltyType;
     duration: number;

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BattleDragonDto, DragonController, DragonDto } from 'src/app/client/api';
+import { DragonBattleDto, DragonController, DragonDto } from 'src/app/client/api';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
 
 @Component({
@@ -15,7 +15,7 @@ export class DragonStatsComponent extends AbstractModalComponent implements OnIn
 
   @Input() dragon!: DragonDto;
 
-  statistics$: Observable<BattleDragonDto> = new Observable<BattleDragonDto>();
+  statistics$: Observable<DragonBattleDto> = new Observable<DragonBattleDto>();
 
   constructor(
     private dragonController: DragonController,
