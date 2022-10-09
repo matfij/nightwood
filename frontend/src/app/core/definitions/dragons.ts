@@ -24,6 +24,20 @@ export enum AdoptStep {
   Finished,
 }
 
+export enum DragonMaturity {
+  Infant = 1,
+  Child = 2,
+  Adult = 3,
+  Sage = 4,
+}
+
+export enum DragonMaturityRequiredLevel {
+  Infant = 1,
+  Child = 10,
+  Adult = 45,
+  Sage = 100,
+}
+
 export interface DisplayDragon extends DragonDto {
   image?: string;
   currentAction?: string;

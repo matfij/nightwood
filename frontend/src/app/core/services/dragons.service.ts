@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { DragonActionDto, DragonActionType, DragonDto, DragonNature, DragonPublicDto, ExpeditionGuardianDto, SkillDto } from "src/app/client/api";
+import { DragonActionType, DragonDto, DragonPublicDto, ExpeditionGuardianDto, SkillDto } from "src/app/client/api";
 import { DateService } from "src/app/common/services/date.service";
-import { DisplayDragon, DisplayDragonPublic, DisplaySkill } from "../definitions/dragons";
+import { DisplayDragon, DisplayDragonPublic, DisplaySkill, DragonMaturity, DragonMaturityRequiredLevel } from "../definitions/dragons";
 
 @Injectable({
   providedIn: 'root'
@@ -19,21 +19,21 @@ export class DragonService {
     private dateService: DateService,
   ) {}
 
-  getDragonAge(level: number): number {
-    let age: number;
-    if (level < 10) age = 1;
-    else if (level < 45) age = 2;
-    else if (level < 100) age = 3;
-    else age = 4;
+  getDragonMaturity(level: number): DragonMaturity {
+    let maturity: number;
+    if (level < DragonMaturityRequiredLevel.Child) maturity = DragonMaturity.Infant;
+    else if (level < DragonMaturityRequiredLevel.Adult) maturity = DragonMaturity.Child;
+    else if (level < DragonMaturityRequiredLevel.Sage) maturity = DragonMaturity.Adult;
+    else maturity = DragonMaturity.Sage;
 
-    return age;
+    return maturity;
   }
 
   toDisplayDragon(dragon: DragonDto): DisplayDragon {
     let nature = dragon.nature.toLowerCase();
-    const age = this.getDragonAge(dragon.level);
+    const maturity = this.getDragonMaturity(dragon.level);
 
-    const image = `${this.BASE_IMG_PATH}/${nature}-${this.VERSION}-${age}.${this.EXTENSION}`;
+    const image = `${this.BASE_IMG_PATH}/${nature}-${this.VERSION}-${maturity}.${this.EXTENSION}`;
 
     const currentAction = (dragon.action && dragon.action.type !== DragonActionType.None && !this.dateService.checkIfEventAvailable(dragon.action.nextAction))
       ? this.getDragonActionName(dragon.action.type)
@@ -48,7 +48,7 @@ export class DragonService {
 
   toDisplayDragonPublic(dragon: DragonPublicDto): DisplayDragonPublic {
     let nature = dragon.nature.toLowerCase();
-    const age = this.getDragonAge(dragon.level);
+    const age = this.getDragonMaturity(dragon.level);
 
     const image = `${this.BASE_IMG_PATH}/${nature}-${this.VERSION}-${age}.${this.EXTENSION}`;
 
