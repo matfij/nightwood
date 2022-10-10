@@ -41,7 +41,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Optimization - rendering, db operations, throttling [0%]
  - Player actions - dtos, controllers, JWT [0%]
  - Frontend components - generic, skeletons [20%]
- - Unit tests, CI/CD [0%]
+ - Unit tests, CI/CD [20%]
  - Production release [0%]
 
 ## Stage 2
