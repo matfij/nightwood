@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { endWith } from "rxjs/operators";
 import { AchievementDto, AuctionDto, ItemDto } from "src/app/client/api";
 import { DisplayAchievement, DisplayAuction, DisplayItem } from "../definitions/items";
 

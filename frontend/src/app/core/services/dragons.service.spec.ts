@@ -1,17 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragonActionType, DragonDto, DragonNature, ExpeditionGuardianDto, SkillDto } from 'src/app/client/api';
 import { DragonMaturity } from '../definitions/dragons';
 import { DragonService } from './dragons.service';
 
 describe('DragonsService', () => {
   let service: DragonService;
+  let translateService: TranslateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot({})],
     });
     service = TestBed.inject(DragonService);
+    translateService = TestBed.inject(TranslateService);
   });
 
   it('shold be created', () => {
@@ -39,7 +41,7 @@ describe('DragonsService', () => {
       action: {
         type: DragonActionType.Expedition,
         awardCollected: false,
-        nextAction: Date.now(),
+        nextAction: Date.now() + 1 * 60 * 60 * 1000,
       },
       skills: {} as any,
       runes: [],
@@ -61,6 +63,7 @@ describe('DragonsService', () => {
       will: 0,
     };
 
+    spyOn(translateService, 'instant').and.returnValue('dragon.actionExpedition');
     const displayDragon = service.toDisplayDragon(dragon);
 
     expect(displayDragon).toBeTruthy();
