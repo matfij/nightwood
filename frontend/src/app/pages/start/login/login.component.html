@@ -1,44 +1,44 @@
 <div *ngIf="confirmLoading" class="wrapper-main">
   <div *ngIf="submitLoading" class="spinner">
-    <app-loading-indicator></app-loading-indicator>
+    <app-loading-indicator data-testid="app-confirm-spinner"></app-loading-indicator>
   </div>
 </div>
 
 <div *ngIf="!confirmLoading" class="wrapper-main">
   <div class="wrapper-content">
 
-    <div class="title title-main">{{ 'common.appName' | translate }}</div>
-    <div class="title text-hint">{{ 'common.appHint' | translate }}</div>
+    <div class="title title-main" data-testid="app-title">{{ 'common.appName' | translate }}</div>
+    <div class="title text-hint" data-testid="app-hint">{{ 'common.appHint' | translate }}</div>
 
     <div class="wrapper-img">
-      <img src="assets/img/app/logo.png" alt="logo" draggable="false">
+      <img data-testid="app-brand-image" src="assets/img/app/logo.png" alt="logo" draggable="false">
     </div>
 
     <div class="wrapper-form">
-      <form [formGroup]="form" (ngSubmit)="login()" (keydown.enter)="login()">
+      <form [formGroup]="form" (ngSubmit)="login()" (keydown.enter)="login()" data-testid="app-login-form">
 
-        <div class="label">{{ 'start.nickname' | translate }}</div>
-        <input type="text" formControlName="login" autocomplete="nickname" class="input">
-        <div *ngIf="form.controls.login.dirty && !form.controls.login.valid" class="error">
+        <div class="label" data-testid="app-nickname-label">{{ 'start.nickname' | translate }}</div>
+        <input type="text" formControlName="login" autocomplete="nickname" class="input" data-testid="app-nickname-input">
+        <div *ngIf="form.controls.login.dirty && !form.controls.login.valid" class="error" data-testid="app-nickname-error">
           {{ 'errors.incorrectFieldsValue' | translate:{ value: 'nickname' } }}
         </div>
 
-        <div class="label" style="margin-top: 8px;">{{ 'start.password' | translate }}</div>
-        <input type="password" formControlName="password" autocomplete="current-password" class="input">
-        <div *ngIf="form.controls.password.dirty && !form.controls.password.valid" class="error">
+        <div class="label" style="margin-top: 8px;" data-testid="app-password-label">{{ 'start.password' | translate }}</div>
+        <input type="password" formControlName="password" autocomplete="current-password" class="input" data-testid="app-password-input">
+        <div *ngIf="form.controls.password.dirty && !form.controls.password.valid" class="error" data-testid="app-password-error">
           {{ 'errors.incorrectFieldsValue' | translate:{ value: 'password' } }}
         </div>
 
-        <button *ngIf="!submitLoading" type="submit" class="btn-base">
+        <button *ngIf="!submitLoading" type="submit" class="btn-base" data-testid="app-login-button">
           {{ 'start.login' | translate }}
         </button>
         <div *ngIf="submitLoading" class="spinner">
-          <app-loading-indicator></app-loading-indicator>
+          <app-loading-indicator data-testid="app-form-submit-spinner"></app-loading-indicator>
         </div>
       </form>
     </div>
 
-    <button [disabled]="submitLoading" routerLink="../register" class="btn-base">
+    <button [disabled]="submitLoading" routerLink="../register" class="btn-base" data-testid="app-register-button">
       {{ 'start.register' | translate }}
     </button>
 
