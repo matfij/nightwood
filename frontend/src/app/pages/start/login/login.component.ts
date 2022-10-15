@@ -82,9 +82,9 @@ export class LoginComponent implements OnInit {
         this.submitLoading = false;
         this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
         this.router.navigate(['../game/home']);
-    }, () => {
-      this.submitLoading = false;
-    });
+      }, () => {
+        this.submitLoading = false;
+      });
   }
 
 }
