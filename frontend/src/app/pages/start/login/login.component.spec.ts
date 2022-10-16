@@ -1,17 +1,18 @@
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { Location } from '@angular/common';
-import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { By } from "@angular/platform-browser";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { TranslateModule } from "@ngx-translate/core";
 import { ToastrModule } from "ngx-toastr";
 import { RegisterComponent } from "../register/register.component";
 import { LoginComponent } from './login.component';
 import { AuthController, UserAuthDto, UserRole } from "src/app/client/api";
-import { of } from "rxjs";
+import { Observable, of } from "rxjs";
 import { EngineService } from "src/app/core/services/engine.service";
+import { ToastService } from "src/app/common/services/toast.service";
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -21,6 +22,7 @@ describe('LoginComponent', () => {
   let location: Location;
   let authController: AuthController;
   let engineService: EngineService;
+  let toastService: ToastService;
 
   let nameElement: HTMLElement;
   let hintElement: HTMLElement;
@@ -35,9 +37,11 @@ describe('LoginComponent', () => {
   let loginButtonElement: HTMLButtonElement;
   let registerButtonElement: HTMLButtonElement;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [LoginComponent],
+      declarations: [
+        LoginComponent,
+      ],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -60,6 +64,7 @@ describe('LoginComponent', () => {
     router.initialNavigation();
     authController = TestBed.inject(AuthController);
     engineService = TestBed.inject(EngineService);
+    toastService = TestBed.inject(ToastService);
 
     fixture.detectChanges();
     nameElement = fixture.debugElement.query(By.css('[data-testid="app-title"]')).nativeElement;
@@ -150,7 +155,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
 
     await fixture.whenStable();
-    expect(routerSpy).toHaveBeenCalledWith(['../game/home']);
+    expect(routerSpy).toHaveBeenCalledOnceWith(['../game/home']);
     expect(authSpy).toHaveBeenCalledOnceWith({ nickname: 'login', password: 'password' });
   });
 
@@ -158,5 +163,15 @@ describe('LoginComponent', () => {
     registerButtonElement.click();
     await fixture.whenStable();
     expect(location.path()).toBe('/register');
+  });
+
+  it('should successfully confirm user account activation', async () => {
+    spyOn(authController, 'confirm').and.returnValue(of(void 0));
+    const toastSpy = spyOn(toastService, 'showSuccess').and.callThrough();
+
+    component.confirm('t-1');
+
+    await fixture.whenStable();
+    expect(toastSpy).toHaveBeenCalledOnceWith('start.loginSuccess', 'start.confirmSuccess');
   });
 });

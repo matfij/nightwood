@@ -57,7 +57,7 @@ describe('EngineService', () => {
     });
   });
 
-  it('should get unread mails count', () => {
+  it('should get unread mails count', (done: DoneFn) => {
     const mailsData = {
       length: 3,
       data: [{}, {}, {}],
@@ -66,13 +66,14 @@ describe('EngineService', () => {
     service.checkMails().subscribe((mailCount) => {
       expect(mailCount).toBeTruthy();
       expect(mailCount).toEqual(3);
+      done();
     });
 
     const request = httpTestingController.expectOne('/api/v1/mail/checkUnread');
     request.flush(new Blob([JSON.stringify(mailsData)], { type: 'application/json' }));
   });
 
-  it('should get expedition reports', () => {
+  it('should get expedition reports', (done: DoneFn) => {
     const expeditionReports: ExpeditionReportDto[] = [
       {
         dragonName: 'dial',
@@ -83,6 +84,7 @@ describe('EngineService', () => {
     ];
     service.getExpeditionReports().subscribe(reports => {
       expect(reports).toEqual(expeditionReports);
+      done();
     });
 
     const request = httpTestingController.expectOne('/api/v1/action/checkExpeditions');
