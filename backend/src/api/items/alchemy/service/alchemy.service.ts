@@ -71,7 +71,7 @@ export class AlchemyService {
             where: { id: mixtureId, user: user },
         });
         if (!mixture) this.errorService.throw('errors.mixtureNotFound');
-        if (!this.dateService.checkIfEventAvailable(mixture.readyOn)) this.errorService.throw('errors.mixtureNotReady');
+        if (!this.dateService.checkIfNextEventAvailable(mixture.readyOn)) this.errorService.throw('errors.mixtureNotReady');
 
         const recipe = MIXTURE_RECIPES.find(x => x.uid === mixture.uid);
 

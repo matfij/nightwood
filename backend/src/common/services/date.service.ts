@@ -7,7 +7,8 @@ export class DateService {
         return Date.now();
     }
 
-    checkIfEventAvailable(nextEvent: number): boolean {
+    checkIfNextEventAvailable(nextEvent: number): boolean {
+        // if event was in the past new event is available
         const currentMillis = Date.now();
         return currentMillis > nextEvent;
     }

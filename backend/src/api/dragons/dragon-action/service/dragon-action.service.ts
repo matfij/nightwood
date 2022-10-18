@@ -69,7 +69,7 @@ export class DragonActionService {
   }
 
   async checkExpedition(dragon: DragonDto): Promise<ExpeditionDto> {
-    if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) return null;
+    if (!this.dateService.checkIfNextEventAvailable(dragon.action.nextAction)) return null;
     if (dragon.action.type === DragonActionType.None) return null;
     if (dragon.action.awardCollected) return null;
 

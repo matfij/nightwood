@@ -177,7 +177,7 @@ export class DragonService {
     async checkFeedingDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.checkDragon(ownerId, dragonId);
 
-        if (!this.dateService.checkIfEventAvailable(dragon.nextFeed)) this.errorService.throw('errors.dragonAlreadyFed');
+        if (!this.dateService.checkIfNextEventAvailable(dragon.nextFeed)) this.errorService.throw('errors.dragonAlreadyFed');
 
         return dragon;
     }
@@ -230,7 +230,7 @@ export class DragonService {
     async checkIfEventAvailable(ownerId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.checkDragon(ownerId, dragonId);
 
-        if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) this.errorService.throw('errors.dragonBusy');
+        if (!this.dateService.checkIfNextEventAvailable(dragon.action.nextAction)) this.errorService.throw('errors.dragonBusy');
 
         return dragon;
     }

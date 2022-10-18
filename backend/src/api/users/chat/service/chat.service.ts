@@ -34,7 +34,7 @@ export class ChatService {
     addMessage(user: UserDto, message: ChatMessage): ChatMessage {
         if (user === null) return;
         if (!this.validateMessage(message.data)) return;
-        if (!this.dateService.checkIfEventAvailable(user.mutedUntil)) return;
+        if (!this.dateService.checkIfNextEventAvailable(user.mutedUntil)) return;
 
         message = {
             ...message,

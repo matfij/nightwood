@@ -40,7 +40,7 @@ export class AuthService {
         const match: boolean = await this.validatePassword(dto.password, user.password);
         if (!match) this.errorService.throw('errors.passwordIncorrect');
 
-        if (!this.dateService.checkIfEventAvailable(user.bannedUnitl)) this.errorService.throw('errors.userBanned');
+        if (!this.dateService.checkIfNextEventAvailable(user.bannedUnitl)) this.errorService.throw('errors.userBanned');
 
         const token = await this.generateJwt(user);
         return {
@@ -82,7 +82,7 @@ export class AuthService {
     async confirm(dto: UserConfirmDto): Promise<void> {
         const user = await this.userRepository.findOne({ isConfirmed: false, actionToken: dto.activationCode });
         if (!user) this.errorService.throw('errors.confirmationCodeInvalid');
-        if (this.dateService.checkIfEventAvailable(user.actionTokenValidity)) this.errorService.throw('errors.confirmationCodeExpired');
+        if (this.dateService.checkIfNextEventAvailable(user.actionTokenValidity)) this.errorService.throw('errors.confirmationCodeExpired');
 
         user.isConfirmed = true;
         this.userRepository.save(user);
