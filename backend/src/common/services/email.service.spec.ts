@@ -5,6 +5,8 @@ import { EmailService } from "./email.service";
 import { ErrorService } from "./error.service";
 
 describe('EmailService', () => {
+    const fs = require('fs');
+
     let emailService: EmailService;
     let mailerService: MailerService;
     let errorService: ErrorService;
@@ -41,6 +43,7 @@ describe('EmailService', () => {
             { token: '$email', value: receiver }
         ];
 
+        jest.spyOn(fs, 'readFileSync').mockImplementation(() => 'template data');
         const sendEmailSpy = jest.spyOn(mailerService, 'sendMail').mockImplementation(() => 
             new Promise(() => {})
         );
