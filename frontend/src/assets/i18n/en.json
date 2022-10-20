@@ -121,7 +121,8 @@
     "commentTooLong": "Comment too long",
     "userBanned": "Accound banned",
     "alreadyBanned": "User already banned",
-    "alreadyMuted": "User already muted"
+    "alreadyMuted": "User already muted",
+    "emailFailTryAgain": "Failed to send an email, plese try again later"
   },
   "game": {
     "menu": "Menu",
