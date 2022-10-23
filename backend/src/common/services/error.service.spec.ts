@@ -5,11 +5,11 @@ describe('ErrorService', () => {
     let errorService: ErrorService;
 
     beforeEach(async () => {
-        const module = await Test.createTestingModule({
+        const moduleRef = await Test.createTestingModule({
             providers: [ErrorService]
         }).compile();
 
-        errorService = module.get<ErrorService>(ErrorService);
+        errorService = moduleRef.get<ErrorService>(ErrorService);
     });
 
     it('should create service', () => {
