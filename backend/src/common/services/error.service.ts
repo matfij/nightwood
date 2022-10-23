@@ -8,7 +8,7 @@ export class ErrorService {
         throw new BadRequestException(message);
     }
 
-    checkBannedWords(text: string, isChat: boolean = false): boolean {
+    isPhareClear(text: string, isChat: boolean = false): boolean {
         let clear = true;
 
         if (!isChat) text = text.toLowerCase().replace(/ /g, '');

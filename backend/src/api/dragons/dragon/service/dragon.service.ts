@@ -122,7 +122,7 @@ export class DragonService {
 
     async adopt(user: UserDto, dto: DragonAdoptDto): Promise<DragonDto> {
         if (dto.name.length < DRAGON_NAME_MIN_LENGTH || dto.name.length > DRAGON_NAME_MAX_LENGTH) this.errorService.throw('errors.incorrectDragonName');
-        if (!this.errorService.checkBannedWords(dto.name)) this.errorService.throw('errors.bannedWordUse');
+        if (!this.errorService.isPhareClear(dto.name)) this.errorService.throw('errors.bannedWordUse');
 
         const dragon = this.dragonRepository.create({ ...dto, user }) as DragonDto;
         dragon.action = await this.dragonActionService.createAction();

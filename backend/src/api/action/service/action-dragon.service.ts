@@ -52,7 +52,7 @@ export class ActionDragonService {
         if (user.ownedDragons >= user.maxOwnedDragons) this.errorService.throw('errors.maxDragonsExceeded');
 
         if (dto.name.length < DRAGON_NAME_MIN_LENGTH || dto.name.length > DRAGON_NAME_MAX_LENGTH) this.errorService.throw('errors.incorrectDragonName');
-        if (!this.errorService.checkBannedWords(dto.name)) this.errorService.throw('errors.bannedWordUse');
+        if (!this.errorService.isPhareClear(dto.name)) this.errorService.throw('errors.bannedWordUse');
 
         await this.itemService.checkAndConsumeItems(action.requiredItems, userId);
         await this.userService.updateOwnedDragons(userId, true);
@@ -125,7 +125,7 @@ export class ActionDragonService {
 
         if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
         if (dto.newName.length > DRAGON_NAME_MAX_LENGTH || dto.newName.length < DRAGON_NAME_MIN_LENGTH) this.errorService.throw('errors.incorrectDragonName');
-        if (!this.errorService.checkBannedWords(dto.newName)) this.errorService.throw('errors.incorrectDragonName');
+        if (!this.errorService.isPhareClear(dto.newName)) this.errorService.throw('errors.incorrectDragonName');
 
         await this.userService.updateGold(userId, -actionCost);
         return await this.dragonService.changeName(dragon, dto.newName);

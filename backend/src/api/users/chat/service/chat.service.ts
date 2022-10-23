@@ -26,7 +26,7 @@ export class ChatService {
         if (content.length < CHAT_MESSAGE_MIN_LENGTH) return false;
         if (content.length > CHAT_MESSAGE_MAX_LENGTH) return false;
         
-        if (!this.errorService.checkBannedWords(content, true)) return false;
+        if (!this.errorService.isPhareClear(content, true)) return false;
 
         return true;
     }
