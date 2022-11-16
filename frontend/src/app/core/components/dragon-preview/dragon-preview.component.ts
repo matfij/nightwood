@@ -14,7 +14,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 })
 export class DragonPreviewComponent implements OnInit {
 
-  @Input() dragon?: DisplayDragon;
+  @Input() dragon!: DisplayDragon;
   @Output() release: EventEmitter<number> = new EventEmitter<number>();
 
   feedAvailable: boolean = false;

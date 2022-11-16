@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DragonController, DragonSkillsController, DragonSkillsDto, SkillGetDto, SkillLearnDto } from 'src/app/client/api';
 import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
