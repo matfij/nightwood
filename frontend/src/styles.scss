@@ -1,5 +1,5 @@
 @import '~ngx-toastr/toastr';
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
 
 @import 'app/core/theme/mixins.scss';
 @import 'app/core/theme/variables.scss';
@@ -16,6 +16,10 @@ html, body {
   box-sizing: border-box;
   overflow-x: hidden;
   scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 *:focus {

@@ -6,7 +6,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoadingIndicatorComponent } from '../common/components/loading-indicator/loading-indicator.component';
 import { InputBaseComponent } from '../common/components/input-base/input-base.component';
 import { NavigationBarComponent } from '../common/components/navigation-bar/navigation-bar.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DragonPreviewComponent } from './components/dragon-preview/dragon-preview.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
 import { DragonChoiceModalComponent } from './components/dragon-choice-modal/dragon-choice-modal.component';
@@ -50,7 +49,6 @@ const MODULES = [
     positionClass :'toast-bottom-center'
   }),
   TranslateModule.forChild(),
-  NgbModule,
 ];
 const UTILS = [
   TooltipDirective,

@@ -19,6 +19,10 @@
   }
 }
 
+.item-tooltip {
+  box-shadow: inset 0px 0px 2px 1px black;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   appearance: none;

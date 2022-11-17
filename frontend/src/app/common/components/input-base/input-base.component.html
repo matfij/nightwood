@@ -2,9 +2,11 @@
 
 <form class="wrapper" [formGroup]="options.form">
   <div class="label">
-    <div *ngIf="options.hint" [ngbTooltip]="tipContent" class="hint">
-      <ng-template #tipContent>
-        <p>{{ options.hint }}</p>
+    <div *ngIf="options.hint" tooltip class="hint">
+      <ng-template #tooltipTemplate>
+        <div class="item-tooltip">
+          {{ options.hint }}
+        </div>
       </ng-template>
       <img src="assets/img/icons/info.svg" alt="info">
     </div>
