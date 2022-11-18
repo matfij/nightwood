@@ -42,7 +42,7 @@
 .btn-learn-skill {
   height: 20px;
   width: 25px;
-  margin-top: -45px;
+  margin-top: -38px;
 
   color: $app-primary;
   font-size: 36px;
@@ -51,6 +51,7 @@
   background: none;
 
   &:hover {
+    cursor: pointer;
     color: lighten($app-primary, 10);
   }
 }

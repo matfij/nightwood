@@ -2,14 +2,17 @@
 
 
 .label {
+  margin-bottom: 2px;
+
   color: $app-light;
   font-size: 12px;
   font-weight: 500;
   text-align: left;
-  letter-spacing: 0.25px;
+  letter-spacing: 0.5px;
 }
 
 .input {
+  height: 25px;
   width: 100%;
 
   padding: 2px;
@@ -41,6 +44,7 @@
 }
 
 @mixin input-base() {
+  height: 25px;
   width: clamp(0px, 100%, 240px);
   margin: 2px auto 10px auto;
 

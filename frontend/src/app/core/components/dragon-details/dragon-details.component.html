@@ -2,7 +2,7 @@
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
 
-  <div class="mt-3 mb-5">{{ dragon.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
+  <div style="margin: 20px auto;">{{ dragon.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
 
   <div class="wrapper-skills">
     <div *ngFor="let skill of obtainableSkills" class="item-skill">
@@ -26,7 +26,7 @@
           [disabled]="learnSkillLoading"
           class="btn-learn-skill">
           +
-        </button>
+      </button>
       </div>
     </div>
   </div>

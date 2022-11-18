@@ -7,7 +7,7 @@
       <br> {{ 'start.registerLore' | translate }}
     </div>
 
-    <div class="wrapper-form mt-4">
+    <div class="wrapper-form">
       <form [formGroup]="form" (ngSubmit)="register()">
         <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
