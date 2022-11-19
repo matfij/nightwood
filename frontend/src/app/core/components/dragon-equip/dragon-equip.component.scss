@@ -26,7 +26,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 4px;
+  gap: 8px;
   overflow: visible;
 
   .item-rune {
@@ -35,8 +35,8 @@
     margin: auto;
 
     z-index: 2;
-    display:block;
-    position:relative;
+    display: block;
+    position: relative;
     cursor: pointer;
   }
 
@@ -71,36 +71,10 @@
 
 
 .item-hexagon {
-  width: 100px;
-  height: 57.74px;
-  margin: 28.87px 0;
-
-  position: relative;
-  border-left: solid 5px lighten($app-dark, 60);
-  border-right: solid 5px lighten($app-dark, 60);
-  background: lighten($app-dark, 10);
-}
-
-.item-hexagon:before,
-.item-hexagon:after {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  width: 70.71px;
-  height: 70.71px;
-  transform: scaleY(0.5774) rotate(-45deg);
-  background-color: inherit;
-  left: 9.6447px;
-}
-
-.item-hexagon:before {
-  top: -35.3553px;
-  border-top: solid 7.0711px lighten($app-dark, 60);
-  border-right: solid 7.0711px lighten($app-dark, 60);
-}
-
-.item-hexagon:after {
-  bottom: -35.3553px;
-  border-bottom: solid 7.0711px lighten($app-dark, 60);
-  border-left: solid 7.0711px lighten($app-dark, 60);
+  width: 110px;
+  height: 110px;
+  background: darken($app-dark, 2);
+  border-radius: 50%;
+  border: 4px solid lighten($app-dark, 12);
+  display: flex;
 }

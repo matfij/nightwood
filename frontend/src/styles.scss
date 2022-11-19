@@ -15,7 +15,6 @@ html, body {
   box-sizing: border-box;
   overflow-x: hidden;
   scroll-behavior: smooth;
-
   font-size: 16px;
   line-height: 1.5;
 }
@@ -47,6 +46,7 @@ p {
 }
 
 img {
+  vertical-align: middle;
   max-width: 100%;
 }
 img::selection {
