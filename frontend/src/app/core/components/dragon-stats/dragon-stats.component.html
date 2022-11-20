@@ -3,7 +3,7 @@
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
 
   <ng-template #loading>
-    <div class="mt-5">
+    <div style="margin: 25px auto;">
       <app-loading-indicator></app-loading-indicator>
     </div>
   </ng-template>
@@ -27,7 +27,7 @@
     <hr>
   </div>
 
-  <button (click)="closeModal()" class="btn-base mt-5">
+  <button (click)="closeModal()" class="btn-base">
     {{ 'common.close' | translate }}
   </button>
 </div>

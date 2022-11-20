@@ -18,7 +18,7 @@
 
       <div *ngIf="displayPotions">
         <ng-template #loading>
-          <div class="mt-5">
+          <div style="margin: 30px auto;">
             <app-loading-indicator></app-loading-indicator>
           </div>
         </ng-template>
@@ -61,7 +61,7 @@
               <div *ngFor="let ingredient of recipe.ingredients">
                 {{ ingredient.name }} ({{ ingredient.quantity }})
                 <div *ngIf="items.length" class="inline">
-                  <progress class="progress-crafting" [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity" ></progress>
+                  <progress [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity"></progress>
                 </div>
               </div>
             </div>
@@ -92,7 +92,7 @@
 
       <div *ngIf="displayBoosters">
         <ng-template #loading>
-          <div class="mt-5">
+          <div style="margin: 30px auto;">
             <app-loading-indicator></app-loading-indicator>
           </div>
         </ng-template>

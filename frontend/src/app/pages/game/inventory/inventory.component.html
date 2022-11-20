@@ -6,7 +6,7 @@
       {{ 'inventory.gold' | translate }}: {{ gold }}
     </div>
 
-    <div *ngIf="itemsLoading" class="mt-5">
+    <div *ngIf="itemsLoading" style="margin-top: 50px;">
       <app-loading-indicator></app-loading-indicator>
     </div>
     <div *ngIf="!itemsLoading" class="wrapper-items">

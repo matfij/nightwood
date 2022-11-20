@@ -78,6 +78,10 @@ input[type="number"] {
   @include input-base();
 }
 
+textarea {
+  height: max-content !important;
+}
+
 progress {
   width: 80px;
   margin-left: 5px;

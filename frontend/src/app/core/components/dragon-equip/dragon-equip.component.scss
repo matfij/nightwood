@@ -4,6 +4,7 @@
 
 .label-runes {
   margin: 16px auto;
+  margin-bottom: 0px;
 
   line-height: 20px;
   font-size: 20px;
@@ -34,16 +35,20 @@
     height: 63px;
     margin: auto;
 
-    z-index: 2;
     display: block;
     position: relative;
     cursor: pointer;
+
+    div {
+      z-index: 1;
+    }
   }
 
   .item-hint {
     text-align: left;
     background: $app-dark;
     border-radius: 4px;
+    z-index: 4;
   }
 }
 
@@ -68,7 +73,6 @@
     }
   }
 }
-
 
 .item-hexagon {
   width: 110px;

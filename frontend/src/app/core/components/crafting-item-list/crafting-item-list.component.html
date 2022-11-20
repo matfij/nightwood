@@ -10,7 +10,7 @@
       <div *ngFor="let ingredient of recipe.ingredients">
         {{ ingredient.name }} ({{ ingredient.quantity }})
         <div *ngIf="items.length" class="inline">
-          <progress class="progress-crafting" [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity" ></progress>
+          <progress [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity"></progress>
         </div>
       </div>
     </div>

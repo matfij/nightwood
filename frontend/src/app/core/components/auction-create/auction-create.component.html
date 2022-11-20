@@ -1,7 +1,7 @@
 <div class="container-modal">
   <div class="wrapper-form">
 
-    <div class="title mb-4">{{ 'auctions.addOfferLong' | translate }}</div>
+    <div class="title">{{ 'auctions.addOfferLong' | translate }}</div>
 
     <div class="input-label">{{ 'auctions.selectItem' | translate }}</div>
     <select #itemSelect class="input-select">
@@ -22,7 +22,7 @@
       </div>
     </form>
 
-    <button (click)="closeModal()" class="btn-base mt-5">
+    <button (click)="closeModal()" class="btn-base" style="margin-top: 40px;">
       {{ 'common.cancel' | translate }}
     </button>
 

@@ -11,7 +11,7 @@
         {{ 'dragonTamer.dragonTamerHint' | translate }}
       </div>
 
-      <div *ngIf="actionsLoading" class="mt-5">
+      <div *ngIf="actionsLoading" style="margin: 30px auto;">
         <app-loading-indicator></app-loading-indicator>
       </div>
       <div *ngIf="!actionsLoading && (dragons$ | async) as dragons" class="wrapper-actions">

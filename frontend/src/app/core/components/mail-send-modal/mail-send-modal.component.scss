@@ -1,6 +1,9 @@
 @import '../../theme/mixins.scss';
 @import '../../theme/variables.scss';
 
+.title {
+  margin-bottom: 20px;
+}
 
 .wrapper-form {
   width: clamp(240px, 100%, 400px);

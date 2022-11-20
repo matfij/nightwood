@@ -364,7 +364,7 @@
     "message": "Message",
     "reply": "Reply",
     "compose": "Compose",
-    "composeHint": "Compose new mail",
+    "composeHint": "Compose a new mail",
     "send": "Send",
     "mailSent": "Mail sent"
   },

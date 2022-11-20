@@ -35,7 +35,7 @@
           {{ i+1 }}. <b>{{ dragon.name }}</b> [{{ dragon.level }}]
           <ng-template #tooltipTemplate>
             <div class="item-tooltip dragon-tooltip">
-              <h5>{{ dragon.name }}</h5>
+              <h3>{{ dragon.name }}</h3>
               <img [src]="dragon.image" [alt]="dragon.name" draggable="false">
               <p>
                 {{ 'dragon.nature' | translate }}: {{ dragon.nature }} <br>
@@ -58,7 +58,7 @@
           <img [src]="achievement.image" [alt]="achievement.name" draggable="false">
           <ng-template #tooltipTemplate>
             <div class="item-tooltip achievement-tooltip">
-              <h5>{{ achievement.name }}</h5>
+              <h3>{{ achievement.name }}</h3>
               <p>{{ achievement.hint }}</p>
             </div>
           </ng-template>

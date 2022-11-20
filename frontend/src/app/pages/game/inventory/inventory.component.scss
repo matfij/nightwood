@@ -11,9 +11,8 @@
   display: grid;
   gap: 2px;
   grid-template-columns: repeat(auto-fit, 56px);
-  grid-template-rows: repeat(75px, min);
+  grid-template-rows: repeat(auto-fit, 56px);
   justify-content: left;
-  padding: auto;
 }
 
 .label-gold {
@@ -26,6 +25,8 @@
 }
 
 .item {
+  width: 56px;
+  height: 56px;
   display: flex;
   border-radius: 4px;
 }

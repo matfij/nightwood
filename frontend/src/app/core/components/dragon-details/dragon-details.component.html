@@ -9,7 +9,7 @@
       <div tooltip>
         <ng-template #tooltipTemplate>
           <div class="item-tooltip item-skill-hint">
-            <h5>{{ skill.name }}</h5>
+            <h3>{{ skill.name }}</h3>
             <p>{{ skill.hint }}</p>
             <p>{{ 'dragon.requiredLevel' | translate }}: {{ skill.level }}</p>
           </div>
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <button (click)="closeModal()" [disabled]="learnSkillLoading" class="btn-base mt-5">
+  <button (click)="closeModal()" [disabled]="learnSkillLoading" class="btn-base">
     {{ 'common.close' | translate }}
   </button>
 

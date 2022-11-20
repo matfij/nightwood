@@ -1,7 +1,7 @@
 <div tooltip class="{{ 'container item-'+displayItem.rarity }}">
   <ng-template #tooltipTemplate>
     <div class="{{ 'item-tooltip item-hint hint-'+displayItem.rarity }}">
-      <h5>{{ displayItem.name }}</h5>
+      <h3>{{ displayItem.name }}</h3>
       <div *ngIf="item.type !== ItemType.Booster">
         {{ displayItem.rarityName | translate }} {{ displayItem.typeName | translate }}<br>
       </div>

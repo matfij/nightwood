@@ -1,5 +1,5 @@
 <div *ngIf="displayFeedModal && dragon" class="container-modal">
-  <div *ngIf="feedLoading" class="mb-5">
+  <div *ngIf="feedLoading">
     <app-loading-indicator></app-loading-indicator>
   </div>
 
@@ -7,7 +7,7 @@
     <div class="title">{{ 'dragon.feed' | translate }} {{ dragon.name }}</div>
     <p>{{ 'dragon.chooseFoodHint' | translate }}</p>
 
-    <div *ngIf="foodLoading" class="mt-5">
+    <div *ngIf="foodLoading" style="margin: 30px auto;">
       <app-loading-indicator></app-loading-indicator>
     </div>
     <div class="wrapper-foods" *ngIf="!foodLoading">
@@ -45,7 +45,7 @@
     <div *ngFor="let attribute of DRAGON_ATTRIBUTES" tooltip class="item-stat">
       <ng-template #tooltipTemplate>
         <div class="item-tooltip item-hint">
-          <h5>{{ 'dragon.'+attribute | translate }}</h5>
+          <h3>{{ 'dragon.'+attribute | translate }}</h3>
           {{ 'dragon.'+attribute+'Hint' | translate }}<br>
         </div>
       </ng-template>
@@ -61,11 +61,12 @@
   <div class="wrapper-actions">
     <div *ngIf="!feedAvailable" tooltip>
       <ng-template #tooltipTemplate>
-        <div  class="item-tooltip item-hint">
+        <div class="item-tooltip item-hint">
           {{ 'dragon.nextFeedIn' | translate }}: {{  dragon.nextFeed | timer | async }}<br>
         </div>
       </ng-template>
-      <button (click)="prepareFeedModal()" [disabled]="!feedAvailable" class="btn-base btn-action">
+
+      <button class="btn-base disabled btn-action">
         {{ 'dragon.feed' | translate }}
       </button>
     </div>

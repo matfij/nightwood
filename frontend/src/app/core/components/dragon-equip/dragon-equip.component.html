@@ -10,7 +10,7 @@
       <div tooltip class="{{ 'item-rune item-'+rune.rarity }}">
         <ng-template #tooltipTemplate>
           <div class="{{ 'item-tooltip item-hint hint-'+rune.rarity }}">
-            <h5>{{ rune.name }}</h5>
+            <h3>{{ rune.name }}</h3>
             {{ rune.rarityName | translate }} {{ rune.typeName | translate }}<br>
             {{ 'inventory.level' | translate }}: {{ rune.level }} <br>
           </div>
@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <button (click)="closeModal()" class="btn-base mt-5">
+  <button (click)="closeModal()" class="btn-base">
     {{ 'common.close' | translate }}
   </button>
 </div>
