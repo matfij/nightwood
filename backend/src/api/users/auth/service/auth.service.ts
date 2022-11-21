@@ -9,12 +9,13 @@ import { UserAuthDto } from '../model/dto/user-auth.dto';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { ErrorService } from '../../../../common/services/error.service';
-import { JwtData } from '../model/definitions/jwt';
+import { JwtData, UserJwt } from '../model/definitions/jwt';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
 import { EmailReplaceToken, EmailType } from 'src/common/definitions/emails';
 import { UserConfirmDto } from '../model/dto/user-confirm.dto';
 import { AchievementsService } from '../../achievements/service/achievements.service';
+import { JWT_REFRESH_VALIDITY } from 'src/configuration/app.config';
 
 const bcrypt = require('bcrypt');
 
@@ -92,7 +93,7 @@ export class AuthService {
 
     async refreshToken(dto: UserAuthDto) {
         const userData = this.jwtService.decode(dto.accessToken) as JwtData;
-        if (!this.dateService.isTokenValid(userData.exp, 15000)) this.errorService.throw('errors.tokenInvalid');
+        if (!this.dateService.isTokenValid(userData.exp, JWT_REFRESH_VALIDITY)) this.errorService.throw('errors.tokenInvalid');
 
         dto.accessToken = null;
         dto.accessToken = await this.generateJwt(dto);
@@ -115,8 +116,13 @@ export class AuthService {
     }
 
     async generateJwt(user: Partial<UserDto>): Promise<string> {
-        user.password = '';
-        return this.jwtService.signAsync({user});
+        const jwtData: UserJwt = {
+            id: user.id,
+            email: user.email,
+            nickname: user.nickname,
+            role: user.role
+        };
+        return this.jwtService.signAsync({jwtData});
     }
 
     async hashPassword(password: string): Promise<string> {

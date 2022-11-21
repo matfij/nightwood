@@ -12,7 +12,7 @@ import { JwtStrategy } from './util/jwt.strategy';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
 import { AchievementsModule } from '../achievements/achievements.module';
-import { AchievementsService } from '../achievements/service/achievements.service';
+import { JWT_VALIDITY } from 'src/configuration/app.config';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { AchievementsService } from '../achievements/service/achievements.servic
       inject: [ConfigService],
       useFactory: async(x: ConfigService) => ({ 
         secret: x.get('JWT_KEY'), 
-        signOptions: { expiresIn: 2000 } 
+        signOptions: { expiresIn: JWT_VALIDITY } 
       }),
     }),
     ItemModule,

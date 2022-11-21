@@ -17,7 +17,6 @@ import { UserPublicDto } from '../model/dto/user-public.dto';
 import { FriendshipRequestDto } from '../model/dto/friendship-request.dto';
 import { FriendshipPendingRequestDto } from '../model/dto/friendship-pending-request.dto';
 import { FriendshipRespondDto } from '../model/dto/friendship-respond.dto';
-import { use } from 'passport';
 
 @Injectable()
 export class UserService {

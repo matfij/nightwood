@@ -5,6 +5,12 @@ export const APP_NAME = 'Nightwood';
 export const API_VERSION = 'v1';
 
 /**
+ * JWT
+ */
+export const JWT_VALIDITY = 24 * 3600;  // seconds
+export const JWT_REFRESH_VALIDITY = 48 * 3600;  // seconds
+
+/**
  * Database & typeorm
  */
 export const DB_TIMESTAMP_TYPE = 'int8';
