@@ -7,11 +7,11 @@
     <div class="title">{{ 'dragon.feed' | translate }} {{ dragon.name }}</div>
     <p>{{ 'dragon.chooseFoodHint' | translate }}</p>
 
-    <div *ngIf="foodLoading" style="margin: 30px auto;">
+    <ng-template #loading style="margin: 30px auto;">
       <app-loading-indicator></app-loading-indicator>
-    </div>
-    <div class="wrapper-foods" *ngIf="!foodLoading">
-      <div *ngFor="let item of availableFood" (click)="feedDragon(item)" class="food">
+    </ng-template>
+    <div *ngIf="(availableFood$ | async) as items; else loading" class="wrapper-foods">
+      <div *ngFor="let item of items" (click)="feedDragon(item)" class="food">
           <img [src]="item.image" [alt]="item.name">
           {{ item.name | translate }}
           ({{ item.quantity }}) <br>

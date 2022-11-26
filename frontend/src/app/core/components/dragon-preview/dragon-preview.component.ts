@@ -6,6 +6,8 @@ import { DragonService } from '../../services/dragons.service';
 import { ItemsService } from '../../services/items.service';
 import { DisplayItem } from '../../definitions/items';
 import { ToastService } from 'src/app/common/services/toast.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dragon-preview',
@@ -20,7 +22,7 @@ export class DragonPreviewComponent implements OnInit {
   feedAvailable: boolean = false;
   displayFeedModal: boolean = false;
   foodLoading: boolean = false;
-  availableFood: DisplayItem[] = [];
+  availableFood$?: Observable<DisplayItem[]>;
   feedLoading: boolean = false;
   displayDetails: boolean = false;
   displayEquipment: boolean = false;
@@ -51,19 +53,17 @@ export class DragonPreviewComponent implements OnInit {
 
   prepareFeedModal() {
     if (this.feedAvailable) {
-      this.getAvailableFoods();
       this.displayFeedModal = true;
+      this.getAvailableFoods();
     }
   }
 
   getAvailableFoods() {
-    this.foodLoading = true;
-    this.itemController.getOwnedFoods().subscribe(foodsPage => {
-      this.foodLoading = false;
-      this.availableFood = foodsPage.data
-        .map(item => this.itemService.toDisplayItem(item))
-        .filter(item => item.quantity! > 0);
-    }, () => this.foodLoading = false);
+    this.availableFood$ = this.itemController.getOwnedFoods().pipe(
+      map(itemPage => itemPage.data),
+      map(items => items.map(item => this.itemService.toDisplayItem(item))),
+      map(items => items.filter(item => item.quantity! > 0))
+    );
   }
 
   feedDragon(item: ItemDto) {

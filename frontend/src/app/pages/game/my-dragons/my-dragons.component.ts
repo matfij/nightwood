@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionController, DragonController, DragonDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -6,7 +6,8 @@ import { ToastService } from 'src/app/common/services/toast.service';
 @Component({
   selector: 'app-my-dragons',
   templateUrl: './my-dragons.component.html',
-  styleUrls: ['./my-dragons.component.scss']
+  styleUrls: ['./my-dragons.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyDragonsComponent implements OnInit {
 

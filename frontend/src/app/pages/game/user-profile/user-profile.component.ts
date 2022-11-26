@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
-import { AchievementDto, AchievementsController, AchievementsDto, DragonController, FriendshipPendingRequestDto, FriendshipRequestDto, UserController, UserPublicDto } from 'src/app/client/api';
+import { forkJoin, Observable } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+import { AchievementDto, AchievementsController, AchievementsDto, DragonController, FriendshipRequestDto, UserController, UserPublicDto } from 'src/app/client/api';
 import { UserControllerHelper } from 'src/app/client/api-helper';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragonPublic } from 'src/app/core/definitions/dragons';
@@ -15,7 +15,8 @@ import { ItemsService } from 'src/app/core/services/items.service';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserProfileComponent implements OnInit {
 
