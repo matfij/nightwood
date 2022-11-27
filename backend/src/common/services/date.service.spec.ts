@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { DateService } from './date.service';
 
 describe('DateService', () => {
+  const MAX_ERROR_MS = 100;
   let dateService: DateService;
 
   beforeEach(async () => {
@@ -21,7 +22,8 @@ describe('DateService', () => {
 
     const currentDate = dateService.getCurrentDate();
 
-    expect(currentDate).toBeCloseTo(expectedDate);
+    expect(currentDate).toBeGreaterThan(expectedDate - MAX_ERROR_MS);
+    expect(currentDate).toBeLessThan(expectedDate + MAX_ERROR_MS);
   });
 
   it('should mark past event as available', () => {
@@ -56,7 +58,8 @@ describe('DateService', () => {
       futureMinutes,
     );
 
-    expect(futureDate).toBeCloseTo(expectedFutureDate);
+    expect(futureDate).toBeGreaterThan(expectedFutureDate - MAX_ERROR_MS);
+    expect(futureDate).toBeLessThan(expectedFutureDate + MAX_ERROR_MS);
   });
 
   it('should get past date', () => {
@@ -75,7 +78,8 @@ describe('DateService', () => {
       pastMinutes,
     );
 
-    expect(futureDate).toBeCloseTo(expectedPastDate);
+    expect(futureDate).toBeGreaterThan(expectedPastDate - MAX_ERROR_MS);
+    expect(futureDate).toBeLessThan(expectedPastDate + MAX_ERROR_MS);
   });
 
   it('should mark token as valid', () => {
