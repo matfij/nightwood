@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -32,6 +32,7 @@ export class UserProfileComponent implements OnInit {
   displayFriendInvitations: boolean = false;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
     private achievementsController: AchievementsController,
@@ -152,6 +153,8 @@ export class UserProfileComponent implements OnInit {
     if (!event.target.files[0]) return;
     this.userControllerHelper.setAvatar(event.target.files[0]).subscribe(() => {
       this.avatar$ = this.userControllerHelper.getAvatar();
+      this.toastService.showSuccess('common.success', 'user.avatarSet')
+      this.cdRef.detectChanges();
     });
   }
 

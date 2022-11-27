@@ -156,7 +156,8 @@
     "friendInvitationSent": "Invitation sent",
     "pendingInvitations": "Pending invitations",
     "requestAccepted": "Request accepted",
-    "requestDeclined": "Request declined"
+    "requestDeclined": "Request declined",
+    "avatarSet": "New avatar set"
   },
   "dragon": {
     "adoptDragonTilte": "Who are you fated to encounter?",

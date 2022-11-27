@@ -1,4 +1,9 @@
-<div *ngIf="dragon" class="container-modal">
+<div
+*ngIf="(
+  {dragonRunes: dragonRunes$ | async,
+  availableEquipment: availableEquipment$ | async}) as vm;
+  else equipmentLoading"
+  class="container-modal">
 
   <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
 
@@ -6,7 +11,7 @@
     {{ 'dragon.equippedRunes' | translate }}
   </div>
   <div class="wrapper-runes">
-    <div *ngFor="let rune of dragonRunes" (click)="unequipRune(rune)" class="item-hexagon">
+    <div *ngFor="let rune of vm.dragonRunes" (click)="unequipRune(rune)" class="item-hexagon">
       <div tooltip class="{{ 'item-rune item-'+rune.rarity }}">
         <ng-template #tooltipTemplate>
           <div class="{{ 'item-tooltip item-hint hint-'+rune.rarity }}">
@@ -21,9 +26,9 @@
       </div>
     </div>
 
-    <div *ngIf="dragonRunes.length < 1" class="item-hexagon"></div>
-    <div *ngIf="dragonRunes.length < 2" class="item-hexagon"></div>
-    <div *ngIf="dragonRunes.length < 3" class="item-hexagon"></div>
+    <div *ngIf="(vm.dragonRunes?.length || 0) < 1" class="item-hexagon"></div>
+    <div *ngIf="(vm.dragonRunes?.length || 0) < 2" class="item-hexagon"></div>
+    <div *ngIf="(vm.dragonRunes?.length || 0) < 3" class="item-hexagon"></div>
   </div>
 
   <div *ngIf="dragon.booster" class="label-runes">
@@ -34,8 +39,8 @@
   <div class="label-runes" style="margin-bottom: 0px;">
     {{ 'dragon.availableRunes' | translate }}
   </div>
-  <div *ngIf="availableEquipment" class="wrapper-equipment">
-    <div *ngFor="let item of availableEquipment" class="item-equipment" [ngClass]="{ 'item-inactive': dragon.level < item.level }">
+  <div class="wrapper-equipment">
+    <div *ngFor="let item of vm.availableEquipment" class="item-equipment" [ngClass]="{ 'item-inactive': dragon.level < item.level }">
       <app-item-display (click)="equipRune(item)" [item]="item" style="width: 55px; height: 55px;"></app-item-display>
     </div>
   </div>
@@ -44,3 +49,9 @@
     {{ 'common.close' | translate }}
   </button>
 </div>
+
+<ng-template #equipmentLoading>
+  <div class="container-modal">
+    <app-loading-indicator></app-loading-indicator>
+  </div>
+</ng-template>

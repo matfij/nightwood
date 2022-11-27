@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionController, DragonController, DragonDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -15,6 +15,7 @@ export class MyDragonsComponent implements OnInit {
   dragonsLoading: boolean = false;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private router: Router,
     private actionController: ActionController,
     private dragonController: DragonController,
@@ -29,9 +30,9 @@ export class MyDragonsComponent implements OnInit {
     this.dragonsLoading = true;
     this.dragonController.getOwned().subscribe(dragons => {
       this.dragonsLoading = false;
-
       this.ownedDragons = dragons;
-    }, () => this.dragonsLoading = false)
+      this.cdRef.detectChanges();
+    }, () => this.dragonsLoading = false);
   }
 
   navigateAdopt() {
@@ -44,6 +45,7 @@ export class MyDragonsComponent implements OnInit {
       this.dragonsLoading = false;
       this.toastService.showSuccess('common.success', 'dragon.dragonReleased');
       this.ownedDragons = this.ownedDragons.filter(dragon => dragon.id !== dragonId);
+      this.cdRef.detectChanges();
     }, () => this.dragonsLoading = false);
   }
 

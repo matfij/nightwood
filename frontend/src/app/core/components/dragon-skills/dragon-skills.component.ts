@@ -1,28 +1,31 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { DragonController, DragonSkillsController, DragonSkillsDto, SkillGetDto, SkillLearnDto } from 'src/app/client/api';
 import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
 import { DRAGON_SKILL_DEVELOPMENT_LIMIT } from 'src/app/client/config/frontend.config';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-dragon-details',
-  templateUrl: './dragon-details.component.html',
+  selector: 'app-dragon-skills',
+  templateUrl: './dragon-skills.component.html',
   styleUrls: [
     '../../../common/components/abstract-modal/abstract-modal.component.scss',
-    './dragon-details.component.scss',
+    './dragon-skills.component.scss',
   ],
 })
-export class DragonDetailsComponent extends AbstractModalComponent implements OnInit {
+export class DragonSkillsComponent extends AbstractModalComponent implements OnInit {
 
   @Input() dragon!: DisplayDragon;
 
-  obtainableSkills: DisplaySkill[] = [];
+  obtainableSkills$?: Observable<DisplaySkill[]>;
   dragonLoading: boolean = false;
   skillsLoading: boolean = false;
   learnSkillLoading: boolean = false;
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private dragonController: DragonController,
     private dragonSkillsController: DragonSkillsController,
     private dragonService: DragonService,
@@ -41,6 +44,7 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
       this.dragonLoading = false;
       this.dragon.skillPoints = dragon.skillPoints;
       this.dragon.skills = dragon.skills;
+      this.cdRef.detectChanges();
     }, () => this.dragonLoading = false);
   }
 
@@ -48,11 +52,9 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
     const params: SkillGetDto = {
       requiredNature: this.dragon.nature,
     };
-    this.skillsLoading = true;
-    this.dragonSkillsController.getSkills(params).subscribe(skills => {
-      this.skillsLoading = false;
-      this.obtainableSkills = skills.map(skill => this.dragonService.toDisplaySkill(skill));
-    }, () => this.skillsLoading = false);
+    this.obtainableSkills$ = this.dragonSkillsController.getSkills(params).pipe(
+      map(skills => skills.map(skill => this.dragonService.toDisplaySkill(skill)))
+    );
   }
 
   getSkillProgress(skill: string) {
@@ -75,6 +77,7 @@ export class DragonDetailsComponent extends AbstractModalComponent implements On
     this.dragonController.learnSkill(params).subscribe(dragon => {
       this.learnSkillLoading = false;
       this.dragon = { ...this.dragon, skillPoints: dragon.skillPoints, skills: dragon.skills };
+      this.cdRef.detectChanges();
     }, () => this.learnSkillLoading = false);
   }
 }

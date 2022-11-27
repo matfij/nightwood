@@ -9,19 +9,19 @@
 
     <div *ngIf="!dragonsLoading" class="wrapper-dragons">
       <div *ngFor="let dragon of ownedDragons">
-        <app-dragon-preview
+        <app-dragon-card
           [dragon]="dragon"
           (release)="release($event)">
-        </app-dragon-preview>
+        </app-dragon-card>
       </div>
-    </div>
 
-    <div *ngIf="!dragonsLoading && !ownedDragons.length" class="wrapper-adopt">
-      <div class="title">{{ 'dragon.noOwnedDragons' | translate }}</div>
+      <div *ngIf="ownedDragons.length === 0" class="wrapper-adopt">
+        <div class="title">{{ 'dragon.noOwnedDragons' | translate }}</div>
 
-      <button (click)="navigateAdopt()" class="btn-base btn-adopt">
-        {{ 'dragon.adoptFirstDragon' | translate }}
-      </button>
+        <button (click)="navigateAdopt()" class="btn-base btn-adopt">
+          {{ 'dragon.adoptFirstDragon' | translate }}
+        </button>
+      </div>
     </div>
 
   </div>

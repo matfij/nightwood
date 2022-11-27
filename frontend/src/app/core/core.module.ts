@@ -6,11 +6,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoadingIndicatorComponent } from '../common/components/loading-indicator/loading-indicator.component';
 import { InputBaseComponent } from '../common/components/input-base/input-base.component';
 import { NavigationBarComponent } from '../common/components/navigation-bar/navigation-bar.component';
-import { DragonPreviewComponent } from './components/dragon-preview/dragon-preview.component';
+import { DragonPreviewComponent } from './components/dragon-card/dragon-card.component';
 import { ItemDisplayComponent } from './components/item-display/item-display.component';
 import { DragonChoiceModalComponent } from './components/dragon-choice-modal/dragon-choice-modal.component';
 import { DragonBattleComponent } from './components/dragon-battle/dragon-battle.component';
-import { DragonDetailsComponent } from './components/dragon-details/dragon-details.component';
+import { DragonSkillsComponent } from './components/dragon-skills/dragon-skills.component';
 import { AbstractModalComponent } from '../common/components/abstract-modal/abstract-modal.component';
 import { ConfirmModalComponent } from '../common/components/confirm-modal/confirm-modal.component';
 import { TooltipDirective } from '../common/utils/tooltip.directive';
@@ -32,7 +32,7 @@ const COMPONENTS = [
   InputBaseComponent,
   ConfirmModalComponent,
   DragonPreviewComponent,
-  DragonDetailsComponent,
+  DragonSkillsComponent,
   DragonChoiceModalComponent,
   DragonBattleComponent,
   ItemDisplayComponent,

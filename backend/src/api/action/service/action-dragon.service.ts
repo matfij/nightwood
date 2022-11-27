@@ -112,7 +112,7 @@ export class ActionDragonService {
         const dragon = await this.dragonService.checkDragon(userId, dto.dragonId);
         const item = await this.itemService.checkUnequippingItem(userId, dto.itemId) as Item;
 
-        if (item.dragon.id !== dragon.id) this.errorService.throw('errors.itemNotEquipped');
+        if (!item.dragon || item.dragon.id !== dragon.id) this.errorService.throw('errors.itemNotEquipped');
 
         await this.itemService.unquipItem(item);
 

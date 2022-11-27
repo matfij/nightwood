@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { ActionController, DragonFeedDto, ItemController, ItemDto } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DateService } from '../../../common/services/date.service';
@@ -10,9 +10,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-dragon-preview',
-  templateUrl: './dragon-preview.component.html',
-  styleUrls: ['./dragon-preview.component.scss']
+  selector: 'app-dragon-card',
+  templateUrl: './dragon-card.component.html',
+  styleUrls: ['./dragon-card.component.scss']
 })
 export class DragonPreviewComponent implements OnInit {
 
@@ -24,7 +24,7 @@ export class DragonPreviewComponent implements OnInit {
   foodLoading: boolean = false;
   availableFood$?: Observable<DisplayItem[]>;
   feedLoading: boolean = false;
-  displayDetails: boolean = false;
+  displaySkills: boolean = false;
   displayEquipment: boolean = false;
   displayStatistics: boolean = false;
   displayReleaseModal: boolean = false;
@@ -32,6 +32,7 @@ export class DragonPreviewComponent implements OnInit {
   DRAGON_ATTRIBUTES = ['strength', 'dexterity', 'endurance', 'will', 'luck'];
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private actionController: ActionController,
     private itemController: ItemController,
     private dateService: DateService,
@@ -81,6 +82,7 @@ export class DragonPreviewComponent implements OnInit {
       this.feedAvailable = false;
       this.toastService.showSuccess('dragon.feedSuccess', 'dragon.feedSuccessHint')
       this.dragon = Object.assign(this.dragon, fedDragon);
+      this.cdRef.detectChanges();
     }, () => this.feedLoading = false);
   }
 
