@@ -3,17 +3,20 @@
 
     <div class="title title-main">{{ 'common.appName' | translate }}</div>
     <div class="title title-small">
-      {{ 'start.registerHint' | translate }}
-      <br> {{ 'start.registerLore' | translate }}
+      <p>{{ 'start.registerHint' | translate }}</p>
+      <p>{{ 'start.registerLore' | translate }}</p>
     </div>
 
     <div class="wrapper-form">
       <form [formGroup]="form" (ngSubmit)="register()">
         <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
 
-        <button [disabled]="!form.valid" class="btn-base">
+        <button *ngIf="!(submitLoading$ | async)" [disabled]="!form.valid" class="btn-base">
           {{ 'start.register' | translate }}
         </button>
+        <div *ngIf="(submitLoading$ | async)" class="spinner" style="margin-top: 20px;">
+          <app-loading-indicator></app-loading-indicator>
+        </div>
       </form>
     </div>
 

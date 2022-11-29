@@ -1,10 +1,10 @@
-<div *ngIf="confirmLoading" class="wrapper-main">
-  <div *ngIf="submitLoading" class="spinner">
+<div *ngIf="(confirmLoading$ | async)" class="wrapper-main">
+  <div *ngIf="(submitLoading$ | async)" class="spinner">
     <app-loading-indicator data-testid="app-confirm-spinner"></app-loading-indicator>
   </div>
 </div>
 
-<div *ngIf="!confirmLoading" class="wrapper-main">
+<div *ngIf="!(confirmLoading$ | async)" class="wrapper-main">
   <div class="wrapper-content">
 
     <div class="title title-main" data-testid="app-title">{{ 'common.appName' | translate }}</div>
@@ -29,16 +29,16 @@
           {{ 'errors.incorrectFieldsValue' | translate:{ value: 'password' } }}
         </div>
 
-        <button *ngIf="!submitLoading" type="submit" class="btn-base" data-testid="app-login-button">
+        <button *ngIf="!(submitLoading$ | async)" type="submit" class="btn-base" data-testid="app-login-button">
           {{ 'start.login' | translate }}
         </button>
-        <div *ngIf="submitLoading" class="spinner">
+        <div *ngIf="(submitLoading$ | async)" class="spinner">
           <app-loading-indicator data-testid="app-form-submit-spinner"></app-loading-indicator>
         </div>
       </form>
     </div>
 
-    <button [disabled]="submitLoading" routerLink="../register" class="btn-base" data-testid="app-register-button">
+    <button [disabled]="(submitLoading$ | async)" routerLink="../register" class="btn-base" data-testid="app-register-button">
       {{ 'start.register' | translate }}
     </button>
 

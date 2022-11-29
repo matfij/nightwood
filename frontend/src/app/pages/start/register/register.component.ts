@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 import { AuthController, UserRegisterDto } from 'src/app/client/api';
 import { EMAIL_MAX_LENGTH, NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
@@ -38,7 +39,7 @@ export class RegisterComponent implements OnInit {
     { form: this.form, key: 'password', label: 'start.password', type: 'password', autocomplete: 'new-password' },
     { form: this.form, key: 'passwordConfirm', label: 'start.passwordConfirm', type: 'password', autocomplete: 'new-password' },
   ];
-  submitLoading: boolean = false;
+  submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   get email(): FormControl { return this.form.get('email') as FormControl; }
   get nickname(): FormControl { return this.form.get('nickname') as FormControl; }
@@ -77,13 +78,13 @@ export class RegisterComponent implements OnInit {
       nickname: this.nickname.value,
       password: this.password.value,
     };
-    this.submitLoading = true;
-    this.authController.register(user).subscribe(user => {
-      this.submitLoading = false;
+    this.submitLoading$.next(true);
+    this.authController.register(user).subscribe(_ => {
+      this.submitLoading$.next(false);
       this.toastService.showSuccess('start.registerSuccess', 'start.confirmEmail');
       this.router.navigate(['../start/login']);
     }, _ => {
-      this.submitLoading = false;
+      this.submitLoading$.next(false);
     });
   }
 

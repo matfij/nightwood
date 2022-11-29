@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AuthController, UserConfirmDto, UserLoginDto } from 'src/app/client/api';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
@@ -29,10 +30,11 @@ export class LoginComponent implements OnInit {
     { form: this.form, key: 'login', label: 'start.nickname', type: 'text', autocomplete: 'username' },
     { form: this.form, key: 'password', label: 'start.password', type: 'password', autocomplete: 'current-password' },
   ];
-  confirmLoading: boolean = false;
-  submitLoading: boolean = false;
+  confirmLoading$?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  submitLoading$?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
+    private cdRef: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
     private authController: AuthController,
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       const activationCode = params['token'];
       if (!activationCode) return;
       this.confirm(activationCode);
@@ -53,11 +55,11 @@ export class LoginComponent implements OnInit {
     const params: UserConfirmDto = {
       activationCode: code,
     };
-    this.confirmLoading = true;
+    this.confirmLoading$?.next(true);
     this.authController.confirm(params).subscribe(() => {
-      this.confirmLoading = false;
+      this.confirmLoading$?.next(false);
       this.toastService.showSuccess('start.loginSuccess', 'start.confirmSuccess');
-    }, () => this.confirmLoading = false);
+    }, () => this.confirmLoading$?.next(false));
   }
 
   login() {
@@ -70,9 +72,9 @@ export class LoginComponent implements OnInit {
       nickname: this.form.get('login')?.value,
       password: this.form.get('password')?.value,
     };
-    this.submitLoading = true;
+    this.submitLoading$?.next(true);
     this.authController.login(params)
-      .pipe(switchMap(user => {
+      .pipe(switchMap((user) => {
         this.repositoryService.clearUserData();
         this.repositoryService.setAccessToken(user.accessToken);
         this.repositoryService.setUserData(user);
@@ -80,11 +82,12 @@ export class LoginComponent implements OnInit {
         this.engineService.setInitialState(user);
         return this.engineService.getExpeditionReports();
       })).subscribe(() => {
-        this.submitLoading = false;
+        this.submitLoading$?.next(false);
         this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
         this.router.navigate(['../game/home']);
       }, () => {
-        this.submitLoading = false;
+        console.log('tego')
+        this.submitLoading$?.next(false);
       });
   }
 
