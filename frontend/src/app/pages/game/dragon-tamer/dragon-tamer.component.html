@@ -11,19 +11,19 @@
         {{ 'dragonTamer.dragonTamerHint' | translate }}
       </div>
 
-      <div *ngIf="actionsLoading" style="margin: 30px auto;">
+      <div *ngIf="actionsLoading$ | async" style="margin: 30px auto;">
         <app-loading-indicator></app-loading-indicator>
       </div>
-      <div *ngIf="!actionsLoading && (dragons$ | async) as dragons" class="wrapper-actions">
+      <div *ngIf="{user: user, actions: (actions$ | async), dragons: (dragons$ | async)} as vm" class="wrapper-actions">
 
-        <div *ngFor="let action of actions; let actionInd = index" class="item-action">
+        <div *ngFor="let action of vm.actions; let actionInd = index" class="item-action">
           <div class="action-hint">
             {{ action.hint | translate }}
           </div>
 
           <select #dragonSelect [hidden]="action.withoutDragon" (change)="0" class="input-select" style="margin-top: 8px;">
             <option value=""></option>
-            <option class="input-select-option" *ngFor="let dragon of dragons; let dragonInd = index" [value]="dragonInd">
+            <option class="input-select-option" *ngFor="let dragon of vm.dragons; let dragonInd = index" [value]="dragonInd">
               {{ dragon.name }} [{{ dragon.level }}]
             </option>
           </select>
@@ -54,7 +54,7 @@
 
           <div *ngIf="!action.withoutDragon" class="cost-hint">
             {{ 'dragonTamer.actionCost' | translate }}:
-            {{ dragonSelect.value != '' ? action.baseCost + dragons[+dragonSelect.value].level * action.costFactor : '---' }}
+            {{ dragonSelect.value != '' ? action.baseCost + vm.dragons![+dragonSelect.value].level * action.costFactor : '---' }}
           </div>
 
           <div *ngIf="action.withoutDragon" class="cost-hint" style="margin-top: 8px;">
@@ -64,8 +64,8 @@
 
           <button
             *ngIf="!action.withoutDragon"
-            (click)="performAction(action, dragons[+dragonSelect.value])"
-            [disabled]="dragonSelect.value == ''"
+            (click)="performAction(action, vm.dragons![+dragonSelect.value])"
+            [disabled]="dragonSelect.value == '' || (dragonsLoading$ | async)"
             class="btn-base btn-action">
             {{ 'common.confirm' | translate }}
           </button>
@@ -73,6 +73,7 @@
           <button
             *ngIf="action.withoutDragon"
             (click)="performActionWithoutDragon(action)"
+            [disabled]="(dragonsLoading$ | async)"
             class="btn-base btn-action">
             {{ 'dragonTamer.extend' | translate }}
           </button>

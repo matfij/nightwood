@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionController, DragonAdoptDto, DragonNature } from 'src/app/client/api';
@@ -7,11 +7,13 @@ import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { ValidatorService } from 'src/app/common/services/validator.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-adopt-dragon',
   templateUrl: './adopt-dragon.component.html',
-  styleUrls: ['./adopt-dragon.component.scss']
+  styleUrls: ['./adopt-dragon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdoptDragonComponent implements OnInit {
 
@@ -59,7 +61,7 @@ export class AdoptDragonComponent implements OnInit {
   fields: FormInputOptions[] = [
     { form: this.form, key: 'name', label: '', type: 'text' },
   ];
-  submitLoading?: boolean;
+  submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   adoptStep = AdoptStep;
   get dragonName(): FormControl { return this.form.get('name') as FormControl; }
@@ -113,25 +115,25 @@ export class AdoptDragonComponent implements OnInit {
     name = name.replace(' ', '');
     if (name.length < DRAGON_NAME_MIN_LENGTH) return false;
     if (name.length > DRAGON_NAME_MAX_LENGTH) return false;
-    if (!this.validatorService.checkBannedWords(name)) return false;
 
     return true;
   }
 
   adoptDragon() {
     if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
+    if (!this.validatorService.checkBannedWords(this.dragonName.value)) return;
     if (!this.validateDragonName(this.dragonName.value)) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
 
     const dragon: DragonAdoptDto = {
       name: this.dragonName.value,
       nature: this.determineNature(),
     };
-    this.submitLoading = true;
+    this.submitLoading$?.next(true);
     this.actionController.adoptDragon(dragon).subscribe(() => {
-      this.submitLoading = false;
+      this.submitLoading$?.next(false);
       this.toastService.showSuccess('common.success', 'dragon.adoptSuccess');
       this.router.navigate(['game', 'my-dragons'])
-    }, () => this.submitLoading = false);
+    }, () => this.submitLoading$?.next(false));
   }
 
 }

@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AuthController, UserConfirmDto, UserLoginDto } from 'src/app/client/api';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
   submitLoading$?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private cdRef: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
     private authController: AuthController,
@@ -86,7 +85,6 @@ export class LoginComponent implements OnInit {
         this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
         this.router.navigate(['../game/home']);
       }, () => {
-        console.log('tego')
         this.submitLoading$?.next(false);
       });
   }

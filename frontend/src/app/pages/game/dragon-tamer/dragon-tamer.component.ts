@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ActionController, DragonChangeNatureDto, DragonController, DragonDto, DragonNature, DragonRenameDto, DragonTamerActionDto, UserAuthDto } from 'src/app/client/api';
 import { DRAGON_BASE_LIMIT, DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { SelectOption } from 'src/app/common/definitions/common';
@@ -11,19 +12,21 @@ import { EngineService } from 'src/app/core/services/engine.service';
 @Component({
   selector: 'app-dragon-tamer',
   templateUrl: './dragon-tamer.component.html',
-  styleUrls: ['./dragon-tamer.component.scss']
+  styleUrls: ['./dragon-tamer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DragonTamerComponent implements OnInit {
+
+  DRAGON_BASE_LIMIT = DRAGON_BASE_LIMIT;
 
   @ViewChild('nameInput') nameInput!: ElementRef;
   @ViewChild('newNatureSelect') newNatureSelect!: ElementRef;
 
   user?: UserAuthDto;
-  actions: DragonTamerActionDto[] = [];
-  actionsLoading: boolean = false;
-  dragons$: Observable<DragonDto[]> = new Observable<DragonDto[]>();
-
-  DRAGON_BASE_LIMIT = DRAGON_BASE_LIMIT;
+  actions$?: Observable<DragonTamerActionDto[]>;
+  dragons$?: Observable<DragonDto[]>;
+  actionsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  dragonsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private actionController: ActionController,
@@ -50,15 +53,17 @@ export class DragonTamerComponent implements OnInit {
   }
 
   getDragonTamerActions() {
-    this.actionsLoading = true;
-    this.dragonController.getTamerActions().subscribe(actions => {
-      this.actionsLoading = false;
-      this.actions = actions;
-    }, () => this.actionsLoading = false);
+    this.actionsLoading$.next(true);
+    this.actions$ = this.dragonController.getTamerActions().pipe(
+      tap(() => this.actionsLoading$.next(false))
+    );
   }
 
   getOwnedDragons() {
-    this.dragons$ = this.dragonController.getOwned();
+    this.dragonsLoading$.next(true);
+    this.dragons$ = this.dragonController.getOwned().pipe(
+      tap(() => this.dragonsLoading$.next(false))
+    );
   }
 
   performAction(action: DragonTamerActionDto, dragon: DragonDto) {
@@ -89,33 +94,31 @@ export class DragonTamerComponent implements OnInit {
       dragonId: dragon.id,
       newName: newName,
     };
-    this.actionsLoading = true;
+    this.dragonsLoading$.next(true);
     this.actionController.renameDragon(params).subscribe(_ => {
-      this.actionsLoading = false;
       this.toastService.showSuccess('common.success', 'dragonTamer.dragonRenamed');
       this.getOwnedDragons();
       this.engineService.tick();
-    }, () => this.actionsLoading = false);
+      this.nameInput.nativeElement.value = null;
+    }, () => this.dragonsLoading$.next(false));
   }
 
   resetDragonSkills(dragon: DragonDto) {
-    this.actionsLoading = true;
+    this.dragonsLoading$.next(true);
     this.actionController.resetDragonSkills(dragon.id.toString()).subscribe(_ => {
-      this.actionsLoading = false;
       this.toastService.showSuccess('common.success', 'dragonTamer.skillsReseted');
       this.getOwnedDragons();
       this.engineService.tick();
-    }, () => this.actionsLoading = false);
+    }, () => this.dragonsLoading$.next(false));
   }
 
   restoreDragonStamina(dragon: DragonDto) {
-    this.actionsLoading = true;
+    this.dragonsLoading$.next(true);
     this.actionController.restoreDragonStamina(dragon.id.toString()).subscribe(_ => {
-      this.actionsLoading = false;
       this.toastService.showSuccess('common.success', 'dragonTamer.staminaRestored');
       this.getOwnedDragons();
       this.engineService.tick();
-    }, () => this.actionsLoading = false);
+    }, () => this.dragonsLoading$.next(false));
   }
 
   changeDragonNature(dragon: DragonDto) {
@@ -127,13 +130,12 @@ export class DragonTamerComponent implements OnInit {
       dragonId: dragon.id,
       newNature: newNature,
     };
-    this.actionsLoading = true;
+    this.dragonsLoading$.next(true);
     this.actionController.changeDragonNature(params).subscribe(_ => {
-      this.actionsLoading = false;
       this.toastService.showSuccess('common.success', 'dragonTamer.natureChanged');
       this.getOwnedDragons();
       this.engineService.tick();
-    }, () => this.actionsLoading = false);
+    }, () => this.dragonsLoading$.next(false));
   }
 
   performActionWithoutDragon(action: DragonTamerActionDto) {
@@ -149,12 +151,14 @@ export class DragonTamerComponent implements OnInit {
 
     if (this.user && this.user.gold < requiredGold) { this.toastService.showError('errors.error', 'errors.insufficientsFound'); return; }
 
-    this.actionsLoading = true;
+    this.dragonsLoading$.next(true);
     this.actionController.extendDragonLimit().subscribe(_ => {
-      this.actionsLoading = false;
       this.toastService.showSuccess('common.success', 'dragonTamer.dragonLimitExtended');
       this.engineService.tick();
-    }, () => this.actionsLoading = false);
+      this.getDragonTamerActions();
+      this.getOwnedDragons();
+      if(this.user) this.user.maxOwnedDragons++;
+    }, () => this.dragonsLoading$.next(false));
   }
 
 }
