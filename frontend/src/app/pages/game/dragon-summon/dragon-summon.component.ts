@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { UserAuthDto, DragonController, DragonSummonActionDto, ActionController, DragonSummonDto } from 'src/app/client/api';
 import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { RepositoryService } from 'src/app/common/services/repository.service';
@@ -11,13 +11,14 @@ import { EngineService } from 'src/app/core/services/engine.service';
 @Component({
   selector: 'app-dragon-summon',
   templateUrl: './dragon-summon.component.html',
-  styleUrls: ['./dragon-summon.component.scss']
+  styleUrls: ['./dragon-summon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DragonSummonComponent implements OnInit {
 
   user?: UserAuthDto;
   actions$: Observable<DragonSummonActionDto[]> = new Observable<DragonSummonActionDto[]>();
-  actionsLoading: boolean = false;
+  actionsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private router: Router,
@@ -38,7 +39,6 @@ export class DragonSummonComponent implements OnInit {
     this.actions$ = this.dragonController.getSummonActions();
   }
 
-
   summonDragon(action: DragonSummonActionDto, name: string) {
     if (!this.validatorService.checkBannedWords(name)) { return; }
     if (name.length < DRAGON_NAME_MIN_LENGTH || name.length > DRAGON_NAME_MAX_LENGTH) {
@@ -52,13 +52,13 @@ export class DragonSummonComponent implements OnInit {
       name: name,
       nature: action.nature,
     }
-    this.actionsLoading = true;
+    this.actionsLoading$.next(true);
     this.actionController.summonDragon(params).subscribe(_ => {
       this.toastService.showSuccess('common.success', 'dragonSummon.summonSuccess');
-      this.actionsLoading = false;
+      this.actionsLoading$.next(false);
       this.engineService.tick();
       this.router.navigate(['game', 'my-dragons']);
-    }, () => this.actionsLoading = false);
+    }, () => this.actionsLoading$.next(false));
   }
 
 }

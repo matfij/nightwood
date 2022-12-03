@@ -54,7 +54,7 @@
 
           <div *ngIf="!action.withoutDragon" class="cost-hint">
             {{ 'dragonTamer.actionCost' | translate }}:
-            {{ dragonSelect.value != '' ? action.baseCost + vm.dragons![+dragonSelect.value].level * action.costFactor : '---' }}
+            {{ (dragonSelect.value != '' && vm.dragons) ? action.baseCost + vm.dragons[+dragonSelect.value].level * action.costFactor : '---' }}
           </div>
 
           <div *ngIf="action.withoutDragon" class="cost-hint" style="margin-top: 8px;">

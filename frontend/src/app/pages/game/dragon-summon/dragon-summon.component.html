@@ -24,7 +24,7 @@
           </div>
 
           <div>
-            <input #nameInput class="input-text" [disabled]="actionsLoading" placeholder="{{ 'auctions.name' | translate }}"/>
+            <input #nameInput class="input-text" [disabled]="actionsLoading$ | async" placeholder="{{ 'auctions.name' | translate }}"/>
           </div>
 
           <div *ngIf="action.requiredItems && action.requiredItems.length" class="cost-hint">
@@ -38,7 +38,7 @@
             {{ 'dragonTamer.actionCost' | translate }}:
             {{ action.cost }}
           </div>
-          <button (click)="summonDragon(action, nameInput.value)" [disabled]="actionsLoading" class="btn-base btn-action">
+          <button (click)="summonDragon(action, nameInput.value)" [disabled]="actionsLoading$ | async" class="btn-base btn-action">
             {{ 'dragonSummon.summon' | translate }}
           </button>
 
