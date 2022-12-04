@@ -17,7 +17,7 @@
       <button *ngIf="!submitLoading" [disabled]="!form.valid" class="btn-base">
         {{ 'common.confirm' | translate }}
       </button>
-      <div *ngIf="submitLoading" class="spinner">
+      <div *ngIf="submitLoading" style="margin: 25px auto;">
         <app-loading-indicator></app-loading-indicator>
       </div>
     </form>

@@ -5,13 +5,13 @@
     <div class="wrapper-auctions">
 
       <div class="wrapper-menu">
-        <button (click)="changeMode(false)" [disabled]="auctionsLoading" class="btn-base btn-mode">
+        <button (click)="changeMode(false)" [disabled]="actionLoading$ | async" class="btn-base btn-mode">
           {{ 'auctions.all' | translate }}
         </button>
-        <button (click)="changeMode(true)" [disabled]="auctionsLoading" class="btn-base btn-mode">
+        <button (click)="changeMode(true)" [disabled]="actionLoading$ | async" class="btn-base btn-mode">
           {{ 'auctions.owned' | translate }}
         </button>
-        <button (click)="displayCreateForm = true" [disabled]="auctionsLoading" class="btn-base btn-mode">
+        <button (click)="displayCreateForm = true" [disabled]="actionLoading$ | async" class="btn-base btn-mode">
           {{ 'auctions.addOffer' | translate }}
         </button>
       </div>
@@ -32,17 +32,19 @@
           <option [value]="ItemType.Ingredient">{{ 'enums.itemType.Ingredient' | translate }}</option>
           <option [value]="ItemType.Equipment">{{ 'enums.itemType.Equipment' | translate }}</option>
         </select>
-        <button (click)="getAuctions()" [disabled]="auctionsLoading" class="btn-base btn-search">
+        <button (click)="getAuctions()" [disabled]="actionLoading$ | async" class="btn-base btn-search">
           {{ 'common.search' | translate }}
         </button>
       </div>
 
       <div class="wrapper-table">
-        <div *ngIf="auctionsLoading" class="m-5">
-          <app-loading-indicator></app-loading-indicator>
-        </div>
+        <ng-template #auctionsLoading>
+          <div style="margin: 30px auto;">
+            <app-loading-indicator></app-loading-indicator>
+          </div>
+        </ng-template>
 
-        <div *ngIf="!auctionsLoading" class="wrapper-auctions">
+        <div *ngIf="(auctions$ | async) as auctions; else auctionsLoading" class="wrapper-auctions">
           <div *ngFor="let auction of auctions" style="width: 100%;">
 
             <div class="item-auction">
@@ -63,10 +65,18 @@
                 </div>
               </div>
 
-              <button *ngIf="auction.sellerId !== user.id" (click)="confirmBuyAuction(auction)" class="btn-base btn-auction">
+              <button
+                *ngIf="auction.sellerId !== user.id"
+                (click)="confirmBuyAuction(auction)"
+                [disabled]="actionLoading$ | async"
+                class="btn-base btn-auction">
                 {{ 'auctions.buy' | translate }}
               </button>
-              <button *ngIf="auction.sellerId === user.id" (click)="cancelAuction(auction.id)" class="btn-base btn-auction">
+              <button
+                *ngIf="auction.sellerId === user.id"
+                (click)="cancelAuction(auction.id)"
+                [disabled]="actionLoading$ | async"
+                class="btn-base btn-auction">
                 {{ 'common.cancel' | translate }}
               </button>
             </div>
@@ -75,7 +85,7 @@
         </div>
       </div>
 
-      <div *ngIf="!auctionsLoading && (canGetPrev || canGetNext)" class="wrapper-menu">
+      <div *ngIf="!(actionLoading$ | async) && (canGetPrev || canGetNext)" class="wrapper-menu">
         <button (click)="getAuctions(false)" [disabled]="!canGetPrev" class="btn-base btn-mode">
           {{ 'common.prev' | translate }}
         </button>

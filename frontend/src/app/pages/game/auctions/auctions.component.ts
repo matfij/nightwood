@@ -1,4 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { ActionController, AuctionController, AuctionDto, UserAuthDto, AuctionGetDto, ItemRarity, ItemType } from 'src/app/client/api';
 import { AUCTION_MAX_SEARCH_LEVEL, AUCTION_MAX_SEARCH_NAME_LENGTH, AUCTION_MIN_SEARCH_LEVEL, AUCTION_MIN_SEARCH_NAME_LENGTH } from 'src/app/client/config/frontend.config';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -10,6 +12,7 @@ import { ItemsService } from 'src/app/core/services/items.service';
   selector: 'app-auctions',
   templateUrl: './auctions.component.html',
   styleUrls: ['./auctions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuctionsComponent implements OnInit {
 
@@ -20,13 +23,15 @@ export class AuctionsComponent implements OnInit {
   @ViewChild('searchType') searchType?: ElementRef;
 
   user!: UserAuthDto;
-  auctions: AuctionDto[] = [];
-  auctionsLoading: boolean = false;
+  auctions$?: Observable<AuctionDto[]>;
   displayOwned: boolean = false;
   displayCreateForm: boolean = false;
   selectedAuction?: DisplayAuction;
   displayBuyAuctionModal: boolean = false;
+  actionLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  ItemType = ItemType;
+  ItemRarity = ItemRarity;
   currentPage: number = 0;
   pageLimit: number = 9;
   canGetPrev: boolean = false;
@@ -39,9 +44,6 @@ export class AuctionsComponent implements OnInit {
     private toastService: ToastService,
     private itemsService: ItemsService,
   ) {}
-
-  ItemType = ItemType;
-  ItemRarity = ItemRarity;
 
   ngOnInit(): void {
     this.user = this.engineService.user;
@@ -71,7 +73,6 @@ export class AuctionsComponent implements OnInit {
 
   getAuctions(next?: boolean) {
     if (!this.validateSearchParams()) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
-
     if (next === true) this.currentPage += 1;
     else if (next === false) this.currentPage -= 1;
     else this.currentPage = 0;
@@ -87,15 +88,20 @@ export class AuctionsComponent implements OnInit {
       minLevel: this.searchMinLevel?.nativeElement.value ? Math.floor(+this.searchMinLevel.nativeElement.value) : AUCTION_MIN_SEARCH_LEVEL,
       maxLevel: this.searchMaxLevel?.nativeElement.value ? Math.floor(+this.searchMaxLevel.nativeElement.value) : AUCTION_MAX_SEARCH_LEVEL,
     };
-    this.auctionsLoading = true;
-    this.auctionController.getAll(params).subscribe(auctionPage => {
-      this.auctionsLoading = false;
-      if (this.displayOwned) this.auctions = auctionPage.data.filter(auction => auction.sellerId === this.user.id);
-      else this.auctions = auctionPage.data;
 
-      this.canGetPrev = this.currentPage !== 0;
-      this.canGetNext = (this.currentPage + 1) * this.pageLimit < auctionPage.meta.totalItems!;
-    }, () => this.auctionsLoading = false);
+    this.actionLoading$.next(true);
+    this.auctions$ = this.auctionController.getAll(params).pipe(
+      tap((auctionPage) => {
+        this.canGetPrev = this.currentPage !== 0;
+        this.canGetNext = (this.currentPage + 1) * this.pageLimit < auctionPage.meta.totalItems!;
+        this.actionLoading$.next(false);
+      }),
+      map((auctionPage) => auctionPage.data),
+      map((auctions) => {
+        if (this.displayOwned) return auctions.filter(auction => auction.sellerId === this.user.id);
+        else return auctions;
+      }),
+    );
   }
 
   changeMode(owned: boolean) {
@@ -111,25 +117,21 @@ export class AuctionsComponent implements OnInit {
 
   buyAuction(id: number) {
     this.displayBuyAuctionModal = false;
-    this.auctionsLoading = true;
+    this.actionLoading$.next(true);
     this.actionController.buyAuction(id.toString()).subscribe(buyAuctionResult => {
-      this.auctionsLoading = false;
       this.toastService.showSuccess('common.success', 'auctions.purchaseCompleted');
-
       this.user.gold = this.user.gold - buyAuctionResult.consumedGold;
       this.engineService.updateUser({ gold: this.user.gold });
       this.getAuctions();
-    }, () => this.auctionsLoading = false);
+    }, () => this.actionLoading$.next(false));
   }
 
   cancelAuction(id: number) {
-    this.auctionsLoading = true;
+    this.actionLoading$.next(true);
     this.auctionController.cancel(id.toString()).subscribe(() => {
-      this.auctionsLoading = false;
       this.toastService.showSuccess('common.success', 'auctions.offerCancelled');
-
       this.getAuctions();
-    }, () => this.auctionsLoading = false);
+    }, () => this.actionLoading$.next(false));
   }
 
 }
