@@ -1,0 +1,44 @@
+<div *ngIf="!(boosterRecipes$ | async)" style="margin: 30px auto;">
+  <app-loading-indicator></app-loading-indicator>
+</div>
+
+<div *ngIf="{
+  items: userItems$ | async,
+  dragons: userDragons$ | async,
+  recipes: boosterRecipes$ | async}
+  as vm;"
+  class="wrapper-recipes">
+
+  <div *ngFor="let recipe of vm.recipes" class="item-recipe">
+    <div class="recipe-item">
+      <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
+    </div>
+
+    <div class="recipe-info">
+      <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
+      <div *ngFor="let ingredient of recipe.ingredients">
+        {{ ingredient.name }} ({{ ingredient.quantity }})
+        <div class="inline">
+          <progress class="progress-crafting" [value]="getItemQuantity(ingredient.uid, vm.items)" [max]="ingredient.quantity" ></progress>
+        </div>
+      </div>
+    </div>
+
+    <div class="break"></div>
+    <select #dragonSelect (change)="0" class="input-select" style="margin-top: 10px;">
+      <option value=""></option>
+      <option class="input-select-option" *ngFor="let dragon of vm.dragons; let dragonInd = index" [value]="dragonInd">
+        {{ dragon.name }} [{{ dragon.level }}]
+      </option>
+    </select>
+
+    <div class="break"></div>
+    <button
+      (click)="activateBooster(recipe, vm.dragons![+dragonSelect.value])"
+      [disabled]="(activateLoading$ | async) || checkIngredients(recipe, vm.items) || dragonSelect.value == ''"
+      class="btn-base btn-craft">
+      {{ 'alchemy.activate' | translate }}
+    </button>
+  </div>
+
+</div>

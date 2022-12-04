@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ActionController, AlchemyController, BoosterActivateDto, BoosterRecipeDto, DragonController, DragonDto, ItemController, ItemDto, MixtureDto, MixtureRecipeDto } from 'src/app/client/api';
-import { ToastService } from 'src/app/common/services/toast.service';
+import { AlchemyController, BoosterRecipeDto, DragonController, DragonDto, ItemController, ItemDto, MixtureDto, MixtureRecipeDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-alchemy',
@@ -14,21 +13,16 @@ export class AlchemyComponent implements OnInit {
 
   displayMixtures: boolean = false;
   displayBoosters: boolean = false;
-
   userItems$?: Observable<ItemDto[]>;
   brewedMixtures$?: Observable<MixtureDto[]>;
   mixtureRecipes$?: Observable<MixtureRecipeDto[]>;
-
-  boostersLoading: boolean = false;
+  userDragons$?: Observable<DragonDto[]>;
   boosterRecipes$: Observable<BoosterRecipeDto[]> = new Observable<BoosterRecipeDto[]>();
-  dragons$: Observable<DragonDto[]> = new Observable<DragonDto[]>();
 
   constructor(
-    private actionController: ActionController,
     private alchemyController: AlchemyController,
     private dragonController: DragonController,
     private itemController: ItemController,
-    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +30,7 @@ export class AlchemyComponent implements OnInit {
     this.getBrewedMixtures();
     this.getMixtrueRecipes();
     this.getBoosterRecipes();
-    this.getOwnedDragons();
+    this.getUserDragons();
   }
 
   getUserItems() {
@@ -59,8 +53,8 @@ export class AlchemyComponent implements OnInit {
     this.boosterRecipes$ = this.alchemyController.getBoosterRecipes();
   }
 
-  getOwnedDragons() {
-    this.dragons$ = this.dragonController.getOwned();
+  getUserDragons() {
+    this.userDragons$ = this.dragonController.getOwned();
   }
 
   refreshMixturesData() {
@@ -68,36 +62,9 @@ export class AlchemyComponent implements OnInit {
     this.getBrewedMixtures();
   }
 
-
-
-  // getItemQuantity(uid: string): number {
-  //   const item = this.userItems$.find(item => item.uid === uid);
-  //   return item?.quantity ?? 0;
-  // }
-
-  // checkIngredients(recipe: MixtureRecipeDto | BoosterRecipeDto): boolean {
-  //   let canCraft = true;
-  //   recipe.ingredients.forEach(requiredItem => {
-  //     const item = this.userItems$.find(y => y.uid === requiredItem.uid);
-  //     if (!item || item.quantity! < requiredItem.quantity!) {
-  //       canCraft = false;
-  //       return;
-  //     }
-  //   });
-
-  //   return !canCraft;
-  // }
-
-  activateBooster(recipe: BoosterRecipeDto, dragon: DragonDto) {
-    const params: BoosterActivateDto = {
-      boosterRecipeUid: recipe.uid,
-      dragonId: dragon.id,
-    };
-    this.boostersLoading = true;
-    this.actionController.activateBooster(params).subscribe(_ => {
-      this.boostersLoading = false;
-      this.toastService.showSuccess('common.success', 'alchemy.boosterActivated');
-    }, () => this.boostersLoading = false);
+  refreshBoosterData() {
+    this.getUserItems();
+    this.getUserDragons();
   }
 
 }

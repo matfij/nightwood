@@ -24,6 +24,7 @@ import { ShoutboxPenaltyModalComponent } from './components/shoutbox-penalty-mod
 import { CraftingItemListComponent } from './components/crafting-item-list/crafting-item-list.component';
 import { ShortNumberPipe } from '../common/utils/short-number.pipe';
 import { AlchemyMixturesComponent } from './components/alchemy-mixtures/alchemy-mixtures.component';
+import { AlchemyBoostersComponent } from './components/alchemy-boosters/alchemy-boosters.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -44,6 +45,7 @@ const COMPONENTS = [
   ShoutboxPenaltyModalComponent,
   CraftingItemListComponent,
   AlchemyMixturesComponent,
+  AlchemyBoostersComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

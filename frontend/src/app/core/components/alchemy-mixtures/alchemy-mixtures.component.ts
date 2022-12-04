@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AlchemyController, ItemDto, MixtureComposeDto, MixtureDto, MixtureRecipeDto } from 'src/app/client/api';
 import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -48,18 +47,15 @@ export class AlchemyMixturesComponent implements OnInit {
   }
 
   getItemQuantity(uid: string, items: ItemDto[] | null): number {
-    const item = items?.find(item => item.uid === uid);
+    const item = items?.find((item) => item.uid === uid);
     return item?.quantity ?? 0;
   }
 
   checkIngredients(recipe: MixtureRecipeDto, items: ItemDto[] | null): boolean {
     let canCraft = true;
-    recipe.ingredients.forEach(requiredItem => {
-      const item = items?.find(y => y.uid === requiredItem.uid);
-      if (!item || item.quantity! < requiredItem.quantity!) {
-        canCraft = false;
-        return;
-      }
+    recipe.ingredients.forEach((ingredient) => {
+      const item = items?.find(y => y.uid === ingredient.uid);
+      if (!item || item.quantity! < ingredient.quantity!) canCraft = false;
     });
     return !canCraft;
   }
