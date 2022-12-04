@@ -6,10 +6,12 @@
       {{ 'inventory.gold' | translate }}: {{ gold }}
     </div>
 
-    <div *ngIf="itemsLoading" style="margin-top: 50px;">
-      <app-loading-indicator></app-loading-indicator>
-    </div>
-    <div *ngIf="!itemsLoading" class="wrapper-items">
+    <ng-template #itemsLoading>
+      <div style="margin-top: 50px;">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+    </ng-template>
+    <div *ngIf="(ownedItems$ | async) as ownedItems; else itemsLoading" class="wrapper-items">
       <div *ngFor="let item of ownedItems" class="item">
         <app-item-display [item]="item" style="width: 55px; height: 55px;"></app-item-display>
       </div>

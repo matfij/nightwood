@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ItemController } from 'src/app/client/api';
 import { DisplayItem } from 'src/app/core/definitions/items';
 import { EngineService } from 'src/app/core/services/engine.service';
@@ -7,13 +9,13 @@ import { ItemsService } from 'src/app/core/services/items.service';
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss']
+  styleUrls: ['./inventory.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InventoryComponent implements OnInit {
 
   gold: number = 0;
-  ownedItems: DisplayItem[] = [];
-  itemsLoading: boolean = false;
+  ownedItems$: Observable<DisplayItem[]> = new Observable<DisplayItem[]>();
 
   constructor(
     private itemController: ItemController,
@@ -23,16 +25,13 @@ export class InventoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOwnedItems();
-
     this.gold = this.engineSerivce.user.gold;
   }
 
   getOwnedItems(): void {
-    this.itemsLoading = true;
-    this.itemController.getOwnedItems().subscribe(itemPage => {
-      this.itemsLoading = false;
-      this.ownedItems = itemPage.data.map(item => this.itemsService.toDisplayItem(item));
-    }, () => this.itemsLoading = false);
+    this.ownedItems$ = this.itemController.getOwnedItems().pipe(
+      map((itemPage) => itemPage.data.map(item => this.itemsService.toDisplayItem(item)))
+    );
   }
 
 }
