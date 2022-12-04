@@ -10,74 +10,22 @@
         </div>
         <div class="wrapper-lore-text">
           {{ 'alchemy.mixturesHint' | translate }}
-          <button (click)="displayPotions = !displayPotions" class="btn-base btn-small">
+          <button (click)="displayMixtures = !displayMixtures" class="btn-base btn-small">
             {{ 'alchemy.toggleOffer' | translate }}
           </button>
         </div>
       </div>
 
-      <div *ngIf="displayPotions">
-        <ng-template #loading>
-          <div style="margin: 30px auto;">
-            <app-loading-indicator></app-loading-indicator>
-          </div>
-        </ng-template>
-
-        <div *ngIf="!collectingLoading && (mixtures$ | async)?.data as mixtures; else loading" class="wrapper-mixtures">
-          <div class="label-mixtures">{{ 'alchemy.currentlyBrewing' | translate }}</div>
-
-          <div *ngFor="let mixture of mixtures" class="item-mixture">
-            <div style="display: flex; align-items: center; margin-left: 10px;">
-              <div style="width: 130px; text-align: left;">{{ mixture.productName }}</div>
-              <progress class="no-mobile" [value]="currentDate - mixture.startedOn" [max]="mixture.readyOn - mixture.startedOn" ></progress>
-            </div>
-
-            <div *ngIf="!canCollect(mixture)" tooltip>
-              <ng-template #tooltipTemplate>
-                <div class="item-tooltip item-hint">
-                  {{ 'alchemy.timeToComplete' | translate }}: {{ mixture.readyOn | timer | async }}<br>
-                </div>
-              </ng-template>
-              <button [disabled]="true" class="btn-base btn-collect">
-                {{ 'alchemy.collect' | translate }}
-              </button>
-            </div>
-            <button *ngIf="canCollect(mixture)" (click)="collectMixture(mixture)" class="btn-base btn-collect">
-              {{ 'alchemy.collect' | translate }}
-            </button>
-
-          </div>
-        </div>
-
-        <div *ngIf="!itemsLoading && (mixtureRecipes$ | async) as recipes; else loading" class="wrapper-recipes">
-
-          <div *ngFor="let recipe of recipes" class="item-recipe">
-            <div class="recipe-item">
-              <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
-            </div>
-
-            <div class="recipe-info">
-              <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
-              <div *ngFor="let ingredient of recipe.ingredients">
-                {{ ingredient.name }} ({{ ingredient.quantity }})
-                <div *ngIf="items.length" class="inline">
-                  <progress [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity"></progress>
-                </div>
-              </div>
-            </div>
-
-            <div class="break"></div>
-            <button (click)="startMixtureComposing(recipe)" [disabled]="checkIngredients(recipe)" class="btn-base btn-craft">
-              {{ 'alchemy.compose' | translate }}
-            </button>
-          </div>
-
-        </div>
-      </div>
-
+      <app-alchemy-mixtures
+        *ngIf="displayMixtures"
+        [userItems$]="userItems$"
+        [brewedMixtures$]="brewedMixtures$"
+        [mixtureRecipes$]="mixtureRecipes$"
+        (refreshItems)="refreshMixturesData()">
+      </app-alchemy-mixtures>
     </div>
 
-    <div class="wrapper-alchemy-section">
+    <!-- <div class="wrapper-alchemy-section">
       <div class="wrapper-lore">
         <div class="wrapper-lore-img">
           <img src="assets/img/lore/alchemy-boosters.png" draggable="false" alt="Goblin alchemist">
@@ -133,5 +81,7 @@
         </div>
       </div>
 
+    </div> -->
   </div>
+
 </div>

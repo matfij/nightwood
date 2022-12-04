@@ -1,0 +1,63 @@
+<ng-template #mixturesLoading>
+  <div style="margin: 30px auto;">
+    <app-loading-indicator></app-loading-indicator>
+  </div>
+</ng-template>
+
+<div *ngIf="(brewedMixtures$ | async) as brewedMixtures; else mixturesLoading" class="wrapper-mixtures">
+  <div class="label-mixtures">{{ 'alchemy.currentlyBrewing' | translate }}</div>
+
+  <div *ngFor="let mixture of brewedMixtures" class="item-mixture">
+    <div style="display: flex; align-items: center; margin-left: 10px;">
+      <div style="width: 130px; text-align: left;">{{ mixture.productName }}</div>
+      <progress class="no-mobile" [value]="currentDate - mixture.startedOn" [max]="mixture.readyOn - mixture.startedOn" ></progress>
+    </div>
+
+    <div *ngIf="!canCollect(mixture)" tooltip>
+      <ng-template #tooltipTemplate>
+        <div class="item-tooltip item-hint">
+          {{ 'alchemy.timeToComplete' | translate }}: {{ mixture.readyOn | timer | async }}<br>
+        </div>
+      </ng-template>
+      <div class="btn-base btn-collect disabled">
+        {{ 'alchemy.collect' | translate }}
+      </div>
+    </div>
+    <button
+      *ngIf="canCollect(mixture)"
+      (click)="collectMixture(mixture)"
+      [disabled]="collectLoading$ | async"
+      class="btn-base btn-collect">
+      {{ 'alchemy.collect' | translate }}
+    </button>
+
+  </div>
+</div>
+
+<div *ngIf="{items: userItems$ | async, recipes: mixtureRecipes$ | async} as vm; else mixturesLoading" class="wrapper-recipes">
+
+  <div *ngFor="let recipe of vm.recipes" class="item-recipe">
+    <div class="recipe-item">
+      <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
+    </div>
+
+    <div class="recipe-info">
+      <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
+      <div *ngFor="let ingredient of recipe.ingredients">
+        {{ ingredient.name }} ({{ ingredient.quantity }})
+        <div class="inline">
+          <progress [value]="getItemQuantity(ingredient.uid, vm.items)" [max]="ingredient.quantity"></progress>
+        </div>
+      </div>
+    </div>
+
+    <div class="break"></div>
+    <button
+      (click)="composeMixture(recipe)"
+      [disabled]="checkIngredients(recipe, vm.items) || (composeLoading$ | async)"
+      class="btn-base btn-craft">
+      {{ 'alchemy.compose' | translate }}
+    </button>
+  </div>
+
+</div>

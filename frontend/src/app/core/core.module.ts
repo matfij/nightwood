@@ -23,6 +23,7 @@ import { UserFriendRequestsComponent } from './components/user-friend-requests/u
 import { ShoutboxPenaltyModalComponent } from './components/shoutbox-penalty-modal/shoutbox-penalty-modal.component';
 import { CraftingItemListComponent } from './components/crafting-item-list/crafting-item-list.component';
 import { ShortNumberPipe } from '../common/utils/short-number.pipe';
+import { AlchemyMixturesComponent } from './components/alchemy-mixtures/alchemy-mixtures.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -42,6 +43,7 @@ const COMPONENTS = [
   UserFriendRequestsComponent,
   ShoutboxPenaltyModalComponent,
   CraftingItemListComponent,
+  AlchemyMixturesComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,

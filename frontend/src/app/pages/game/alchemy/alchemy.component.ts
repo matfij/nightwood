@@ -1,25 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs';
-import { ActionController, AlchemyController, BoosterActivateDto, BoosterRecipeDto, DragonController, DragonDto, ItemController, ItemDto, MixtureComposeDto, MixtureDto, MixtureGetDto, MixturePageDto, MixtureRecipeDto } from 'src/app/client/api';
-import { DateService } from 'src/app/common/services/date.service';
+import { map } from 'rxjs/operators';
+import { ActionController, AlchemyController, BoosterActivateDto, BoosterRecipeDto, DragonController, DragonDto, ItemController, ItemDto, MixtureDto, MixtureRecipeDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
   selector: 'app-alchemy',
   templateUrl: './alchemy.component.html',
-  styleUrls: ['./alchemy.component.scss']
+  styleUrls: ['./alchemy.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlchemyComponent implements OnInit {
 
-  displayPotions: boolean = false;
+  displayMixtures: boolean = false;
   displayBoosters: boolean = false;
-  currentDate: number = Date.now();
-  mixtureRecipes$: Observable<MixtureRecipeDto[]> = new Observable<MixtureRecipeDto[]>();
-  mixtures$: Observable<MixturePageDto> = new Observable<MixturePageDto>();
-  items: ItemDto[] = [];
-  itemsLoading: boolean = false;
-  collectingLoading: boolean = false;
+
+  userItems$?: Observable<ItemDto[]>;
+  brewedMixtures$?: Observable<MixtureDto[]>;
+  mixtureRecipes$?: Observable<MixtureRecipeDto[]>;
+
   boostersLoading: boolean = false;
   boosterRecipes$: Observable<BoosterRecipeDto[]> = new Observable<BoosterRecipeDto[]>();
   dragons$: Observable<DragonDto[]> = new Observable<DragonDto[]>();
@@ -29,28 +28,34 @@ export class AlchemyComponent implements OnInit {
     private alchemyController: AlchemyController,
     private dragonController: DragonController,
     private itemController: ItemController,
-    private dateService: DateService,
     private toastService: ToastService,
-    private translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
-    this.getOwnedItems();
-    this.getRecipes();
-    this.getOnGoingMixtures();
+    this.getUserItems();
+    this.getBrewedMixtures();
+    this.getMixtrueRecipes();
+    this.getBoosterRecipes();
     this.getOwnedDragons();
   }
 
-  getOwnedItems() {
-    this.itemsLoading = true;
-    this.itemController.getOwnedItems().subscribe(itemPage => {
-      this.itemsLoading = false;
-      this.items = itemPage.data;
-    }, () => this.itemsLoading = true);
+  getUserItems() {
+    this.userItems$ = this.itemController.getOwnedItems().pipe(
+      map((itemPage) => itemPage.data)
+    );
   }
 
-  getRecipes() {
+  getBrewedMixtures() {
+    this.brewedMixtures$ = this.alchemyController.getOnGoingMixtures({}).pipe(
+      map((mixturePage) => mixturePage.data)
+    );
+  }
+
+  getMixtrueRecipes() {
     this.mixtureRecipes$ = this.alchemyController.getMixtureRecipes();
+  }
+
+  getBoosterRecipes() {
     this.boosterRecipes$ = this.alchemyController.getBoosterRecipes();
   }
 
@@ -58,54 +63,30 @@ export class AlchemyComponent implements OnInit {
     this.dragons$ = this.dragonController.getOwned();
   }
 
-  getOnGoingMixtures() {
-    const params: MixtureGetDto = {};
-    this.mixtures$ = this.alchemyController.getOnGoingMixtures(params);
+  refreshMixturesData() {
+    this.getUserItems();
+    this.getBrewedMixtures();
   }
 
-  getItemQuantity(uid: string): number {
-    const item = this.items.find(item => item.uid === uid);
-    return item?.quantity ?? 0;
-  }
 
-  checkIngredients(recipe: MixtureRecipeDto | BoosterRecipeDto): boolean {
-    let canCraft = true;
-    recipe.ingredients.forEach(requiredItem => {
-      const item = this.items.find(y => y.uid === requiredItem.uid);
-      if (!item || item.quantity! < requiredItem.quantity!) {
-        canCraft = false;
-        return;
-      }
-    });
 
-    return !canCraft;
-  }
+  // getItemQuantity(uid: string): number {
+  //   const item = this.userItems$.find(item => item.uid === uid);
+  //   return item?.quantity ?? 0;
+  // }
 
-  startMixtureComposing(recipe: MixtureRecipeDto) {
-    const params: MixtureComposeDto = {
-      recipeUid: recipe.uid,
-    }
-    this.itemsLoading = true;
-    this.alchemyController.composeMixture(params).subscribe(_ => {
-      this.toastService.showSuccess('common.success', 'alchemy.brewingStarted');
-      this.getOwnedItems();
-      this.getOnGoingMixtures();
-    }, () => this.itemsLoading = false);
-  }
+  // checkIngredients(recipe: MixtureRecipeDto | BoosterRecipeDto): boolean {
+  //   let canCraft = true;
+  //   recipe.ingredients.forEach(requiredItem => {
+  //     const item = this.userItems$.find(y => y.uid === requiredItem.uid);
+  //     if (!item || item.quantity! < requiredItem.quantity!) {
+  //       canCraft = false;
+  //       return;
+  //     }
+  //   });
 
-  canCollect(mixture: MixtureDto): boolean {
-    return this.dateService.checkIfEventAvailable(mixture.readyOn);
-  }
-
-  collectMixture(mixture: MixtureDto) {
-    this.collectingLoading = true;
-    this.alchemyController.collectMixture(mixture.id!.toString()).subscribe(_ => {
-      const message = this.translateService.instant('crafting.itemCrafted', { name: mixture.productName });
-      this.toastService.showSuccess('common.success', message);
-      this.getOnGoingMixtures();
-      this.collectingLoading = false;
-    }, () => this.collectingLoading = false);
-  }
+  //   return !canCraft;
+  // }
 
   activateBooster(recipe: BoosterRecipeDto, dragon: DragonDto) {
     const params: BoosterActivateDto = {
