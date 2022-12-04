@@ -17,15 +17,13 @@
       </div>
 
       <div *ngIf="displayBaseRecipes">
-        <ng-template #loading>
-          <div style="margin: 30px auto;">
-            <app-loading-indicator></app-loading-indicator>
-          </div>
-        </ng-template>
+        <div *ngIf="!(recipesBase$ | async)?.length" style="margin: 30px auto;">
+          <app-loading-indicator></app-loading-indicator>
+        </div>
         <app-crafting-item-list
-          *ngIf="!itemsLoading && (recipesBase$ | async) as recipes; else loading"
-          [items]="items"
-          [recipes]="recipes"
+          *ngIf="({items: items$ | async, recipes: recipesBase$ | async}) as vm"
+          [items]="vm.items"
+          [recipes]="vm.recipes"
           (refreshItems)="getOwnedItems()">
         </app-crafting-item-list>
       </div>
@@ -46,15 +44,13 @@
       </div>
 
       <div *ngIf="displaySpecialRecipes">
-        <ng-template #loading>
-          <div style="margin: 30px auto;">
-            <app-loading-indicator></app-loading-indicator>
-          </div>
-        </ng-template>
+        <div *ngIf="!(recipesSpecial$ | async)?.length" style="margin: 30px auto;">
+          <app-loading-indicator></app-loading-indicator>
+        </div>
         <app-crafting-item-list
-          *ngIf="!itemsLoading && (recipesSpecial$ | async) as recipes; else loading"
-          [items]="items"
-          [recipes]="recipes"
+          *ngIf="({items: items$ | async, recipes: recipesSpecial$ | async}) as vm"
+          [items]="vm.items"
+          [recipes]="vm.recipes"
           (refreshItems)="getOwnedItems()">
         </app-crafting-item-list>
       </div>

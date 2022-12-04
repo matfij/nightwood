@@ -9,14 +9,17 @@
       <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
       <div *ngFor="let ingredient of recipe.ingredients">
         {{ ingredient.name }} ({{ ingredient.quantity }})
-        <div *ngIf="items.length" class="inline">
+        <div *ngIf="items?.length" class="inline">
           <progress [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity"></progress>
+        </div>
+        <div *ngIf="!items?.length" class="inline">
+          <progress [value]="0" [max]="100"></progress>
         </div>
       </div>
     </div>
 
     <div class="break"></div>
-    <button (click)="craftRecipe(recipe)" [disabled]="checkIngredients(recipe) || itemsLoading" class="btn-base btn-craft">
+    <button (click)="craftRecipe(recipe)" [disabled]="checkIngredients(recipe) || (itemsLoading$ | async)" class="btn-base btn-craft">
       {{ 'crafting.craft' | translate }}
     </button>
   </div>

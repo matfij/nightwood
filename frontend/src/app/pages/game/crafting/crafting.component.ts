@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ItemController, ItemDto, ItemRecipeDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-crafting',
   templateUrl: './crafting.component.html',
-  styleUrls: ['./crafting.component.scss']
+  styleUrls: ['./crafting.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CraftingComponent implements OnInit {
 
-  recipesBase$: Observable<ItemRecipeDto[]> = new Observable();
-  recipesSpecial$: Observable<ItemRecipeDto[]> = new Observable();
-  items: ItemDto[] = [];
-  itemsLoading: boolean = false;
+  items$: Observable<ItemDto[]> = new Observable<ItemDto[]>();
+  recipesBase$: Observable<ItemRecipeDto[]> = new Observable<ItemRecipeDto[]>();
+  recipesSpecial$: Observable<ItemRecipeDto[]> = new Observable<ItemRecipeDto[]>();
 
   displayBaseRecipes: boolean = false;
   displaySpecialRecipes: boolean = false;
@@ -27,11 +28,9 @@ export class CraftingComponent implements OnInit {
   }
 
   getOwnedItems() {
-    this.itemsLoading = true;
-    this.itemController.getOwnedItems().subscribe(itemPage => {
-      this.itemsLoading = false;
-      this.items = itemPage.data;
-    }, () => this.itemsLoading = true);
+    this.items$ = this.itemController.getOwnedItems().pipe(
+      map((itemPage) => itemPage.data)
+    );
   }
 
   getRecipes() {
