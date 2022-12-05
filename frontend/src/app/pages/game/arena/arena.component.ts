@@ -1,5 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { DragonController, DragonDto, DragonGetDto } from 'src/app/client/api';
 import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL } from 'src/app/client/config/frontend.config';
 import { DateService } from 'src/app/common/services/date.service';
@@ -8,15 +10,15 @@ import { ToastService } from 'src/app/common/services/toast.service';
 @Component({
   selector: 'app-arena',
   templateUrl: './arena.component.html',
-  styleUrls: ['./arena.component.scss']
+  styleUrls: ['./arena.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArenaComponent implements OnInit {
 
   @ViewChild('searchMinLevel') searchMinLevel?: ElementRef;
   @ViewChild('searchMaxLevel') searchMaxLevel?: ElementRef;
 
-  enemyDragonsLoading: boolean = false;
-  enemyDragons: DragonDto[] = [];
+  enemyDragons$?: Observable<DragonDto[]>;
   selectedOwnedDragon?: DragonDto;
   selectedEnemyDragon?: DragonDto;
 
@@ -71,14 +73,15 @@ export class ArenaComponent implements OnInit {
       minLevel: this.searchMinLevel?.nativeElement.value ? Math.floor(+this.searchMinLevel.nativeElement.value) : DRAGON_MIN_SEARCH_LEVEL,
       maxLevel: this.searchMaxLevel?.nativeElement.value ? Math.floor(+this.searchMaxLevel.nativeElement.value) : DRAGON_MAX_SEARCH_LEVEL,
     };
-    this.enemyDragonsLoading = true;
-    this.dragonController.getAll(dto).subscribe(dragonPage => {
-      this.enemyDragonsLoading = false;
-      this.enemyDragons = dragonPage.data;
 
-      this.canGetPrev = this.enemyDragonPage !== 0;
-      this.canGetNext = (this.enemyDragonPage + 1) * this.enemyDragonLimit < dragonPage.meta.totalItems!;
-    }, () => this.enemyDragonsLoading = false);
+    this.enemyDragons$ = this.dragonController.getAll(dto).pipe(
+      tap((dragonPage) => {
+          this.canGetPrev = this.enemyDragonPage !== 0;
+          this.canGetNext = (this.enemyDragonPage + 1) * this.enemyDragonLimit < dragonPage.meta.totalItems!;
+        }
+      ),
+      map((dragonPage) => dragonPage.data)
+    );
   }
 
   navigateAdopt() {

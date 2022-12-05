@@ -21,7 +21,6 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
   @Input() ownedDragon!: DragonDto;
   @Input() enemyDragon?: DragonDto;
   @Input() expedition?: ExpeditionDto;
-
   @Output() updatedDragon: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
   ownedDisplayDragon!: DisplayDragon;
@@ -76,11 +75,11 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
         takeUntil(this.isAutoBattle)
         ).subscribe(ind => {
           this.battleLogs?.push(result.logs[ind]);
-          this.changeDetectorRef.detectChanges();
           if (ind === result.logs.length - 1) {
             this.battleResult = result.result;
           }
           this.scrollLogs();
+          this.changeDetectorRef.detectChanges();
         });
     }, () =>  {
       this.battleLoading = false;
@@ -105,11 +104,11 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
         takeUntil(this.isAutoBattle)
         ).subscribe(ind => {
           this.battleLogs?.push(result.logs[ind]);
-          this.changeDetectorRef.detectChanges();
           if (ind === result.logs.length - 1) {
             this.battleResult = result.result;
           }
           this.scrollLogs();
+          this.changeDetectorRef.detectChanges();
         });
     }, () =>  {
       this.battleLoading = false;
@@ -118,16 +117,17 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
   }
 
   onAuto() {
-    if (this.battleData) {
-      this.isAutoBattle.next(true);
-      this.battleLogs = this.battleData.logs;
-      this.battleResult = this.battleData.result;
-      this.scrollLogs();
-    }
+    if (!this.battleData) return;
+
+    this.isAutoBattle.next(true);
+    this.battleLogs = this.battleData.logs;
+    this.battleResult = this.battleData.result;
+    this.scrollLogs();
+    this.changeDetectorRef.detectChanges();
   }
 
   scrollLogs() {
-    timer(0).subscribe(() => {
+    timer().subscribe(() => {
       if (this.battleLogsWrapper) {
         this.battleLogsWrapper.nativeElement.scrollTop = this.battleLogsWrapper.nativeElement.scrollHeight;
       }

@@ -13,7 +13,7 @@
       {{ ownedDisplayDragon.name }} [{{ ownedDisplayDragon.level }}]
     </div>
 
-    <div *ngIf="battleLoading" class="m-5">
+    <div *ngIf="battleLoading" style="margin: 30px auto;">
       <app-loading-indicator></app-loading-indicator>
     </div>
     <div *ngIf="!battleLoading && battleLogs" #battleLogsWrapper class="wrapper-logs">

@@ -4,6 +4,8 @@ import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dragon-choice-modal',
@@ -22,8 +24,7 @@ export class DragonChoiceModalComponent extends AbstractModalComponent implement
   @Input() expeditionUid: string = '';
   @Output() dragonSelected: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
-  dragonsLoading: boolean = false;
-  displayDragons: DisplayDragon[] = [];
+  displayDragons$?: Observable<DisplayDragon[]>;
 
   constructor(
     private dragonController: DragonController,
@@ -38,16 +39,13 @@ export class DragonChoiceModalComponent extends AbstractModalComponent implement
   }
 
   getDragons() {
-    this.dragonsLoading = true;
-    this.dragonController.getOwned().subscribe(dragons => {
-      this.dragonsLoading = false;
-      this.displayDragons = dragons.map(x => this.dragonService.toDisplayDragon(x));
-    }, () => this.dragonsLoading = false);
+    this.displayDragons$ = this.dragonController.getOwned().pipe(
+      map((dragons) => dragons.map((dragon) => this.dragonService.toDisplayDragon(dragon)))
+    );
   }
 
   chooseDragon(dragon: DragonDto) {
     if (dragon.level < this.level) { this.toastService.showError('errors.error', 'errors.dragonTooYoung'); return; }
-
     this.dragonSelected.next(dragon);
   }
 

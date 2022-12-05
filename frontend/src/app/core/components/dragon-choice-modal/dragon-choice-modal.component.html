@@ -3,7 +3,13 @@
   <div class="title">{{ title | translate }}</div>
   <p [innerHTML]="(message | translate)"></p>
 
-  <div *ngIf="!dragonsLoading" class="wrapper-dragons">
+  <ng-template #dragonsLoading>
+    <div style="margin: 30px auto;">
+      <app-loading-indicator></app-loading-indicator>
+    </div>
+  </ng-template>
+
+  <div *ngIf="(displayDragons$ | async) as displayDragons; else dragonsLoading" class="wrapper-dragons">
     <div *ngFor="let dragon of displayDragons" (click)="chooseDragon(dragon)" class="dragon">
         <img [src]="dragon.image" [alt]="dragon.name">
         <div class="label-name">
@@ -16,9 +22,6 @@
           </div>
         </div>
     </div>
-  </div>
-  <div *ngIf="dragonsLoading" style="margin-top: 25px;">
-    <app-loading-indicator></app-loading-indicator>
   </div>
 
   <button (click)="closeModal()" class="btn-base">

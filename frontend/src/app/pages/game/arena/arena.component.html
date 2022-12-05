@@ -7,16 +7,19 @@
       <input #searchMinLevel class="input-text" type="number" placeholder="{{ 'auctions.minLevel' | translate }}"/>
       <input #searchMaxLevel class="input-text" type="number" placeholder="{{ 'auctions.maxLevel' | translate }}"/>
 
-      <button (click)="getEnemyDragons()" [disabled]="enemyDragonsLoading" class="btn-base btn-search">
+      <button (click)="getEnemyDragons()" class="btn-base btn-search">
         {{ 'common.search' | translate }}
       </button>
     </div>
 
     <div class="wrapper-table">
-      <div *ngIf="enemyDragonsLoading" class="m-5">
-        <app-loading-indicator></app-loading-indicator>
-      </div>
-      <div *ngIf="!enemyDragonsLoading" class="wrapper-dragons">
+      <ng-template #enemyDragonsLoading>
+        <div style="margin: 220px auto;">
+          <app-loading-indicator></app-loading-indicator>
+        </div>
+      </ng-template>
+
+      <div *ngIf="(enemyDragons$ | async) as enemyDragons; else enemyDragonsLoading" class="wrapper-dragons">
         <div class="item-dragon item-dragon-header">
           <div>{{ 'dragon.name' | translate }} [{{ 'dragon.level' | translate }}]</div>
           <div class="no-mobile">{{ 'dragon.nature' | translate }}</div>
