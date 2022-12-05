@@ -1,22 +1,23 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ActionController, DragonActionController, DragonDto, ExpeditionDto, StartExpeditionDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayExpedition } from 'src/app/core/definitions/events';
+import { ExpeditionsService } from 'src/app/core/services/expeditions.service';
 
 @Component({
   selector: 'app-expeditions',
   templateUrl: './expeditions.component.html',
-  styleUrls: ['./expeditions.component.scss']
+  styleUrls: ['./expeditions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpeditionsComponent implements OnInit {
 
-  private readonly BASE_IMG_PATH = 'assets/img/expeditions';
-
   @ViewChild('selectDragon') selectDragon?: ElementRef;
 
-  expeditionsLoading: boolean = false;
-  expeditions: DisplayExpedition[] = [];
+  expeditions$?: Observable<DisplayExpedition[]>;
   showDragonChoiceModal: boolean = false;
   modalTitle?: string;
   modalMessage?: string;
@@ -32,6 +33,7 @@ export class ExpeditionsComponent implements OnInit {
     private actionController: ActionController,
     private dragonActionController: DragonActionController,
     private toastService: ToastService,
+    private expeditionService: ExpeditionsService,
   ) {}
 
   ngOnInit(): void {
@@ -40,16 +42,9 @@ export class ExpeditionsComponent implements OnInit {
   }
 
   getExpeditions() {
-    this.expeditionsLoading = true;
-    this.dragonActionController.getExpeditions().subscribe(expeditionsPage => {
-      this.expeditionsLoading = false;
-      this.expeditions = expeditionsPage.data.map(expedition => {
-        return {
-          ...expedition,
-          image: `${this.BASE_IMG_PATH}/${expedition.uid}.png`,
-        };
-      });
-    }, () => this.expeditionsLoading = false);
+    this.expeditions$ = this.dragonActionController.getExpeditions().pipe(
+      map((expeditionPage) => expeditionPage.data.map((x) => this.expeditionService.toDisplayExpedition(x)))
+    );
   }
 
   prepareExpedition(expedition: DisplayExpedition) {
@@ -83,11 +78,9 @@ export class ExpeditionsComponent implements OnInit {
       dragonId: dragon.id!,
       expeditionUid: expedition.uid,
     };
-    this.expeditionsLoading = true;
     this.actionController.startExpedition(dto).subscribe(() => {
-      this.expeditionsLoading = false;
       this.toastService.showSuccess('explore.expeditionStarted', 'explore.expeditionStartedHint');
-    }, () => this.expeditionsLoading = false);
+    });
   }
 
   battleGuardian(dragon: DragonDto, expedition: ExpeditionDto) {

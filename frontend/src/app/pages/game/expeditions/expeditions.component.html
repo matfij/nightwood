@@ -5,11 +5,13 @@
 
     <div class="title">{{ 'explore.explorePageTitle' | translate }}</div>
 
-    <div *ngIf="expeditionsLoading" style="margin-top: 50px;">
-      <app-loading-indicator></app-loading-indicator>
-    </div>
+    <ng-template #expeditionsLoading>
+      <div style="margin-top: 50px;">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+    </ng-template>
 
-    <div *ngIf="!expeditionsLoading" class="wrapper-expeditions">
+    <div *ngIf="(expeditions$ | async) as expeditions; else expeditionsLoading" class="wrapper-expeditions">
       <div *ngFor="let expedition of expeditions" class="expedition">
 
         <div class="expedition-img">
