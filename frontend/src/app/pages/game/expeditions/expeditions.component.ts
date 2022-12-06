@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActionController, DragonActionController, DragonDto, ExpeditionDto, StartExpeditionDto } from 'src/app/client/api';
+import { DateService } from 'src/app/common/services/date.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayExpedition } from 'src/app/core/definitions/events';
 import { ExpeditionsService } from 'src/app/core/services/expeditions.service';
@@ -32,6 +33,7 @@ export class ExpeditionsComponent implements OnInit {
     private translateService: TranslateService,
     private actionController: ActionController,
     private dragonActionController: DragonActionController,
+    private dateService: DateService,
     private toastService: ToastService,
     private expeditionService: ExpeditionsService,
   ) {}
@@ -72,6 +74,10 @@ export class ExpeditionsComponent implements OnInit {
   }
 
   startExpedition(dragon: DragonDto, expedition: ExpeditionDto) {
+    if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) {
+      this.toastService.showError('errors.error', 'errors.dragonBusy');
+      return;
+    }
     this.showDragonChoiceModal = false;
 
     const dto: StartExpeditionDto = {
@@ -84,6 +90,10 @@ export class ExpeditionsComponent implements OnInit {
   }
 
   battleGuardian(dragon: DragonDto, expedition: ExpeditionDto) {
+    if (!this.dateService.checkIfEventAvailable(dragon.action.nextAction)) {
+      this.toastService.showError('errors.error', 'errors.dragonBusy');
+      return;
+    }
     this.selectedDragon = dragon;
     this.showDragonChoiceModal = false;
     this.displayBattle = true;

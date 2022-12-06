@@ -3,7 +3,13 @@
 
   <div class="wrapper-content">
 
-    <div *ngIf="!mailsLoading" class="wrapper-mails">
+    <ng-template #mailsLoading>
+      <div style="margin: 162px auto;">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+    </ng-template>
+
+    <div *ngIf="(mails$ | async) as mails; else mailsLoading" class="wrapper-mails">
       <div *ngFor="let mail of mails" class="item-mail">
         <div (click)="openMail(mail)" class="mail-meta" [ngClass]="{ 'mail-new': !mail.isRead }">
           <div>{{ 'mails.sender' | translate }}: <b>{{ mail.senderName }}</b></div>
@@ -22,11 +28,7 @@
       </div>
     </div>
 
-    <div *ngIf="mailsLoading" class="m-5">
-      <app-loading-indicator></app-loading-indicator>
-    </div>
-
-    <div *ngIf="!mailsLoading && (canGetPrev || canGetNext)" class="wrapper-menu">
+    <div *ngIf="(canGetPrev || canGetNext)" class="wrapper-menu">
       <button (click)="getMails(false)" [disabled]="!canGetPrev" class="btn-base btn-mode">
         {{ 'common.prev' | translate }}
       </button>

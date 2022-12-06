@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { MailController, MailDto, MailGetDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-mail',
   templateUrl: './mail.component.html',
-  styleUrls: ['./mail.component.scss']
+  styleUrls: ['./mail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MailComponent implements OnInit {
 
-  mails: MailDto[] = [];
-  mailsLoading: boolean = false;
+  mails$?: Observable<MailDto[]>;
   currentPage: number = 0;
   pageLimit: number = 8;
   canGetNext: boolean = false;
@@ -36,22 +38,21 @@ export class MailComponent implements OnInit {
       limit: this.pageLimit,
       page: this.currentPage,
     };
-    this.mailsLoading = true;
-    this.mailController.getAll(params).subscribe(mailPage => {
-      this.mailsLoading = false;
-
-      this.mails = mailPage.data;
-      this.canGetPrev = this.currentPage !== 0;
-      this.canGetNext = (this.currentPage + 1) * this.pageLimit <= mailPage.meta.totalItems! - 1;
-    }, () => this.mailsLoading = false);
+    this.mails$ = this.mailController.getAll(params).pipe(
+      tap((mailPage) => {
+        this.canGetPrev = this.currentPage !== 0;
+        this.canGetNext = (this.currentPage + 1) * this.pageLimit <= mailPage.meta.totalItems! - 1;
+      }),
+      map((mailPage) => mailPage.data)
+    );
   }
 
   openMail(mail: MailDto) {
     this.activeMailId = this.activeMailId !== mail.id ? mail.id : null;
-
     if (mail.isRead === false) {
-      this.mailController.read(mail.id.toString()).subscribe(() => mail.isRead = true);
+      this.mailController.read(mail.id.toString()).subscribe();
     }
+    mail.isRead = true;
   }
 
 }

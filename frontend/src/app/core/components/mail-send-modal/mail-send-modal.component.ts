@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 import { MailController, MailSendDto } from 'src/app/client/api';
 import { MAIL_MESSAGE_MAX_LENGTH, MAIL_MESSAGE_MIN_LENGTH, MAIL_RECEIVER_MAX_LENGTH, MAIL_RECEIVER_MIN_LENGTH, MAIL_TOPIC_MAX_LENGTH, MAIL_TOPIC_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
@@ -36,7 +37,7 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
     { form: this.form, key: 'topic', label: 'mails.topic', type: 'text' },
     { form: this.form, key: 'message', label: 'mails.message', type: 'text', fieldType: FieldType.TEXTAREA },
   ];
-  submitLoading: boolean = false;
+  submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   get receiver(): FormControl { return this.form.get('receiver') as FormControl; }
   get topic(): FormControl { return this.form.get('topic') as FormControl; }
@@ -67,12 +68,12 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
       topic: this.topic.value,
       message: this.message.value,
     }
-    this.submitLoading = true;
+    this.submitLoading$.next(true);
     this.mailController.send(params).subscribe(() => {
-      this.submitLoading = false;
+      this.submitLoading$.next(false);
       this.toastService.showSuccess('common.success', 'mails.mailSent');
       this.close.next(true);
-    }, () => this.submitLoading = false);
+    }, () => this.submitLoading$.next(false));
   }
 
 }
