@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { ActionController, DragonController, DragonDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 
@@ -11,11 +13,11 @@ import { ToastService } from 'src/app/common/services/toast.service';
 })
 export class MyDragonsComponent implements OnInit {
 
-  ownedDragons: DragonDto[] = [];
-  dragonsLoading: boolean = false;
+  dragonsLoading$ = new BehaviorSubject(false);
+  ownedDragons$?: Observable<DragonDto[]>;
+  releaseDragon$?: Observable<void>;
 
   constructor(
-    private cdRef: ChangeDetectorRef,
     private router: Router,
     private actionController: ActionController,
     private dragonController: DragonController,
@@ -27,12 +29,10 @@ export class MyDragonsComponent implements OnInit {
   }
 
   getOwnedDragons(): void {
-    this.dragonsLoading = true;
-    this.dragonController.getOwned().subscribe(dragons => {
-      this.dragonsLoading = false;
-      this.ownedDragons = dragons;
-      this.cdRef.detectChanges();
-    }, () => this.dragonsLoading = false);
+    this.dragonsLoading$.next(true);
+    this.ownedDragons$ = this.dragonController.getOwned().pipe(
+      tap(() => this.dragonsLoading$.next(false))
+    );
   }
 
   navigateAdopt() {
@@ -40,13 +40,18 @@ export class MyDragonsComponent implements OnInit {
   }
 
   release(dragonId: number) {
-    this.dragonsLoading = true;
-    this.actionController.releaseDragon(dragonId.toString()).subscribe(() => {
-      this.dragonsLoading = false;
-      this.toastService.showSuccess('common.success', 'dragon.dragonReleased');
-      this.ownedDragons = this.ownedDragons.filter(dragon => dragon.id !== dragonId);
-      this.cdRef.detectChanges();
-    }, () => this.dragonsLoading = false);
+    this.dragonsLoading$.next(true);
+    this.ownedDragons$ = undefined;
+    this.releaseDragon$ = this.actionController.releaseDragon(dragonId.toString()).pipe(
+      tap(() => {
+        this.getOwnedDragons();
+        this.toastService.showSuccess('common.success', 'dragon.dragonReleased');
+      }),
+      catchError(() => {
+        this.dragonsLoading$.next(false);
+        return of(undefined);
+      })
+    );
   }
 
 }

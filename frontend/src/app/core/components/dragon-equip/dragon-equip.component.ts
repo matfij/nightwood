@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ActionController, DragonController, DragonDto, DragonEquipDto, ItemController, ItemType } from 'src/app/client/api';
@@ -20,11 +20,14 @@ export class DragonEquipComponent extends AbstractModalComponent implements OnIn
   @Input() dragon!: DragonDto;
 
   dragonRunes$?: Observable<DisplayItem[]>;
+  dragonRunes?: DisplayItem[];
   availableEquipment$?: Observable<DisplayItem[]>;
-  equipLoading: boolean = false;
+  availableEquipment?: DisplayItem[];
+  equipRune$?: Observable<DragonDto>;
+  unequipRune$?: Observable<DragonDto>;
+  equipping: boolean = false;
 
   constructor(
-    private cdRef: ChangeDetectorRef,
     private actionController: ActionController,
     private dragonController: DragonController,
     private itemController: ItemController,
@@ -34,26 +37,35 @@ export class DragonEquipComponent extends AbstractModalComponent implements OnIn
   }
 
   ngOnInit(): void {
-    this.getAvailableEquipment();
     this.getDragonData();
   }
 
   getDragonData() {
     this.dragonRunes$ = this.dragonController.getOne(this.dragon.id.toString()).pipe(
-      tap((dragon) => this.dragon = dragon),
-      map((dragon) => dragon.runes.map(rune => this.itemsService.toDisplayItem(rune)))
+      tap((dragon) => {
+        this.dragon = dragon;
+        this.getAvailableEquipment();
+      }),
+      map((dragon) => dragon.runes.map(rune => this.itemsService.toDisplayItem(rune))),
+      tap((runes) => {
+        this.dragonRunes = runes;
+      })
     );
   }
 
   getAvailableEquipment() {
     this.availableEquipment$ = this.itemController.getOwnedItems().pipe(
       map((itemsPage) => itemsPage.data.filter(item => item.type === ItemType.Equipment)),
-      map((items) => items.map(item => this.itemsService.toDisplayItem(item)))
+      map((items) => items.map(item => this.itemsService.toDisplayItem(item))),
+      tap((items) => {
+        this.availableEquipment = items;
+        this.equipping = false;
+      })
     );
   }
 
   equipRune(rune: DisplayItem) {
-    if (this. equipLoading) return;
+    if (this.equipping) return;
     if (this.dragon.runes.length >= DRAGON_MAX_RUNES) return;
     if (this.dragon.level < rune.level) return;
 
@@ -61,29 +73,22 @@ export class DragonEquipComponent extends AbstractModalComponent implements OnIn
       dragonId: this.dragon.id,
       itemId: rune.id!,
     };
-    this.equipLoading = true;
-    this.actionController.equipDragon(params).subscribe(() => {
-      this.getDragonData();
-      this.getAvailableEquipment();
-      this.equipLoading = false;
-      this.cdRef.detectChanges();
-    }, () => this.equipLoading = false);
+    this.equipping = true;
+    this.equipRune$ = this.actionController.equipDragon(params).pipe(
+      tap(() => this.getDragonData())
+    );
   }
 
   unequipRune(rune: DisplayItem) {
-    if (this. equipLoading) return;
-
+    if (this.equipping) return;
     const params: DragonEquipDto = {
       dragonId: this.dragon.id,
       itemId: rune.id!,
     };
-    this.equipLoading = true;
-    this.actionController.unequipDragon(params).subscribe(() => {
-      this.getDragonData();
-      this.getAvailableEquipment();
-      this.equipLoading = false
-      this.cdRef.detectChanges();
-    }, () => this.equipLoading = false);
+    this.equipping = true;
+    this.unequipRune$ = this.actionController.unequipDragon(params).pipe(
+      tap(() => this.getDragonData())
+    );
   }
 
 }

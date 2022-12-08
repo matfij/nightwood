@@ -3,19 +3,20 @@
 
   <div class="wrapper-content">
 
-    <div *ngIf="dragonsLoading" style="margin-top: 50px;">
+    <div *ngIf="(dragonsLoading$ | async)" style="margin-top: 50px;">
       <app-loading-indicator></app-loading-indicator>
     </div>
 
-    <div *ngIf="!dragonsLoading" class="wrapper-dragons">
-      <div *ngFor="let dragon of ownedDragons">
+    <div *ngIf="{ownedDragons: ownedDragons$ | async, releaseDragon: releaseDragon$ | async} as vm;"
+      class="wrapper-dragons">
+      <div *ngFor="let dragon of vm.ownedDragons">
         <app-dragon-card
           [dragon]="dragon"
           (release)="release($event)">
         </app-dragon-card>
       </div>
 
-      <div *ngIf="ownedDragons.length === 0" class="wrapper-adopt">
+      <div *ngIf="vm.ownedDragons && vm.ownedDragons.length === 0" class="wrapper-adopt">
         <div class="title">{{ 'dragon.noOwnedDragons' | translate }}</div>
 
         <button (click)="navigateAdopt()" class="btn-base btn-adopt">
