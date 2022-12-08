@@ -103,10 +103,8 @@ export class AuthService {
 
     async getUserFromToken(accessToken: string): Promise<UserDto> {
         try { this.jwtService.verify(accessToken) } catch (_) { return null; };
-
         const decodedToken = this.jwtService.decode(accessToken);
-
-        return decodedToken['user'];
+        return decodedToken['jwtData'];
     }
 
     async getUserData(userId: number): Promise<UserDto> {

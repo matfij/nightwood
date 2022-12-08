@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription, timer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { PenaltyType, UserAuthDto, UserRole } from 'src/app/client/api';
 import { CHAT_MESSAGE_MAX_LENGTH, CHAT_MESSAGE_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { ChatMessage, ChatMode } from 'src/app/common/definitions/chat';
@@ -20,8 +21,9 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
 
   user!: UserAuthDto;
   message: string = '';
-  message$!: Subscription;
-  messages: ChatMessage[] = [];
+  messages$?: Observable<ChatMessage[]>;
+  tempMessages: ChatMessage[] = [];
+  savedMessages: ChatMessage[] = [];
   chatMode: ChatMode = ChatMode.General;
 
   penaltyMessage?: ChatMessage;
@@ -33,7 +35,6 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
   PenaltyType = PenaltyType;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private translateService: TranslateService,
     private chatService: ChatService,
@@ -49,15 +50,20 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
   }
 
   initializeChat() {
-    this.message$ = this.chatService.getMessages(ChatMode.General).subscribe(data => {
-      this.messages.push(...data);
-      timer(0).subscribe(() => {
-        if (this.messagesWrapper) {
-          this.messagesWrapper.nativeElement.scrollTop = this.messagesWrapper.nativeElement.scrollHeight;
-        }
-      });
-      this.changeDetectorRef.detectChanges();
-    });
+    this.messages$ = this.chatService.getMessages(ChatMode.General).pipe(
+      tap((messages) => {
+        this.tempMessages = messages;
+      }),
+      map((messages) => [...this.savedMessages, ...messages]),
+      tap(() => {
+        timer().subscribe(() => {
+          if (this.messagesWrapper) {
+            this.messagesWrapper.nativeElement.scrollTop = this.messagesWrapper.nativeElement.scrollHeight;
+          }
+        });
+        this.savedMessages.push(...this.tempMessages);
+      })
+    );
   }
 
   changeMode(mode: ChatMode) {
@@ -126,6 +132,5 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.chatService.disconnect();
-    this.message$.unsubscribe();
   }
 }

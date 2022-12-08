@@ -44,7 +44,6 @@ export class ChatService {
         };
         this.savedMessages.push(message);
         if (this.savedMessages.length > this.SAVED_MESSAGES_LIMIT) this.savedMessages.shift();
-        
         return message;
     }
 }
