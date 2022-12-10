@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ActionController, DragonFeedDto, ItemController, ItemDto } from 'src/app/client/api';
+import { ActionController, DragonDto, DragonFeedDto, ItemController, ItemDto } from 'src/app/client/api';
 import { DisplayDragon } from '../../definitions/dragons';
 import { DateService } from '../../../common/services/date.service';
 import { DragonService } from '../../services/dragons.service';
@@ -50,6 +50,14 @@ export class DragonPreviewComponent implements OnInit {
 
   getDragonAttribute(attribute: string) {
     return this.dragon ? (this.dragon as any)[attribute] : 0;
+  }
+
+  updateDragon(dragon: DragonDto) {
+    this.dragon = {
+      ...this.dragon,
+      ...dragon,
+    };
+    this.displaySkills = false;
   }
 
   prepareFeedModal() {

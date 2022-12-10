@@ -1,11 +1,17 @@
-<div *ngIf="(obtainableSkills$ | async) as obtainableSkills; else skillsLoading" class="container-modal">
+<div
+  *ngIf="{
+      dragon: dragon$ | async,
+      obtainableSkills: obtainableSkills$ | async,
+      learnSkill: learnSkill$ | async
+    } as vm; else skillsLoading"
+  class="container-modal">
 
-  <div class="title">{{ dragon.name }} [{{ dragon.level }}]</div>
+  <div class="title">{{ vm.dragon?.name }} [{{ vm.dragon?.level }}]</div>
 
-  <div style="margin: 20px auto;">{{ dragon.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
+  <div style="margin: 20px auto;">{{ vm.dragon?.skillPoints }} {{ 'dragon.skillPoints' | translate }}</div>
 
   <div class="wrapper-skills">
-    <div *ngFor="let skill of obtainableSkills" class="item-skill">
+    <div *ngFor="let skill of vm.obtainableSkills" class="item-skill">
       <div tooltip>
         <ng-template #tooltipTemplate>
           <div class="item-tooltip item-skill-hint">
@@ -18,12 +24,12 @@
         <img [src]="skill.image" [alt]="skill.name" draggable="false">
       </div>
 
-      <div class="item-skill-info">
-        {{ getSkillProgress(skill.uid) }}
+      <div *ngIf="vm.dragon" class="item-skill-info">
+        {{ getSkillProgress(vm.dragon, skill.uid) }}
         <button
-          *ngIf="canLearn(skill)"
-          (click)="learnSkill(skill)"
-          [disabled]="learnSkillLoading"
+          *ngIf="canLearn(vm.dragon, skill)"
+          (click)="learnSkill(vm.dragon, skill)"
+          [disabled]="false"
           class="btn-learn-skill">
           +
       </button>
@@ -31,7 +37,7 @@
     </div>
   </div>
 
-  <button (click)="closeModal()" [disabled]="learnSkillLoading" class="btn-base">
+  <button (click)="closeModal()" class="btn-base">
     {{ 'common.close' | translate }}
   </button>
 

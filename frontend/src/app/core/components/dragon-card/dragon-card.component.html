@@ -93,7 +93,7 @@
 <app-dragon-skills
   *ngIf="displaySkills && dragon"
   [dragon]="dragon"
-  (close)="displaySkills = false">
+  (updatedDragon)="updateDragon($event)">
 </app-dragon-skills>
 
 <app-dragon-equip

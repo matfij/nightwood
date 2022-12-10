@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { DragonController, DragonSkillsController, DragonSkillsDto, SkillGetDto, SkillLearnDto } from 'src/app/client/api';
-import { DisplayDragon, DisplaySkill } from '../../definitions/dragons';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { DragonController, DragonDto, DragonSkillsController, DragonSkillsDto, SkillGetDto, SkillLearnDto } from 'src/app/client/api';
+import { DisplaySkill } from '../../definitions/dragons';
 import { DragonService } from '../../services/dragons.service';
 import { AbstractModalComponent } from '../../../common/components/abstract-modal/abstract-modal.component';
 import { DRAGON_SKILL_DEVELOPMENT_LIMIT } from 'src/app/client/config/frontend.config';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dragon-skills',
@@ -17,15 +17,15 @@ import { map } from 'rxjs/operators';
 })
 export class DragonSkillsComponent extends AbstractModalComponent implements OnInit {
 
-  @Input() dragon!: DisplayDragon;
+  @Input() dragon!: DragonDto;
+  @Output() updatedDragon = new EventEmitter<DragonDto>();
 
+  dragon$?: BehaviorSubject<DragonDto>;
   obtainableSkills$?: Observable<DisplaySkill[]>;
-  dragonLoading: boolean = false;
-  skillsLoading: boolean = false;
-  learnSkillLoading: boolean = false;
+  learnSkill$?: Observable<DragonDto>;
+  learningSkill: boolean = false;
 
   constructor(
-    private cdRef: ChangeDetectorRef,
     private dragonController: DragonController,
     private dragonSkillsController: DragonSkillsController,
     private dragonService: DragonService,
@@ -34,18 +34,8 @@ export class DragonSkillsComponent extends AbstractModalComponent implements OnI
   }
 
   ngOnInit(): void {
-    this.updateDragonData();
+    this.dragon$ = new BehaviorSubject(this.dragon);
     this.getObtainableSkills();
-  }
-
-  updateDragonData() {
-    this.dragonLoading = true;
-    this.dragonController.getOne(this.dragon.id.toString()).subscribe(dragon => {
-      this.dragonLoading = false;
-      this.dragon.skillPoints = dragon.skillPoints;
-      this.dragon.skills = dragon.skills;
-      this.cdRef.detectChanges();
-    }, () => this.dragonLoading = false);
   }
 
   getObtainableSkills() {
@@ -57,27 +47,33 @@ export class DragonSkillsComponent extends AbstractModalComponent implements OnI
     );
   }
 
-  getSkillProgress(skill: string) {
-    return this.dragon.skills[skill as keyof DragonSkillsDto] + `/${DRAGON_SKILL_DEVELOPMENT_LIMIT}`;
+  getSkillProgress(dragon: DragonDto, skill: string) {
+    return dragon.skills[skill as keyof DragonSkillsDto] + `/${DRAGON_SKILL_DEVELOPMENT_LIMIT}`;
   }
 
-  canLearn(skill: DisplaySkill): boolean {
-    const progress = this.dragon.skills[skill.uid as keyof DragonSkillsDto];
-    return this.dragon.skillPoints > 0 && progress < DRAGON_SKILL_DEVELOPMENT_LIMIT && this.dragon.level >= skill.level;
+  canLearn(dragon: DragonDto, skill: DisplaySkill): boolean {
+    const progress = dragon.skills[skill.uid as keyof DragonSkillsDto];
+    return dragon.skillPoints > 0 && progress < DRAGON_SKILL_DEVELOPMENT_LIMIT && dragon.level >= skill.level;
   }
 
-  learnSkill(skill: DisplaySkill) {
-    if (this.dragon.skillPoints < 1 || !this.canLearn(skill)) return;
+  learnSkill(dragon: DragonDto, skill: DisplaySkill) {
+    if (this.learningSkill) return;
+    if (dragon.skillPoints < 1 || !this.canLearn(dragon, skill)) return;
 
     const params: SkillLearnDto = {
       skillUid: skill.uid,
-      dragonId: this.dragon.id,
+      dragonId: dragon.id,
     };
-    this.learnSkillLoading = true;
-    this.dragonController.learnSkill(params).subscribe(dragon => {
-      this.learnSkillLoading = false;
-      this.dragon = { ...this.dragon, skillPoints: dragon.skillPoints, skills: dragon.skills };
-      this.cdRef.detectChanges();
-    }, () => this.learnSkillLoading = false);
+    this.learningSkill = true;
+    this.learnSkill$ = this.dragonController.learnSkill(params).pipe(
+      tap((dragon) => {
+        this.learningSkill = false;
+        this.dragon$?.next(dragon)
+      })
+    );
+  }
+
+  closeModal() {
+    this.updatedDragon.next(this.dragon$?.getValue());
   }
 }
