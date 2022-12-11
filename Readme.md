@@ -38,9 +38,9 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 
 ## Refactoring 1
  - Minimize dependencies [50%]
- - Optimization - rendering, db operations, throttling [0%]
- - Player actions - dtos, controllers, JWT [50%]
- - Frontend components - generic, skeletons [20%]
+ - Optimization - db operations, throttling [0%]
+ - Player actions - dtos, controllers, JWT [70%]
+ - Frontend components - change detection, generic, skeletons [80%]
  - Unit tests, CI/CD [75%]
  - Production release [0%]
 
