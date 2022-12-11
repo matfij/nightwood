@@ -1,0 +1,21 @@
+<div *ngIf="dragon" class="container-modal">
+    <div *ngIf="{availableFood: availableFood$ | async, _: feedDragon$ | async} as vm;">
+        <div class="title">{{ 'dragon.feed' | translate }} {{ dragon.name }}</div>
+        <p>{{ 'dragon.chooseFoodHint' | translate }}</p>
+
+        <div *ngIf="!vm.availableFood" style="margin: 30px auto;">
+            <app-loading-indicator></app-loading-indicator>
+        </div>
+        <div class="wrapper-foods">
+            <div *ngFor="let food of vm.availableFood" (click)="feedDragon(food)" class="food">
+                <img [src]="food.image" [alt]="food.name">
+                {{ food.name | translate }}
+                ({{ food.quantity }}) <br>
+            </div>
+        </div>
+
+        <button (click)="closeModal()" class="btn-base">
+        {{ 'common.cancel' | translate }}
+        </button>
+    </div>
+</div>

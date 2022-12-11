@@ -25,6 +25,7 @@ import { CraftingItemListComponent } from './components/crafting-item-list/craft
 import { ShortNumberPipe } from '../common/utils/short-number.pipe';
 import { AlchemyMixturesComponent } from './components/alchemy-mixtures/alchemy-mixtures.component';
 import { AlchemyBoostersComponent } from './components/alchemy-boosters/alchemy-boosters.component';
+import { DragonFeedComponent } from './components/dragon-feed/dragon-feed.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -67,6 +68,7 @@ const CHILD_PROVIDERS = [
   declarations: [
     ...COMPONENTS,
     ...UTILS,
+    DragonFeedComponent,
   ],
   imports: [
     CommonModule,

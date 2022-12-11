@@ -1,29 +1,3 @@
-<div *ngIf="displayFeedModal && dragon" class="container-modal">
-  <div *ngIf="feedLoading">
-    <app-loading-indicator></app-loading-indicator>
-  </div>
-
-  <div *ngIf="!feedLoading">
-    <div class="title">{{ 'dragon.feed' | translate }} {{ dragon.name }}</div>
-    <p>{{ 'dragon.chooseFoodHint' | translate }}</p>
-
-    <ng-template #loading style="margin: 30px auto;">
-      <app-loading-indicator></app-loading-indicator>
-    </ng-template>
-    <div *ngIf="(availableFood$ | async) as items; else loading" class="wrapper-foods">
-      <div *ngFor="let item of items" (click)="feedDragon(item)" class="food">
-          <img [src]="item.image" [alt]="item.name">
-          {{ item.name | translate }}
-          ({{ item.quantity }}) <br>
-      </div>
-    </div>
-
-    <button (click)="displayFeedModal = false" class="btn-base">
-      {{ 'common.cancel' | translate }}
-    </button>
-  </div>
-</div>
-
 <div *ngIf="dragon" class="container-dragon">
 
   <div class="wrapper-name">
@@ -90,10 +64,17 @@
 
 </div>
 
+<app-dragon-feed
+  *ngIf="displayFeed && dragon"
+  [dragon]="dragon"
+  (updatedDragon)="updateDragonFeed($event)"
+  (close)="displayFeed = false">
+</app-dragon-feed>
+
 <app-dragon-skills
   *ngIf="displaySkills && dragon"
   [dragon]="dragon"
-  (updatedDragon)="updateDragon($event)">
+  (updatedDragon)="updateDragonSkills($event)">
 </app-dragon-skills>
 
 <app-dragon-equip

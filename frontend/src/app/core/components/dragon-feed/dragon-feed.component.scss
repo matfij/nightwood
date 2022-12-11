@@ -1,0 +1,32 @@
+@import '../../theme/mixins.scss';
+@import '../../theme/variables.scss';
+
+.wrapper-foods {
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.food {
+    height: 40px;
+    width: 240px;
+    margin-bottom: 10px;
+
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    img {
+        width: 40px;
+        height: auto !important;
+        margin-right: 10px;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background: darken($color: $app-dark, $amount: 5);
+    }
+}
