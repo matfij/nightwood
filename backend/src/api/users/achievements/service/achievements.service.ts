@@ -42,6 +42,14 @@ export class AchievementsService {
         return user;
     }
 
+    async checkAllAchievements(userId: number, oldestDragon: DragonDto, mostExperiencedDragon: DragonDto) {
+        this.checkDragonOwnerAchievements(userId);
+        this.checkPersistentBreederAchievements(userId, oldestDragon);
+        this.checkCuriousExplorerAchievements(userId, 0);
+        this.checkDragonTrainerAchievements(userId, mostExperiencedDragon);
+        this.checkCroesusAchievements(userId);
+    }
+
     async checkDragonOwnerAchievements(userId: number) {
         const user = await this.getUserData(userId);
 
@@ -95,7 +103,7 @@ export class AchievementsService {
         user.achievements.expeditionTime += Math.round(gainedTime);
 
         ACHIEVEMENTS_CURIOUS_EXPLORER.forEach(achievement => {
-            if (user.achievements.expeditionTime >= achievement.requiredPoints) {
+            if (user.achievements.expeditionTime >= achievement.requiredPoints && user.achievements.curiousExplorer < achievement.tier) {
                 user.achievements.curiousExplorer = achievement.tier;
             }
         });

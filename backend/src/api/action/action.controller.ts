@@ -16,6 +16,9 @@ import { DragonEquipDto } from "../dragons/dragon/model/dto/dragon-equip.dto";
 import { DragonChangeNatureDto, DragonRenameDto } from "../dragons/dragon/model/dto/dragon-tamer-params.dto";
 import { DragonSummonDto } from "../dragons/dragon/model/dto/dragon-summon.dto";
 import { BoosterActivateDto } from "../items/alchemy/model/dto/booster-activate.dto";
+import { Roles } from "../users/auth/util/roles.decorator";
+import { RolesGuard } from "../users/auth/util/roles.guard";
+import { UserRole } from "../users/user/model/definitions/users";
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -27,6 +30,15 @@ export class ActionController {
         private actionEventService: ActionEventService,
         private actionItemService: ActionItemService,
     ) {}
+
+    
+    @Post('checkAllAchievements')
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.Administrator, UserRole.Moderator)
+    @ApiOkResponse({ type: DragonDto })
+    checkAllAchievements(): Promise<void> {
+        return this.actionDragonService.checkAllAchievements();
+    }
     
     @Post('adoptDragon')
     @ApiOkResponse({ type: DragonDto })

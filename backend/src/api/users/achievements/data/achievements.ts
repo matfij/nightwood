@@ -98,21 +98,21 @@ export const ACHIEVEMENTS_DRAGON_TRAINER: Achievement[] = [
 
 export const ACHIEVEMENTS_CROESUS: Achievement[] = [
     {
-        uid: 'croesusI',
+        uid: 'croesus',
         name: 'Bargain collector',
         tier: 1,
         hint: 'Gather 1000 gold.',
         requiredPoints: 1000,
     },
     {
-        uid: 'croesusII',
+        uid: 'croesus',
         name: 'Agile trader',
         tier: 2,
         hint: 'Gather 10000 gold.',
         requiredPoints: 10000,
     },
     {
-        uid: 'croesusIII',
+        uid: 'croesus',
         name: 'Croesus',
         tier: 3,
         hint: 'Gather 100000 gold.',

@@ -32,6 +32,21 @@ export class ActionDragonService {
         private errorService: ErrorService,
     ) {}
 
+    async checkAllAchievements(): Promise<void> {
+        const users = await this.userService.getAll({
+            page: 1,
+            limit: 1000,
+        });
+        for (const user of users.data) {
+            const dragons = await this.dragonService.getOwnedDragons(user);
+            if (dragons.length > 0) {
+                const oldestDragon = dragons.reduce((prev, current) => (prev.level > current.level) ? prev : current);
+                const mostExperiencedDragon = dragons.reduce((prev, current) => (prev.experience > current.experience) ? prev : current);
+                this.achievementsService.checkAllAchievements(user.id, oldestDragon, mostExperiencedDragon);
+            }
+        }
+    }
+
     async adoptDragon(userId: number, dto: DragonAdoptDto): Promise<DragonDto> {
         const user = await this.userService.getOne(userId);
         await this.userService.updateOwnedDragons(userId, true);
