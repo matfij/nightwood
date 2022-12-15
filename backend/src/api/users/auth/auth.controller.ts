@@ -1,6 +1,8 @@
 import { Body, Controller, Post, UseGuards, Request } from "@nestjs/common";
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import { Throttle } from "@nestjs/throttler";
 import { AuthorizedRequest } from "src/common/definitions/requests";
+import { AUTH_REQUEST_LIMIT, AUTH_REQUEST_TTL } from "src/configuration/app.config";
 import { UserDto } from "../user/model/dto/user.dto";
 import { UserAuthDto } from "./model/dto/user-auth.dto";
 import { UserConfirmDto } from "./model/dto/user-confirm.dto";
@@ -18,18 +20,21 @@ export class AuthController {
     ) {}
 
     @Post('login')
+    @Throttle(AUTH_REQUEST_LIMIT, AUTH_REQUEST_TTL)
     @ApiOkResponse({ type: UserAuthDto })
     login(@Body() dto: UserLoginDto): Promise<UserAuthDto> {
         return this.authService.login(dto);
     }
 
     @Post('register')
+    @Throttle(AUTH_REQUEST_LIMIT, AUTH_REQUEST_TTL)
     @ApiOkResponse()
     register(@Body() dto: UserRegisterDto): Promise<void> {
         return this.authService.register(dto);
     }
 
     @Post('confirm')
+    @Throttle(AUTH_REQUEST_LIMIT, AUTH_REQUEST_TTL)
     @ApiOkResponse()
     confirm(@Body() dto: UserConfirmDto): Promise<void> {
         return this.authService.confirm(dto);

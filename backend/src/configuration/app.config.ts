@@ -5,6 +5,16 @@ export const APP_NAME = 'Nightwood';
 export const API_VERSION = 'v1';
 
 /**
+ * Rate limiting
+ */
+export const APP_REQUEST_TTL = 30;  // seconds
+export const APP_REQUEST_LIMIT = 40;
+export const AUTH_REQUEST_TTL = 10;  // seconds
+export const AUTH_REQUEST_LIMIT = 2;
+export const WS_REQUEST_TTL = 10;  // seconds
+export const WS_REQUEST_LIMIT = 3;
+
+/**
  * JWT
  */
 export const JWT_VALIDITY = 24 * 3600;  // seconds

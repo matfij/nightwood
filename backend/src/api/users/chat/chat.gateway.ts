@@ -1,12 +1,14 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
 import { UserDto } from '../user/model/dto/user.dto';
 import { ChatMessage, ChatMode } from './model/chat';
 import { ChatService } from './service/chat.service';
+import { WsThrottlerGuard } from './service/ws-throttler.guard';
 
 @WebSocketGateway({ cors: { origin: '*' } })
+@UseGuards(WsThrottlerGuard)
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer()

@@ -1,5 +1,6 @@
 import { Controller, UseGuards, Post, Request, Body } from "@nestjs/common";
 import { ApiTags, ApiOkResponse } from "@nestjs/swagger";
+import { SkipThrottle } from "@nestjs/throttler/dist/throttler.decorator";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { JwtAuthGuard } from "../auth/util/jwt.guard";
 import { Roles } from "../auth/util/roles.decorator";
@@ -19,6 +20,7 @@ export class PenaltyController {
 
     @UseGuards(RolesGuard)
     @Roles(UserRole.Administrator, UserRole.Moderator)
+    @SkipThrottle()
     @Post('imposePenalty')
     @ApiOkResponse()
     imposePenalty(@Request() req: AuthorizedRequest, @Body() dto: PenaltyImposeDto): Promise<void> {

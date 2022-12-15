@@ -122,7 +122,8 @@
     "userBanned": "Accound banned",
     "alreadyBanned": "User already banned",
     "alreadyMuted": "User already muted",
-    "emailFailTryAgain": "Failed to send an email, plese try again later"
+    "emailFailTryAgain": "Failed to send an email, plese try again later",
+    "rateLimitExceeded": "Rate limit exceeded"
   },
   "game": {
     "menu": "Menu",
