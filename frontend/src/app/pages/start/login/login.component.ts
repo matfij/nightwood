@@ -30,8 +30,9 @@ export class LoginComponent implements OnInit {
     { form: this.form, key: 'login', label: 'start.nickname', type: 'text', autocomplete: 'username' },
     { form: this.form, key: 'password', label: 'start.password', type: 'password', autocomplete: 'current-password' },
   ];
-  confirmLoading$?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  submitLoading$?: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  confirmLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  displayForgotPasswordModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private router: Router,
@@ -80,13 +81,12 @@ export class LoginComponent implements OnInit {
 
         this.engineService.setInitialState(user);
         return this.engineService.getExpeditionReports();
-      })).subscribe(() => {
+      })
+      ).subscribe(() => {
         this.submitLoading$?.next(false);
         this.toastService.showSuccess('start.loginSuccess', 'start.loginSuccessHint');
         this.router.navigate(['../game/home']);
-      }, () => {
-        this.submitLoading$?.next(false);
-      });
+    }, () => this.submitLoading$?.next(false));
   }
 
 }

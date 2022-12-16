@@ -42,5 +42,14 @@
       {{ 'start.register' | translate }}
     </button>
 
+    <div (click)="displayForgotPasswordModal$.next(true)" class="btn-forgot">
+      {{ 'start.forgotPassword' | translate }}
+    </div>
+
   </div>
 </div>
+
+<app-forgot-password
+  *ngIf="displayForgotPasswordModal$ | async"
+  (close)="displayForgotPasswordModal$.next(false)">
+</app-forgot-password>

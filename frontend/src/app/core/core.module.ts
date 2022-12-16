@@ -26,6 +26,7 @@ import { ShortNumberPipe } from '../common/utils/short-number.pipe';
 import { AlchemyMixturesComponent } from './components/alchemy-mixtures/alchemy-mixtures.component';
 import { AlchemyBoostersComponent } from './components/alchemy-boosters/alchemy-boosters.component';
 import { DragonFeedComponent } from './components/dragon-feed/dragon-feed.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -41,12 +42,14 @@ const COMPONENTS = [
   ItemDisplayComponent,
   MailSendModalComponent,
   DragonEquipComponent,
+  DragonFeedComponent,
   DragonStatsComponent,
   UserFriendRequestsComponent,
   ShoutboxPenaltyModalComponent,
   CraftingItemListComponent,
   AlchemyMixturesComponent,
   AlchemyBoostersComponent,
+  ForgotPasswordComponent,
 ];
 const MODULES = [
   ReactiveFormsModule,
@@ -68,7 +71,6 @@ const CHILD_PROVIDERS = [
   declarations: [
     ...COMPONENTS,
     ...UTILS,
-    DragonFeedComponent,
   ],
   imports: [
     CommonModule,

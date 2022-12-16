@@ -70,6 +70,17 @@
   margin: 20px auto;
 }
 
+.btn-forgot {
+  color: $app-light;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
 @media screen and (max-width: $mobile-threshold) {
 

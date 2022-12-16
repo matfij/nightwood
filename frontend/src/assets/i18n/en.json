@@ -12,7 +12,8 @@
     "details": "Details",
     "confirm": "Confirm",
     "auto": "Auto",
-    "search": "Search"
+    "search": "Search",
+    "submit": "Submit"
   },
   "enums": {
     "dragonNature": {
@@ -56,7 +57,9 @@
     "nicknameHint": "Your nickname must be unique and contain between {{ min }} and {{ max }} characters",
     "passwordHint": "Your password should be strong and contain between {{ min }} and {{ max }} characters",
     "confirmEmail": "Account created, please verify your email address",
-    "confirmSuccess": "Account activated, you can now log into the game"
+    "confirmSuccess": "Account activated, you can now log into the game",
+    "forgotPassword": "Forgot password",
+    "recoverPassword": "Recover password"
   },
   "errors": {
     "error": "Error",

@@ -47,3 +47,31 @@
   box-shadow: inset 1px 1px $size 1px $color;
   background-color: transparentize($color: $color, $amount: $transparency);
 }
+
+@mixin modal() {
+  width: 100vw;
+  min-height: 100vh;
+
+  z-index: 100;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: transparentize($color: $app-dark, $amount: 0.04);
+
+  p {
+    width: 95%;
+    max-width: 800px;
+    margin: 12px auto;
+
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .btn-base {
+    margin: 20px auto;
+  }
+}
