@@ -39,6 +39,7 @@
   },
   "start": {
     "login": "Login",
+    "emailOrNickname": "Email or nickname",
     "register": "Register",
     "registerHint": "Create a new account",
     "registerLore": "and raise the greatest dragons",
@@ -59,7 +60,8 @@
     "confirmEmail": "Account created, please verify your email address",
     "confirmSuccess": "Account activated, you can now log into the game",
     "forgotPassword": "Forgot password",
-    "recoverPassword": "Recover password"
+    "recoverPassword": "Recover password",
+    "recoveryEmailSent": "Recovery email sent"
   },
   "errors": {
     "error": "Error",

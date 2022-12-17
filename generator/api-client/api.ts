@@ -15,6 +15,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IActionController {
+    checkAllAchievements(): Observable<DragonDto>;
     adoptDragon(body: DragonAdoptDto): Observable<DragonDto>;
     summonDragon(body: DragonSummonDto): Observable<DragonDto>;
     feedDragon(body: DragonFeedDto): Observable<DragonDto>;
@@ -43,6 +44,53 @@ export class ActionController implements IActionController {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    checkAllAchievements(): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/checkAllAchievements";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckAllAchievements(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckAllAchievements(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCheckAllAchievements(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DragonDto>(<any>null);
     }
 
     adoptDragon(body: DragonAdoptDto): Observable<DragonDto> {
@@ -1460,6 +1508,7 @@ export interface IAuthController {
     confirm(body: UserConfirmDto): Observable<void>;
     refreshToken(body: UserAuthDto): Observable<UserAuthDto>;
     getUserData(): Observable<UserAuthDto>;
+    recoverPassword(body: PasswordRecoverDto): Observable<void>;
 }
 
 @Injectable({
@@ -1718,6 +1767,54 @@ export class AuthController implements IAuthController {
             }));
         }
         return _observableOf<UserAuthDto>(<any>null);
+    }
+
+    recoverPassword(body: PasswordRecoverDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/auth/recoverPassword";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRecoverPassword(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRecoverPassword(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRecoverPassword(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 }
 
@@ -3625,21 +3722,6 @@ export class PenaltyController implements IPenaltyController {
     }
 }
 
-export enum DragonNature {
-    Fire = "Fire",
-    Water = "Water",
-    Wind = "Wind",
-    Earth = "Earth",
-    Electric = "Electric",
-    Nature = "Nature",
-    Dark = "Dark",
-}
-
-export interface DragonAdoptDto {
-    name: string;
-    nature: DragonNature;
-}
-
 export enum DragonActionType {
     None = "None",
     Expedition = "Expedition",
@@ -3773,6 +3855,16 @@ export interface ItemDto {
     statistics: EquipmentStatisticsDto;
 }
 
+export enum DragonNature {
+    Fire = "Fire",
+    Water = "Water",
+    Wind = "Wind",
+    Earth = "Earth",
+    Electric = "Electric",
+    Nature = "Nature",
+    Dark = "Dark",
+}
+
 export interface DragonDto {
     id: number;
     userId?: number;
@@ -3796,6 +3888,11 @@ export interface DragonDto {
     endurance: number;
     will: number;
     luck: number;
+}
+
+export interface DragonAdoptDto {
+    name: string;
+    nature: DragonNature;
 }
 
 export interface DragonSummonDto {
@@ -3963,6 +4060,10 @@ export interface UserRegisterDto {
 
 export interface UserConfirmDto {
     activationCode: string;
+}
+
+export interface PasswordRecoverDto {
+    emailOrNickname: string;
 }
 
 export interface ItemPageDto {

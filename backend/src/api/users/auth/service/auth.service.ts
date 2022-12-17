@@ -16,6 +16,7 @@ import { EmailReplaceToken, EmailType } from 'src/common/definitions/emails';
 import { UserConfirmDto } from '../model/dto/user-confirm.dto';
 import { AchievementsService } from '../../achievements/service/achievements.service';
 import { JWT_REFRESH_VALIDITY } from 'src/configuration/app.config';
+import { PasswordRecoverDto } from '../model/dto/password-recover.dto';
 
 const bcrypt = require('bcrypt');
 
@@ -35,7 +36,7 @@ export class AuthService {
 
     async login(dto: UserLoginDto): Promise<UserAuthDto> {
         const user = await this.userRepository.findOne({ nickname: dto.nickname });
-        if (!user) this.errorService.throw('errors.loginNotFound');
+        if (!user) this.errorService.throw('errors.userNotFound');
         if (!user.isConfirmed) this.errorService.throw('errors.userNotConfirmed');
 
         const match: boolean = await this.validatePassword(dto.password, user.password);
@@ -123,6 +124,29 @@ export class AuthService {
         return this.jwtService.signAsync({jwtData});
     }
 
+    async recoverPassword(dto: PasswordRecoverDto): Promise<void> {
+        if (!this.emailExists(dto.emailOrNickname) && !this.nicknameExists(dto.emailOrNickname)) this.errorService.throw('errors.userNotFound');
+
+        let user: UserDto = null;
+        if (this.isEmail(dto.emailOrNickname)) {
+            user = await this.userRepository.findOne({ email: dto.emailOrNickname });
+        } else {
+            user = await this.userRepository.findOne({ nickname: dto.emailOrNickname });
+        }
+        if (!user) this.errorService.throw('errors.userNotFound');
+
+        const recoverCode = this.generateActionToken();
+        user.actionToken = recoverCode;
+        await this.userRepository.save(user);
+        
+        const emailData: EmailReplaceToken[] = [
+            { token: '$user_name', value: user.nickname },
+            { token: '$recover_code_1', value: recoverCode },
+            { token: '$recover_code_2', value: recoverCode },
+        ];
+        this.emailService.sendEmail(user.email, EmailType.PasswordRecover, emailData);
+    }
+
     async hashPassword(password: string): Promise<string> {
         return await bcrypt.hash(password, 12);
     }
@@ -145,5 +169,9 @@ export class AuthService {
 
     private generateActionToken(): string {
         return Math.floor(1000000000000000 + Math.random() * 9000000000000000).toString();
+    }
+
+    private isEmail(email: string): boolean {
+        return email.includes('@') && email.includes('.');
     }
 }

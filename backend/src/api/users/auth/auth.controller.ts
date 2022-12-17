@@ -4,6 +4,7 @@ import { Throttle } from "@nestjs/throttler";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { AUTH_REQUEST_LIMIT, AUTH_REQUEST_TTL } from "src/configuration/app.config";
 import { UserDto } from "../user/model/dto/user.dto";
+import { PasswordRecoverDto } from "./model/dto/password-recover.dto";
 import { UserAuthDto } from "./model/dto/user-auth.dto";
 import { UserConfirmDto } from "./model/dto/user-confirm.dto";
 import { UserLoginDto } from "./model/dto/user-login.dto";
@@ -51,5 +52,11 @@ export class AuthController {
     @ApiOkResponse({ type: UserAuthDto })
     getUserData(@Request() req: AuthorizedRequest): Promise<UserDto> {
         return this.authService.getUserData(+req.user.id);
+    }
+
+    @Post('recoverPassword')
+    @ApiOkResponse()
+    recoverPassword(@Body() dto: PasswordRecoverDto): Promise<void> {
+        return this.authService.recoverPassword(dto);
     }
 }
