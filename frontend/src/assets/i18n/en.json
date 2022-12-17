@@ -61,7 +61,8 @@
     "confirmSuccess": "Account activated, you can now log into the game",
     "forgotPassword": "Forgot password",
     "recoverPassword": "Recover password",
-    "recoveryEmailSent": "Recovery email sent"
+    "recoveryEmailSent": "Recovery email sent",
+    "invalidResetCode": "Invalid reset code"
   },
   "errors": {
     "error": "Error",

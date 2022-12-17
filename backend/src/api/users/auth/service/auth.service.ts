@@ -17,6 +17,7 @@ import { UserConfirmDto } from '../model/dto/user-confirm.dto';
 import { AchievementsService } from '../../achievements/service/achievements.service';
 import { JWT_REFRESH_VALIDITY } from 'src/configuration/app.config';
 import { PasswordRecoverDto } from '../model/dto/password-recover.dto';
+import { PasswordResetDto } from '../model/dto/password-reset.dto';
 
 const bcrypt = require('bcrypt');
 
@@ -66,9 +67,9 @@ export class AuthService {
             password: hashedPassword,
             nickname: dto.nickname,
             actionToken: confirmationCode,
-            actionTokenValidity: this.dateService.getFutureDate(0, 1)
+            actionTokenValidity: this.dateService.getFutureDate(0, 1),
         };
-        
+
         const createdUser = this.userRepository.create(newUser);
         createdUser.achievements = await this.achievementsService.createAchievements();
         await this.userRepository.save(createdUser);
@@ -137,6 +138,7 @@ export class AuthService {
 
         const recoverCode = this.generateActionToken();
         user.actionToken = recoverCode;
+        user.actionTokenValidity = this.dateService.getFutureDate(0, 1);
         await this.userRepository.save(user);
         
         const emailData: EmailReplaceToken[] = [
@@ -145,6 +147,15 @@ export class AuthService {
             { token: '$recover_code_2', value: recoverCode },
         ];
         this.emailService.sendEmail(user.email, EmailType.PasswordRecover, emailData);
+    }
+
+    async resetPassword(dto: PasswordResetDto): Promise<void> {
+        const user = await this.userRepository.findOne({ actionToken: dto.actionToken });
+        if (!user || this.dateService.checkIfNextEventAvailable(user.actionTokenValidity)) this.errorService.throw('errors.invalidResetCode');
+
+        const newPassword = await this.hashPassword(dto.newPassword);
+        user.password = newPassword;
+        await this.userRepository.save(user);
     }
 
     async hashPassword(password: string): Promise<string> {
