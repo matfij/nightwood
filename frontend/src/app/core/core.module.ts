@@ -26,7 +26,7 @@ import { ShortNumberPipe } from '../common/utils/short-number.pipe';
 import { AlchemyMixturesComponent } from './components/alchemy-mixtures/alchemy-mixtures.component';
 import { AlchemyBoostersComponent } from './components/alchemy-boosters/alchemy-boosters.component';
 import { DragonFeedComponent } from './components/dragon-feed/dragon-feed.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from '../common/components/forgot-password/forgot-password.component';
 
 const COMPONENTS = [
   AbstractModalComponent,

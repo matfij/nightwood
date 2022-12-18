@@ -155,6 +155,7 @@ export class AuthService {
 
         const newPassword = await this.hashPassword(dto.newPassword);
         user.password = newPassword;
+        user.actionTokenValidity = this.dateService.getPastDate(0, 0, 1);
         await this.userRepository.save(user);
     }
 

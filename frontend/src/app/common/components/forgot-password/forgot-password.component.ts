@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AuthController, PasswordRecoverDto } from 'src/app/client/api';
 import { EMAIL_MAX_LENGTH } from 'src/app/client/config/frontend.config';
 import { ToastService } from 'src/app/common/services/toast.service';

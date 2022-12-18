@@ -62,7 +62,11 @@
     "forgotPassword": "Forgot password",
     "recoverPassword": "Recover password",
     "recoveryEmailSent": "Recovery email sent",
-    "invalidResetCode": "Invalid reset code"
+    "invalidResetCode": "Invalid reset code",
+    "resetPassword": "Reset password",
+    "newPassword": "New password",
+    "newPasswordConfirm": "Confirm new password",
+    "passwordResetSuccess": "Password updated"
   },
   "errors": {
     "error": "Error",
@@ -129,7 +133,8 @@
     "alreadyBanned": "User already banned",
     "alreadyMuted": "User already muted",
     "emailFailTryAgain": "Failed to send an email, plese try again later",
-    "rateLimitExceeded": "Rate limit exceeded"
+    "rateLimitExceeded": "Rate limit exceeded",
+    "invalidResetCode": "Reset code invalid"
   },
   "game": {
     "menu": "Menu",
