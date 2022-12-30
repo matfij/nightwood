@@ -13,13 +13,13 @@
     <div *ngFor="let dragon of displayDragons" (click)="chooseDragon(dragon)" class="dragon">
         <img [src]="dragon.image" [alt]="dragon.name">
         <div class="label-name">
-          {{ dragon.name }} [{{ dragon.level }}]
-          <div class="label-small" *ngIf="displayStamina">
-            {{ dragon.stamina }} {{ 'dragon.stamina' | translate }}
-          </div>
-          <div class="label-small" *ngIf="dragon.unlockedExpeditions.includes(expeditionUid)">
-            {{ 'explore.fullAccess' | translate }}
-          </div>
+          <ng-container
+            [ngTemplateOutlet]="dragonTemplate || defaultDragonTemplate"
+            [ngTemplateOutletContext]="{ $implicit: dragon }">
+          </ng-container>
+          <ng-template #defaultDragonTemplate>
+            {{ dragon.name }} [{{ dragon.level }}]
+          </ng-template>
         </div>
     </div>
   </div>

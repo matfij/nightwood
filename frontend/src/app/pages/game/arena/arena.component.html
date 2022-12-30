@@ -48,10 +48,16 @@
   <app-dragon-choice-modal
     *ngIf="displayDragonChoiceModal"
     [message]="modalMessage!"
-    [displayStamina]="true"
+    [dragonTemplate]="dragonTemplate"
     (close)="displayDragonChoiceModal = false"
     (dragonSelected)="startBattle($event)">
   </app-dragon-choice-modal>
+  <ng-template #dragonTemplate let-dragon>
+    {{ dragon.name }} [{{ dragon.level }}]
+    <div class="label-small">
+      {{ dragon.stamina }} {{ 'dragon.stamina' | translate }}
+    </div>
+  </ng-template>
 
   <app-dragon-battle
     *ngIf="displayBattle"

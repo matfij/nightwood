@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { DragonController, DragonDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragon } from '../../definitions/dragons';
@@ -19,9 +19,8 @@ export class DragonChoiceModalComponent extends AbstractModalComponent implement
 
   @Input() title: string = 'explore.selectDragon';
   @Input() message: string = '';
-  @Input() level: number = 0;
-  @Input() displayStamina: boolean = false;
-  @Input() expeditionUid: string = '';
+  @Input() requiredLevel: number = 0;
+  @Input() dragonTemplate?: TemplateRef<DisplayDragon>;
   @Output() dragonSelected: EventEmitter<DragonDto> = new EventEmitter<DragonDto>();
 
   displayDragons$?: Observable<DisplayDragon[]>;
@@ -45,7 +44,7 @@ export class DragonChoiceModalComponent extends AbstractModalComponent implement
   }
 
   chooseDragon(dragon: DragonDto) {
-    if (dragon.level < this.level) { this.toastService.showError('errors.error', 'errors.dragonTooYoung'); return; }
+    if (dragon.level < this.requiredLevel) { this.toastService.showError('errors.error', 'errors.dragonTooYoung'); return; }
     this.dragonSelected.next(dragon);
   }
 

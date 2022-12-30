@@ -33,11 +33,21 @@
             *ngIf="showDragonChoiceModal && expedition.uid === selectedExpedition?.uid"
             [title]="modalTitle!"
             [message]="modalMessage!"
-            [level]="requiredLevel"
-            [expeditionUid]="expedition.uid"
+            [dragonTemplate]="dragonTemplate"
             (close)="showDragonChoiceModal = false"
             (dragonSelected)="dragonChoiceCallback($event, expedition)">
           </app-dragon-choice-modal>
+          <ng-template #dragonTemplate let-dragon>
+            <div style="margin-bottom: -3px;">
+              {{ dragon.name }} [{{ dragon.level }}]
+            </div>
+            <div class="inline label-small">
+              {{ dragon.stamina }} {{ 'dragon.stamina' | translate }}
+            </div>
+            <div *ngIf="dragon.unlockedExpeditions.includes(selectedExpedition?.uid)" class="inline label-small">
+              ({{ 'explore.fullAccess' | translate }})
+            </div>
+          </ng-template>
 
         </div>
       </div>
