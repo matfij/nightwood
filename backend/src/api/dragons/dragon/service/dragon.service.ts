@@ -35,6 +35,7 @@ import { UserDto } from 'src/api/users/user/model/dto/user.dto';
 import { AchievementsService } from 'src/api/users/achievements/service/achievements.service';
 import { DragonPublicDto } from '../model/dto/dragon-public.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/items';
+import { EXPEDITIONS_EVENT } from '../../dragon-action/data/expeditions-event';
 
 @Injectable()
 export class DragonService {
@@ -275,7 +276,7 @@ export class DragonService {
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
 
-        const expedition = EXPEDITIONS.find(e => e.uid === dto.expeditionUid);
+        const expedition = [...EXPEDITIONS, ...EXPEDITIONS_EVENT].find(e => e.uid === dto.expeditionUid);
         if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
         if (ownedDragon.level < expedition.guardian.level) this.errorService.throw('errors.dragonTooYoung');

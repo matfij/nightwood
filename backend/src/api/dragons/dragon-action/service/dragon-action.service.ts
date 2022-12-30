@@ -11,6 +11,7 @@ import { ExpeditionDto } from '../model/dto/expedition.dto';
 import { ExpeditionPageDto } from '../model/dto/expedition-page.dto';
 import { MathService } from 'src/common/services/math.service';
 import { EXPEDITIONS } from '../data/expeditions';
+import { EXPEDITIONS_EVENT } from '../data/expeditions-event';
 
 @Injectable()
 export class DragonActionService {
@@ -36,7 +37,7 @@ export class DragonActionService {
   }
 
   async getExpeditions(): Promise<ExpeditionPageDto> {
-    const expeditions = EXPEDITIONS.map(x => { 
+    const expeditions = EXPEDITIONS.map((x) => { 
       return { 
         ...x, 
         loots: [], 
@@ -53,8 +54,25 @@ export class DragonActionService {
     return page;
   }
 
+  async getExpeditionsEvent(): Promise<ExpeditionPageDto> {
+    const expeditions = EXPEDITIONS_EVENT.map((x) => {
+      return { 
+        ...x, 
+        loots: [], 
+        goldAward: null, 
+        experienceAward: null,
+        guardian: { ...x.guardian, strength: null, dexterity: null, endurance: null, will: null, luck: null, skills: null },
+      };
+    });
+    const page: ExpeditionPageDto = {
+      data: expeditions,
+      meta: { totalItems: expeditions.length },
+    }
+    return page;
+  }
+
   async startExpedition(expeditionId: string, dragon: DragonDto): Promise<DragonActionDto> {
-    const expedition = EXPEDITIONS.find(x => x.uid === expeditionId);
+    const expedition = [...EXPEDITIONS, ...EXPEDITIONS_EVENT].find(x => x.uid === expeditionId);
     if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
     if (expedition.level > dragon.level) this.errorService.throw('errors.dragonTooYoung');
@@ -76,7 +94,7 @@ export class DragonActionService {
     dragon.action.awardCollected = true;
     await this.dragonActionRepository.save(dragon.action);
 
-    const expedition = EXPEDITIONS.find(x => x.uid === dragon.action.expeditionId);
+    const expedition = [...EXPEDITIONS, ...EXPEDITIONS_EVENT].find(x => x.uid === dragon.action.expeditionId);
     return expedition;
   }
 

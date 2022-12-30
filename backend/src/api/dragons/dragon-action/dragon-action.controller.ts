@@ -21,4 +21,11 @@ export class DragonActionController {
     return this.actionService.getExpeditions();
   }
 
+  @Post('getExpeditionsEvent')
+  @UseInterceptors(PaginationInterceptor)
+  @ApiOkResponse({ type: ExpeditionPageDto })
+  getExpeditionsEvent(): Promise<ExpeditionPageDto> {
+    return this.actionService.getExpeditionsEvent();
+  }
+
 }
