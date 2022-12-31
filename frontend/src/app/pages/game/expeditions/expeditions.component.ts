@@ -19,6 +19,7 @@ export class ExpeditionsComponent implements OnInit {
   @ViewChild('selectDragon') selectDragon?: ElementRef;
 
   expeditions$?: Observable<DisplayExpedition[]>;
+  expeditionsEvent$?: Observable<DisplayExpedition[]>;
   showDragonChoiceModal: boolean = false;
   modalTitle?: string;
   modalMessage?: string;
@@ -45,6 +46,9 @@ export class ExpeditionsComponent implements OnInit {
 
   getExpeditions() {
     this.expeditions$ = this.dragonActionController.getExpeditions().pipe(
+      map((expeditionPage) => expeditionPage.data.map((x) => this.expeditionService.toDisplayExpedition(x)))
+    );
+    this.expeditionsEvent$ = this.dragonActionController.getExpeditionsEvent().pipe(
       map((expeditionPage) => expeditionPage.data.map((x) => this.expeditionService.toDisplayExpedition(x)))
     );
   }

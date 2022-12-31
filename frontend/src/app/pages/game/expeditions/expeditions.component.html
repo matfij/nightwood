@@ -11,48 +11,63 @@
       </div>
     </ng-template>
 
-    <div *ngIf="(expeditions$ | async) as expeditions; else expeditionsLoading" class="wrapper-expeditions">
+    <div *ngIf="(expeditionsEvent$ | async) as expeditions; else expeditionsLoading" class="wrapper-expeditions">
       <div *ngFor="let expedition of expeditions" class="expedition">
-
         <div class="expedition-img">
           <img [src]="expedition.image" [alt]="expedition.name" draggable="false">
         </div>
-
         <div class="expedition-hint">
           <b>{{ expedition.name | translate }}</b><br>
           {{ expedition.hint | translate }} <br>
-
           <button (click)="prepareExpedition(expedition)" class="btn-base">
             {{ 'explore.explore' | translate }}
           </button>
           <button (click)="prepareGuardianChallenge(expedition)" class="btn-base">
             {{ 'explore.challengeGuardian' | translate }}
           </button>
-
-          <app-dragon-choice-modal
-            *ngIf="showDragonChoiceModal && expedition.uid === selectedExpedition?.uid"
-            [title]="modalTitle!"
-            [message]="modalMessage!"
-            [dragonTemplate]="dragonTemplate"
-            (close)="showDragonChoiceModal = false"
-            (dragonSelected)="dragonChoiceCallback($event, expedition)">
-          </app-dragon-choice-modal>
-          <ng-template #dragonTemplate let-dragon>
-            <div style="margin-bottom: -3px;">
-              {{ dragon.name }} [{{ dragon.level }}]
-            </div>
-            <div class="inline label-small">
-              {{ dragon.stamina }} {{ 'dragon.stamina' | translate }}
-            </div>
-            <div *ngIf="dragon.unlockedExpeditions.includes(selectedExpedition?.uid)" class="inline label-small">
-              ({{ 'explore.fullAccess' | translate }})
-            </div>
-          </ng-template>
-
         </div>
       </div>
     </div>
+
+    <div *ngIf="(expeditions$ | async) as expeditions; else expeditionsLoading" class="wrapper-expeditions">
+      <div *ngFor="let expedition of expeditions" class="expedition">
+        <div class="expedition-img">
+          <img [src]="expedition.image" [alt]="expedition.name" draggable="false">
+        </div>
+        <div class="expedition-hint">
+          <b>{{ expedition.name | translate }}</b><br>
+          {{ expedition.hint | translate }} <br>
+          <button (click)="prepareExpedition(expedition)" class="btn-base">
+            {{ 'explore.explore' | translate }}
+          </button>
+          <button (click)="prepareGuardianChallenge(expedition)" class="btn-base">
+            {{ 'explore.challengeGuardian' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <app-dragon-choice-modal
+    *ngIf="showDragonChoiceModal && selectedExpedition"
+    [title]="modalTitle!"
+    [message]="modalMessage!"
+    [dragonTemplate]="dragonTemplate"
+    (close)="showDragonChoiceModal = false"
+    (dragonSelected)="dragonChoiceCallback($event, selectedExpedition)">
+  </app-dragon-choice-modal>
+  <ng-template #dragonTemplate let-dragon>
+    <div style="margin-bottom: -3px;">
+      {{ dragon.name }} [{{ dragon.level }}]
+    </div>
+    <div class="inline label-small">
+      {{ dragon.stamina }} {{ 'dragon.stamina' | translate }}
+    </div>
+    <div *ngIf="dragon.unlockedExpeditions.includes(selectedExpedition?.uid)" class="inline label-small">
+      ({{ 'explore.fullAccess' | translate }})
+    </div>
+  </ng-template>
 
   <app-dragon-battle
     *ngIf="selectedExpedition && displayBattle"
