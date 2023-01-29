@@ -48,6 +48,12 @@ git.push:
 	git push
 
 
+sync.prod:
+	cp backend/package.json prod/package.json
+	cp backend/yarn.lock prod/yarn.lock
+	cp -r frontend/dist/nightwood-frontend/* prod/client/
+
+
 system.init:
 	sudo yum update -y
 	sudo amazon-linux-extras install nginx1

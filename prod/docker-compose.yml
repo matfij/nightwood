@@ -4,23 +4,13 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
       target: ${TARGET}
     env_file:
       - .env
     volumes:
-      - ./backend:${BACKEND_SRC}
+      - ./:${BACKEND_SRC}
       - ${BACKEND_SRC}/node_modules/
     ports:
       - '${BACKEND_PORT}:${BACKEND_PORT}'
-    depends_on:
-      - postgres
-    command: npm run start:dev
-
-  postgres:
-    image: postgres:14.1
-    env_file:
-      - .env
-    ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'

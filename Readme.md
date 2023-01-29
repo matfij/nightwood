@@ -37,12 +37,12 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 ## Finished - 20.09.2022 (beta)
 
 ## Refactoring 1
- - Minimize dependencies [50%]
+ - Minimize dependencies [90%]
  - Optimization - db operations, throttling [0%]
  - Player actions - dtos, controllers, JWT [70%]
  - Frontend components - change detection, generic, skeletons [80%]
  - Unit tests, CI/CD [75%]
- - Production release [0%]
+ - Production release [100%]
 
 ## Stage 2
  - Guilds - diplomacy, constructions 
