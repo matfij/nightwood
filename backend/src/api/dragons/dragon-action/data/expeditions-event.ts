@@ -28,5 +28,5 @@ export const EXPEDITION_EVENT_1: ExpeditionDto = {
 };
 
 export const EXPEDITIONS_EVENT: ExpeditionDto[] = [
-    EXPEDITION_EVENT_1,
+    // EXPEDITION_EVENT_1,
 ];
