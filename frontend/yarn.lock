@@ -4320,16 +4320,16 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-ngx-socket-io@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/ngx-socket-io/-/ngx-socket-io-4.4.0.tgz#89a08fd2a4f070b5aa4fe4f1b95cd97225e4109e"
-  integrity sha512-0aD6J7n8Iwer5eQlHipAZMqVTV9RTHBPsMe372O4V1W+zRjK2PkjtsE6jFi5LZzJrCthQVDim8+6Kf6H1FA/qA==
+ngx-socket-io@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/ngx-socket-io/-/ngx-socket-io-4.3.0.tgz#fe64d0d7fedc41e0d046d721e8fa925129e3db6d"
+  integrity sha512-H9JG1ePQZI9QnrlfniaR5ghOKvLWCqYoPM9+7zz8EpW9fEXiJJPB9Y/EKFJtoMMlrSM4+D9hXxuvyZXZPFNWPg==
   dependencies:
     core-js "^3.0.0"
     reflect-metadata "^0.1.10"
     socket.io "^4.5.1"
     socket.io-client "^4.5.1"
-    tslib "^2.3.0"
+    tslib "^2.0.0"
     zone.js "~0.11.4"
 
 ngx-toastr@^14.1.4:
