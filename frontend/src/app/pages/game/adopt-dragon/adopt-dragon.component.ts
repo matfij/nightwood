@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionController, DragonAdoptDto, DragonNature } from 'src/app/client/api';
 import { AdoptStage, AdoptStep, AdoptAnswer, NaturePoints } from 'src/app/core/definitions/dragons';
@@ -52,8 +52,8 @@ export class AdoptDragonComponent implements OnInit {
   currentStep: AdoptStep = AdoptStep.Trait;
   chosenAnswers: AdoptAnswer[] = [];
 
-  form: FormGroup = new FormGroup({
-    name: new FormControl(
+  form: UntypedFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(
       null,
       [Validators.required, Validators.minLength(DRAGON_NAME_MIN_LENGTH), Validators.maxLength(DRAGON_NAME_MAX_LENGTH)],
     )
@@ -64,7 +64,7 @@ export class AdoptDragonComponent implements OnInit {
   submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   adoptStep = AdoptStep;
-  get dragonName(): FormControl { return this.form.get('name') as FormControl; }
+  get dragonName(): UntypedFormControl { return this.form.get('name') as UntypedFormControl; }
 
   constructor(
     private router: Router,

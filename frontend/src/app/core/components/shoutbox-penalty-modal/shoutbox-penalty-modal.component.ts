@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { PenaltyController, PenaltyImposeDto, PenaltyType } from 'src/app/client/api';
 import { BAN_MAX_TIME, BAN_MIN_TIME, MUTE_MAX_TIME, MUTE_MIN_TIME, PENALTY_COMMENT_MAX_LENGTH } from 'src/app/client/config/frontend.config';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
@@ -22,11 +22,11 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
   @Input() penaltyType!: PenaltyType;
   @Output() penaltyInfo: EventEmitter<FullPenaltyInfo> = new EventEmitter<FullPenaltyInfo>();
 
-  form: FormGroup = new FormGroup({
-    duration: new FormControl(
+  form: UntypedFormGroup = new UntypedFormGroup({
+    duration: new UntypedFormControl(
       null, [Validators.required],
     ),
-    comment: new FormControl(
+    comment: new UntypedFormControl(
       null, [Validators.maxLength(PENALTY_COMMENT_MAX_LENGTH)],
     ),
   });

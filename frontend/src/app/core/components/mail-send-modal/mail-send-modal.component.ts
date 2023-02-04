@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { MailController, MailSendDto } from 'src/app/client/api';
 import { MAIL_MESSAGE_MAX_LENGTH, MAIL_MESSAGE_MIN_LENGTH, MAIL_RECEIVER_MAX_LENGTH, MAIL_RECEIVER_MIN_LENGTH, MAIL_TOPIC_MAX_LENGTH, MAIL_TOPIC_MIN_LENGTH } from 'src/app/client/config/frontend.config';
@@ -21,14 +21,14 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
 
   @Input() replyName?: string | null;
 
-  form: FormGroup = new FormGroup({
-    receiver: new FormControl(
+  form: UntypedFormGroup = new UntypedFormGroup({
+    receiver: new UntypedFormControl(
       null, [Validators.minLength(MAIL_RECEIVER_MIN_LENGTH), Validators.maxLength(MAIL_RECEIVER_MAX_LENGTH)],
     ),
-    topic: new FormControl(
+    topic: new UntypedFormControl(
       null, [Validators.minLength(MAIL_TOPIC_MIN_LENGTH), Validators.maxLength(MAIL_TOPIC_MAX_LENGTH)],
     ),
-    message: new FormControl(
+    message: new UntypedFormControl(
       null, [Validators.minLength(MAIL_MESSAGE_MIN_LENGTH), Validators.maxLength(MAIL_MESSAGE_MAX_LENGTH)],
     ),
   });
@@ -39,9 +39,9 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
   ];
   submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  get receiver(): FormControl { return this.form.get('receiver') as FormControl; }
-  get topic(): FormControl { return this.form.get('topic') as FormControl; }
-  get message(): FormControl { return this.form.get('message') as FormControl; }
+  get receiver(): UntypedFormControl { return this.form.get('receiver') as UntypedFormControl; }
+  get topic(): UntypedFormControl { return this.form.get('topic') as UntypedFormControl; }
+  get message(): UntypedFormControl { return this.form.get('message') as UntypedFormControl; }
 
   constructor(
     private mailController: MailController,

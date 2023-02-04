@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { FieldType, FormInputOptions } from 'src/app/common/definitions/forms';
 
@@ -12,7 +12,7 @@ export class InputBaseComponent implements OnInit {
 
   @Input() options!: FormInputOptions;
 
-  field?: FormControl;
+  field?: UntypedFormControl;
   fieldName?: string;
 
   FieldType = FieldType;
@@ -24,7 +24,7 @@ export class InputBaseComponent implements OnInit {
   ngOnInit(): void {
     this.options.fieldType = this.options.fieldType ?? FieldType.SIMPLE;
 
-    this.field = this.options.form.get(this.options.key) as FormControl;
+    this.field = this.options.form.get(this.options.key) as UntypedFormControl;
     this.fieldName = this.options.label ? this.translateService.instant(this.options.label) : '';
   }
 

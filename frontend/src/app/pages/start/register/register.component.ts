@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
@@ -19,17 +19,17 @@ import { EngineService } from 'src/app/core/services/engine.service';
 })
 export class RegisterComponent implements OnInit {
 
-  form: FormGroup = new FormGroup({
-    email: new FormControl(
+  form: UntypedFormGroup = new UntypedFormGroup({
+    email: new UntypedFormControl(
       null, [Validators.required, Validators.email, Validators.maxLength(EMAIL_MAX_LENGTH)],
     ),
-    nickname: new FormControl(
+    nickname: new UntypedFormControl(
       null, [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
     ),
-    password: new FormControl(
+    password: new UntypedFormControl(
       null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
-    passwordConfirm: new FormControl(
+    passwordConfirm: new UntypedFormControl(
       null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
   });
@@ -41,10 +41,10 @@ export class RegisterComponent implements OnInit {
   ];
   submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  get email(): FormControl { return this.form.get('email') as FormControl; }
-  get nickname(): FormControl { return this.form.get('nickname') as FormControl; }
-  get password(): FormControl { return this.form.get('password') as FormControl; }
-  get passwordConfirm(): FormControl { return this.form.get('passwordConfirm') as FormControl; }
+  get email(): UntypedFormControl { return this.form.get('email') as UntypedFormControl; }
+  get nickname(): UntypedFormControl { return this.form.get('nickname') as UntypedFormControl; }
+  get password(): UntypedFormControl { return this.form.get('password') as UntypedFormControl; }
+  get passwordConfirm(): UntypedFormControl { return this.form.get('passwordConfirm') as UntypedFormControl; }
 
   constructor(
     private router: Router,

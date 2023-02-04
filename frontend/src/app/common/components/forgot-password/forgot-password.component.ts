@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AuthController, PasswordRecoverDto } from 'src/app/client/api';
 import { EMAIL_MAX_LENGTH } from 'src/app/client/config/frontend.config';
@@ -13,7 +13,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 export class ForgotPasswordComponent implements OnInit {
 
   @Output() close = new EventEmitter<boolean>();
-  emailOrNickname = new FormControl(null, [Validators.required, Validators.maxLength(EMAIL_MAX_LENGTH)]);
+  emailOrNickname = new UntypedFormControl(null, [Validators.required, Validators.maxLength(EMAIL_MAX_LENGTH)]);
   recoverPasswordLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(

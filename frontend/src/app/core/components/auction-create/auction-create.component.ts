@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AuctionController, AuctionCreateDto, ItemController, ItemPageDto } from 'src/app/client/api';
@@ -20,14 +20,14 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
 
   @ViewChild('itemSelect') itemSelect!: ElementRef;
 
-  form: FormGroup = new FormGroup({
-    duration: new FormControl(
+  form: UntypedFormGroup = new UntypedFormGroup({
+    duration: new UntypedFormControl(
       AUCTION_MAX_DURATION, [Validators.required, Validators.min(AUCTION_MIN_DURATION), Validators.max(AUCTION_MAX_DURATION)],
     ),
-    quantity: new FormControl(
+    quantity: new UntypedFormControl(
       AUCTION_MIN_QUANTITY, [Validators.required, Validators.min(AUCTION_MIN_QUANTITY), Validators.max(AUCTION_MAX_QUANTITY)],
     ),
-    unitPrice: new FormControl(
+    unitPrice: new UntypedFormControl(
       null, [Validators.required, Validators.min(AUCTION_MIN_PRICE), Validators.max(AUCTION_MAX_PRICE)],
     ),
   });
@@ -39,9 +39,9 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
   submitLoading: boolean = false;
   tradableItems$?: Observable<ItemPageDto>;
 
-  get duration(): FormControl { return this.form.get('duration') as FormControl; }
-  get quantity(): FormControl { return this.form.get('quantity') as FormControl; }
-  get unitPrice(): FormControl { return this.form.get('unitPrice') as FormControl; }
+  get duration(): UntypedFormControl { return this.form.get('duration') as UntypedFormControl; }
+  get quantity(): UntypedFormControl { return this.form.get('quantity') as UntypedFormControl; }
+  get unitPrice(): UntypedFormControl { return this.form.get('unitPrice') as UntypedFormControl; }
 
   constructor(
     private translateService: TranslateService,

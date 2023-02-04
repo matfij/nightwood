@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -18,11 +18,11 @@ import { EngineService } from 'src/app/core/services/engine.service';
 })
 export class LoginComponent implements OnInit {
 
-  form: FormGroup = new FormGroup({
-    login: new FormControl(
+  form: UntypedFormGroup = new UntypedFormGroup({
+    login: new UntypedFormControl(
       null, [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
     ),
-    password: new FormControl(
+    password: new UntypedFormControl(
       null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
   });

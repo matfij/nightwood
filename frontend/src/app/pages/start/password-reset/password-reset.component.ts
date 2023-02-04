@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AuthController, PasswordResetDto } from 'src/app/client/api';
@@ -15,8 +15,8 @@ import { ToastService } from 'src/app/common/services/toast.service';
 export class PasswordResetComponent implements OnInit {
 
   actionCode: string = '';
-  newPassword = new FormControl(null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)]);
-  newPasswordConfirm = new FormControl(null, [Validators.required]);
+  newPassword = new UntypedFormControl(null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)]);
+  newPasswordConfirm = new UntypedFormControl(null, [Validators.required]);
   resetPasswordLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(
