@@ -74,6 +74,6 @@ export class DragonSkillsComponent extends AbstractModalComponent implements OnI
   }
 
   closeModal() {
-    this.updatedDragon.next(this.dragon$?.getValue());
+    this.updatedDragon.next(this.dragon$!.getValue());
   }
 }

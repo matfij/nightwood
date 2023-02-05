@@ -127,7 +127,7 @@ export class DragonBattleComponent implements OnInit, OnDestroy {
   }
 
   scrollLogs() {
-    timer().subscribe(() => {
+    timer(0).subscribe(() => {
       if (this.battleLogsWrapper) {
         this.battleLogsWrapper.nativeElement.scrollTop = this.battleLogsWrapper.nativeElement.scrollHeight;
       }

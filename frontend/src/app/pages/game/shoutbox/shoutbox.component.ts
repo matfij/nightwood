@@ -56,7 +56,7 @@ export class ShoutboxComponent implements OnInit, OnDestroy {
       }),
       map((messages) => [...this.savedMessages, ...messages]),
       tap(() => {
-        timer().subscribe(() => {
+        timer(0).subscribe(() => {
           if (this.messagesWrapper) {
             this.messagesWrapper.nativeElement.scrollTop = this.messagesWrapper.nativeElement.scrollHeight;
           }
