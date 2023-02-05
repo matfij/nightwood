@@ -36,7 +36,7 @@ export class AuthService {
     ) {}
 
     async login(dto: UserLoginDto): Promise<UserAuthDto> {
-        const user = await this.userRepository.findOne({ nickname: dto.nickname });
+        const user = await this.userRepository.findOne({ where: { nickname: dto.nickname } });
         if (!user) this.errorService.throw('errors.userNotFound');
         if (!user.isConfirmed) this.errorService.throw('errors.userNotConfirmed');
 
@@ -83,7 +83,7 @@ export class AuthService {
     }
 
     async confirm(dto: UserConfirmDto): Promise<void> {
-        const user = await this.userRepository.findOne({ isConfirmed: false, actionToken: dto.activationCode });
+        const user = await this.userRepository.findOne({ where: { isConfirmed: false, actionToken: dto.activationCode } });
         if (!user) this.errorService.throw('errors.confirmationCodeInvalid');
         if (this.dateService.checkIfNextEventAvailable(user.actionTokenValidity)) this.errorService.throw('errors.confirmationCodeExpired');
 
@@ -110,7 +110,7 @@ export class AuthService {
     }
 
     async getUserData(userId: number): Promise<UserDto> {
-        const user = await this.userRepository.findOne(userId);
+        const user = await this.userRepository.findOne({ where: { id: userId } });
         user.password = null;
         return user;
     }
@@ -130,9 +130,9 @@ export class AuthService {
 
         let user: UserDto = null;
         if (this.isEmail(dto.emailOrNickname)) {
-            user = await this.userRepository.findOne({ email: dto.emailOrNickname });
+            user = await this.userRepository.findOne({ where: { email: dto.emailOrNickname }});
         } else {
-            user = await this.userRepository.findOne({ nickname: dto.emailOrNickname });
+            user = await this.userRepository.findOne({ where: { nickname: dto.emailOrNickname }});
         }
         if (!user) this.errorService.throw('errors.userNotFound');
 
@@ -150,7 +150,7 @@ export class AuthService {
     }
 
     async resetPassword(dto: PasswordResetDto): Promise<void> {
-        const user = await this.userRepository.findOne({ actionToken: dto.actionToken });
+        const user = await this.userRepository.findOne({ where: { actionToken: dto.actionToken }});
         if (!user || this.dateService.checkIfNextEventAvailable(user.actionTokenValidity)) this.errorService.throw('errors.invalidResetCode');
 
         const newPassword = await this.hashPassword(dto.newPassword);
@@ -168,13 +168,13 @@ export class AuthService {
     }
 
     private async emailExists(email: string): Promise<boolean> {
-        const users = await this.userRepository.find({ email: email });
+        const users = await this.userRepository.find({ where: { email: email }});
 
         return users.length > 0;
     }
 
     private async nicknameExists(nickname: string): Promise<boolean> {
-        const users = await this.userRepository.find({ nickname: nickname });
+        const users = await this.userRepository.find({ where: { nickname: nickname }});
 
         return users.length > 0;
     }

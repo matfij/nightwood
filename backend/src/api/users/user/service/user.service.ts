@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { paginate } from 'nestjs-typeorm-paginate';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../auth/service/auth.service';
@@ -49,7 +48,7 @@ export class UserService {
     }
 
     async update(id: string | number, dto: UserUpdateDto): Promise<UserDto> {
-        const user = await this.userRepository.findOne(id);
+        const user = await this.userRepository.findOne({ where: { id: +id } });
         if (!user) throw new NotFoundException();
 
         if (dto.email && dto.email !== user.email && await this.emailExists(dto.email)) this.errorService.throw('errors.emailNotUnique');
@@ -65,7 +64,7 @@ export class UserService {
     }
 
     async getOne(id: number | string): Promise<UserDto> {
-        const user = await this.userRepository.findOne(id);
+        const user = await this.userRepository.findOne({ where: { id: +id } });
 
         if (!user) this.errorService.throw('errors.userNotFound');
 
@@ -81,17 +80,20 @@ export class UserService {
     }
 
     async getAll(dto: UserGetDto): Promise<UserPageDto> {
-        const page = await paginate<UserDto>(this.userRepository, { page: dto.page, limit: dto.limit });
+        const page = await this.userRepository.find({
+            skip: dto.page * dto.limit,
+            take: dto.limit,
+        })
         
         const pageUser: UserPageDto = {
-            data: page.items,
-            meta: page.meta,
+            data: page,
+            meta: {},
         };
         return pageUser;
     }
 
     async updateOwnedDragons(id: number | string, increment: boolean = true) {
-        const user = await this.userRepository.findOne(id);
+        const user = await this.userRepository.findOne({ where: { id: +id } });
         if (!user) throw new NotFoundException();
         
         if (increment && user.ownedDragons >= user.maxOwnedDragons) this.errorService.throw('errors.maxDragonsExceeded');
@@ -146,8 +148,8 @@ export class UserService {
         }
     }
 
-    async getPublicData(id: number | string): Promise<UserPublicDto> {
-        const user = await this.userRepository.findOne(id);
+    async getPublicData(userId: number | string): Promise<UserPublicDto> {
+        const user = await this.userRepository.findOne({ where: { id: +userId } });
         if (!user) this.errorService.throw('errors.userNotFound');
 
         const publicUser: UserPublicDto = {
@@ -162,9 +164,11 @@ export class UserService {
     }
 
     async requestFriendship(userId: number, dto: FriendshipRequestDto) {
-        const user = await this.userRepository.findOne(userId);
-
-        const targetUser = await this.userRepository.findOne(dto.targetUserId, { relations: ['friends', 'friendRequests'] });
+        const user = await this.userRepository.findOne({ where: { id: userId } });
+        const targetUser = await this.userRepository.findOne({ 
+            where: { id: dto.targetUserId },
+            relations: ['friends', 'friendRequests'] 
+        });
         if (!targetUser) this.errorService.throw('errors.userNotFound');
         if (user.id === targetUser.id) this.errorService.throw('errors.cannotInviteSelf');
 
@@ -176,7 +180,7 @@ export class UserService {
     }
 
     async getPendingFriendshipRequests(userId: number): Promise<FriendshipPendingRequestDto[]> {
-        const user = await this.userRepository.findOne(userId, { relations: ['friendRequests'] });
+        const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['friendRequests'] });
         
         return user.friendRequests.map((requester) => ({
             requesterId: requester.id,
@@ -185,8 +189,14 @@ export class UserService {
     }
 
     async respondToFriendshipRequest(userId: number, dto: FriendshipRespondDto): Promise<UserPublicDto> {
-        const user = await this.userRepository.findOne(userId, { relations: ['friends', 'friendRequests'] });
-        const requester = await this.userRepository.findOne(dto.requesterId, { relations: ['friends', 'friendRequests'] });
+        const user = await this.userRepository.findOne({ 
+            where: { id: userId }, 
+            relations: ['friends', 'friendRequests'] 
+        });
+        const requester = await this.userRepository.findOne({ 
+            where: { id: dto.requesterId }, 
+            relations: ['friends', 'friendRequests'] 
+        });
         
         if (!user.friendRequests.map((x) => x.id).includes(requester.id)) this.errorService.throw('errors.friendRequestNotFound');
 
@@ -210,7 +220,7 @@ export class UserService {
     }
 
     async getFriends(userId: number): Promise<UserPublicDto[]> {
-        const user = await this.userRepository.findOne(userId, { relations: ['friends'] });
+        const user = await this.userRepository.findOne({ where: { id:userId }, relations: ['friends'] });
 
         return user.friends.map((friend) => ({
             id: friend.id,
@@ -220,16 +230,12 @@ export class UserService {
     }
 
     private async emailExists(email: string): Promise<boolean> {
-        const params: UserGetDto = { email: email };
-        const users = await this.userRepository.find(params);
-
+        const users = await this.userRepository.find({ where: { email: email } });
         return users.length > 0;
     }
 
     private async nicknameExists(nickname: string): Promise<boolean> {
-        const params: UserGetDto = { nickname: nickname };
-        const users = await this.userRepository.find(params);
-
+        const users = await this.userRepository.find({ where: { nickname: nickname }});
         return users.length > 0;
     }
 }

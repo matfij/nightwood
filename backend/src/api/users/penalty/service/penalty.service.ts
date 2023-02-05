@@ -24,8 +24,8 @@ export class PenaltyService {
     ) {}
 
     async imposePenalty(user: UserDto, dto: PenaltyImposeDto): Promise<void> {
-        const imposingUser = await this.userRepository.findOne(user.id);
-        const punishedUser = await this.userRepository.findOne(dto.punishedUserId);
+        const imposingUser = await this.userRepository.findOne({ where: { id: user.id } });
+        const punishedUser = await this.userRepository.findOne({ where: { id: dto.punishedUserId } });
         
         if (!imposingUser || !punishedUser) this.errorService.throw('errors.userNotFound');
         if (imposingUser.role === UserRole.Moderator && punishedUser.role === UserRole.Administrator) this.errorService.throw('errors.insufficientPermissions');

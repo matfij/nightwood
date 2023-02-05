@@ -32,7 +32,7 @@ export class ItemService {
     }
 
     async getOwnedFoods(user: UserDto): Promise<ItemPageDto> {
-        const items = await this.itemRepository.find({ user: user, type: ItemType.Food, quantity: MoreThan(0) });
+        const items = await this.itemRepository.find({ where: { user: user, type: ItemType.Food, quantity: MoreThan(0) }});
         const itemsPage: ItemPageDto = {
             data: items,
             meta: {},
@@ -58,7 +58,7 @@ export class ItemService {
     }
 
     async checkItem(userId: number, itemId: number): Promise<ItemDto> {
-        const item = await this.itemRepository.findOne(itemId, { relations: ['user', 'dragon'] });
+        const item = await this.itemRepository.findOne({ where: { id: itemId }, relations: ['user', 'dragon'] });
         
         if (!item) this.errorService.throw('errors.itemNotFound');
         if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
@@ -87,7 +87,7 @@ export class ItemService {
     }
 
     async checkUnequippingItem(userId: number, itemId: number): Promise<ItemDto> {
-        const item = await this.itemRepository.findOne(itemId, { relations: ['user', 'dragon'] });
+        const item = await this.itemRepository.findOne({ where: { id: itemId }, relations: ['user', 'dragon'] });
         
         if (!item) this.errorService.throw('errors.itemNotFound');
         if (item.user.id !== userId) this.errorService.throw('errors.itemNotFound');
@@ -108,7 +108,7 @@ export class ItemService {
 
     async checkAndConsumeItems(requiredItems: ItemDto[], userId: number): Promise<void> {
         const userItems = await this.itemRepository.find({
-            where: { user: userId, quantity: MoreThan(0) },
+            where: { user: { id: userId }, quantity: MoreThan(0) },
         });
         const missingItems = requiredItems.filter(requiredItem => {
             const item = userItems.find(item => item.uid === requiredItem.uid);
@@ -136,7 +136,7 @@ export class ItemService {
     }
 
     async updateInventory(user: UserDto, loots: ItemDto[]) {
-        const items = await this.itemRepository.find({ user: user });
+        const items = await this.itemRepository.find({ where: { user: { id: user.id } }});
 
         const newItems = [];
         loots.forEach(loot => {

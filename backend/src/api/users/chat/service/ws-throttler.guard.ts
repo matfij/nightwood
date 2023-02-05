@@ -9,9 +9,9 @@ export class WsThrottlerGuard extends ThrottlerGuard {
         const client = context.switchToWs().getClient();
         const ip = client.conn.remoteAddress;
         const key = this.generateKey(context, ip);
-        const ttls = await this.storageService.getRecord(key);
-        if (ttls.length >= WS_REQUEST_LIMIT) return false;
-        await this.storageService.addRecord(key, WS_REQUEST_TTL);
+        await this.storageService.increment(key, WS_REQUEST_TTL);
+        const ttls = this.storageService.storage[key];
+        if (ttls.totalHits > WS_REQUEST_LIMIT) return false;
         return true;
     }
 }

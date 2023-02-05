@@ -91,7 +91,7 @@ export class AuctionService {
                 ...(dto.ownedByUser && { sellerId: userId }),
                 item: {
                     level: Between(dto.minLevel, dto.maxLevel),
-                    type: dto.type ?? Any(Object.values(ItemType)),
+                    ...(dto.type && { type: dto.type }),
                     ...(dto.name && { name: Like(`%${dto.name}%`) }),
                     ...(dto.requiredRarity == ItemRarity.Common && { rarity: Any(Object.values(ItemRarity)) }),
                     ...(dto.requiredRarity == ItemRarity.Scarce && { rarity: Any([ItemRarity.Scarce, ItemRarity.Rare, ItemRarity.Mythical]) }),

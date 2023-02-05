@@ -15,5 +15,4 @@ RUN yarn install
 
 EXPOSE ${BACKEND_PORT}
 
-# CMD ["ls"]
 CMD ["node", "dist/main"]

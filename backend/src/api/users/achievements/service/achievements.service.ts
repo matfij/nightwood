@@ -38,7 +38,7 @@ export class AchievementsService {
     }
 
     private async getUserData(userId: number, relations: string[] = []) {
-        const user = await this.userRepository.findOne(userId, { relations: ['achievements', ...relations] });
+        const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['achievements', ...relations] });
         return user;
     }
 

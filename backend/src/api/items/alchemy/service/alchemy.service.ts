@@ -77,7 +77,7 @@ export class AlchemyService {
 
         await this.itemService.updateInventory(user, [recipe.product]);
 
-        await this.mixtureRepository.delete(mixture);
+        await this.mixtureRepository.delete(mixture.id);
 
         return recipe.product;
     }

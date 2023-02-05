@@ -36,6 +36,7 @@ import { AchievementsService } from 'src/api/users/achievements/service/achievem
 import { DragonPublicDto } from '../model/dto/dragon-public.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/items';
 import { EXPEDITIONS_EVENT } from '../../dragon-action/data/expeditions-event';
+import { User } from 'src/api/users/user/model/user.entity';
 
 @Injectable()
 export class DragonService {
@@ -64,7 +65,7 @@ export class DragonService {
     }
 
     async getOne(id: string | number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne(id, { relations: ['action', 'skills', 'runes', 'user'] });
+        const dragon = await this.dragonRepository.findOne( { where: { id: +id }, relations: ['action', 'skills', 'runes', 'user'] });
         const dragonDto: DragonDto = {
             ...dragon
         };
@@ -135,27 +136,21 @@ export class DragonService {
 
     async getOwnedDragons(user: UserDto): Promise<DragonDto[]> {
         const filterOptions: FindManyOptions<Dragon> = {
-            where: { user: user },
+            where: { user: { id: user.id } },
             relations: ['action', 'skills'],
             order: { experience: 'DESC' },
         };
-
-        const dragons = await this.dragonRepository.find({
-            ...filterOptions,
-        });
+        const dragons = await this.dragonRepository.find(filterOptions);
 
         return dragons;
     }
 
-    async getPublicPlayerDragons(publicUserId: number): Promise<DragonPublicDto[]> {
+    async getPublicPlayerDragons(userId: number): Promise<DragonPublicDto[]> {
         const filterOptions: FindManyOptions<Dragon> = {
-            where: { user: publicUserId },
+            where: { user: { id: userId } },
             order: { experience: 'DESC' },
         };
-
-        const dragons = await this.dragonRepository.find({
-            ...filterOptions,
-        });
+        const dragons = await this.dragonRepository.find(filterOptions);
 
         return dragons.map((dragon) => ({
             id: dragon.id,

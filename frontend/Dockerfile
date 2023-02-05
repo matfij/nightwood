@@ -1,6 +1,3 @@
-#
-# Development
-#
 FROM node:16-alpine AS development
 
 ARG FRONTEND_SRC=/dh/src/app/frontend
