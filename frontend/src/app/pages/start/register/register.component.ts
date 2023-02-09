@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { AuthController, UserRegisterDto } from 'src/app/client/api';
 import { EMAIL_MAX_LENGTH, NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
-import { RepositoryService } from 'src/app/common/services/repository.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { ValidatorService } from 'src/app/common/services/validator.service';
-import { EngineService } from 'src/app/core/services/engine.service';
 
 @Component({
   selector: 'app-register',
@@ -19,18 +17,18 @@ import { EngineService } from 'src/app/core/services/engine.service';
 })
 export class RegisterComponent implements OnInit {
 
-  form: UntypedFormGroup = new UntypedFormGroup({
-    email: new UntypedFormControl(
-      null, [Validators.required, Validators.email, Validators.maxLength(EMAIL_MAX_LENGTH)],
+  form = new FormGroup({
+    email: new FormControl<string>(
+      '', [Validators.required, Validators.email, Validators.maxLength(EMAIL_MAX_LENGTH)],
     ),
-    nickname: new UntypedFormControl(
-      null, [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
+    nickname: new FormControl<string>(
+      '', [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
     ),
-    password: new UntypedFormControl(
-      null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
+    password: new FormControl<string>(
+      '', [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
-    passwordConfirm: new UntypedFormControl(
-      null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
+    passwordConfirm: new FormControl<string>(
+      '', [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -41,17 +39,10 @@ export class RegisterComponent implements OnInit {
   ];
   submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  get email(): UntypedFormControl { return this.form.get('email') as UntypedFormControl; }
-  get nickname(): UntypedFormControl { return this.form.get('nickname') as UntypedFormControl; }
-  get password(): UntypedFormControl { return this.form.get('password') as UntypedFormControl; }
-  get passwordConfirm(): UntypedFormControl { return this.form.get('passwordConfirm') as UntypedFormControl; }
-
   constructor(
     private router: Router,
     private translateService: TranslateService,
     private authController: AuthController,
-    private engineService: EngineService,
-    private repositoryService: RepositoryService,
     private toastService: ToastService,
     private validatorService: ValidatorService,
   ) {}
@@ -65,18 +56,26 @@ export class RegisterComponent implements OnInit {
   }
 
   private validatePasswords() {
-    return this.password.value === this.passwordConfirm.value;
+    return this.form.value.password === this.form.value.passwordConfirm;
   }
 
   register() {
-    if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
-    if (!this.validatePasswords()) { this.toastService.showError('errors.error', 'start.passwordsMismatch'); return; }
-    if (!this.validatorService.checkBannedWords(this.nickname.value)) return;
+    if (!this.form.valid || !this.form.value.email || !this.form.value.nickname || !this.form.value.password) {
+      this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint');
+      return;
+    }
+    if (!this.validatePasswords()) {
+      this.toastService.showError('errors.error', 'start.passwordsMismatch');
+      return;
+    }
+    if (this.form.value.nickname && !this.validatorService.checkBannedWords(this.form.value.nickname)) {
+      return;
+    }
 
     const user: UserRegisterDto = {
-      email: this.email.value,
-      nickname: this.nickname.value,
-      password: this.password.value,
+      email: this.form.value.email,
+      nickname: this.form.value.nickname,
+      password: this.form.value.password,
     };
     this.submitLoading$.next(true);
     this.authController.register(user).subscribe(_ => {

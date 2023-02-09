@@ -40,7 +40,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Minimize dependencies, update libraries [100%]
  - Upgrade to latest Angular version (15.1.3) [100%]
  - Upgrade to latest NestJS version (9.3.2) [100%]
- - Post upgrade refactoring [20%]
+ - Post upgrade code cleanup [30%]
  - Frontend components - change detection, generic, skeletons [100%]
  - Unit tests, CI/CD [100%]
  - Production release [100%]
