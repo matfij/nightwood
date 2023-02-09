@@ -18,8 +18,8 @@
       <form [formGroup]="form" (ngSubmit)="login()" (keydown.enter)="login()" data-testid="app-login-form">
 
         <div class="label" data-testid="app-login-label">{{ 'start.nickname' | translate }}</div>
-        <input type="text" formControlName="login" autocomplete="nickname" class="input" data-testid="app-login-input">
-        <div *ngIf="form.controls.login.dirty && !form.controls.login.valid" class="error" data-testid="app-login-error">
+        <input type="text" formControlName="nickname" autocomplete="nickname" class="input" data-testid="app-login-input">
+        <div *ngIf="form.controls.nickname.dirty && !form.controls.nickname.valid" class="error" data-testid="app-login-error">
           {{ 'errors.incorrectFieldsValue' | translate:{ value: 'nickname' } }}
         </div>
 

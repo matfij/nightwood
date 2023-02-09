@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -18,12 +18,12 @@ import { EngineService } from 'src/app/core/services/engine.service';
 })
 export class LoginComponent implements OnInit {
 
-  form: UntypedFormGroup = new UntypedFormGroup({
-    login: new UntypedFormControl(
-      null, [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
+  form = new FormGroup({
+    nickname: new FormControl<string>(
+      '', [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
     ),
-    password: new UntypedFormControl(
-      null, [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
+    password: new FormControl<string>(
+      '', [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -63,14 +63,14 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if (!this.form.get('login')?.value || !this.form.get('password')?.value) {
+    if (!this.form.value.nickname || !this.form.value.password) {
       this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint');
       return;
     }
 
     const params: UserLoginDto = {
-      nickname: this.form.get('login')?.value,
-      password: this.form.get('password')?.value,
+      nickname: this.form.value.nickname,
+      password: this.form.value.password,
     };
     this.submitLoading$?.next(true);
     this.authController.login(params)
