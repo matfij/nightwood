@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AuctionController, AuctionCreateDto, ItemController, ItemPageDto } from 'src/app/client/api';
@@ -20,15 +20,18 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
 
   @ViewChild('itemSelect') itemSelect!: ElementRef;
 
-  form: UntypedFormGroup = new UntypedFormGroup({
-    duration: new UntypedFormControl(
-      AUCTION_MAX_DURATION, [Validators.required, Validators.min(AUCTION_MIN_DURATION), Validators.max(AUCTION_MAX_DURATION)],
+  form = new FormGroup({
+    duration: new FormControl<number|null>(
+      AUCTION_MAX_DURATION,
+      [Validators.required, Validators.min(AUCTION_MIN_DURATION), Validators.max(AUCTION_MAX_DURATION)],
     ),
-    quantity: new UntypedFormControl(
-      AUCTION_MIN_QUANTITY, [Validators.required, Validators.min(AUCTION_MIN_QUANTITY), Validators.max(AUCTION_MAX_QUANTITY)],
+    quantity: new FormControl<number|null>(
+      AUCTION_MIN_QUANTITY,
+      [Validators.required, Validators.min(AUCTION_MIN_QUANTITY), Validators.max(AUCTION_MAX_QUANTITY)],
     ),
-    unitPrice: new UntypedFormControl(
-      null, [Validators.required, Validators.min(AUCTION_MIN_PRICE), Validators.max(AUCTION_MAX_PRICE)],
+    unitPrice: new FormControl<number|null>(
+      null,
+      [Validators.required, Validators.min(AUCTION_MIN_PRICE), Validators.max(AUCTION_MAX_PRICE)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -38,10 +41,6 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
   ];
   submitLoading: boolean = false;
   tradableItems$?: Observable<ItemPageDto>;
-
-  get duration(): UntypedFormControl { return this.form.get('duration') as UntypedFormControl; }
-  get quantity(): UntypedFormControl { return this.form.get('quantity') as UntypedFormControl; }
-  get unitPrice(): UntypedFormControl { return this.form.get('unitPrice') as UntypedFormControl; }
 
   constructor(
     private translateService: TranslateService,
@@ -69,14 +68,15 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
   }
 
   createAuction() {
-    if (!this.form.valid) { this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint'); return; }
-    const selectedItem = this.itemSelect.nativeElement.value;
-
+    if (!this.form.value.duration || !this.form.value.quantity || !this.form.value.unitPrice || !this.form.valid) {
+      this.toastService.showError('errors.formInvalid', 'errors.formInvalidHint');
+      return;
+    }
     const params: AuctionCreateDto = {
-      itemId: selectedItem,
-      duration: this.duration.value,
-      quantity: this.quantity.value,
-      unitGoldPrice: this.unitPrice.value,
+      itemId: this.itemSelect.nativeElement.value,
+      duration: this.form.value.duration,
+      quantity: this.form.value.quantity,
+      unitGoldPrice: this.form.value.unitPrice,
     };
     this.submitLoading = true;
     this.auctionController.create(params).subscribe(() => {
@@ -85,5 +85,4 @@ export class AuctionCreateComponent extends AbstractModalComponent implements On
       this.closeModal();
     }, () => this.submitLoading = false);
   }
-
 }
