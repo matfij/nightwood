@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AuthController, PasswordRecoverDto } from 'src/app/client/api';
 import { EMAIL_MAX_LENGTH } from 'src/app/client/config/frontend.config';
@@ -10,10 +10,12 @@ import { ToastService } from 'src/app/common/services/toast.service';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss']
 })
-export class ForgotPasswordComponent implements OnInit {
-
+export class ForgotPasswordComponent {
   @Output() close = new EventEmitter<boolean>();
-  emailOrNickname = new UntypedFormControl(null, [Validators.required, Validators.maxLength(EMAIL_MAX_LENGTH)]);
+  emailOrNickname = new FormControl<string|null>(
+    null,
+    [Validators.required, Validators.maxLength(EMAIL_MAX_LENGTH)]
+  );
   recoverPasswordLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -21,12 +23,10 @@ export class ForgotPasswordComponent implements OnInit {
     private toastService: ToastService,
   ) {}
 
-  ngOnInit(): void {
-  }
-
   recoverPassword() {
-    if (!this.emailOrNickname.valid) return;
-
+    if (!this.emailOrNickname.value || !this.emailOrNickname.valid) {
+      return;
+    }
     const params: PasswordRecoverDto = {
       emailOrNickname: this.emailOrNickname.value,
     };
@@ -40,5 +40,4 @@ export class ForgotPasswordComponent implements OnInit {
   onClose() {
     this.close.next(true);
   }
-
 }
