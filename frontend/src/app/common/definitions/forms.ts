@@ -1,4 +1,4 @@
-import { UntypedFormGroup } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 
 
 export enum FieldType {
@@ -9,7 +9,7 @@ export enum FieldType {
 }
 
 export interface FormInputOptions {
-  form: UntypedFormGroup;
+  form: FormGroup;
   key: string;
   label: string;
   type?: string;
