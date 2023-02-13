@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
 import { PenaltyController, PenaltyImposeDto, PenaltyType } from 'src/app/client/api';
 import { BAN_MAX_TIME, BAN_MIN_TIME, MUTE_MAX_TIME, MUTE_MIN_TIME, PENALTY_COMMENT_MAX_LENGTH } from 'src/app/client/config/frontend.config';
 import { AbstractModalComponent } from 'src/app/common/components/abstract-modal/abstract-modal.component';
 import { ChatMessage } from 'src/app/common/definitions/chat';
 import { FieldType, FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
-import { EngineService } from '../../services/engine.service';
 
 @Component({
   selector: 'app-shoutbox-penalty-modal',
@@ -20,14 +19,16 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
 
   @Input() message!: ChatMessage;
   @Input() penaltyType!: PenaltyType;
-  @Output() penaltyInfo: EventEmitter<FullPenaltyInfo> = new EventEmitter<FullPenaltyInfo>();
+  @Output() penaltyInfo = new EventEmitter<FullPenaltyInfo>();
 
-  form: UntypedFormGroup = new UntypedFormGroup({
-    duration: new UntypedFormControl(
-      null, [Validators.required],
+  form: UntypedFormGroup = new FormGroup({
+    duration: new FormControl<number|null>(
+      null,
+      [Validators.required],
     ),
-    comment: new UntypedFormControl(
-      null, [Validators.maxLength(PENALTY_COMMENT_MAX_LENGTH)],
+    comment: new FormControl<string|null>(
+      null,
+      [Validators.maxLength(PENALTY_COMMENT_MAX_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -41,7 +42,6 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
   constructor(
     private penaltyController: PenaltyController,
     private toastService: ToastService,
-    private engineService: EngineService,
   ) {
     super();
   }
@@ -49,13 +49,13 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
   ngOnInit(): void {
     switch(this.penaltyType) {
       case this.PenaltyType.Ban: {
-        this.form.controls['duration'].addValidators([
+        this.form.controls.duration.addValidators([
           Validators.min(BAN_MIN_TIME), Validators.max(BAN_MAX_TIME)
         ]);
         break;
       }
       case this.PenaltyType.Mute: {
-        this.form.controls['duration'].addValidators([
+        this.form.controls.duration.addValidators([
           Validators.min(MUTE_MIN_TIME), Validators.max(MUTE_MAX_TIME)
         ]);
         break;
@@ -64,16 +64,16 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
   }
 
   imposePenalty() {
-    if (!this.form.valid) return;
-
+    if (!this.form.value.duration || !this.form.value.comment || !this.form.valid) {
+      return;
+    }
     const params: PenaltyImposeDto = {
       punishedUserId: this.message.userId,
       type: this.penaltyType,
-      duration: +this.form.controls['duration'].value,
-      comment: this.form.controls['comment'].value,
+      duration: this.form.value.duration,
+      comment: this.form.value.comment,
       message: this.message.data,
     };
-
     this.submitLoading = true;
     this.penaltyController.imposePenalty(params).subscribe(() => {
       this.toastService.showSuccess('common.success', 'shoutbox.penaltyImposed');
@@ -82,9 +82,7 @@ export class ShoutboxPenaltyModalComponent extends AbstractModalComponent implem
         punishedNickname: this.message.nickname,
       });
     }, () => this.close.emit(true));
-
   }
-
 }
 
 export interface FullPenaltyInfo extends PenaltyImposeDto {
