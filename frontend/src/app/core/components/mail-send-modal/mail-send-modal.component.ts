@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { MailController, MailSendDto } from 'src/app/client/api';
 import { MAIL_MESSAGE_MAX_LENGTH, MAIL_MESSAGE_MIN_LENGTH, MAIL_RECEIVER_MAX_LENGTH, MAIL_RECEIVER_MIN_LENGTH, MAIL_TOPIC_MAX_LENGTH, MAIL_TOPIC_MIN_LENGTH } from 'src/app/client/config/frontend.config';
@@ -19,17 +19,20 @@ import { EngineService } from '../../services/engine.service';
 })
 export class MailSendModalComponent extends AbstractModalComponent implements OnInit {
 
-  @Input() replyName?: string | null;
+  @Input() replyName?: string|null;
 
-  form: UntypedFormGroup = new UntypedFormGroup({
-    receiver: new UntypedFormControl(
-      null, [Validators.minLength(MAIL_RECEIVER_MIN_LENGTH), Validators.maxLength(MAIL_RECEIVER_MAX_LENGTH)],
+  form = new FormGroup({
+    receiver: new FormControl<string|null>(
+      null,
+      [Validators.required, Validators.minLength(MAIL_RECEIVER_MIN_LENGTH), Validators.maxLength(MAIL_RECEIVER_MAX_LENGTH)],
     ),
-    topic: new UntypedFormControl(
-      null, [Validators.minLength(MAIL_TOPIC_MIN_LENGTH), Validators.maxLength(MAIL_TOPIC_MAX_LENGTH)],
+    topic: new FormControl<string|null>(
+      null,
+      [Validators.required, Validators.minLength(MAIL_TOPIC_MIN_LENGTH), Validators.maxLength(MAIL_TOPIC_MAX_LENGTH)],
     ),
-    message: new UntypedFormControl(
-      null, [Validators.minLength(MAIL_MESSAGE_MIN_LENGTH), Validators.maxLength(MAIL_MESSAGE_MAX_LENGTH)],
+    message: new FormControl<string|null>(
+      null,
+      [Validators.required, Validators.minLength(MAIL_MESSAGE_MIN_LENGTH), Validators.maxLength(MAIL_MESSAGE_MAX_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -38,10 +41,6 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
     { form: this.form, key: 'message', label: 'mails.message', type: 'text', fieldType: FieldType.TEXTAREA },
   ];
   submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  get receiver(): UntypedFormControl { return this.form.get('receiver') as UntypedFormControl; }
-  get topic(): UntypedFormControl { return this.form.get('topic') as UntypedFormControl; }
-  get message(): UntypedFormControl { return this.form.get('message') as UntypedFormControl; }
 
   constructor(
     private mailController: MailController,
@@ -53,20 +52,27 @@ export class MailSendModalComponent extends AbstractModalComponent implements On
   }
 
   ngOnInit(): void {
-    if (this.replyName) this.receiver.setValue(this.replyName);
+    if (this.replyName) {
+      this.form.controls.receiver.setValue(this.replyName);
+    }
+    console.log(this.form.controls)
   }
 
   sendMail() {
     if (
-      !this.validatorService.checkBannedWords(this.topic.value)
-      || !this.validatorService.checkBannedWords(this.message.value)
-    ) return;
+      !this.form.value.receiver || !this.form.value.topic || !this.form.value.message
+      || !this.validatorService.checkBannedWords(this.form.value.receiver)
+      || !this.validatorService.checkBannedWords(this.form.value.topic)
+      || !this.validatorService.checkBannedWords(this.form.value.message)
+    ) {
+      return;
+    }
 
     const params: MailSendDto = {
       senderId: this.engineService.user.id,
-      receiverName: this.receiver.value,
-      topic: this.topic.value,
-      message: this.message.value,
+      receiverName: this.form.value.receiver,
+      topic: this.form.value.topic,
+      message: this.form.value.message,
     }
     this.submitLoading$.next(true);
     this.mailController.send(params).subscribe(() => {
