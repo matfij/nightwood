@@ -18,7 +18,7 @@ import { join } from 'path';
 import { AlchemyModule } from './api/items/alchemy/alchemy.module';
 import { AchievementsModule } from './api/users/achievements/achievements.module';
 import { PenaltyModule } from './api/users/penalty/penalty.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_REQUEST_LIMIT, APP_REQUEST_TTL } from './configuration/app.config';
 import { APP_GUARD } from '@nestjs/core/constants';
 import { AppThrottlerGuard } from './common/guards/app-throttle.guard';
