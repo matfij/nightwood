@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { AuthController, PasswordResetDto } from 'src/app/client/api';
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -24,6 +24,7 @@ export class PasswordResetComponent implements OnInit {
     [Validators.required]
   );
   resetPasswordLoading$ = new BehaviorSubject<boolean>(false);
+  resetPassword$ = new Observable();
 
   constructor(
     private router: Router,
@@ -35,7 +36,7 @@ export class PasswordResetComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.actionCode = params['token'];
-    })
+    });
   }
 
   resetPassword() {
@@ -52,11 +53,16 @@ export class PasswordResetComponent implements OnInit {
       newPassword: this.newPassword.value,
     };
     this.resetPasswordLoading$.next(true);
-    this.authController.resetPassword(params).subscribe(() => {
-      this.toastService.showSuccess('common.success', 'start.passwordResetSuccess');
-      this.router.navigate(['login']);
-    }, () => this.resetPasswordLoading$.next(false));
+    this.resetPassword$ = this.authController.resetPassword(params)
+      .pipe(
+        tap(() => {
+          this.toastService.showSuccess('common.success', 'start.passwordResetSuccess');
+          this.router.navigate(['login']);
+        }),
+        catchError((err) => {
+          this.resetPasswordLoading$.next(false);
+          throw err;
+        })
+      );
   }
-
-
 }
