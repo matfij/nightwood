@@ -15,7 +15,9 @@
           {{ 'start.register' | translate }}
         </button>
         <div *ngIf="(submitLoading$ | async)" class="spinner" style="margin-top: 20px;">
-          <app-loading-indicator></app-loading-indicator>
+          <app-loading-indicator>
+            {{ register$ | async }}
+          </app-loading-indicator>
         </div>
       </form>
     </div>

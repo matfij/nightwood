@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { AuthController, UserRegisterDto } from 'src/app/client/api';
 import { EMAIL_MAX_LENGTH, NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
@@ -18,17 +18,21 @@ import { ValidatorService } from 'src/app/common/services/validator.service';
 export class RegisterComponent implements OnInit {
 
   form = new FormGroup({
-    email: new FormControl<string>(
-      '', [Validators.required, Validators.email, Validators.maxLength(EMAIL_MAX_LENGTH)],
+    email: new FormControl<string|null>(
+      null,
+      [Validators.required, Validators.email, Validators.maxLength(EMAIL_MAX_LENGTH)],
     ),
-    nickname: new FormControl<string>(
-      '', [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
+    nickname: new FormControl<string|null>(
+      null,
+      [Validators.required, Validators.minLength(NICKNAME_MIN_LENGTH), Validators.maxLength(NICKNAME_MAX_LENGTH)],
     ),
-    password: new FormControl<string>(
-      '', [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
+    password: new FormControl<string|null>(
+      null,
+      [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
-    passwordConfirm: new FormControl<string>(
-      '', [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
+    passwordConfirm: new FormControl<string|null>(
+      null,
+      [Validators.required, Validators.minLength(PASSWORD_MIN_LENGTH), Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ),
   });
   fields: FormInputOptions[] = [
@@ -38,6 +42,7 @@ export class RegisterComponent implements OnInit {
     { form: this.form, key: 'passwordConfirm', label: 'start.passwordConfirm', type: 'password', autocomplete: 'new-password' },
   ];
   submitLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  register$ = new Observable();
 
   constructor(
     private router: Router,
@@ -78,13 +83,17 @@ export class RegisterComponent implements OnInit {
       password: this.form.value.password,
     };
     this.submitLoading$.next(true);
-    this.authController.register(user).subscribe(_ => {
-      this.submitLoading$.next(false);
-      this.toastService.showSuccess('start.registerSuccess', 'start.confirmEmail');
-      this.router.navigate(['../start/login']);
-    }, _ => {
-      this.submitLoading$.next(false);
-    });
+    this.register$ = this.authController.register(user)
+      .pipe(
+        tap(() => {
+          this.submitLoading$.next(false);
+          this.toastService.showSuccess('start.registerSuccess', 'start.confirmEmail');
+          this.router.navigate(['../start/login']);
+        }),
+        catchError((err) => {
+          this.submitLoading$.next(false);
+          throw err;
+        })
+      );
   }
-
 }
