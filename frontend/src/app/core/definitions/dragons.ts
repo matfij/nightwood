@@ -1,7 +1,7 @@
 import { DragonDto, DragonNature, DragonPublicDto, SkillDto } from "src/app/client/api";
 
-export interface AdoptStage {
-  step: AdoptStep;
+export interface AdoptStep {
+  step: AdoptStepName;
   question: string;
   answers: AdoptAnswer[];
 }
@@ -16,7 +16,7 @@ export interface NaturePoints {
   value: number;
 }
 
-export enum AdoptStep {
+export enum AdoptStepName {
   Trait,
   Value,
   Location,

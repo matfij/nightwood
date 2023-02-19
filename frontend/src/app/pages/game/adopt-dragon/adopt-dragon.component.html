@@ -8,11 +8,11 @@
       <div class="title-secondary">{{ 'dragon.adoptDragonHint' | translate }}</div>
     </div>
 
-    <div *ngFor="let stage of adoptStages">
-      <div *ngIf="stage.step === currentStep" class="wrapper-stage">
-        <div class="question">{{ stage.question | translate }}</div>
+    <div *ngFor="let step of adoptSteps">
+      <div *ngIf="step.step === currentStep" class="wrapper-stage">
+        <div class="question">{{ step.question | translate }}</div>
         <div class="answers-wrapper">
-          <div *ngFor="let answer of stage.answers" class="answer">
+          <div *ngFor="let answer of step.answers" class="answer">
             <div (click)="saveAnswer(answer)">
               {{ answer.label | translate }}
             </div>
@@ -21,16 +21,18 @@
       </div>
     </div>
 
-    <div *ngIf="currentStep === adoptStep.Name" class="wrapper-form">
-      <form [formGroup]="form" (ngSubmit)="adoptDragon()">
+    <div *ngIf="currentStep === adoptStepName.Name" class="wrapper-form">
+      <form [formGroup]="adoptForm" (ngSubmit)="adoptDragon()">
         <div class="question">{{ 'dragon.chooseDragonName' | translate }}</div>
-        <app-input-base *ngFor="let field of fields" [options]="field"></app-input-base>
+        <app-input-base *ngFor="let field of adoptFormFields" [options]="field"></app-input-base>
 
-        <button *ngIf="!(submitLoading$ | async)" [disabled]="!form.valid" class="btn-base">
+        <button *ngIf="!(adoptLoading$ | async)" [disabled]="!adoptForm.valid" class="btn-base">
           {{ 'dragon.adopt' | translate }}
         </button>
-        <div *ngIf="(submitLoading$ | async)" class="spinner">
-          <app-loading-indicator></app-loading-indicator>
+        <div *ngIf="(adoptLoading$ | async)" class="spinner">
+          <app-loading-indicator>
+            {{ adopt$ | async }}
+          </app-loading-indicator>
         </div>
       </form>
     </div>
