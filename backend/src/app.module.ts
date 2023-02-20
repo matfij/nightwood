@@ -22,6 +22,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_REQUEST_LIMIT, APP_REQUEST_TTL } from './configuration/app.config';
 import { APP_GUARD } from '@nestjs/core/constants';
 import { AppThrottlerGuard } from './common/guards/app-throttle.guard';
+import { GuildModule } from './api/guilds/guild/guild.module';
 
 const API_MODULES = [
   ActionModule,
@@ -37,6 +38,7 @@ const API_MODULES = [
   ItemModule,
   AuctionModule,
   AlchemyModule,
+  GuildModule,
 ];
 
 @Module({
