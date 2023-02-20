@@ -120,7 +120,7 @@
     "mixtureNotReady": "Mixture is not ready",
     "boosterNotFound": "Booster not found",
     "currentDragonLimitReached": "Current dragon limit reached",
-    "fileTooLarge": "File too large",
+    "fileTooLarge": "File too large, maximum size is 200kB",
     "avatarIncorrectFormat": "Avatar must be in JPG or PNG format",
     "friendRequestNotFound": "Friend request not found",
     "alreadyFriend": "You are already friends",

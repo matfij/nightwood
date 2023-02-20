@@ -40,13 +40,14 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Minimize dependencies, update libraries [100%]
  - Upgrade to latest Angular version (15.1.3) [100%]
  - Upgrade to latest NestJS version (9.3.2) [100%]
- - Post upgrade code cleanup [30%]
+ - Post upgrade code cleanup [100%]
  - Frontend components - change detection, generic, skeletons [100%]
  - Unit tests, CI/CD [100%]
  - Production release [100%]
 
 ## Stage 2
- - Guilds - diplomacy, constructions 
- - Mini games
- - Battle tournaments
- - Dragon vanities
+ - Guilds - diplomacy, constructions [0%]
+ - Mini games [0%]
+ - Battle tournaments [0%]
+ - Dragon vanities [0%]
+ - Continuous refactoring [5%]

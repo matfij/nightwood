@@ -16,6 +16,7 @@ import { UserPublicDto } from '../model/dto/user-public.dto';
 import { FriendshipRequestDto } from '../model/dto/friendship-request.dto';
 import { FriendshipPendingRequestDto } from '../model/dto/friendship-pending-request.dto';
 import { FriendshipRespondDto } from '../model/dto/friendship-respond.dto';
+import { AVATAR_MAX_SIZE } from 'src/configuration/backend.config';
 
 @Injectable()
 export class UserService {
@@ -123,7 +124,7 @@ export class UserService {
     }
 
     async setAvatar(userId: number, file: Express.Multer.File) {
-        if (file.size > 100 * 1000) this.errorService.throw('errors.fileTooLarge');
+        if (file.size > AVATAR_MAX_SIZE) this.errorService.throw('errors.fileTooLarge');
         if (!['image/jpeg', 'image/png'].includes(file.mimetype)) this.errorService.throw('errors.avatarIncorrectFormat');
 
         const path = `${AVATARS_PATH}/${userId}.png`;

@@ -17,6 +17,7 @@ export const PASSWORD_MIN_LENGTH = 4;
 export const PASSWORD_MAX_LENGTH = 30;
 export const NICKNAME_MIN_LENGTH = 4;
 export const NICKNAME_MAX_LENGTH = 16;
+export const AVATAR_MAX_SIZE = 200 * 1000;  // 200 kB
 
 /**
  * Messages
