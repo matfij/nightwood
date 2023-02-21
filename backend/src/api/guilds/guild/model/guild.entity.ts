@@ -20,7 +20,7 @@ export class Guild {
     @Column({ unique: true })
     tag: string;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
     @OneToMany(_ => GuildApplicaton, x => x.guild)

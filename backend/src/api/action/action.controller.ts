@@ -31,7 +31,6 @@ export class ActionController {
         private actionItemService: ActionItemService,
     ) {}
 
-    
     @Post('checkAllAchievements')
     @UseGuards(RolesGuard)
     @Roles(UserRole.Administrator, UserRole.Moderator)
