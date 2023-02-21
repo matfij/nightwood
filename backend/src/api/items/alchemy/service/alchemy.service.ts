@@ -50,6 +50,8 @@ export class AlchemyService {
     }
 
     async getOnGoingMixtures(user: UserDto, dto: MixtureGetDto): Promise<MixturePageDto> {
+        dto.page = Math.max(0, dto.page ?? 0);
+        dto.limit = Math.max(1, dto.limit ?? 100);
         const mixtures = await this.mixtureRepository.find({
             where: { user: user, collected: false },
             skip: dto.page * dto.limit,
