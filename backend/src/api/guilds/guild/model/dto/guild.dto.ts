@@ -1,7 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
-import { GuildApplication } from "../guild-application.entity";
-import { GuildMember } from "../guild-member.entity";
 import { GuildApplicatonDto } from "./guild-application.dto";
 import { GuildMemberDto } from "./guild-member.dto";
 import { GuildRoleDto } from "./guild-role.dto";
@@ -24,11 +22,11 @@ export class GuildDto {
     description?: string;
 
     @ApiProperty({ type: [GuildApplicatonDto] })
-    applications: GuildApplicatonDto[];
+    applications: Partial<GuildApplicatonDto>[];
 
     @ApiProperty({ type: [GuildRoleDto] })
-    roles: GuildRoleDto[];
+    roles: Partial<GuildRoleDto>[];
 
     @ApiProperty({ type: [GuildMemberDto] })
-    members: GuildMemberDto[];
+    members: Partial<GuildMemberDto>[];
 }

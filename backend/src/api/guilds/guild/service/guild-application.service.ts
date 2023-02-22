@@ -1,20 +1,26 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
+import { ErrorService } from "src/common/services/error.service";
 import { Repository } from "typeorm";
+import { GuildApplicationPageDto } from "../model/dto/guild-application-page.dto";
 import { GuildApplicationCreateDto } from "../model/dto/guild-application.create";
 import { GuildApplicatonDto } from "../model/dto/guild-application.dto";
 import { GuildDto } from "../model/dto/guild.dto";
 import { GuildApplication } from "../model/guild-application.entity";
+import { Guild } from "../model/guild.entity";
 import { GuildValidatorService } from "./guild-validator.service";
 
 @Injectable()
 export class GuildApplicatonService {
     
     constructor(
+        @InjectRepository(Guild)
+        private guildRepository: Repository<Guild>,
         @InjectRepository(GuildApplication)
         private guildApplicatonRepository: Repository<GuildApplication>,
         private guildValidatorService: GuildValidatorService,
+        private errorService: ErrorService,
     ) {}
 
     async createGuildApplication(user: UserDto, guild: GuildDto, dto: GuildApplicationCreateDto): Promise<GuildApplicatonDto> {
@@ -28,5 +34,23 @@ export class GuildApplicatonService {
         savedGuildApplication.user = null;
         savedGuildApplication.guild = null;
         return savedGuildApplication;
+    }
+
+    async getGuildApplications(user: UserDto): Promise<GuildApplicationPageDto> {
+        const guild: GuildDto = await this.guildRepository.findOne({ 
+            where: { founder: user } 
+        });
+        if (!guild) {
+            this.errorService.throw('errors.guildNotFound');
+        }
+        let applications: GuildApplicatonDto[] = await this.guildApplicatonRepository.find({ 
+            where: { guild: guild }, 
+            relations: ['user'], 
+            select: { user: { id: true, nickname: true }} 
+        });
+        return {
+            data: applications,
+            meta: {},
+        }
     }
 }
