@@ -1,10 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
+import { ErrorService } from "src/common/services/error.service";
 import { Repository } from "typeorm";
 import { GuildCreateDto } from "../model/dto/guild-create.dto";
 import { GuildDto } from "../model/dto/guild.dto";
 import { Guild } from "../model/guild.entity";
+import { GuildValidatorService } from "./guild-validator.service";
 
 @Injectable()
 export class GuildService {
@@ -12,12 +14,12 @@ export class GuildService {
     constructor(
         @InjectRepository(Guild)
         private guildRepository: Repository<Guild>,
+        private guildValidatorService: GuildValidatorService,
+        private errorService: ErrorService,
     ) {}
 
     async createGuild(user: UserDto, dto: GuildCreateDto): Promise<GuildDto> {
-        if (!this.checkUniqueName(dto.name) || !this.checkUniqueTag(dto.tag) || !this.checkUniqueFounder(user)) {
-            return;
-        }
+        await this.guildValidatorService.validateCreateGuild(user, dto);
         const newGuild = this.guildRepository.create({
             founder: user,
             name: dto.name,
@@ -29,18 +31,13 @@ export class GuildService {
         return savedGuild;
     }
 
-    async checkUniqueName(name: string): Promise<boolean> {
-        const guilds = await this.guildRepository.find({ where: { name: name } });
-        return guilds.length === 0;
-    }
-
-    async checkUniqueTag(tag: string): Promise<boolean> {
-        const guilds = await this.guildRepository.find({ where: { tag: tag } });
-        return guilds.length === 0;
-    }
-
-    async checkUniqueFounder(founder: UserDto): Promise<boolean> {
-        const guilds = await this.guildRepository.find({ where: { founder: founder } });
-        return guilds.length === 0;
+    async getOne(id: number): Promise<GuildDto> {
+        const guild = await this.guildRepository.findOne(
+            { where: { id: id }, relations: ['members'] }
+        );
+        if (!id || !guild) {
+            this.errorService.throw('errors.guildNotFound');
+        }
+        return guild
     }
 }

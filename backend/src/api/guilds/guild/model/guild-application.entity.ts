@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 import { Guild } from "./guild.entity";
 
 @Entity()
-export class GuildApplicaton {
+export class GuildApplication {
 
     @PrimaryGeneratedColumn()
     id: number;
