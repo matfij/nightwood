@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
+import { GuildDto } from "./guild.dto";
 
 export class GuildApplicatonDto {
 
@@ -8,6 +9,9 @@ export class GuildApplicatonDto {
 
     @ApiProperty()
     user: Partial<UserDto>;
+
+    @ApiProperty()
+    guild: Partial<GuildDto>;
 
     @ApiPropertyOptional()
     message?: string;

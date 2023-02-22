@@ -7,6 +7,7 @@ import { GuildCreateDto } from "../model/dto/guild-create.dto";
 import { GuildGetDto } from "../model/dto/guild-get.dto";
 import { GuildPageDto } from "../model/dto/guild-page.dto";
 import { GuildDto } from "../model/dto/guild.dto";
+import { GuildMember } from "../model/guild-member.entity";
 import { Guild } from "../model/guild.entity";
 import { GuildValidatorService } from "./guild-validator.service";
 
@@ -16,6 +17,8 @@ export class GuildService {
     constructor(
         @InjectRepository(Guild)
         private guildRepository: Repository<Guild>,
+        @InjectRepository(GuildMember)
+        private guildMemberRepository: Repository<GuildMember>,
         private guildValidatorService: GuildValidatorService,
         private errorService: ErrorService,
     ) {}
@@ -34,27 +37,48 @@ export class GuildService {
     }
 
     async getOne(id: number): Promise<GuildDto> {
-        const guild = await this.guildRepository.findOne({ 
-            where: { id: id }, relations: ['members'] 
+        const guild: GuildDto = await this.guildRepository.findOne({ 
+            where: { id: id }, 
+            relations: ['founder', 'members', 'members.user'],
+            select: { 
+                founder: { id: true, nickname: true },
+            },
         });
         if (!id || !guild) {
             this.errorService.throw('errors.guildNotFound');
         }
+        guild.members = guild.members.map((member) => {
+            return {
+                ...member,
+                user: {
+                    id: member.user.id,
+                    nickname: member.user.nickname,
+                }
+            };
+        });
         return guild;
     }
 
     async getDetails(id: number): Promise<GuildDto> {
         const guild: GuildDto = await this.guildRepository.findOne({ 
             where: { id: id }, 
-            relations: ['founder', 'members'],
+            relations: ['founder', 'members', 'members.user'],
             select: { 
-                founder: { id: true, nickname: true }, 
-                members: { user: { id: true, nickname: true } },
-            }
+                founder: { id: true, nickname: true },
+            },
         });
         if (!id || !guild) {
             this.errorService.throw('errors.guildNotFound');
         }
+        guild.members = guild.members.map((member) => {
+            return {
+                ...member,
+                user: {
+                    id: member.user.id,
+                    nickname: member.user.nickname,
+                }
+            };
+        });
         return guild;
     }
 

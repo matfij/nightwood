@@ -36,6 +36,17 @@ export class GuildApplicatonService {
         return savedGuildApplication;
     }
 
+    async getOne(id: number): Promise<GuildApplicatonDto> {
+        const application = await this.guildApplicatonRepository.findOne({
+            where: { id: id },
+            relations: ['guild', 'user'],
+        });
+        if (!application) {
+            this.errorService.throw('errors.guildApplicationNotFound');
+        }
+        return application;
+    }
+
     async getGuildApplications(user: UserDto): Promise<GuildApplicationPageDto> {
         const guild: GuildDto = await this.guildRepository.findOne({ 
             where: { founder: user } 
@@ -52,5 +63,9 @@ export class GuildApplicatonService {
             data: applications,
             meta: {},
         }
+    }
+
+    async delete(id: number) {
+        await this.guildApplicatonRepository.delete(id);
     }
 }

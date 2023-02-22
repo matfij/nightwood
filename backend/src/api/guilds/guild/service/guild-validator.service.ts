@@ -43,23 +43,23 @@ export class GuildValidatorService {
     }
 
     async checkUniqueName(name: string): Promise<boolean> {
-        const guilds = await this.guildRepository.find(
-            { where: { name: name } }
-        );
+        const guilds = await this.guildRepository.find({ 
+            where: { name: name } 
+        });
         return guilds.length === 0;
     }
 
     async checkUniqueTag(tag: string): Promise<boolean> {
-        const guilds = await this.guildRepository.find(
-            { where: { tag: tag } }
-        );
+        const guilds = await this.guildRepository.find({ 
+            where: { tag: tag } 
+        });
         return guilds.length === 0;
     }
 
     async checkUniqueFounder(founder: UserDto): Promise<boolean> {
-        const guilds = await this.guildRepository.find(
-            { where: { founder: founder } }
-        );
+        const guilds = await this.guildRepository.find({ 
+            where: { founder: founder } 
+        });
         return guilds.length === 0;
     }
 
@@ -67,7 +67,7 @@ export class GuildValidatorService {
         if (dto.message && dto.message.length > GUILD_APPLICATION_MESSAGE_MAX_LENGTH) {
             this.errorService.throw('errors.guildApplicationMessageInvalid');
         }
-        if (!(await this.checkUserApplicationsEmpty(user))) {
+        if (!(await this.checkUserAppliedToGuild(user, guild))) {
             this.errorService.throw('errors.userAlreadyApplied');
         }
         if (await this.checkUserInGuild(user, guild)) {
@@ -75,14 +75,14 @@ export class GuildValidatorService {
         }
     }
 
-    async checkUserApplicationsEmpty(user: UserDto): Promise<boolean> {
-        const applications = await this.guildApplicatonRepository.find(
-            { where: { user: user } }
-        );
+    async checkUserAppliedToGuild(user: UserDto, guild: GuildDto): Promise<boolean> {
+        const applications = await this.guildApplicatonRepository.find({ 
+            where: { user: user, guild: guild } 
+        });
         return applications.length === 0;
     }
 
     async checkUserInGuild(user: UserDto, guild: GuildDto): Promise<boolean> {
-        return guild.members.map((member) => member.user.id).includes(user.id);
+        return user.id === guild.founder.id || guild.members.map((member) => member.user.id).includes(user.id);
     }
 }

@@ -7,6 +7,7 @@ import { GuildMember } from "./model/guild-member.entity";
 import { GuildRole } from "./model/guild-role.entity";
 import { Guild } from "./model/guild.entity";
 import { GuildApplicatonService } from "./service/guild-application.service";
+import { GuildMemberService } from "./service/guild-member.service";
 import { GuildValidatorService } from "./service/guild-validator.service";
 import { GuildService } from "./service/guild.service";
 
@@ -23,12 +24,14 @@ import { GuildService } from "./service/guild.service";
     providers: [
         GuildService,
         GuildApplicatonService,
+        GuildMemberService,
         GuildValidatorService,
         ErrorService,
     ],
     exports: [
         GuildService,
         GuildApplicatonService,
+        GuildMemberService,
         GuildValidatorService,
     ],
 })

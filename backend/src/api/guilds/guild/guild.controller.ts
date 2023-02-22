@@ -3,6 +3,7 @@ import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
 import { AuthorizedRequest } from "src/common/definitions/requests";
 import { GuildApplicationPageDto } from "./model/dto/guild-application-page.dto";
+import { GuildApplicationProcessDto } from "./model/dto/guild-application-process.dto";
 import { GuildGetDto } from "./model/dto/guild-get.dto";
 import { GuildPageDto } from "./model/dto/guild-page.dto";
 import { GuildDto } from "./model/dto/guild.dto";
