@@ -26,6 +26,18 @@ export class GuildController {
         return this.guildService.getDetails(id);
     }
 
+    @Post('getFounderGuild')
+    @ApiOkResponse({ type: GuildDto })
+    async getFounderGuild(@Request() req: AuthorizedRequest): Promise<GuildDto> {
+        return this.guildService.getFounderGuild(req.user);
+    }
+
+    @Post('getMemberGuild')
+    @ApiOkResponse({ type: GuildDto })
+    async getMemberGuild(@Request() req: AuthorizedRequest): Promise<GuildDto> {
+        return this.guildService.getMemberGuild(req.user);
+    }
+
     @Post('getAll')
     @ApiOkResponse({ type: GuildPageDto })
     async getAll(@Request() req: AuthorizedRequest, @Body() dto: GuildGetDto): Promise<GuildPageDto> {

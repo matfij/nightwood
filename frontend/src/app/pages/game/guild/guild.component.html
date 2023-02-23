@@ -2,6 +2,21 @@
   <app-navigation-bar currentLocation="guild"></app-navigation-bar>
 
   <div class="wrapper-content">
-    <p>guild works!</p>
+
+    <div *ngIf="(founderGuild$ | async) as guild">
+      <b>Founder guild:</b>
+      <p>{{ guild | json }}</p>
+    </div>
+
+    <div *ngIf="(memberGuild$ | async) as guild">
+      <b>Member guild:</b>
+      <p>{{ guild | json }}</p>
+    </div>
+
+    <div *ngIf="(guilds$ | async) as guilds">
+      <b>Available guilds:</b>
+      <p *ngFor="let guild of guilds.data">{{ guild | json }}</p>
+    </div>
+
   </div>
 </div>

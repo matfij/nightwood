@@ -5,6 +5,7 @@ import { ErrorService } from "src/common/services/error.service";
 import { Repository } from "typeorm";
 import { GuildCreateDto } from "../model/dto/guild-create.dto";
 import { GuildGetDto } from "../model/dto/guild-get.dto";
+import { GuildMemberDto } from "../model/dto/guild-member.dto";
 import { GuildPageDto } from "../model/dto/guild-page.dto";
 import { GuildDto } from "../model/dto/guild.dto";
 import { GuildMember } from "../model/guild-member.entity";
@@ -80,6 +81,53 @@ export class GuildService {
             };
         });
         return guild;
+    }
+
+    async getFounderGuild(user: UserDto): Promise<GuildDto> {
+        const guild: GuildDto = await this.guildRepository.findOne({ 
+            where: { founder: user }, 
+            relations: ['founder', 'members', 'members.user'],
+            select: { 
+                founder: { id: true, nickname: true },
+            },
+        });
+        if (!guild) {
+            return null;
+        }
+        guild.members = guild.members.map((member) => {
+            return {
+                ...member,
+                user: {
+                    id: member.user.id,
+                    nickname: member.user.nickname,
+                }
+            };
+        });
+        return guild;
+    }
+
+    async getMemberGuild(user: UserDto): Promise<GuildDto> {
+        const member: GuildMemberDto = await this.guildMemberRepository.findOne({
+            where: { user: user },
+            relations: ['guild', 'guild.founder', 'guild.members', 'guild.members.user']
+        });
+        if (!member) {
+            return;
+        }
+        member.guild.founder = {
+            id: member.guild.founder.id,
+            nickname: member.guild.founder.nickname,
+        };
+        member.guild.members = member.guild.members.map((member) => {
+            return {
+                ...member,
+                user: {
+                    id: member.user.id,
+                    nickname: member.user.nickname,
+                }
+            };
+        });
+        return member.guild as GuildDto;
     }
 
     async getAll(dto: GuildGetDto): Promise<GuildPageDto> {

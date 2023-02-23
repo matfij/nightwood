@@ -3925,6 +3925,8 @@ export class AuctionController implements IAuctionController {
 
 export interface IGuildController {
     getDetails(id: number): Observable<GuildDto>;
+    getFounderGuild(): Observable<GuildDto>;
+    getMemberGuild(): Observable<GuildDto>;
     getAll(body: GuildGetDto): Observable<GuildPageDto>;
     getApplications(): Observable<GuildApplicationPageDto>;
 }
@@ -3972,6 +3974,100 @@ export class GuildController implements IGuildController {
     }
 
     protected processGetDetails(response: HttpResponseBase): Observable<GuildDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    getFounderGuild(): Observable<GuildDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/getFounderGuild";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFounderGuild(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFounderGuild(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFounderGuild(response: HttpResponseBase): Observable<GuildDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    getMemberGuild(): Observable<GuildDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/getMemberGuild";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMemberGuild(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMemberGuild(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetMemberGuild(response: HttpResponseBase): Observable<GuildDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4401,8 +4497,9 @@ export interface GuildRoleDto {
 
 export interface GuildMemberDto {
     id: number;
+    guild: any;
     user: any;
-    role: GuildRoleDto;
+    role: any;
 }
 
 export interface GuildDto {
