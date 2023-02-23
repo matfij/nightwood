@@ -154,7 +154,8 @@
     "shoutbox": "Shoutbox",
     "logout": "Logout",
     "recentChanges": "Recent changes",
-    "bestDragons": "Best dragons"
+    "bestDragons": "Best dragons",
+    "guild": "Guild"
   },
   "user": {
     "dragons": "Dragons",

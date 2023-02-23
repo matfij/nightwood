@@ -1,7 +1,6 @@
 <div class="no-desktop wrapper-nav-top">
   <div class="item-user">
     <div class="nickname">{{ (user$ | async)?.nickname ?? '' }}</div><b>|</b>
-    <!-- {{ 'inventory.gold' | translate }}: {{ (user$ | async)?.gold }}<b>|</b> -->
     <div (click)="displayMenu = !displayMenu" class="item-menu">{{ 'game.menu' | translate }}</div><b>|</b>
     <div (click)="logout()" class="item-logout">{{ 'game.logout' | translate }}</div>
   </div>

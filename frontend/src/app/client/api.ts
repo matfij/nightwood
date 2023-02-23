@@ -838,6 +838,176 @@ export class ActionController implements IActionController {
     }
 }
 
+export interface IActionGuildController {
+    createGuild(body: GuildCreateDto): Observable<GuildDto>;
+    createGuildApplication(body: GuildApplicationCreateDto): Observable<GuildApplicatonDto>;
+    processApplication(body: GuildApplicationProcessDto): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ActionGuildController implements IActionGuildController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    createGuild(body: GuildCreateDto): Observable<GuildDto> {
+        let url_ = this.baseUrl + "/api/v1/actionGuild/createGuild";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateGuild(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateGuild(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateGuild(response: HttpResponseBase): Observable<GuildDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    createGuildApplication(body: GuildApplicationCreateDto): Observable<GuildApplicatonDto> {
+        let url_ = this.baseUrl + "/api/v1/actionGuild/createGuildApplication";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateGuildApplication(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateGuildApplication(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildApplicatonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildApplicatonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateGuildApplication(response: HttpResponseBase): Observable<GuildApplicatonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildApplicatonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    processApplication(body: GuildApplicationProcessDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/actionGuild/processApplication";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processProcessApplication(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processProcessApplication(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processProcessApplication(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+}
+
 export interface IUserController {
     create(body: UserCreateDto): Observable<UserDto>;
     update(id: string, body: UserUpdateDto): Observable<UserDto>;
@@ -3753,6 +3923,174 @@ export class AuctionController implements IAuctionController {
     }
 }
 
+export interface IGuildController {
+    getDetails(id: number): Observable<GuildDto>;
+    getAll(body: GuildGetDto): Observable<GuildPageDto>;
+    getApplications(): Observable<GuildApplicationPageDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class GuildController implements IGuildController {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getDetails(id: number): Observable<GuildDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/getDetails/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDetails(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDetails(response: HttpResponseBase): Observable<GuildDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    getAll(body: GuildGetDto): Observable<GuildPageDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/getAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildPageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildPageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<GuildPageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    getApplications(): Observable<GuildApplicationPageDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/getApplications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetApplications(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetApplications(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildApplicationPageDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildApplicationPageDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetApplications(response: HttpResponseBase): Observable<GuildApplicationPageDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildApplicationPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+}
+
 export interface IPenaltyController {
     imposePenalty(body: PenaltyImposeDto): Observable<void>;
 }
@@ -4037,6 +4375,55 @@ export interface ExpeditionReportDto {
 
 export interface AuctionBuyResultDto {
     consumedGold: number;
+}
+
+export interface GuildCreateDto {
+    name: string;
+    tag: string;
+    description: string;
+}
+
+export interface GuildApplicatonDto {
+    id: number;
+    user: any;
+    guild: any;
+    message?: string;
+}
+
+export interface GuildRoleDto {
+    id: number;
+    name: string;
+    priority: number;
+    canAddMembers: boolean;
+    canRemoveMembers: boolean;
+    canConstruct: boolean;
+}
+
+export interface GuildMemberDto {
+    id: number;
+    user: any;
+    role: GuildRoleDto;
+}
+
+export interface GuildDto {
+    id: number;
+    founder: any;
+    name: string;
+    tag: string;
+    description?: string;
+    applications: GuildApplicatonDto[];
+    roles: GuildRoleDto[];
+    members: GuildMemberDto[];
+}
+
+export interface GuildApplicationCreateDto {
+    guildId: number;
+    message: string;
+}
+
+export interface GuildApplicationProcessDto {
+    applicationId: number;
+    accept: boolean;
 }
 
 export interface UserCreateDto {
@@ -4456,6 +4843,21 @@ export interface AuctionGetDto {
 export interface AuctionPageDto {
     meta: PageMetaDto;
     data: AuctionDto[];
+}
+
+export interface GuildGetDto {
+    page: number;
+    limit: number;
+}
+
+export interface GuildPageDto {
+    meta: PageMetaDto;
+    data: GuildDto[];
+}
+
+export interface GuildApplicationPageDto {
+    meta: PageMetaDto;
+    data: GuildApplicatonDto[];
 }
 
 export enum PenaltyType {

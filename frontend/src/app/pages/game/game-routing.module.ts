@@ -8,6 +8,7 @@ import { CraftingComponent } from './crafting/crafting.component';
 import { DragonSummonComponent } from './dragon-summon/dragon-summon.component';
 import { DragonTamerComponent } from './dragon-tamer/dragon-tamer.component';
 import { ExpeditionsComponent } from './expeditions/expeditions.component';
+import { GuildComponent } from './guild/guild.component';
 import { HomeComponent } from './home/home.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { MailComponent } from './mail/mail.component';
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'shoutbox', component: ShoutboxComponent },
   { path: 'crafting', component: CraftingComponent },
   { path: 'alchemy', component: AlchemyComponent },
+  { path: 'guild', component: GuildComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 

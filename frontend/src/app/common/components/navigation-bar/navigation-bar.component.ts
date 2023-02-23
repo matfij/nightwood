@@ -33,6 +33,7 @@ export class NavigationBarComponent {
     { label: 'game.auctions', path: 'auctions', icon: '', isActive: false },
     { label: 'game.expeditions', path: 'expeditions', icon: '', isActive: false },
     { label: 'game.arena', path: 'arena', icon: '', isActive: false },
+    { label: 'game.guild', path: 'guild', icon: '', isActive: false },
     { label: 'game.mail', path: 'mail', icon: '', isActive: false },
     { label: 'game.shoutbox', path: 'shoutbox', icon: '', isActive: false },
   ];
