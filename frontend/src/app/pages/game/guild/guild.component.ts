@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ActionGuildController, GuildController, GuildDto, GuildPageDto } from 'src/app/client/api';
+import { Observable, tap } from 'rxjs';
+import {
+  ActionGuildController,
+  GuildController,
+  GuildDto,
+  GuildPageDto,
+} from 'src/app/client/api';
 
 @Component({
   selector: 'app-guild',
@@ -9,7 +14,8 @@ import { ActionGuildController, GuildController, GuildDto, GuildPageDto } from '
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GuildComponent implements OnInit {
-
+  GuildView = GuildView;
+  viewMode = GuildView.DefaultView;
   founderGuild$?: Observable<GuildDto>;
   memberGuild$?: Observable<GuildDto>;
   guilds$?: Observable<GuildPageDto>;
@@ -18,15 +24,29 @@ export class GuildComponent implements OnInit {
 
   constructor(
     private actionGuildController: ActionGuildController,
-    private guildController: GuildController,
+    private guildController: GuildController
   ) {}
 
   ngOnInit(): void {
-    this.founderGuild$ = this.guildController.getFounderGuild();
-    this.memberGuild$ = this.guildController.getMemberGuild();
+    this.founderGuild$ = this.guildController.getFounderGuild().pipe(
+      tap((data) => {
+        if (data) this.viewMode = GuildView.FounderView;
+      })
+    );
+    this.memberGuild$ = this.guildController.getMemberGuild().pipe(
+      tap((data) => {
+        // if (data) this.viewMode = GuildView.MemberView;
+      })
+    );
     this.guilds$ = this.guildController.getAll({
       page: this.guildPage,
       limit: this.guildPageLimit,
     });
   }
+}
+
+enum GuildView {
+  FounderView,
+  MemberView,
+  DefaultView,
 }

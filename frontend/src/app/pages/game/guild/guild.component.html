@@ -2,21 +2,37 @@
   <app-navigation-bar currentLocation="guild"></app-navigation-bar>
 
   <div class="wrapper-content">
-
-    <div *ngIf="(founderGuild$ | async) as guild">
-      <b>Founder guild:</b>
-      <p>{{ guild | json }}</p>
+    <div
+      *ngIf="
+        {
+          founderGuild: (founderGuild$ | async),
+          memberGuild: (memberGuild$ | async),
+          guilds: (guilds$ | async)
+        } as vm;
+        else loading
+      "
+    >
+      <div *ngIf="vm.founderGuild && viewMode === GuildView.FounderView">
+        <app-founder-guild [guild]="vm.founderGuild"></app-founder-guild>
+      </div>
+      <div *ngIf="vm.memberGuild && viewMode === GuildView.MemberView">
+        <b>Member guild:</b>
+        <p>{{ vm.memberGuild | json }}</p>
+      </div>
+      <div
+        *ngIf="
+          !vm.founderGuild &&
+          !vm.memberGuild &&
+          vm.guilds &&
+          viewMode === GuildView.DefaultView
+        "
+      >
+        <b>Available guilds:</b>
+        <p *ngFor="let guild of vm.guilds.data">{{ guild | json }}</p>
+      </div>
     </div>
-
-    <div *ngIf="(memberGuild$ | async) as guild">
-      <b>Member guild:</b>
-      <p>{{ guild | json }}</p>
-    </div>
-
-    <div *ngIf="(guilds$ | async) as guilds">
-      <b>Available guilds:</b>
-      <p *ngFor="let guild of guilds.data">{{ guild | json }}</p>
-    </div>
-
+    <ng-template #loading>
+      <app-loading-indicator></app-loading-indicator>
+    </ng-template>
   </div>
 </div>

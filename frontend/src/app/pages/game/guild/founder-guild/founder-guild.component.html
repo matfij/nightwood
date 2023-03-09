@@ -1,0 +1,12 @@
+<div class="wrapper-guild">
+  <p>
+    {{ "guild.guild" | translate }}:
+    <b>{{ guild.name }}</b>
+  </p>
+  <div class="wrapper-members">
+    <b> {{ "guild.members" | translate }} </b>
+    <div *ngFor="let member of guild.members; let i = index">
+      {{ i + 1 }}. {{ member.user.nickname }}
+    </div>
+  </div>
+</div>

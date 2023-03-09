@@ -18,6 +18,7 @@ import { DragonSummonComponent } from './dragon-summon/dragon-summon.component';
 import { AlchemyComponent } from './alchemy/alchemy.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { GuildComponent } from './guild/guild.component';
+import { FounderGuildComponent } from './guild/founder-guild/founder-guild.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { GuildComponent } from './guild/guild.component';
     AlchemyComponent,
     UserProfileComponent,
     GuildComponent,
+    FounderGuildComponent,
   ],
   imports: [
     CommonModule,
