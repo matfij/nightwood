@@ -13,7 +13,8 @@
     "confirm": "Confirm",
     "auto": "Auto",
     "search": "Search",
-    "submit": "Submit"
+    "submit": "Submit",
+    "add": "Add"
   },
   "enums": {
     "dragonNature": {
@@ -373,7 +374,17 @@
   },
   "guild": {
     "guild": "Guild",
-    "members": "Members"
+    "name": "Name",
+    "members": "Members",
+    "member": "Member",
+    "number": "No.",
+    "roles": "Roles",
+    "role": "Role",
+    "priority": "Priority",
+    "structures": "Structures",
+    "canAddMembers": "Can add members",
+    "canRemoveMembers": "Can remove members",
+    "canConstruct": "Can construct"
   },
   "mails": {
     "topic": "Topic",

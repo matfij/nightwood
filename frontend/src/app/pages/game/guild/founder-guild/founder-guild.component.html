@@ -1,12 +1,45 @@
 <div class="wrapper-guild">
-  <p>
+  <div class="wrapper-info">
     {{ "guild.guild" | translate }}:
-    <b>{{ guild.name }}</b>
-  </p>
-  <div class="wrapper-members">
-    <b> {{ "guild.members" | translate }} </b>
-    <div *ngFor="let member of guild.members; let i = index">
-      {{ i + 1 }}. {{ member.user.nickname }}
+    <b>{{ guild.name }} [{{ guild.tag }}]</b>
+  </div>
+  <div class="wrapper-actions">
+    <button (click)="viewMode = GuildView.Members" class="btn-base">
+      {{ "guild.members" | translate }}
+    </button>
+    <button (click)="viewMode = GuildView.Roles" class="btn-base">
+      {{ "guild.roles" | translate }}
+    </button>
+    <button (click)="viewMode = GuildView.Structures" class="btn-base">
+      {{ "guild.structures" | translate }}
+    </button>
+  </div>
+  <div *ngIf="viewMode === GuildView.Members" class="wrapper-members">
+    <div class="item-member-header">
+      <div>
+        {{ "guild.number" | translate }} {{ "guild.member" | translate }}
+      </div>
+      <div>{{ "guild.role" | translate }}</div>
     </div>
+    <div
+      *ngFor="let member of guild.members; let i = index"
+      class="item-member"
+    >
+      <div>{{ i + 1 }}. {{ member.user.nickname }}</div>
+      <div>{{ member.role ?? "guild.member" | translate }}</div>
+    </div>
+  </div>
+  <div *ngIf="viewMode === GuildView.Roles" class="wrapper-roles">
+    ROLES
+    <form [formGroup]="addRoleForm" (ngSubmit)="{}">
+      <app-input-base *ngFor="let field of addRoleFormFields" [options]="field"></app-input-base>
+
+      <button *ngIf="!(submitLoading$ | async)" [disabled]="!addRoleForm.valid" class="btn-base">
+        {{ 'common.add' | translate }}
+      </button>
+      <div *ngIf="(submitLoading$ | async)" style="margin-top: 15px;">
+        <app-loading-indicator></app-loading-indicator>
+      </div>
+    </form>
   </div>
 </div>

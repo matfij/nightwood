@@ -6,6 +6,7 @@ export enum FieldType {
   INTEGER,
   TEXTAREA,
   SELECT,
+  CHECKBOX,
 }
 
 export interface FormInputOptions {

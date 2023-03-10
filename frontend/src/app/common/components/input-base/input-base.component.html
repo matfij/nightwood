@@ -1,7 +1,5 @@
-
-
 <form class="wrapper" [formGroup]="options.form">
-  <div class="label">
+  <div *ngIf="options.fieldType !== FieldType.CHECKBOX" class="label">
     <div *ngIf="options.hint" tooltip class="hint">
       <ng-template #tooltipTemplate>
         <div class="item-tooltip">
@@ -10,7 +8,6 @@
       </ng-template>
       <img src="assets/img/icons/info.svg" alt="info">
     </div>
-
     {{ options.label | translate }}
   </div>
 
@@ -24,6 +21,13 @@
 
   <div *ngIf="options.fieldType === FieldType.TEXTAREA">
     <textarea class="input" [formControlName]="options.key" rows="3" [autocomplete]="options.autocomplete || 'off'"></textarea>
+  </div>
+
+  <div *ngIf="options.fieldType === FieldType.CHECKBOX" class="wrapper-checkbox">
+    <input type="checkbox" class="input" [formControlName]="options.key" rows="3">
+    <div class="label">
+      {{ options.label | translate }}
+    </div>
   </div>
 
   <div *ngIf="field && (field.touched || field.dirty) && !field.valid" class="error">

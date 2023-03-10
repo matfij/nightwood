@@ -35,3 +35,15 @@ input[type="number"] {
 textarea {
   resize: none;
 }
+
+.wrapper-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  input {
+    width: 25px;
+    height: 25px;
+    accent-color: $app-primary;
+  }
+}
