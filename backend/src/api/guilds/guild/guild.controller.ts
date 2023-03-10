@@ -6,8 +6,11 @@ import { GuildApplicationPageDto } from "./model/dto/guild-application-page.dto"
 import { GuildApplicationProcessDto } from "./model/dto/guild-application-process.dto";
 import { GuildGetDto } from "./model/dto/guild-get.dto";
 import { GuildPageDto } from "./model/dto/guild-page.dto";
+import { GuildRoleCreateDto } from "./model/dto/guild-role-create.dto";
+import { GuildRoleDto } from "./model/dto/guild-role.dto";
 import { GuildDto } from "./model/dto/guild.dto";
 import { GuildApplicatonService } from "./service/guild-application.service";
+import { GuildRoleService } from "./service/guild-role.service";
 import { GuildService } from "./service/guild.service";
 
 @Controller('guild')
@@ -18,6 +21,7 @@ export class GuildController {
     constructor(
         private guildService: GuildService,
         private guildApplicatonService: GuildApplicatonService,
+        private guildRoleService: GuildRoleService,
     ) {}
 
     @Post('getDetails/:id')
@@ -48,5 +52,11 @@ export class GuildController {
     @ApiOkResponse({ type: GuildApplicationPageDto })
     async getApplications(@Request() req: AuthorizedRequest): Promise<GuildApplicationPageDto> {
         return this.guildApplicatonService.getGuildApplications(req.user);
+    }
+
+    @Post('createGuildRole')
+    @ApiOkResponse({ type: GuildRoleDto })
+    async createGuildRole(@Request() req: AuthorizedRequest, @Body() dto: GuildRoleCreateDto): Promise<GuildRoleDto> {
+        return this.guildRoleService.createGuildRole(req.user, dto);
     }
 }

@@ -381,10 +381,12 @@
     "roles": "Roles",
     "role": "Role",
     "priority": "Priority",
+    "priorityHint": "Number from 1 to 100",
     "structures": "Structures",
     "canAddMembers": "Can add members",
     "canRemoveMembers": "Can remove members",
-    "canConstruct": "Can construct"
+    "canConstruct": "Can construct",
+    "addNewRole": "Add a new role"
   },
   "mails": {
     "topic": "Topic",

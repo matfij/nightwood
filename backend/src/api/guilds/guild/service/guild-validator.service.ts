@@ -2,10 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { ErrorService } from "src/common/services/error.service";
-import { GUILD_APPLICATION_MESSAGE_MAX_LENGTH, GUILD_DESCRIPTION_MAX_LENGT, GUILD_NAME_MAX_LENGT, GUILD_NAME_MIN_LENGT, GUILD_TAG_MAX_LENGT, GUILD_TAG_MIN_LENGT } from "src/configuration/backend.config";
+import { GUILD_APPLICATION_MESSAGE_MAX_LENGTH, GUILD_DESCRIPTION_MAX_LENGT, GUILD_NAME_MAX_LENGT, GUILD_NAME_MIN_LENGT, GUILD_ROLE_NAME_MAX_LENGTH, GUILD_ROLE_NAME_MIN_LENGTH, GUILD_ROLE_PRIORITY_MAX, GUILD_ROLE_PRIORITY_MIN, GUILD_TAG_MAX_LENGT, GUILD_TAG_MIN_LENGT } from "src/configuration/backend.config";
 import { Repository } from "typeorm";
 import { GuildApplicationCreateDto } from "../model/dto/guild-application.create";
 import { GuildCreateDto } from "../model/dto/guild-create.dto";
+import { GuildRoleCreateDto } from "../model/dto/guild-role-create.dto";
 import { GuildDto } from "../model/dto/guild.dto";
 import { GuildApplication } from "../model/guild-application.entity";
 import { Guild } from "../model/guild.entity";
@@ -84,5 +85,33 @@ export class GuildValidatorService {
 
     async checkUserInGuild(user: UserDto, guild: GuildDto): Promise<boolean> {
         return user.id === guild.founder.id || guild.members.map((member) => member.user.id).includes(user.id);
+    }
+
+    async validateCreateGuildRole(user: UserDto, dto: GuildRoleCreateDto): Promise<GuildDto> {
+        if (dto.name.length < GUILD_ROLE_NAME_MIN_LENGTH || dto.name.length > GUILD_ROLE_NAME_MAX_LENGTH) {
+            this.errorService.throw('errors.guildRoleNameInvalid');
+        }
+        if (dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX) {
+            this.errorService.throw('errors.guildRolePriorityInvalid');
+        }
+        const guild = await this.checkGuildFounder(user);
+        if (guild.roles.map((role) => role.name).includes(dto.name)) {
+            this.errorService.throw('errors.guildRoleNameNotUnique');
+        }
+        if (guild.roles.map((role) => role.priority).includes(dto.priority)) {
+            this.errorService.throw('errors.guildRolePriorityNotUnique');
+        }
+        return guild;
+    }
+
+    async checkGuildFounder(user: UserDto): Promise<GuildDto> {
+        const guild = await this.guildRepository.findOne({ 
+            where: { founder: user },
+            relations: ['roles'],
+        });
+        if (!guild) {
+            this.errorService.throw('errors.guildNotFound');
+        }
+        return guild;
     }
 }

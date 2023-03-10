@@ -8,6 +8,7 @@ import { GuildRole } from "./model/guild-role.entity";
 import { Guild } from "./model/guild.entity";
 import { GuildApplicatonService } from "./service/guild-application.service";
 import { GuildMemberService } from "./service/guild-member.service";
+import { GuildRoleService } from "./service/guild-role.service";
 import { GuildValidatorService } from "./service/guild-validator.service";
 import { GuildService } from "./service/guild.service";
 
@@ -25,6 +26,7 @@ import { GuildService } from "./service/guild.service";
         GuildService,
         GuildApplicatonService,
         GuildMemberService,
+        GuildRoleService,
         GuildValidatorService,
         ErrorService,
     ],
@@ -32,6 +34,7 @@ import { GuildService } from "./service/guild.service";
         GuildService,
         GuildApplicatonService,
         GuildMemberService,
+        GuildRoleService,
         GuildValidatorService,
     ],
 })
