@@ -375,6 +375,8 @@
   "guild": {
     "guild": "Guild",
     "name": "Name",
+    "tag": "Tag",
+    "description": "Description",
     "members": "Members",
     "member": "Member",
     "number": "No.",
@@ -387,7 +389,14 @@
     "canRemoveMembers": "Can remove members",
     "canConstruct": "Can construct",
     "addNewRole": "Add a new role",
-    "roleCreated": "Role created"
+    "roleCreated": "Role created",
+    "noGuildHint": "You are not yet a member of any guild, you can join one from the list below or create one of your own.",
+    "create": "Create",
+    "found": "Found",
+    "foundHind": "Found a new guild",
+    "foundRequirements": "Founding a new guild costs {{ cost }} gold",
+    "tagHint": "Shorthand for your guild name (from {{ min }} to {{ max }} characters)",
+    "guildFounded": "Guild founded"
   },
   "mails": {
     "topic": "Topic",

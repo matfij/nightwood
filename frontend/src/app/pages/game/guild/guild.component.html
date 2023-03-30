@@ -27,8 +27,7 @@
           viewMode === GuildView.DefaultView
         "
       >
-        <b>Available guilds:</b>
-        <p *ngFor="let guild of vm.guilds.data">{{ guild | json }}</p>
+        <app-no-guild [guilds]="vm.guilds.data"></app-no-guild>
       </div>
     </div>
     <ng-template #loading>

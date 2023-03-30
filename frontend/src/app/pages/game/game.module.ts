@@ -19,6 +19,8 @@ import { AlchemyComponent } from './alchemy/alchemy.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { GuildComponent } from './guild/guild.component';
 import { FounderGuildComponent } from './guild/founder-guild/founder-guild.component';
+import { NoGuildComponent } from './guild/no-guild/no-guild.component';
+import { CreateGuildComponent } from './guild/no-guild/create-guild/create-guild.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { FounderGuildComponent } from './guild/founder-guild/founder-guild.compo
     UserProfileComponent,
     GuildComponent,
     FounderGuildComponent,
+    NoGuildComponent,
+    CreateGuildComponent,
   ],
   imports: [
     CommonModule,

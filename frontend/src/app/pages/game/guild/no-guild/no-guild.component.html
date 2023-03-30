@@ -1,0 +1,16 @@
+<div class="wrapper-guild">
+  <div class="wrapper-info">
+    <p>{{ "guild.noGuildHint" | translate }}</p>
+  </div>
+
+  <p *ngFor="let guild of guilds">{{ guild.name }}</p>
+
+  <button (click)="displayCreateGuild = true" class="btn-base">
+    {{ "guild.found" | translate }}
+  </button>
+</div>
+
+<app-create-guild
+  *ngIf="displayCreateGuild"
+  (close)="displayCreateGuild = false">
+</app-create-guild>

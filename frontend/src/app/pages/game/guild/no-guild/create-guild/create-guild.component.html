@@ -1,0 +1,26 @@
+<div class="wrapper-modal">
+  <div class="wrapper-modal-conent">
+    <div class="title-secondary">
+      {{ 'guild.foundHind' | translate }}
+    </div>
+    <p>{{ 'guild.foundRequirements' | translate:{cost: 10000} }}</p>
+
+    <form [formGroup]="createGuildForm" (ngSubmit)="createGuild()" class="wrapper-form">
+      <app-input-base *ngFor="let field of createGuildFormFields" [options]="field"></app-input-base>
+
+      <button *ngIf="!(createGuildLoading$ | async)" [disabled]="!createGuildForm.valid" class="btn-base">
+        {{ 'guild.found' | translate }}
+      </button>
+      <div *ngIf="(createGuildLoading$ | async)" style="margin-top: 15px;">
+        <app-loading-indicator>
+          {{ createGuild$ | async }}
+        </app-loading-indicator>
+      </div>
+    </form>
+
+    <button (click)="close.next(true)" class="btn-base">
+      {{ "common.close" | translate }}
+    </button>
+  </div>
+</div>
+
