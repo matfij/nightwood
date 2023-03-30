@@ -64,3 +64,42 @@
     @include tile(darken($app-dark, 10));
   }
 }
+
+.wrapper-roles {
+  margin: 5px auto 10px auto;
+  display: flex;
+  gap: 1px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item-role-header {
+  @include tile($app-light, 8px);
+
+  width: 100%;
+  margin-bottom: 4px;
+  border-bottom: 2px solid $app-light;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 200px 50px 50px 50px 50px;
+  font-weight: 600;
+  text-align: left;
+
+  &:hover {
+    @include tile(darken($app-light, 5), 8px);
+  }
+}
+
+.item-role {
+  @include tile($app-dark);
+
+  width: 100%;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 300px 50px 50px 50px 50px;
+  text-align: left;
+
+  &:hover {
+    @include tile(darken($app-dark, 10));
+  }
+}

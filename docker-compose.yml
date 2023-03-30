@@ -29,7 +29,7 @@ services:
       - .env
     volumes:
       - ./frontend:${FRONTEND_SRC}
-      - .${FRONTEND_SRC}/node_modules
+      - ${FRONTEND_SRC}/node_modules
     ports:
       - '${FRONTEND_PORT}:${FRONTEND_PORT}'
     command: ng serve --host=${HOST} --port ${FRONTEND_PORT}

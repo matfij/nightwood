@@ -6,6 +6,7 @@ WORKDIR ${BACKEND_SRC}
 
 COPY package.json ./
 COPY yarn.lock ./
+COPY tsconfig.json ./
 
 RUN npm i -g @nestjs/cli
 RUN yarn install

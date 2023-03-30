@@ -19,13 +19,14 @@ export class GuildRoleService {
     ) {}
 
     async createGuildRole(user: UserDto, dto: GuildRoleCreateDto): Promise<GuildRole> {
-        await this.guildValidatorService.validateCreateGuildRole(user, dto);
+        const guild = await this.guildValidatorService.validateCreateGuildRole(user, dto);
         const newRole = this.guildRoleRepository.create({
             name: dto.name,
             priority: dto.priority,
-            canAddMembers: dto.canAddMembers,
-            canRemoveMembers: dto.canRemoveMembers,
-            canConstruct: dto.canConstruct,
+            canAddMembers: dto.canAddMembers || false,
+            canRemoveMembers: dto.canRemoveMembers || false,
+            canConstruct: dto.canConstruct || false,
+            guild: guild,
         });
         const savedRole = await this.guildRoleRepository.save(newRole);
         savedRole.guild = null;

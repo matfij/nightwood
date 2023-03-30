@@ -386,7 +386,8 @@
     "canAddMembers": "Can add members",
     "canRemoveMembers": "Can remove members",
     "canConstruct": "Can construct",
-    "addNewRole": "Add a new role"
+    "addNewRole": "Add a new role",
+    "roleCreated": "Role created"
   },
   "mails": {
     "topic": "Topic",

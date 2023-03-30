@@ -86,7 +86,7 @@ export class GuildService {
     async getFounderGuild(user: UserDto): Promise<GuildDto> {
         const guild: GuildDto = await this.guildRepository.findOne({ 
             where: { founder: user }, 
-            relations: ['founder', 'members', 'members.user'],
+            relations: ['founder', 'roles', 'members', 'members.user'],
             select: { 
                 founder: { id: true, nickname: true },
             },

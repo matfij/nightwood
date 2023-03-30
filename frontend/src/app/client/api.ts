@@ -3929,6 +3929,7 @@ export interface IGuildController {
     getMemberGuild(): Observable<GuildDto>;
     getAll(body: GuildGetDto): Observable<GuildPageDto>;
     getApplications(): Observable<GuildApplicationPageDto>;
+    createGuildRole(body: GuildRoleCreateDto): Observable<GuildRoleDto>;
 }
 
 @Injectable({
@@ -4176,6 +4177,57 @@ export class GuildController implements IGuildController {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             result200 = _responseText === "" ? null : <GuildApplicationPageDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    createGuildRole(body: GuildRoleCreateDto): Observable<GuildRoleDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/createGuildRole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateGuildRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateGuildRole(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildRoleDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildRoleDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateGuildRole(response: HttpResponseBase): Observable<GuildRoleDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildRoleDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4955,6 +5007,14 @@ export interface GuildPageDto {
 export interface GuildApplicationPageDto {
     meta: PageMetaDto;
     data: GuildApplicatonDto[];
+}
+
+export interface GuildRoleCreateDto {
+    name: string;
+    priority: number;
+    canAddMembers: boolean;
+    canRemoveMembers: boolean;
+    canConstruct: boolean;
 }
 
 export enum PenaltyType {

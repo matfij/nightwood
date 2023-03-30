@@ -30,16 +30,31 @@
     </div>
   </div>
   <div *ngIf="viewMode === GuildView.Roles" class="wrapper-roles">
-    ROLES
-    <form [formGroup]="addRoleForm" (ngSubmit)="{}">
+
+    <h2>{{ 'guild.addNewRole' | translate }}</h2>
+    <form [formGroup]="addRoleForm" (ngSubmit)="createGuildRole()">
       <app-input-base *ngFor="let field of addRoleFormFields" [options]="field"></app-input-base>
 
-      <button *ngIf="!(submitLoading$ | async)" [disabled]="!addRoleForm.valid" class="btn-base">
+      <button *ngIf="!(createGuildLoading$ | async)" [disabled]="!addRoleForm.valid" class="btn-base">
         {{ 'common.add' | translate }}
       </button>
-      <div *ngIf="(submitLoading$ | async)" style="margin-top: 15px;">
-        <app-loading-indicator></app-loading-indicator>
+      <div *ngIf="(createGuildLoading$ | async)" style="margin-top: 15px;">
+        <app-loading-indicator>
+          {{ createGuildRole$ | async }}
+        </app-loading-indicator>
       </div>
     </form>
+
+    <div class="item-role-header">
+      <div>{{ 'guild.name' | translate }}</div>
+      <div>{{ 'guild.priority' | translate }}</div>
+      <div>{{ 'guild.canAddMembers' | translate }}</div>
+      <div>{{ 'guild.canRemoveMembers' | translate }}</div>
+      <div>{{ 'guild.canConstruct' | translate }}</div>
+    </div>
+    <div *ngFor="let role of sortRoles(guild.roles)" class="item-role">
+      {{ role.name }} {{ role.priority }} {{ role.canAddMembers }}
+    </div>
+
   </div>
 </div>
