@@ -3,7 +3,18 @@
     <p>{{ "guild.noGuildHint" | translate }}</p>
   </div>
 
-  <p *ngFor="let guild of guilds">{{ guild.name }}</p>
+  <div class="wrapper-guilds">
+    <div *ngFor="let guild of guilds" class="wrapper-guild-item">
+      [{{ guild.tag }}] {{ guild.name }}
+      <button
+        (click)="apply(guild.id, guild.name)"
+        [disabled]="createGuildApplicationLoading$ | async"
+        class="btn-base btn-small">
+        {{ "guild.apply" | translate }}
+      </button>
+      <div *ngIf="createGuildApplication$ | async" class="gone"></div>
+    </div>
+  </div>
 
   <button (click)="displayCreateGuild = true" class="btn-base">
     {{ "guild.found" | translate }}

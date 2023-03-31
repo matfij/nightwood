@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { ActionGuildController, GuildCreateDto } from 'src/app/client/api';
@@ -39,7 +38,6 @@ export class CreateGuildComponent {
   createGuildLoading$ = new BehaviorSubject(false);
 
   constructor(
-    private router: Router,
     private actionGuildController: ActionGuildController,
     private translateService: TranslateService,
     private toastService: ToastService

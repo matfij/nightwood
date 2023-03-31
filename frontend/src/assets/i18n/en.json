@@ -396,7 +396,9 @@
     "foundHind": "Found a new guild",
     "foundRequirements": "Founding a new guild costs {{ cost }} gold",
     "tagHint": "Shorthand for your guild name (from {{ min }} to {{ max }} characters)",
-    "guildFounded": "Guild founded"
+    "guildFounded": "Guild founded",
+    "apply": "Apply",
+    "applicationCreated": "Applied to guild {{ guild }}"
   },
   "mails": {
     "topic": "Topic",

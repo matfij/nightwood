@@ -6,3 +6,26 @@
   padding: 5px;
   font-size: 18px;
 }
+
+.wrapper-guilds {
+  margin-bottom: 25px
+}
+
+.wrapper-guild-item {
+  @include tile($app-dark);
+
+  width: 90;
+  max-width: 400px;
+  margin: auto;
+
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  letter-spacing: 1px;
+
+  button {
+    margin: 0;
+  }
+}

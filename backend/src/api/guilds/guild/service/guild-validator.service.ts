@@ -68,7 +68,7 @@ export class GuildValidatorService {
         if (dto.message && dto.message.length > GUILD_APPLICATION_MESSAGE_MAX_LENGTH) {
             this.errorService.throw('errors.guildApplicationMessageInvalid');
         }
-        if (!(await this.checkUserAppliedToGuild(user, guild))) {
+        if (await this.checkUserAppliedToGuild(user, guild)) {
             this.errorService.throw('errors.userAlreadyApplied');
         }
         if (await this.checkUserInGuild(user, guild)) {
@@ -78,9 +78,9 @@ export class GuildValidatorService {
 
     async checkUserAppliedToGuild(user: UserDto, guild: GuildDto): Promise<boolean> {
         const applications = await this.guildApplicatonRepository.find({ 
-            where: { user: user, guild: guild } 
+            where: { guild: { id: guild.id }, user: { id: user.id } }
         });
-        return applications.length === 0;
+        return applications.length !== 0;
     }
 
     async checkUserInGuild(user: UserDto, guild: GuildDto): Promise<boolean> {

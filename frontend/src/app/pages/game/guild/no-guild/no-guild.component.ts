@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { GuildDto } from 'src/app/client/api';
+import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { ActionGuildController, GuildDto } from 'src/app/client/api';
+import { ToastService } from 'src/app/common/services/toast.service';
 
 @Component({
   selector: 'app-no-guild',
@@ -10,4 +12,29 @@ export class NoGuildComponent {
   @Input() guilds!: GuildDto[];
 
   displayCreateGuild = false;
+  createGuildApplication$ = new Observable();
+  createGuildApplicationLoading$ = new BehaviorSubject(false);
+
+  constructor(
+    private actionGuildController: ActionGuildController,
+    private toastService: ToastService,
+  ) {}
+
+  apply(guildId: number, guildName: string) {
+    this.createGuildApplicationLoading$.next(true);
+    this.createGuildApplication$ = this.actionGuildController.createGuildApplication({
+      guildId: guildId,
+      message: '',
+    }).pipe(
+      tap(() => {
+        this.createGuildApplicationLoading$.next(false);
+        this.toastService.showSuccess('success.success', 'guild.applicationCreated', {}, { guild: guildName });
+      }),
+      catchError((err) => {
+        this.createGuildApplicationLoading$.next(false);
+        throw err;
+      })
+    );
+
+  }
 }
