@@ -65,6 +65,11 @@
   }
 }
 
+.member-founder {
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
 .wrapper-roles {
   margin: 5px auto 10px auto;
   display: flex;
@@ -101,5 +106,33 @@
 
   &:hover {
     @include tile(darken($app-dark, 10));
+  }
+}
+
+.wrapper-application {
+  border: 2px solid $app-light;
+}
+
+.item-application {
+  @include tile($app-dark);
+
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+
+  &:hover {
+    @include tile(darken($app-dark, 10));
+  }
+
+  button {
+    margin: 0;
+  }
+
+  a:hover {
+    cursor: pointer;
+    text-decoration: underline;
   }
 }

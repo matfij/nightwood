@@ -398,7 +398,14 @@
     "tagHint": "Shorthand for your guild name (from {{ min }} to {{ max }} characters)",
     "guildFounded": "Guild founded",
     "apply": "Apply",
-    "applicationCreated": "Applied to guild {{ guild }}"
+    "applicationCreated": "Applied to guild {{ guild }}",
+    "applications": "Applications",
+    "pendingApplications": "Pending applications",
+    "founder": "Founder",
+    "accept": "Accept",
+    "reject": "Reject",
+    "applicationAccepted": "Application accepted",
+    "applicationRejected": "Application rejected"
   },
   "mails": {
     "topic": "Topic",

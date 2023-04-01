@@ -59,7 +59,7 @@ export class CreateGuildComponent {
     this.createGuildLoading$.next(true);
     this.createGuild$ = this.actionGuildController.createGuild(params).pipe(
       tap(() => {
-        this.toastService.showSuccess('success.success', 'guild.guildFounded');
+        this.toastService.showSuccess('common.success', 'guild.guildFounded');
         this.close.next(true);
       }),
       catchError((err) => {

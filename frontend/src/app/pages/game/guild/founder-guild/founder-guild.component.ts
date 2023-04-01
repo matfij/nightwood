@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
-import { GuildController, GuildDto, GuildRoleCreateDto, GuildRoleDto } from 'src/app/client/api';
+import { ActionGuildController, GuildApplicationPageDto, GuildController, GuildDto, GuildRoleCreateDto, GuildRoleDto } from 'src/app/client/api';
 import { GUILD_ROLE_NAME_MAX_LENGTH, GUILD_ROLE_NAME_MIN_LENGTH, GUILD_ROLE_PRIORITY_MAX, GUILD_ROLE_PRIORITY_MIN } from 'src/app/client/config/frontend.config';
 import { FieldType, FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -38,13 +39,46 @@ export class FounderGuildComponent {
   ];
   createGuildRole$ = new Observable();
   createGuildLoading$ = new BehaviorSubject(false);
+  guildApplications$?: Observable<GuildApplicationPageDto>;
+  processApplication$ = new Observable();
+  processApplicationLoading$ = new BehaviorSubject(false);
 
   constructor(
+    private router: Router,
     private toastService: ToastService,
     private translateService: TranslateService,
+    private actionGuildController: ActionGuildController,
     private guildController: GuildController,
   ) {
+    this.getAppliations();
     this.addRoleFormFields[1].hint = this.translateService.instant('guild.priorityHint');
+  }
+
+  showUserDetails(userId: number) {
+    this.router.navigate(['game', 'profile', userId]);
+  }
+
+  getAppliations() {
+    this.guildApplications$ = this.guildController.getApplications();
+  }
+
+  processApplication(applicationId: number, accept: boolean) {
+    this.processApplicationLoading$.next(true);
+    this.processApplication$ = this.actionGuildController.processApplication({
+      applicationId: applicationId,
+      accept: accept
+    }).pipe(
+      tap(() => {
+        this.processApplicationLoading$.next(false);
+        const message = accept ? 'guild.applicationAccepted' : 'guild.applicationRejected';
+        this.toastService.showSuccess('common.success', message);
+        this.getAppliations();
+      }),
+      catchError((err) => {
+        this.processApplicationLoading$.next(false);
+        throw err;
+      })
+    );
   }
 
   sortRoles(roles: GuildRoleDto[]): GuildRoleDto[] {
@@ -66,7 +100,7 @@ export class FounderGuildComponent {
     this.createGuildRole$ = this.guildController.createGuildRole(params).pipe(
       tap((role) => {
         if (role) {
-          this.toastService.showSuccess('success.success', 'guild.roleCreated');
+          this.toastService.showSuccess('common.success', 'guild.roleCreated');
           this.addRoleForm.reset();
           this.guild.roles = [
             role,
@@ -84,6 +118,7 @@ export class FounderGuildComponent {
 }
 
 enum GuildView {
+  Applications,
   Members,
   Roles,
   Structures,

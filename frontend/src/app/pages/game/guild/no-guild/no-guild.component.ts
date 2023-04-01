@@ -28,7 +28,7 @@ export class NoGuildComponent {
     }).pipe(
       tap(() => {
         this.createGuildApplicationLoading$.next(false);
-        this.toastService.showSuccess('success.success', 'guild.applicationCreated', {}, { guild: guildName });
+        this.toastService.showSuccess('common.success', 'guild.applicationCreated', {}, { guild: guildName });
       }),
       catchError((err) => {
         this.createGuildApplicationLoading$.next(false);
