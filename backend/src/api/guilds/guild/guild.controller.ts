@@ -12,6 +12,7 @@ import { GuildDto } from "./model/dto/guild.dto";
 import { GuildApplicatonService } from "./service/guild-application.service";
 import { GuildRoleService } from "./service/guild-role.service";
 import { GuildService } from "./service/guild.service";
+import { GuildRoleUpdateDto } from "./model/dto/guild-role-update.dto";
 
 @Controller('guild')
 @UseGuards(JwtAuthGuard)
@@ -58,5 +59,11 @@ export class GuildController {
     @ApiOkResponse({ type: GuildRoleDto })
     async createGuildRole(@Request() req: AuthorizedRequest, @Body() dto: GuildRoleCreateDto): Promise<GuildRoleDto> {
         return this.guildRoleService.createGuildRole(req.user, dto);
+    }
+
+    @Post('updateGuildRole')
+    @ApiOkResponse({ type: GuildRoleDto })
+    async updateGuildRole(@Request() req: AuthorizedRequest, @Body() dto: GuildRoleUpdateDto): Promise<GuildRoleDto> {
+        return this.guildRoleService.updateGuildRole(req.user, dto);
     }
 }

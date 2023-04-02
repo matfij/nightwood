@@ -98,21 +98,24 @@ export class AddEditRoleComponent implements OnInit {
   }
 
   updateGuildRole(params: GuildRoleCreateDto) {
-    // this.createGuildRoleLoading$.next(true);
-    // this.createGuildRole$ = this.guildController.updateGuildRole(params).pipe(
-    //   tap((role) => {
-    //     if (role) {
-    //       this.toastService.showSuccess('common.success', 'guild.roleCreated');
-    //       this.addRoleForm.reset();
-    //       this.newRole.next(role);
-    //     }
-    //     this.createGuildRoleLoading$.next(false);
-    //   }),
-    //   catchError((err) => {
-    //     this.createGuildRoleLoading$?.next(false);
-    //     throw err;
-    //   })
-    // );
+    this.createGuildRoleLoading$.next(true);
+    this.createGuildRole$ = this.guildController.updateGuildRole({
+      id: this.guildRole!.id,
+      ...params
+    }).pipe(
+      tap((role) => {
+        if (role) {
+          this.toastService.showSuccess('common.success', 'guild.roleUpdated');
+          this.addRoleForm.reset();
+          this.newRole.next(role);
+        }
+        this.createGuildRoleLoading$.next(false);
+      }),
+      catchError((err) => {
+        this.createGuildRoleLoading$?.next(false);
+        throw err;
+      })
+    );
   }
 
   onClose() {

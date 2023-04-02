@@ -10,6 +10,9 @@ import { GuildRoleCreateDto } from "../model/dto/guild-role-create.dto";
 import { GuildDto } from "../model/dto/guild.dto";
 import { GuildApplication } from "../model/guild-application.entity";
 import { Guild } from "../model/guild.entity";
+import { GuildRoleUpdateDto } from "../model/dto/guild-role-update.dto";
+import { GuildRoleDto } from "../model/dto/guild-role.dto";
+import { GuildRole } from "../model/guild-role.entity";
 
 @Injectable()
 export class GuildValidatorService {
@@ -19,6 +22,8 @@ export class GuildValidatorService {
         private guildRepository: Repository<Guild>,
         @InjectRepository(GuildApplication)
         private guildApplicatonRepository: Repository<GuildApplication>,
+        @InjectRepository(GuildRole)
+        private guildRoleRepository: Repository<GuildRole>,
         private errorService: ErrorService,
     ) {}
 
@@ -98,10 +103,31 @@ export class GuildValidatorService {
         if (guild.roles.map((role) => role.name).includes(dto.name)) {
             this.errorService.throw('errors.guildRoleNameNotUnique');
         }
-        if (guild.roles.map((role) => role.priority).includes(dto.priority)) {
+        if (guild.roles.map((role) => +role.priority).includes(+dto.priority)) {
             this.errorService.throw('errors.guildRolePriorityNotUnique');
         }
         return guild;
+    }
+
+    async validateUpdateGuildRole(user: UserDto, dto: GuildRoleUpdateDto): Promise<GuildRoleDto> {
+        if (dto.name.length < GUILD_ROLE_NAME_MIN_LENGTH || dto.name.length > GUILD_ROLE_NAME_MAX_LENGTH) {
+            this.errorService.throw('errors.guildRoleNameInvalid');
+        }
+        if (dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX) {
+            this.errorService.throw('errors.guildRolePriorityInvalid');
+        }
+        const role = await this.guildRoleRepository.findOne({ where: { id: dto.id }});
+        if (!role) {
+            this.errorService.throw('errors.guildRoleNotFound');
+        }
+        const guild = await this.checkGuildFounder(user);
+        if (guild.roles.filter((role) => role.id !== dto.id).map((role) => role.name).includes(dto.name)) {
+            this.errorService.throw('errors.guildRoleNameNotUnique');
+        }
+        if (guild.roles.filter((role) => role.id !== dto.id).map((role) => +role.priority).includes(+dto.priority)) {
+            this.errorService.throw('errors.guildRolePriorityNotUnique');
+        }
+        return role;
     }
 
     async checkGuildFounder(user: UserDto): Promise<GuildDto> {

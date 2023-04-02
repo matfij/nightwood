@@ -6,6 +6,8 @@ import { GuildRoleCreateDto } from "../model/dto/guild-role-create.dto";
 import { GuildRole } from "../model/guild-role.entity";
 import { Guild } from "../model/guild.entity";
 import { GuildValidatorService } from "./guild-validator.service";
+import { GuildRoleUpdateDto } from "../model/dto/guild-role-update.dto";
+import { GuildRoleDto } from "../model/dto/guild-role.dto";
 
 @Injectable()
 export class GuildRoleService {
@@ -31,5 +33,15 @@ export class GuildRoleService {
         const savedRole = await this.guildRoleRepository.save(newRole);
         savedRole.guild = null;
         return savedRole;
+    }
+
+    async updateGuildRole(user: UserDto, dto: GuildRoleUpdateDto): Promise<GuildRoleDto> {
+        let editedRole = await this.guildValidatorService.validateUpdateGuildRole(user, dto);
+        editedRole = {
+            ...editedRole,
+            ...dto,
+        };
+        await this.guildRoleRepository.update(editedRole.id, editedRole);
+        return editedRole;
     }
 }

@@ -392,6 +392,7 @@
     "addNewRole": "Add a new role",
     "editRole": "Edit an existing role",
     "roleCreated": "Role created",
+    "roleUpdated": "Role updated",
     "noGuildHint": "You are not yet a member of any guild, you can join one from the list below or create one of your own.",
     "create": "Create",
     "found": "Found",
