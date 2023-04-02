@@ -86,7 +86,7 @@
   border-bottom: 2px solid $app-light;
   padding: 5px;
   display: grid;
-  grid-template-columns: 200px 50px 50px 50px 50px;
+  grid-template-columns: 200px 40px 40px 40px;
   font-weight: 600;
   text-align: left;
 
@@ -101,11 +101,26 @@
   width: 100%;
   padding: 5px;
   display: grid;
-  grid-template-columns: 300px 50px 50px 50px 50px;
+  grid-template-columns: 200px 40px 40px 40px 60px;
   text-align: left;
 
   &:hover {
     @include tile(darken($app-dark, 10));
+  }
+}
+
+.icon-permission {
+  width: 20px;
+  margin-top: 3px;
+  margin-left: auto;
+}
+
+.icon-edit {
+  width: 16px;
+  margin-top: 5px;
+
+  &:hover {
+    cursor: pointer;
   }
 }
 

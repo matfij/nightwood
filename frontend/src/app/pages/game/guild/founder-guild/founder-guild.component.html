@@ -39,32 +39,22 @@
   </div>
 
   <div *ngIf="viewMode === GuildView.Roles" class="wrapper-roles">
-
-    <h2>{{ 'guild.addNewRole' | translate }}</h2>
-    <form [formGroup]="addRoleForm" (ngSubmit)="createGuildRole()">
-      <app-input-base *ngFor="let field of addRoleFormFields" [options]="field"></app-input-base>
-
-      <button *ngIf="!(createGuildLoading$ | async)" [disabled]="!addRoleForm.valid" class="btn-base">
-        {{ 'common.add' | translate }}
-      </button>
-      <div *ngIf="(createGuildLoading$ | async)" style="margin-top: 15px;">
-        <app-loading-indicator>
-          {{ createGuildRole$ | async }}
-        </app-loading-indicator>
-      </div>
-    </form>
-
     <div class="item-role-header">
       <div>{{ 'guild.name' | translate }}</div>
-      <div>{{ 'guild.priority' | translate }}</div>
-      <div>{{ 'guild.canAddMembers' | translate }}</div>
-      <div>{{ 'guild.canRemoveMembers' | translate }}</div>
-      <div>{{ 'guild.canConstruct' | translate }}</div>
+      <img src="assets/img/icons/user-add.svg" class="icon-permission">
+      <img src="assets/img/icons/user-remove.svg" class="icon-permission">
+      <img src="assets/img/icons/construct.svg" class="icon-permission">
     </div>
     <div *ngFor="let role of sortRoles(guild.roles)" class="item-role">
-      {{ role.name }} {{ role.priority }} {{ role.canAddMembers }}
+      <div>[{{ role.priority }}] {{ role.name }}</div>
+      <img [src]="parseRolePermission(role.canAddMembers)" class="icon-permission">
+      <img [src]="parseRolePermission(role.canRemoveMembers)" class="icon-permission">
+      <img [src]="parseRolePermission(role.canConstruct)" class="icon-permission">
+      <img (click)="editRole(role)" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
     </div>
-
+    <button (click)="displayGuildRoleForm = true" class="btn-base" style="width: 100%; max-width: 100%; margin: 10px 0;">
+      {{ "guild.addNewRole" | translate }}
+    </button>
   </div>
 
   <div *ngIf="viewMode === GuildView.Applications" class="wrapper-applications">
@@ -94,3 +84,10 @@
   </div>
 
 </div>
+
+<app-add-edit-role
+  *ngIf="displayGuildRoleForm"
+  [guildRole]="editedGuildRole"
+  (newRole)="onAddEditRole($event)"
+  (close)="onAddEditRoleClose()">
+</app-add-edit-role>

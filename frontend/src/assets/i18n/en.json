@@ -175,7 +175,7 @@
   },
   "dragon": {
     "adoptDragonTilte": "Who are you fated to encounter?",
-    "adoptDragonHint": "Open a door on a new adventure throughout lands of Nightwood ...",
+    "adoptDragonHint": "Open a door on a new adventure throughout the lands of Nightwood ...",
     "traitQuestion": "Trait",
     "fireTrait": "Strength",
     "waterTrait": "Brilliance",
@@ -388,7 +388,9 @@
     "canAddMembers": "Can add members",
     "canRemoveMembers": "Can remove members",
     "canConstruct": "Can construct",
+    "addRole": "Add role",
     "addNewRole": "Add a new role",
+    "editRole": "Edit an existing role",
     "roleCreated": "Role created",
     "noGuildHint": "You are not yet a member of any guild, you can join one from the list below or create one of your own.",
     "create": "Create",
@@ -405,7 +407,8 @@
     "accept": "Accept",
     "reject": "Reject",
     "applicationAccepted": "Application accepted",
-    "applicationRejected": "Application rejected"
+    "applicationRejected": "Application rejected",
+    "action": "Action"
   },
   "mails": {
     "topic": "Topic",

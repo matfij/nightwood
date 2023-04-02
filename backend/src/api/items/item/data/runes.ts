@@ -248,7 +248,7 @@ export const RUNE_SPECIAL_ATTACK_2: ItemDto = {
 export const RUNE_SPECIAL_ATTACK_3: ItemDto = {
     uid: 'item-r-31',
     name: 'Tauro Forto',
-    level: 1,
+    level: 100,
     rarity: ItemRarity.Rare,
     type: ItemType.Equipment,
     equipmentType: EquipmentType.Rune,
