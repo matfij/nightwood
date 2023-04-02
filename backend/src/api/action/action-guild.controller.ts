@@ -8,6 +8,7 @@ import { GuildCreateDto } from "../guilds/guild/model/dto/guild-create.dto";
 import { GuildDto } from "../guilds/guild/model/dto/guild.dto";
 import { JwtAuthGuard } from "../users/auth/util/jwt.guard";
 import { ActionGuildService } from "./service/action-guild.service";
+import { GuildMemberDto } from "../guilds/guild/model/dto/guild-member.dto";
 
 @Controller('actionGuild')
 @UseGuards(JwtAuthGuard)

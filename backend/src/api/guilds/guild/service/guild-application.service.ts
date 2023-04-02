@@ -49,13 +49,13 @@ export class GuildApplicatonService {
 
     async getGuildApplications(user: UserDto): Promise<GuildApplicationPageDto> {
         const guild: GuildDto = await this.guildRepository.findOne({ 
-            where: { founder: user } 
+            where: { founder: { id: user.id } } 
         });
         if (!guild) {
             this.errorService.throw('errors.guildNotFound');
         }
         let applications: GuildApplicatonDto[] = await this.guildApplicatonRepository.find({ 
-            where: { guild: guild }, 
+            where: { guild: { id: guild.id } }, 
             relations: ['user'], 
             select: { user: { id: true, nickname: true }} 
         });

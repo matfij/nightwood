@@ -42,7 +42,7 @@
   border-bottom: 2px solid $app-light;
   padding: 5px;
   display: grid;
-  grid-template-columns: 200px 100px 100px;
+  grid-template-columns: 5fr 5fr 1fr;
   font-weight: 600;
   text-align: left;
 
@@ -57,7 +57,7 @@
   width: 100%;
   padding: 5px;
   display: grid;
-  grid-template-columns: 200px 100px 100px;
+  grid-template-columns: 5fr 5fr 1fr;
   text-align: left;
 
   &:hover {
@@ -86,7 +86,7 @@
   border-bottom: 2px solid $app-light;
   padding: 5px;
   display: grid;
-  grid-template-columns: 200px 40px 40px 40px;
+  grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
   font-weight: 600;
   text-align: left;
 
@@ -101,7 +101,7 @@
   width: 100%;
   padding: 5px;
   display: grid;
-  grid-template-columns: 200px 40px 40px 40px 60px;
+  grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
   text-align: left;
 
   &:hover {

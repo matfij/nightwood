@@ -30,11 +30,12 @@
       <div>{{ "guild.founder" | translate }}</div>
     </div>
     <div
-      *ngFor="let member of guild.members; let i = index"
+      *ngFor="let member of sortMembers(guild.members); let i = index"
       class="item-member"
     >
       <div>{{ i + 2 }}. {{ member.user.nickname }}</div>
-      <div>{{ member.role ?? "guild.member" | translate }}</div>
+      <div>{{ member.role && member.role.name ? member.role.name : "guild.member" | translate }}</div>
+      <img (click)="manageGuildMember(member)" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
     </div>
   </div>
 
@@ -84,6 +85,15 @@
   </div>
 
 </div>
+
+<app-manage-member
+  *ngIf="displayManageGuildMember && managedGuildMember"
+  [member]="managedGuildMember"
+  [roles]="guild.roles"
+  (managedMember)="onManageMember($event)"
+  (kickedMember)="onKickMember($event)"
+  (close)="displayManageGuildMember = false">
+</app-manage-member>
 
 <app-add-edit-role
   *ngIf="displayGuildRoleForm"

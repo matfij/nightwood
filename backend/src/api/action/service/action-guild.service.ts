@@ -4,6 +4,7 @@ import { GuildApplicationProcessDto } from "src/api/guilds/guild/model/dto/guild
 import { GuildApplicationCreateDto } from "src/api/guilds/guild/model/dto/guild-application.create";
 import { GuildApplicatonDto } from "src/api/guilds/guild/model/dto/guild-application.dto";
 import { GuildCreateDto } from "src/api/guilds/guild/model/dto/guild-create.dto";
+import { GuildMemberDto } from "src/api/guilds/guild/model/dto/guild-member.dto";
 import { GuildDto } from "src/api/guilds/guild/model/dto/guild.dto";
 import { GuildApplicatonService } from "src/api/guilds/guild/service/guild-application.service";
 import { GuildMemberService } from "src/api/guilds/guild/service/guild-member.service";
@@ -39,7 +40,7 @@ export class ActionGuildService {
         return this.guildApplicatonService.createGuildApplication(user, guild, guildApplicationCreateDto);
     }
 
-    async processApplication(dto: GuildApplicationProcessDto): Promise<any> {
+    async processApplication(dto: GuildApplicationProcessDto) {
         const application: GuildApplicatonDto = await this.guildApplicatonService.getOne(dto.applicationId);
         const mailParams: MailSendSystemParams = {
             receiverId: application.user.id,

@@ -13,6 +13,9 @@ import { Guild } from "../model/guild.entity";
 import { GuildRoleUpdateDto } from "../model/dto/guild-role-update.dto";
 import { GuildRoleDto } from "../model/dto/guild-role.dto";
 import { GuildRole } from "../model/guild-role.entity";
+import { GuildMember } from "../model/guild-member.entity";
+import { GuildMemberUpdateDto } from "../model/dto/guild-member-update.dto";
+import { GuildMemberDto } from "../model/dto/guild-member.dto";
 
 @Injectable()
 export class GuildValidatorService {
@@ -24,6 +27,8 @@ export class GuildValidatorService {
         private guildApplicatonRepository: Repository<GuildApplication>,
         @InjectRepository(GuildRole)
         private guildRoleRepository: Repository<GuildRole>,
+        @InjectRepository(GuildMember)
+        private guildMemberRepository: Repository<GuildMember>,
         private errorService: ErrorService,
     ) {}
 
@@ -64,7 +69,7 @@ export class GuildValidatorService {
 
     async checkUniqueFounder(founder: UserDto): Promise<boolean> {
         const guilds = await this.guildRepository.find({ 
-            where: { founder: founder } 
+            where: { founder: { id: founder.id } } 
         });
         return guilds.length === 0;
     }
@@ -132,12 +137,39 @@ export class GuildValidatorService {
 
     async checkGuildFounder(user: UserDto): Promise<GuildDto> {
         const guild = await this.guildRepository.findOne({ 
-            where: { founder: user },
+            where: { founder: { id: user.id } },
             relations: ['roles'],
         });
         if (!guild) {
             this.errorService.throw('errors.guildNotFound');
         }
         return guild;
+    }
+
+    async validateGuildMember(userId: number, memberId: number): Promise<GuildMemberDto> {
+        const member = await this.guildMemberRepository.findOne({
+            where: { id: memberId },
+            relations: { guild: true, user: true },
+            select: { 
+                user: { id: true, nickname: true },
+            },
+        });
+        const guild = await this.guildRepository.findOne({ 
+            where: { founder: { id: userId} } 
+        });
+        if (!member || !guild || member.guild.id !== guild.id) {
+            this.errorService.throw('errors.guildMemberNotFound');
+        }
+        return member;
+    }
+
+    async validateGuildRole(roleId: number): Promise<GuildRoleDto> {
+        const role = await this.guildRoleRepository.findOne({
+            where: { id: roleId }
+        });
+        if (!role) {
+            this.errorService.throw('errors.guildRoleNotFound');
+        }
+        return role;
     }
 }

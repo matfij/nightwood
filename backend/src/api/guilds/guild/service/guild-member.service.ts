@@ -5,16 +5,16 @@ import { Repository } from "typeorm";
 import { GuildMemberDto } from "../model/dto/guild-member.dto";
 import { GuildDto } from "../model/dto/guild.dto";
 import { GuildMember } from "../model/guild-member.entity";
-import { Guild } from "../model/guild.entity";
+import { GuildMemberUpdateDto } from "../model/dto/guild-member-update.dto";
+import { GuildValidatorService } from "./guild-validator.service";
 
 @Injectable()
 export class GuildMemberService {
 
     constructor(
-        @InjectRepository(Guild)
-        private guildRepository: Repository<Guild>,
         @InjectRepository(GuildMember)
         private guildMemberRepository: Repository<GuildMember>,
+        private guildValidatorService: GuildValidatorService,
     ) {}
 
     async createMember(guild: GuildDto, user: UserDto): Promise<GuildMemberDto> {
@@ -22,6 +22,21 @@ export class GuildMemberService {
             guild: guild,
             user: user,
         });
-        return  await this.guildMemberRepository.save(newMember);
+        return await this.guildMemberRepository.save(newMember);
+    }
+
+    async updateRole(userId: number, dto: GuildMemberUpdateDto): Promise<GuildMemberDto> {
+        const member = await this.guildValidatorService.validateGuildMember(userId, dto.memberId);
+        const newRole = await this.guildValidatorService.validateGuildRole(dto.roleId);
+        member.role = newRole;
+        await this.guildMemberRepository.update(member.id, member);
+        console.log(member)
+        return member;
+    }
+
+    async deleteMember(userId: number, memberId: number): Promise<GuildMemberDto> {
+        const member = await this.guildValidatorService.validateGuildMember(userId, memberId);
+        await this.guildMemberRepository.delete(member.id);
+        return member;
     }
 }

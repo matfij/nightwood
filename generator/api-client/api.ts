@@ -3931,6 +3931,8 @@ export interface IGuildController {
     getApplications(): Observable<GuildApplicationPageDto>;
     createGuildRole(body: GuildRoleCreateDto): Observable<GuildRoleDto>;
     updateGuildRole(body: GuildRoleUpdateDto): Observable<GuildRoleDto>;
+    updateGuildMemberRole(body: GuildMemberUpdateDto): Observable<GuildMemberDto>;
+    deleteMember(id: number): Observable<GuildMemberDto>;
 }
 
 @Injectable({
@@ -4280,6 +4282,107 @@ export class GuildController implements IGuildController {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             result200 = _responseText === "" ? null : <GuildRoleDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    updateGuildMemberRole(body: GuildMemberUpdateDto): Observable<GuildMemberDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/updateGuildMemberRole";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateGuildMemberRole(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateGuildMemberRole(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildMemberDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildMemberDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateGuildMemberRole(response: HttpResponseBase): Observable<GuildMemberDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildMemberDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    deleteMember(id: number): Observable<GuildMemberDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/deleteMember";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteMember(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteMember(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildMemberDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildMemberDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteMember(response: HttpResponseBase): Observable<GuildMemberDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildMemberDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -5076,6 +5179,11 @@ export interface GuildRoleUpdateDto {
     canAddMembers: boolean;
     canRemoveMembers: boolean;
     canConstruct: boolean;
+}
+
+export interface GuildMemberUpdateDto {
+    memberId: number;
+    roleId: number;
 }
 
 export enum PenaltyType {

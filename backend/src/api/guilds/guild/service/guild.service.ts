@@ -85,30 +85,39 @@ export class GuildService {
 
     async getFounderGuild(user: UserDto): Promise<GuildDto> {
         const guild: GuildDto = await this.guildRepository.findOne({ 
-            where: { founder: user }, 
-            relations: ['founder', 'roles', 'members', 'members.user'],
+            where: { founder: { id: user.id } },
+            relations: {
+                founder: true,
+                members: {
+                    user: true,
+                    role: true,
+                },
+                applications: {
+                    user: true,
+                },
+                roles: true,
+            },
             select: { 
-                founder: { id: true, nickname: true },
+                founder: { 
+                    id: true, 
+                    nickname: true 
+                },
+                roles: true,
+                members: {
+                    id: true,
+                    user: { id: true, nickname: true }
+                }
             },
         });
         if (!guild) {
             return null;
         }
-        guild.members = guild.members.map((member) => {
-            return {
-                ...member,
-                user: {
-                    id: member.user.id,
-                    nickname: member.user.nickname,
-                }
-            };
-        });
         return guild;
     }
 
     async getMemberGuild(user: UserDto): Promise<GuildDto> {
         const member: GuildMemberDto = await this.guildMemberRepository.findOne({
-            where: { user: user },
+            where: { user: { id: user.id } },
             relations: ['guild', 'guild.founder', 'guild.members', 'guild.members.user']
         });
         if (!member) {
@@ -134,7 +143,6 @@ export class GuildService {
         dto.page = Math.max(0, dto.page ?? 0);
         dto.limit = Math.max(1, dto.limit ?? 20);
         const guilds = await this.guildRepository.find({
-            order: { /** TODO */ },
             skip: dto.page * dto.limit,
             take: dto.limit,
         });

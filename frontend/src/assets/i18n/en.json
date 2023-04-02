@@ -409,7 +409,10 @@
     "reject": "Reject",
     "applicationAccepted": "Application accepted",
     "applicationRejected": "Application rejected",
-    "action": "Action"
+    "action": "Action",
+    "manage": "Manage",
+    "kickOut": "Kick out",
+    "memberKicked": "Member kicked"
   },
   "mails": {
     "topic": "Topic",
