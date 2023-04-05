@@ -12,9 +12,9 @@
         class="btn-base btn-small">
         {{ "guild.apply" | translate }}
       </button>
-      <div *ngIf="createGuildApplication$ | async" class="gone"></div>
     </div>
   </div>
+  <div *ngIf="createGuildApplication$ | async" class="gone"></div>
 
   <button (click)="displayCreateGuild = true" class="btn-base">
     {{ "guild.found" | translate }}

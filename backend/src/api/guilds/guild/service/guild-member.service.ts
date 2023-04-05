@@ -22,7 +22,20 @@ export class GuildMemberService {
             guild: guild,
             user: user,
         });
-        return await this.guildMemberRepository.save(newMember);
+        const savedMember = await this.guildMemberRepository.save(newMember);
+        const member = this.guildMemberRepository.findOne({
+            where: { id: savedMember.id },
+            relations: {
+                user: true,
+                role: true,
+            },
+            select: {
+                id: true,
+                user: { id: true, nickname: true },
+                role: { id: true, name: true, priority: true, canAddMembers: true, canRemoveMembers: true, canConstruct: true },
+            }
+        })
+        return member;
     }
 
     async updateRole(userId: number, dto: GuildMemberUpdateDto): Promise<GuildMemberDto> {
@@ -30,7 +43,6 @@ export class GuildMemberService {
         const newRole = await this.guildValidatorService.validateGuildRole(dto.roleId);
         member.role = newRole;
         await this.guildMemberRepository.update(member.id, member);
-        console.log(member)
         return member;
     }
 

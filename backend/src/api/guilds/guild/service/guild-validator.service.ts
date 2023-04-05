@@ -14,7 +14,6 @@ import { GuildRoleUpdateDto } from "../model/dto/guild-role-update.dto";
 import { GuildRoleDto } from "../model/dto/guild-role.dto";
 import { GuildRole } from "../model/guild-role.entity";
 import { GuildMember } from "../model/guild-member.entity";
-import { GuildMemberUpdateDto } from "../model/dto/guild-member-update.dto";
 import { GuildMemberDto } from "../model/dto/guild-member.dto";
 
 @Injectable()

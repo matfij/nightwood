@@ -841,7 +841,7 @@ export class ActionController implements IActionController {
 export interface IActionGuildController {
     createGuild(body: GuildCreateDto): Observable<GuildDto>;
     createGuildApplication(body: GuildApplicationCreateDto): Observable<GuildApplicatonDto>;
-    processApplication(body: GuildApplicationProcessDto): Observable<void>;
+    processApplication(body: GuildApplicationProcessDto): Observable<GuildMemberDto>;
 }
 
 @Injectable({
@@ -959,7 +959,7 @@ export class ActionGuildController implements IActionGuildController {
         return _observableOf(<any>null);
     }
 
-    processApplication(body: GuildApplicationProcessDto): Observable<void> {
+    processApplication(body: GuildApplicationProcessDto): Observable<GuildMemberDto> {
         let url_ = this.baseUrl + "/api/v1/actionGuild/processApplication";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -971,6 +971,7 @@ export class ActionGuildController implements IActionGuildController {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -981,14 +982,14 @@ export class ActionGuildController implements IActionGuildController {
                 try {
                     return this.processProcessApplication(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<GuildMemberDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<GuildMemberDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processProcessApplication(response: HttpResponseBase): Observable<void> {
+    protected processProcessApplication(response: HttpResponseBase): Observable<GuildMemberDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -997,7 +998,9 @@ export class ActionGuildController implements IActionGuildController {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(<any>null);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildMemberDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {

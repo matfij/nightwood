@@ -64,11 +64,14 @@ export class FounderGuildComponent {
       applicationId: applicationId,
       accept: accept
     }).pipe(
-      tap(() => {
+      tap((member) => {
         this.processApplicationLoading$.next(false);
         const message = accept ? 'guild.applicationAccepted' : 'guild.applicationRejected';
         this.toastService.showSuccess('common.success', message);
         this.getAppliations();
+        if (accept && member) {
+          this.guild.members.push(member);
+        }
       }),
       catchError((err) => {
         this.processApplicationLoading$.next(false);

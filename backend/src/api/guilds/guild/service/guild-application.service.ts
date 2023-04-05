@@ -65,7 +65,7 @@ export class GuildApplicatonService {
         }
     }
 
-    async delete(id: number) {
-        await this.guildApplicatonRepository.delete(id);
+    async deleteUserApplications(userId: number) {
+        await this.guildApplicatonRepository.delete({ user: { id: userId } });
     }
 }

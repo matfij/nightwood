@@ -46,7 +46,7 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
  - Production release [100%]
 
 ## Stage 2
- - Guilds - members, constructions [20%]
+ - Guilds - members, constructions [50%]
  - Mini games [0%]
  - Battle tournaments [0%]
  - Dragon vanities [0%]

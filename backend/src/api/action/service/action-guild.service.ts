@@ -30,6 +30,7 @@ export class ActionGuildService {
         const user = await this.userService.getOne(userId);
         await this.guildValidatorService.validateCreateGuild(user, guildCreateDto);
         await this.userService.updateGold(userId, -GUILD_COST_GOLD);
+        await this.guildApplicatonService.deleteUserApplications(userId);
         return this.guildService.createGuild(user, guildCreateDto);
     }
 
@@ -40,19 +41,21 @@ export class ActionGuildService {
         return this.guildApplicatonService.createGuildApplication(user, guild, guildApplicationCreateDto);
     }
 
-    async processApplication(dto: GuildApplicationProcessDto) {
+    async processApplication(dto: GuildApplicationProcessDto): Promise<GuildMemberDto> {
         const application: GuildApplicatonDto = await this.guildApplicatonService.getOne(dto.applicationId);
         const mailParams: MailSendSystemParams = {
             receiverId: application.user.id,
             topic: 'Guild',
             message: dto.accept ? `Your guild application has been accepted.` : `Your guild application has been rejected.`,
         };
+        let member = undefined;
         if (dto.accept) {
             const guild = await this.guildService.getOne(application.guild.id);
             const user = await this.userService.getOne(application.user.id)
-            await this.guildMemberService.createMember(guild, user);
+            member = await this.guildMemberService.createMember(guild, user);
         }
         this.mailService.sendSystemMail(mailParams);
-        await this.guildApplicatonService.delete(application.id);
+        await this.guildApplicatonService.deleteUserApplications(application.user.id);
+        return member;
     }
 }

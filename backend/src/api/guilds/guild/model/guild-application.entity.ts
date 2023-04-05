@@ -11,7 +11,7 @@ export class GuildApplication {
     @ManyToOne(_ => Guild, x => x.applications)
     guild: Guild;
 
-    @OneToOne(_ => User)
+    @ManyToOne(_ => User)
     @JoinColumn()
     user: User;
 

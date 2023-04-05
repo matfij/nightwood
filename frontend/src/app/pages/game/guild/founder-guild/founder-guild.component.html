@@ -42,9 +42,30 @@
   <div *ngIf="viewMode === GuildView.Roles" class="wrapper-roles">
     <div class="item-role-header">
       <div>{{ 'guild.name' | translate }}</div>
-      <img src="assets/img/icons/user-add.svg" class="icon-permission">
-      <img src="assets/img/icons/user-remove.svg" class="icon-permission">
-      <img src="assets/img/icons/construct.svg" class="icon-permission">
+      <div tooltip class="wrapper-tooltip">
+        <ng-template #tooltipTemplate>
+          <div class="item-tooltip">
+            {{ 'guild.canAddMembers' | translate }}
+          </div>
+        </ng-template>
+        <img src="assets/img/icons/user-add.svg" class="icon-permission">
+      </div>
+      <div tooltip class="wrapper-tooltip">
+        <ng-template #tooltipTemplate>
+          <div class="item-tooltip">
+            {{ 'guild.canRemoveMembers' | translate }}
+          </div>
+        </ng-template>
+        <img src="assets/img/icons/user-remove.svg" class="icon-permission">
+      </div>
+      <div tooltip class="wrapper-tooltip">
+        <ng-template #tooltipTemplate>
+          <div class="item-tooltip">
+            {{ 'guild.canConstruct' | translate }}
+          </div>
+        </ng-template>
+        <img src="assets/img/icons/construct.svg" class="icon-permission">
+      </div>
     </div>
     <div *ngFor="let role of sortRoles(guild.roles)" class="item-role">
       <div>[{{ role.priority }}] {{ role.name }}</div>
