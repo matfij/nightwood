@@ -1,0 +1,64 @@
+<div class="wrapper-guild">
+  <div class="wrapper-info">
+    {{ "guild.guild" | translate }}:
+    <b>{{ guild.name }} [{{ guild.tag }}]</b>
+  </div>
+  <div class="wrapper-actions">
+    <button (click)="viewMode = GuildView.Members" class="btn-base">
+      {{ "guild.members" | translate }}
+    </button>
+    <button (click)="viewMode = GuildView.Applications" class="btn-base">
+      {{ "guild.applications" | translate }}
+    </button>
+    <button (click)="viewMode = GuildView.Structures" class="btn-base">
+      {{ "guild.structures" | translate }}
+    </button>
+  </div>
+
+  <div *ngIf="viewMode === GuildView.Members" class="wrapper-members">
+    <div class="item-member-header">
+      <div>
+        {{ "guild.member" | translate }}
+      </div>
+      <div>{{ "guild.role" | translate }}</div>
+    </div>
+    <div class="item-member member-founder">
+      <div>1. {{ guild.founder.nickname }}</div>
+      <div>{{ "guild.founder" | translate }}</div>
+    </div>
+    <div
+      *ngFor="let member of sortMembers(guild.members); let i = index"
+      class="item-member"
+    >
+      <div>{{ i + 2 }}. {{ member.user.nickname }}</div>
+      <div>{{ member.role && member.role.name ? member.role.name : "guild.member" | translate }}</div>
+    </div>
+  </div>
+
+  <div *ngIf="viewMode === GuildView.Applications" class="wrapper-applications">
+    <h2 style="font-weight: 500; margin-top: 15px;">
+      {{ "guild.pendingApplications" | translate }}
+    </h2>
+    <div *ngIf="(guildApplications$ | async)?.data as applications">
+      <div *ngFor="let application of applications" class="item-application">
+        <a (click)="showUserDetails(application.user.id)">{{ application.user.nickname }}</a>
+        <div style="display: flex; gap: 5px;">
+          <button
+            (click)="processApplication(application.id, true)"
+            [disabled]="processApplicationLoading$ | async"
+            class="btn-base btn-small">
+            {{ "guild.accept" | translate }}
+          </button>
+          <button
+            (click)="processApplication(application.id, false)"
+            [disabled]="processApplicationLoading$ | async"
+            class="btn-base btn-small">
+            {{ "guild.reject" | translate }}
+          </button>
+          <div *ngIf="processApplication$ | async" class="gone"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

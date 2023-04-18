@@ -35,7 +35,7 @@ export class GuildComponent implements OnInit {
     );
     this.memberGuild$ = this.guildController.getMemberGuild().pipe(
       tap((data) => {
-        // if (data) this.viewMode = GuildView.MemberView;
+        if (data) this.viewMode = GuildView.MemberView;
       })
     );
     this.guilds$ = this.guildController.getAll({

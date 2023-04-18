@@ -88,7 +88,6 @@ export class FounderGuildComponent {
     return members.sort((a, b) => (b.role?.priority || 0) - (a.role?.priority || 0));
   }
 
-
   parseRolePermission(allowed: boolean): string {
     return allowed ? 'assets/img/icons/allowed.svg' : 'assets/img/icons/disallowed.svg';
   }

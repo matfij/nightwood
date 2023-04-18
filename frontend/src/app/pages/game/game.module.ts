@@ -23,6 +23,7 @@ import { NoGuildComponent } from './guild/no-guild/no-guild.component';
 import { CreateGuildComponent } from './guild/no-guild/create-guild/create-guild.component';
 import { AddEditRoleComponent } from './guild/founder-guild/add-edit-role/add-edit-role.component';
 import { ManageMemberComponent } from './guild/founder-guild/manage-member/manage-member.component';
+import { MemberGuildComponent } from './guild/member-guild/member-guild.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ManageMemberComponent } from './guild/founder-guild/manage-member/manag
     CreateGuildComponent,
     AddEditRoleComponent,
     ManageMemberComponent,
+    MemberGuildComponent,
   ],
   imports: [
     CommonModule,

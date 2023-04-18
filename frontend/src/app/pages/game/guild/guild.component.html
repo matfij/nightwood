@@ -16,8 +16,7 @@
         <app-founder-guild [guild]="vm.founderGuild"></app-founder-guild>
       </div>
       <div *ngIf="vm.memberGuild && viewMode === GuildView.MemberView">
-        <b>Member guild:</b>
-        <p>{{ vm.memberGuild | json }}</p>
+        <app-member-guild [guild]="vm.memberGuild"></app-member-guild>
       </div>
       <div
         *ngIf="
