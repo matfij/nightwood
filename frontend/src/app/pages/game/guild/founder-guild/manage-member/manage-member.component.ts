@@ -11,6 +11,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 export class ManageMemberComponent {
   @Input() member!: GuildMemberDto;
   @Input() roles!: GuildRoleDto[];
+  @Input() canUpdatePermission = true;
   @Output() managedMember = new EventEmitter<GuildMemberDto>();
   @Output() kickedMember = new EventEmitter<GuildMemberDto>();
   @Output() close = new EventEmitter<boolean>();

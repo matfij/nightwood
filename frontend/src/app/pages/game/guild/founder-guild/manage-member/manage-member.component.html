@@ -2,7 +2,7 @@
   <div class="wrapper-modal-conent">
     <h2>{{ 'guild.manage' | translate }} {{ member.user.nickname }}</h2>
 
-    <div class="wrapper-form">
+    <div *ngIf="canUpdatePermission" class="wrapper-form">
       <div class="input-label" style="margin: auto;">{{ 'guild.role' | translate }}</div>
       <select #roleSelect class="input-select">
         <option class="input-select-option" *ngFor="let role of sortRoles(roles)"
@@ -13,7 +13,6 @@
       <button (click)="onManage()" [disabled]="(manageMemberLoading$ | async)" class="btn-base">
         {{ 'common.confirm' | translate }}
       </button>
-      <div *ngIf="(manageMember$ | async)" class="gone"></div>
     </div>
 
     <button (click)="onKick()" [disabled]="(manageMemberLoading$ | async)" class="btn-base">
@@ -23,5 +22,6 @@
     <button (click)="onClose()" [disabled]="(manageMemberLoading$ | async)" class="btn-base">
       {{ 'common.close' | translate }}
     </button>
+    <div *ngIf="(manageMember$ | async)" class="gone"></div>
   </div>
 </div>

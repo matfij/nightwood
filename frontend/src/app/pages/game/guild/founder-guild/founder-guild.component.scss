@@ -63,6 +63,10 @@
   &:hover {
     @include tile(darken($app-dark, 10));
   }
+
+  a:hover {
+    cursor: pointer;
+  }
 }
 
 .member-founder {

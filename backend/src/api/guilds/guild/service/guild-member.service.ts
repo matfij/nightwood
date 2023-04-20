@@ -47,7 +47,7 @@ export class GuildMemberService {
     }
 
     async deleteMember(userId: number, memberId: number): Promise<GuildMemberDto> {
-        const member = await this.guildValidatorService.validateGuildMember(userId, memberId);
+        const member = await this.guildValidatorService.validateDeleteGuildMember(userId, memberId);
         await this.guildMemberRepository.delete(member.id);
         return member;
     }

@@ -161,6 +161,36 @@ export class GuildValidatorService {
         }
         return member;
     }
+    
+    async validateDeleteGuildMember(userId: number, memberId: number): Promise<GuildMemberDto> {
+        const member = await this.guildMemberRepository.findOne({
+            where: { id: memberId },
+            relations: { guild: true, user: true },
+            select: { 
+                user: { id: true, nickname: true },
+            },
+        });
+        let guild: Partial<GuildDto> = await this.guildRepository.findOne({ 
+            where: { founder: { id: userId} } 
+        });
+        if (!guild) {
+            const kickingMember: GuildMemberDto = await this.guildMemberRepository.findOne({
+                where: { user: { id: userId } },
+                relations: {
+                    guild: true,
+                    role: true,
+                },
+            });
+            if (member.guild.id !== kickingMember.guild.id || !kickingMember.role?.canRemoveMembers) {
+                this.errorService.throw('errors.insufficientPermissions');
+            }
+            guild = kickingMember.guild;
+        }
+        if (!member || !guild || member.guild.id !== guild.id) {
+            this.errorService.throw('errors.guildMemberNotFound');
+        }
+        return member;
+    }
 
     async validateGuildRole(roleId: number): Promise<GuildRoleDto> {
         const role = await this.guildRoleRepository.findOne({

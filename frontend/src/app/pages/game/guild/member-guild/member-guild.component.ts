@@ -17,6 +17,8 @@ export class MemberGuildComponent {
   guildApplications$?: Observable<GuildApplicationPageDto>;
   processApplication$ = new Observable();
   processApplicationLoading$ = new BehaviorSubject(false);
+  managedGuildMember?: GuildMemberDto;
+  displayManageGuildMember = false;
 
   constructor(
     private router: Router,
@@ -40,7 +42,7 @@ export class MemberGuildComponent {
     this.guildApplications$ = this.guildController.getApplications();
   }
 
-  checkProcessApplicationPermissions(): boolean {
+  checkProcessApplicationPermission(): boolean {
     const currentUserId = this.engineService.user.id;
     return this.guild.members.some((member) => member.id = currentUserId && member.role && member.role.canAddMembers);
   }
@@ -65,6 +67,21 @@ export class MemberGuildComponent {
         throw err;
       })
     );
+  }
+
+  checkRemoveMembersPermissions(): boolean {
+    const currentUserId = this.engineService.user.id;
+    return this.guild.members.some((member) => member.id = currentUserId && member.role && member.role.canRemoveMembers);
+  }
+
+  manageGuildMember(member: GuildMemberDto) {
+    this.managedGuildMember = member;
+    this.displayManageGuildMember = true;
+  }
+
+  onKickMember(kickedMember: GuildMemberDto) {
+    this.displayManageGuildMember = false;
+    this.guild.members = this.guild.members.filter((member) => member.id !== kickedMember.id);
   }
 }
 
