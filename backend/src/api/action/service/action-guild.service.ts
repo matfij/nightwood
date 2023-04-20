@@ -41,8 +41,11 @@ export class ActionGuildService {
         return this.guildApplicatonService.createGuildApplication(user, guild, guildApplicationCreateDto);
     }
 
-    async processApplication(dto: GuildApplicationProcessDto): Promise<GuildMemberDto> {
+    async processApplication(userId: number, dto: GuildApplicationProcessDto): Promise<GuildMemberDto> {
+        const user = await this.userService.getOne(userId);
         const application: GuildApplicatonDto = await this.guildApplicatonService.getOne(dto.applicationId);
+        const guild = await this.guildService.getOne(application.guild.id);
+        await this.guildValidatorService.validateCanProccessApplication(user, guild);
         const mailParams: MailSendSystemParams = {
             receiverId: application.user.id,
             topic: 'Guild',

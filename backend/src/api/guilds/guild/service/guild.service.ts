@@ -40,7 +40,7 @@ export class GuildService {
     async getOne(id: number): Promise<GuildDto> {
         const guild: GuildDto = await this.guildRepository.findOne({ 
             where: { id: id }, 
-            relations: ['founder', 'members', 'members.user'],
+            relations: ['founder', 'members', 'members.user', 'members.role'],
             select: { 
                 founder: { id: true, nickname: true },
             },
@@ -118,24 +118,48 @@ export class GuildService {
     async getMemberGuild(user: UserDto): Promise<GuildDto> {
         const member: GuildMemberDto = await this.guildMemberRepository.findOne({
             where: { user: { id: user.id } },
-            relations: ['guild', 'guild.founder', 'guild.members', 'guild.members.user']
+            relations: {
+                guild: {
+                    members: {
+                        role: true,
+                        user: true,
+                    },
+                    roles: true,
+                    founder: true
+                },
+            },
+            select: {
+                guild: {
+                    id: true,
+                    tag: true,
+                    name: true,
+                    description: true,
+                    roles: true,
+                    founder: {
+                        id: true,
+                        nickname: true,
+                    },
+                    members: {
+                        id: true,
+                        role: {
+                            id: true,
+                            name: true,
+                            priority: true,
+                            canAddMembers: true,
+                            canConstruct: true,
+                            canRemoveMembers: true,
+                        },
+                        user: {
+                            id: true,
+                            nickname: true,
+                        }
+                    }
+                }
+            }
         });
         if (!member) {
             return;
         }
-        member.guild.founder = {
-            id: member.guild.founder.id,
-            nickname: member.guild.founder.nickname,
-        };
-        member.guild.members = member.guild.members.map((member) => {
-            return {
-                ...member,
-                user: {
-                    id: member.user.id,
-                    nickname: member.user.nickname,
-                }
-            };
-        });
         return member.guild as GuildDto;
     }
 

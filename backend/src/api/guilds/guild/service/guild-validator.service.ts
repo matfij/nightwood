@@ -171,4 +171,14 @@ export class GuildValidatorService {
         }
         return role;
     }
+
+    async validateCanProccessApplication(user: UserDto, guild: GuildDto) {
+        if (user.id === guild.founder.id) {
+            return;
+        }
+        if (guild.members.some((member) => member.user.id === user.id && member.role && member.role.canAddMembers)) {
+            return;
+        }
+        this.errorService.throw('errors.insufficientPermissions');
+    }
 }

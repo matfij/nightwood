@@ -10,6 +10,8 @@ import { GuildDto } from "../model/dto/guild.dto";
 import { GuildApplication } from "../model/guild-application.entity";
 import { Guild } from "../model/guild.entity";
 import { GuildValidatorService } from "./guild-validator.service";
+import { GuildMemberDto } from "../model/dto/guild-member.dto";
+import { GuildMember } from "../model/guild-member.entity";
 
 @Injectable()
 export class GuildApplicatonService {
@@ -19,6 +21,8 @@ export class GuildApplicatonService {
         private guildRepository: Repository<Guild>,
         @InjectRepository(GuildApplication)
         private guildApplicatonRepository: Repository<GuildApplication>,
+        @InjectRepository(GuildMember)
+        private guildMemberRepository: Repository<GuildMember>,
         private guildValidatorService: GuildValidatorService,
         private errorService: ErrorService,
     ) {}
@@ -48,9 +52,19 @@ export class GuildApplicatonService {
     }
 
     async getGuildApplications(user: UserDto): Promise<GuildApplicationPageDto> {
-        const guild: GuildDto = await this.guildRepository.findOne({ 
+        let guild: Partial<GuildDto> = await this.guildRepository.findOne({ 
             where: { founder: { id: user.id } } 
         });
+        if (!guild) {
+            const member: GuildMemberDto = await this.guildMemberRepository.findOne({
+                where: { user: { id: user.id } },
+                relations: ['guild']
+            });
+            if (!member) {
+                this.errorService.throw('errors.guildNotFound');
+            }
+            guild = member.guild;
+        }
         if (!guild) {
             this.errorService.throw('errors.guildNotFound');
         }

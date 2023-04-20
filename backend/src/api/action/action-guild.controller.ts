@@ -34,6 +34,6 @@ export class ActionGuildController {
     @Post('processApplication')
     @ApiOkResponse({ type: GuildMemberDto })
     async processApplication(@Request() req: AuthorizedRequest, @Body() dto: GuildApplicationProcessDto): Promise<GuildMemberDto|void> {
-        return this.actionGuildService.processApplication(dto);
+        return this.actionGuildService.processApplication(req.user.id, dto);
     }
 }
