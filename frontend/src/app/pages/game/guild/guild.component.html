@@ -16,7 +16,10 @@
         <app-founder-guild [guild]="vm.founderGuild"></app-founder-guild>
       </div>
       <div *ngIf="vm.memberGuild && viewMode === GuildView.MemberView">
-        <app-member-guild [guild]="vm.memberGuild"></app-member-guild>
+        <app-member-guild
+          [guild]="vm.memberGuild"
+          (guildLeft)="onGuildLeft()">
+        </app-member-guild>
       </div>
       <div
         *ngIf="

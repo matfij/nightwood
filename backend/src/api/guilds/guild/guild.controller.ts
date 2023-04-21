@@ -82,4 +82,10 @@ export class GuildController {
     async deleteMember(@Request() req: AuthorizedRequest, @Param('id') id: number): Promise<GuildMemberDto> {
         return this.guildMemberService.deleteMember(req.user.id, id);
     }
+
+    @Post('leaveGuild')
+    @ApiOkResponse()
+    async leaveGuild(@Request() req: AuthorizedRequest): Promise<void> {
+        return this.guildMemberService.leaveGuild(req.user.id);
+    }
 }

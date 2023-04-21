@@ -99,13 +99,14 @@
             class="btn-base btn-small">
             {{ "guild.reject" | translate }}
           </button>
-          <div *ngIf="processApplication$ | async" class="gone"></div>
         </div>
       </div>
     </div>
   </div>
 
 </div>
+
+<div *ngIf="processApplication$ | async" class="gone"></div>
 
 <app-manage-member
   *ngIf="displayManageGuildMember && managedGuildMember"

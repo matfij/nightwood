@@ -12,8 +12,10 @@ export class ManageMemberComponent {
   @Input() member!: GuildMemberDto;
   @Input() roles!: GuildRoleDto[];
   @Input() canUpdatePermission = true;
+  @Input() manageSelf = false;
   @Output() managedMember = new EventEmitter<GuildMemberDto>();
   @Output() kickedMember = new EventEmitter<GuildMemberDto>();
+  @Output() guildLeft = new EventEmitter<boolean>();
   @Output() close = new EventEmitter<boolean>();
 
   @ViewChild('roleSelect') roleSelect!: ElementRef<HTMLSelectElement>;
@@ -48,7 +50,11 @@ export class ManageMemberComponent {
     );
   }
 
-  onKick(): void {
+  onKickOrLeave(): void {
+    this.manageSelf ? this.onLeave() : this.onKick();
+  }
+
+  onKick() {
     this.manageMemberLoading$.next(true);
     this.manageMember$ = this.guildController.deleteMember(this.member.id).pipe(
       tap((member) => {
@@ -61,6 +67,21 @@ export class ManageMemberComponent {
         throw err;
       })
     );
+  }
+
+  onLeave() {
+    this.manageMemberLoading$.next(true);
+    this.manageMember$ = this.guildController.leaveGuild().pipe(
+      tap(() => {
+        this.toastService.showSuccess('common.success', 'guild.guildLeft');
+        this.manageMemberLoading$.next(false);
+        this.guildLeft.next(true);
+      }),
+      catchError((err) => {
+        this.manageMemberLoading$.next(false);
+        throw err;
+      })
+    )
   }
 
   onClose(): void {

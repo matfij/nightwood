@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
 import { ActionGuildController, GuildApplicationPageDto, GuildController, GuildDto, GuildMemberDto } from 'src/app/client/api';
@@ -12,12 +12,14 @@ import { EngineService } from 'src/app/core/services/engine.service';
 })
 export class MemberGuildComponent {
   @Input() guild!: GuildDto;
+  @Output() guildLeft = new EventEmitter<boolean>();
   GuildView = GuildView;
   viewMode = GuildView.Members
   guildApplications$?: Observable<GuildApplicationPageDto>;
   processApplication$ = new Observable();
   processApplicationLoading$ = new BehaviorSubject(false);
   managedGuildMember?: GuildMemberDto;
+  manageSelf = false;
   displayManageGuildMember = false;
 
   constructor(
@@ -69,12 +71,15 @@ export class MemberGuildComponent {
     );
   }
 
-  checkRemoveMembersPermissions(): boolean {
+  checkRemoveMembersPermissions(member: GuildMemberDto): boolean {
     const currentUserId = this.engineService.user.id;
-    return this.guild.members.some((member) => member.id = currentUserId && member.role && member.role.canRemoveMembers);
+    return currentUserId === member.user.id
+      || this.guild.members.some((member) => member.id = currentUserId && member.role && member.role.canRemoveMembers);
   }
 
   manageGuildMember(member: GuildMemberDto) {
+    const currentUserId = this.engineService.user.id;
+    this.manageSelf = currentUserId === member.user.id;
     this.managedGuildMember = member;
     this.displayManageGuildMember = true;
   }

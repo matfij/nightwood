@@ -32,7 +32,7 @@
     >
       <a (click)="showUserDetails(member.user.id)">{{ i + 2 }}. {{ member.user.nickname }}</a>
       <div>{{ member.role && member.role.name ? member.role.name : "guild.member" | translate }}</div>
-      <img (click)="manageGuildMember(member)" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
+      <img *ngIf="checkRemoveMembersPermissions(member)" (click)="manageGuildMember(member)" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
     </div>
   </div>
 
@@ -69,6 +69,8 @@
   [member]="managedGuildMember"
   [roles]="guild.roles"
   [canUpdatePermission]="false"
+  [manageSelf]="manageSelf"
   (kickedMember)="onKickMember($event)"
+  (guildLeft)="guildLeft.next($event)"
   (close)="displayManageGuildMember = false">
 </app-manage-member>

@@ -43,6 +43,16 @@ export class GuildComponent implements OnInit {
       limit: this.guildPageLimit,
     });
   }
+
+  onGuildLeft() {
+    this.guilds$ = this.guildController.getAll({
+      page: this.guildPage,
+      limit: this.guildPageLimit,
+    });
+    this.founderGuild$ = undefined;
+    this.memberGuild$ = undefined;
+    this.viewMode = GuildView.DefaultView;
+  }
 }
 
 enum GuildView {

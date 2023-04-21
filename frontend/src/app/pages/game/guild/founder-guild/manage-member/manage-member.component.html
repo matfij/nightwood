@@ -15,8 +15,8 @@
       </button>
     </div>
 
-    <button (click)="onKick()" [disabled]="(manageMemberLoading$ | async)" class="btn-base">
-      {{ 'guild.kickOut' | translate }}
+    <button (click)="onKickOrLeave()" [disabled]="(manageMemberLoading$ | async)" class="btn-base">
+      {{ (manageSelf ? 'guild.leaveGuild' : 'guild.kickOut') | translate }}
     </button>
 
     <button (click)="onClose()" [disabled]="(manageMemberLoading$ | async)" class="btn-base">

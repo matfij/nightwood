@@ -428,7 +428,9 @@
     "action": "Action",
     "manage": "Manage",
     "kickOut": "Kick out",
-    "memberKicked": "Member kicked"
+    "memberKicked": "Member kicked",
+    "leaveGuild": "Leave guild",
+    "guildLeft": "Guild left"
   },
   "mails": {
     "topic": "Topic",

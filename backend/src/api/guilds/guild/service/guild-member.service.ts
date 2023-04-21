@@ -7,6 +7,7 @@ import { GuildDto } from "../model/dto/guild.dto";
 import { GuildMember } from "../model/guild-member.entity";
 import { GuildMemberUpdateDto } from "../model/dto/guild-member-update.dto";
 import { GuildValidatorService } from "./guild-validator.service";
+import { ErrorService } from "src/common/services/error.service";
 
 @Injectable()
 export class GuildMemberService {
@@ -15,6 +16,7 @@ export class GuildMemberService {
         @InjectRepository(GuildMember)
         private guildMemberRepository: Repository<GuildMember>,
         private guildValidatorService: GuildValidatorService,
+        private errorService: ErrorService,
     ) {}
 
     async createMember(guild: GuildDto, user: UserDto): Promise<GuildMemberDto> {
@@ -50,5 +52,17 @@ export class GuildMemberService {
         const member = await this.guildValidatorService.validateDeleteGuildMember(userId, memberId);
         await this.guildMemberRepository.delete(member.id);
         return member;
+    }
+
+    async leaveGuild(userId: number): Promise<void> {
+        const member = await this.guildMemberRepository.findOne({ 
+            where: {
+                user: { id: userId }
+            }
+        });
+        if (!member) {
+            this.errorService.throw('errors.guildMemberNotFound');
+        }
+        await this.guildMemberRepository.delete(member.id);
     }
 }

@@ -3936,6 +3936,7 @@ export interface IGuildController {
     updateGuildRole(body: GuildRoleUpdateDto): Observable<GuildRoleDto>;
     updateGuildMemberRole(body: GuildMemberUpdateDto): Observable<GuildMemberDto>;
     deleteMember(id: number): Observable<GuildMemberDto>;
+    leaveGuild(): Observable<void>;
 }
 
 @Injectable({
@@ -4387,6 +4388,50 @@ export class GuildController implements IGuildController {
             let result200: any = null;
             result200 = _responseText === "" ? null : <GuildMemberDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    leaveGuild(): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/guild/leaveGuild";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLeaveGuild(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLeaveGuild(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processLeaveGuild(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(<any>null);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
