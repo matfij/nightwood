@@ -14,6 +14,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 })
 export class CreateGuildComponent {
   @Output() close = new EventEmitter();
+  @Output() guildCreated = new EventEmitter();
   GUILD_COST = GUILD_COST;
   createGuildForm = new FormGroup({
     name: new FormControl<string|null>(
@@ -60,7 +61,7 @@ export class CreateGuildComponent {
     this.createGuild$ = this.actionGuildController.createGuild(params).pipe(
       tap(() => {
         this.toastService.showSuccess('common.success', 'guild.guildFounded');
-        this.close.next(true);
+        this.guildCreated.next(true);
       }),
       catchError((err) => {
         this.createGuildLoading$?.next(false);

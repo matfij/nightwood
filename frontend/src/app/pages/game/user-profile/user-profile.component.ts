@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { AchievementDto, AchievementsController, AchievementsDto, DragonController, FriendshipRequestDto, UserController, UserPublicDto } from 'src/app/client/api';
+import { AchievementDto, AchievementsController, AchievementsDto, DragonController, FriendshipRequestDto, GuildController, GuildUserCheckResultDto, UserController, UserPublicDto } from 'src/app/client/api';
 import { UserControllerHelper } from 'src/app/client/api-helper';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { DisplayDragonPublic } from 'src/app/core/definitions/dragons';
@@ -28,6 +28,7 @@ export class UserProfileComponent implements OnInit {
   friendInvitations$?: Observable<DisplayFriendshipPendingRequestDto[]>;
   allAchievements$?: Observable<DisplayAchievement[]>;
   userAchievements$?: Observable<AchievementsDto>;
+  guild$?: Observable<GuildUserCheckResultDto>;
 
   displayFriendInvitations: boolean = false;
 
@@ -38,6 +39,7 @@ export class UserProfileComponent implements OnInit {
     private achievementsController: AchievementsController,
     private dragonController: DragonController,
     private userController: UserController,
+    private guildController: GuildController,
     private userControllerHelper: UserControllerHelper,
     private engineService: EngineService,
     private dragonService: DragonService,
@@ -90,6 +92,8 @@ export class UserProfileComponent implements OnInit {
     this.dragons$ = this.dragonController.getOwned().pipe(
       map((dragons) => dragons.map((dragon => this.dragonService.toDisplayDragon(dragon))))
     );
+
+    this.guild$ = this.guildController.checkUserGuild(this.engineService.user.id);
   }
 
   getOtherUserData(id: string) {
@@ -109,6 +113,8 @@ export class UserProfileComponent implements OnInit {
     this.dragons$ = this.dragonController.getPublicPlayerDragons(id).pipe(
       map((dragons) => dragons.map((dragon => this.dragonService.toDisplayDragonPublic(dragon))))
     );
+
+    this.guild$ = this.guildController.checkUserGuild(+id);
   }
 
   requestFriend(id: number) {

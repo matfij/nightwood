@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
 import { ActionGuildController, GuildDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
@@ -10,6 +10,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 })
 export class NoGuildComponent {
   @Input() guilds!: GuildDto[];
+  @Output() guildCreated = new EventEmitter();
 
   displayCreateGuild = false;
   createGuildApplication$ = new Observable();

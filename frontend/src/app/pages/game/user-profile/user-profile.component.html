@@ -3,8 +3,11 @@
 
   <div *ngIf="(user$ | async) as user" class="wrapper-content">
 
-    <h2>{{ user.nickname }} [{{ user.role }}]</h2>
-    <h2> {{ 'inventory.gold' | translate }}: {{ user.gold }}</h2>
+    <h3>{{ user.nickname }}</h3>
+    <p style="margin-top: -10px;">[{{ user.role }}]</p>
+    <div *ngIf="(guild$ | async) as guild">
+      <h4>{{ 'guild.guild' | translate }}: {{ guild.guildName }}</h4>
+    </div>
     <div *ngIf="(avatar$ | async) as avatar; else noAvatar">
       <div class="item-avatar">
         <img [src]="avatar" alt="avatar" draggable="false">

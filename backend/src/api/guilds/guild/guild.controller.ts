@@ -16,6 +16,7 @@ import { GuildRoleUpdateDto } from "./model/dto/guild-role-update.dto";
 import { GuildMemberService } from "./service/guild-member.service";
 import { GuildMemberDto } from "./model/dto/guild-member.dto";
 import { GuildMemberUpdateDto } from "./model/dto/guild-member-update.dto";
+import { GuildUserCheckResultDto } from "./model/dto/guild-user-check-result.dto";
 
 @Controller('guild')
 @UseGuards(JwtAuthGuard)
@@ -38,13 +39,13 @@ export class GuildController {
     @Post('getFounderGuild')
     @ApiOkResponse({ type: GuildDto })
     async getFounderGuild(@Request() req: AuthorizedRequest): Promise<GuildDto> {
-        return this.guildService.getFounderGuild(req.user);
+        return this.guildService.getFounderGuild(req.user.id);
     }
 
     @Post('getMemberGuild')
     @ApiOkResponse({ type: GuildDto })
     async getMemberGuild(@Request() req: AuthorizedRequest): Promise<GuildDto> {
-        return this.guildService.getMemberGuild(req.user);
+        return this.guildService.getMemberGuild(req.user.id);
     }
 
     @Post('getAll')
@@ -93,5 +94,11 @@ export class GuildController {
     @ApiOkResponse()
     async deleteGuild(@Request() req: AuthorizedRequest): Promise<void> {
         return this.guildService.deleteGuild(req.user.id);
+    }
+
+    @Post('checkUserGuild/:id')
+    @ApiOkResponse({ type: GuildUserCheckResultDto })
+    async checkUserGuild(@Request() req: AuthorizedRequest, @Param('id') id: number) {
+        return this.guildService.checkUserGuild(id);
     }
 }

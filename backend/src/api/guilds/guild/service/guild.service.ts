@@ -11,6 +11,7 @@ import { GuildDto } from "../model/dto/guild.dto";
 import { GuildMember } from "../model/guild-member.entity";
 import { Guild } from "../model/guild.entity";
 import { GuildValidatorService } from "./guild-validator.service";
+import { GuildUserCheckResultDto } from "../model/dto/guild-user-check-result.dto";
 
 @Injectable()
 export class GuildService {
@@ -83,9 +84,9 @@ export class GuildService {
         return guild;
     }
 
-    async getFounderGuild(user: UserDto): Promise<GuildDto> {
+    async getFounderGuild(userId: number): Promise<GuildDto> {
         const guild: GuildDto = await this.guildRepository.findOne({ 
-            where: { founder: { id: user.id } },
+            where: { founder: { id: userId } },
             relations: {
                 founder: true,
                 members: {
@@ -115,9 +116,9 @@ export class GuildService {
         return guild;
     }
 
-    async getMemberGuild(user: UserDto): Promise<GuildDto> {
+    async getMemberGuild(userId: number): Promise<GuildDto> {
         const member: GuildMemberDto = await this.guildMemberRepository.findOne({
-            where: { user: { id: user.id } },
+            where: { user: { id: userId } },
             relations: {
                 guild: {
                     members: {
@@ -186,5 +187,22 @@ export class GuildService {
             this.errorService.throw('errors.guildNotFound');
         }
         await this.guildRepository.delete(guild.id);
+    }
+
+    async checkUserGuild(userId: number): Promise<GuildUserCheckResultDto> {
+        if (!userId) {
+            return;
+        }
+        const memberGuild = await this.getMemberGuild(userId);
+        const founderGuild = await this.getFounderGuild(userId);
+        const guildData = memberGuild || founderGuild;
+        if (!guildData) {
+            return;
+        }
+        return {
+            guildId: guildData.id,
+            guildName: guildData.name,
+            guildTag: guildData.tag,
+        }
     }
 }

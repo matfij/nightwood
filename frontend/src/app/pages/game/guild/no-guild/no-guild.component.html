@@ -23,5 +23,6 @@
 
 <app-create-guild
   *ngIf="displayCreateGuild"
+  (guildCreated)="guildCreated.next(true)"
   (close)="displayCreateGuild = false">
 </app-create-guild>

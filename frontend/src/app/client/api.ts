@@ -3938,6 +3938,7 @@ export interface IGuildController {
     deleteMember(id: number): Observable<GuildMemberDto>;
     leaveGuild(): Observable<void>;
     deleteGuild(): Observable<void>;
+    checkUserGuild(id: number): Observable<GuildUserCheckResultDto>;
 }
 
 @Injectable({
@@ -4477,6 +4478,56 @@ export class GuildController implements IGuildController {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    checkUserGuild(id: number): Observable<GuildUserCheckResultDto> {
+        let url_ = this.baseUrl + "/api/v1/guild/checkUserGuild/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckUserGuild(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckUserGuild(<any>response_);
+                } catch (e) {
+                    return <Observable<GuildUserCheckResultDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GuildUserCheckResultDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCheckUserGuild(response: HttpResponseBase): Observable<GuildUserCheckResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GuildUserCheckResultDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -5277,6 +5328,12 @@ export interface GuildRoleUpdateDto {
 export interface GuildMemberUpdateDto {
     memberId: number;
     roleId: number;
+}
+
+export interface GuildUserCheckResultDto {
+    guildId: number;
+    guildName: string;
+    guildTag: string;
 }
 
 export enum PenaltyType {

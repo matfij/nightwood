@@ -26,7 +26,8 @@
 
       <app-no-guild
         *ngIf="!vm.founderGuild && !vm.memberGuild && vm.guilds && viewMode === GuildView.DefaultView"
-        [guilds]="vm.guilds.data">
+        [guilds]="vm.guilds.data"
+        (guildCreated)="onGuildCreated()">
       </app-no-guild>
 
     </div>

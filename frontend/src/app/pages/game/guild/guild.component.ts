@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import {
-  ActionGuildController,
-  GuildController,
-  GuildDto,
-  GuildPageDto,
-} from 'src/app/client/api';
+import { GuildController, GuildDto, GuildPageDto } from 'src/app/client/api';
 
 @Component({
   selector: 'app-guild',
@@ -23,7 +18,6 @@ export class GuildComponent implements OnInit {
   guildPageLimit = 20;
 
   constructor(
-    private actionGuildController: ActionGuildController,
     private guildController: GuildController
   ) {}
 
@@ -62,6 +56,14 @@ export class GuildComponent implements OnInit {
     this.founderGuild$ = undefined;
     this.memberGuild$ = undefined;
     this.viewMode = GuildView.DefaultView;
+  }
+
+  onGuildCreated() {
+    this.founderGuild$ = this.guildController.getFounderGuild().pipe(
+      tap((data) => {
+        if (data) this.viewMode = GuildView.FounderView;
+      })
+    );
   }
 }
 
