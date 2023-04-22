@@ -1,0 +1,27 @@
+@import "../../../../../core/theme/mixins.scss";
+@import "../../../../../core/theme/variables.scss";
+
+.wrapper-modal {
+  @include modal();
+}
+
+.wrapper-modal-conent {
+  width: clamp(240px, 100%, 400px);
+  padding: 40px 0px;
+  border-radius: 4px;
+  background: lighten($color: $app-dark, $amount: 10);
+}
+
+.wrapper-form {
+  margin: 30px auto;
+  width: clamp(240px, 100%, 400px);
+
+  button {
+    margin: 10px auto !important;
+  }
+}
+
+.input {
+  max-width: 240px;
+  margin: 0px auto;
+}

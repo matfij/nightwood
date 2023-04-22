@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { ActionGuildController, GuildApplicationPageDto, GuildController, GuildDto, GuildMemberDto, GuildRoleDto } from 'src/app/client/api';
@@ -11,15 +11,18 @@ import { ToastService } from 'src/app/common/services/toast.service';
 })
 export class FounderGuildComponent {
   @Input() guild!: GuildDto;
+  @Output() guildDeleted = new EventEmitter<boolean>();
   GuildView = GuildView;
   viewMode = GuildView.Members;
   managedGuildMember?: GuildMemberDto;
   displayManageGuildMember = false;
+  manageGuild = false;
   editedGuildRole?: GuildRoleDto;
   displayGuildRoleForm = false;
   guildApplications$?: Observable<GuildApplicationPageDto>;
   processApplication$ = new Observable();
   processApplicationLoading$ = new BehaviorSubject(false);
+  displayManageGuild = false;
 
   constructor(
     private router: Router,
@@ -36,6 +39,11 @@ export class FounderGuildComponent {
 
   manageGuildMember(member: GuildMemberDto) {
     this.managedGuildMember = member;
+    this.displayManageGuildMember = true;
+  }
+
+  manageGuildFounder() {
+    this.manageGuild = true;
     this.displayManageGuildMember = true;
   }
 

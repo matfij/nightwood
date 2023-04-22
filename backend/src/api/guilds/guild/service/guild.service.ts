@@ -177,4 +177,14 @@ export class GuildService {
             },
         };
     }
+
+    async deleteGuild(userId: number): Promise<void> {
+        const guild = await this.guildRepository.findOne({
+            where: { founder: { id: userId } }
+        });
+        if (!guild) {
+            this.errorService.throw('errors.guildNotFound');
+        }
+        await this.guildRepository.delete(guild.id);
+    }
 }

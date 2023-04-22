@@ -10,27 +10,25 @@
           guilds: (guilds$ | async)
         } as vm;
         else loading
-      "
-    >
-      <div *ngIf="vm.founderGuild && viewMode === GuildView.FounderView">
-        <app-founder-guild [guild]="vm.founderGuild"></app-founder-guild>
-      </div>
-      <div *ngIf="vm.memberGuild && viewMode === GuildView.MemberView">
-        <app-member-guild
-          [guild]="vm.memberGuild"
-          (guildLeft)="onGuildLeft()">
-        </app-member-guild>
-      </div>
-      <div
-        *ngIf="
-          !vm.founderGuild &&
-          !vm.memberGuild &&
-          vm.guilds &&
-          viewMode === GuildView.DefaultView
-        "
-      >
-        <app-no-guild [guilds]="vm.guilds.data"></app-no-guild>
-      </div>
+      ">
+
+      <app-founder-guild
+        *ngIf="vm.founderGuild && viewMode === GuildView.FounderView"
+        [guild]="vm.founderGuild"
+        (guildDeleted)="onGuildDeleted()">
+      </app-founder-guild>
+
+      <app-member-guild
+        *ngIf="vm.memberGuild && viewMode === GuildView.MemberView"
+        [guild]="vm.memberGuild"
+        (guildLeft)="onGuildLeft()">
+      </app-member-guild>
+
+      <app-no-guild
+        *ngIf="!vm.founderGuild && !vm.memberGuild && vm.guilds && viewMode === GuildView.DefaultView"
+        [guilds]="vm.guilds.data">
+      </app-no-guild>
+
     </div>
     <ng-template #loading>
       <app-loading-indicator></app-loading-indicator>

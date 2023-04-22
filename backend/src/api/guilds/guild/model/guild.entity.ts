@@ -10,7 +10,7 @@ export class Guild {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(_ => User)
+    @OneToOne(_ => User, { onDelete: 'SET NULL' })
     @JoinColumn()
     founder: User;
 
@@ -23,12 +23,12 @@ export class Guild {
     @Column({ nullable: true })
     description: string;
 
-    @OneToMany(_ => GuildApplication, x => x.guild)
+    @OneToMany(_ => GuildApplication, x => x.guild, { onDelete: 'CASCADE' })
     applications: GuildApplication[];
 
-    @OneToMany(_ => GuildRole, x => x.guild)
+    @OneToMany(_ => GuildRole, x => x.guild, { onDelete: 'CASCADE' })
     roles: GuildRole[];
 
-    @OneToMany(_ => GuildMember, x => x.guild)
+    @OneToMany(_ => GuildMember, x => x.guild, { onDelete: 'CASCADE' })
     members: GuildMember[];
 }

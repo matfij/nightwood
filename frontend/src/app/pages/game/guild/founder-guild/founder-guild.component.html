@@ -28,6 +28,7 @@
     <div class="item-member member-founder">
       <a (click)="showUserDetails(guild.founder.id)">1. {{ guild.founder.nickname }}</a>
       <div>{{ "guild.founder" | translate }}</div>
+      <img (click)="displayManageGuild = true" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
     </div>
     <div
       *ngFor="let member of sortMembers(guild.members); let i = index"
@@ -123,3 +124,10 @@
   (newRole)="onAddEditRole($event)"
   (close)="onAddEditRoleClose()">
 </app-add-edit-role>
+
+<app-manage-guild
+  *ngIf="displayManageGuild"
+  [guildName]="guild.name"
+  (guildDeleted)="guildDeleted.next(true)"
+  (close)="displayManageGuild = false">
+</app-manage-guild>

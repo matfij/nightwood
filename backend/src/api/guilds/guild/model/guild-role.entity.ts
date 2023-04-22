@@ -7,7 +7,7 @@ export class GuildRole {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(_ => Guild, x => x.roles)
+    @ManyToOne(_ => Guild, x => x.roles, { onDelete: 'CASCADE' })
     guild: Guild;
 
     @Column()

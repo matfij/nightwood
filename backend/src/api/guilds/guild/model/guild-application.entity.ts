@@ -8,7 +8,7 @@ export class GuildApplication {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(_ => Guild, x => x.applications)
+    @ManyToOne(_ => Guild, x => x.applications, { onDelete: 'CASCADE' })
     guild: Guild;
 
     @ManyToOne(_ => User)

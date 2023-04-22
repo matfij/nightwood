@@ -430,7 +430,9 @@
     "kickOut": "Kick out",
     "memberKicked": "Member kicked",
     "leaveGuild": "Leave guild",
-    "guildLeft": "Guild left"
+    "guildLeft": "Guild left",
+    "deleteHint": "In order to close guild type guild name in the field below and press confirm button, this operation is irreversible",
+    "guildDeleted": "Guild closed"
   },
   "mails": {
     "topic": "Topic",

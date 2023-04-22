@@ -1,0 +1,18 @@
+<div class="wrapper-modal">
+  <div class="wrapper-modal-conent">
+    <h2>{{ 'guild.manage' | translate }} {{ guildName }}</h2>
+
+    <div class="wrapper-form">
+      <div class="input-label" style="margin: auto;">{{ 'guild.deleteHint' | translate }}</div>
+      <input [(ngModel)]="confirmDeleteInput" class="input" type="text">
+      <button (click)="onDeleteGuild()" [disabled]="(manageGuildLoading$ | async)" class="btn-base">
+        {{ 'common.confirm' | translate }}
+      </button>
+    </div>
+
+    <button (click)="onClose()" [disabled]="(manageGuildLoading$ | async)" class="btn-base">
+      {{ 'common.close' | translate }}
+    </button>
+    <div *ngIf="(manageGuild$ | async)" class="gone"></div>
+  </div>
+</div>

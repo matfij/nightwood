@@ -100,7 +100,10 @@ export class GuildValidatorService {
         if (dto.name.length < GUILD_ROLE_NAME_MIN_LENGTH || dto.name.length > GUILD_ROLE_NAME_MAX_LENGTH) {
             this.errorService.throw('errors.guildRoleNameInvalid');
         }
-        if (dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX) {
+        if (
+            dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX
+            || !Number.isInteger(+dto.priority)
+        ) {
             this.errorService.throw('errors.guildRolePriorityInvalid');
         }
         const guild = await this.checkGuildFounder(user);
@@ -117,7 +120,10 @@ export class GuildValidatorService {
         if (dto.name.length < GUILD_ROLE_NAME_MIN_LENGTH || dto.name.length > GUILD_ROLE_NAME_MAX_LENGTH) {
             this.errorService.throw('errors.guildRoleNameInvalid');
         }
-        if (dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX) {
+        if (
+            dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX
+            || !Number.isInteger(+dto.priority)
+        ) {
             this.errorService.throw('errors.guildRolePriorityInvalid');
         }
         const role = await this.guildRoleRepository.findOne({ where: { id: dto.id }});
@@ -181,7 +187,7 @@ export class GuildValidatorService {
                     role: true,
                 },
             });
-            if (member.guild.id !== kickingMember.guild.id || !kickingMember.role?.canRemoveMembers) {
+            if (member?.guild?.id !== kickingMember?.guild?.id || !kickingMember?.role?.canRemoveMembers) {
                 this.errorService.throw('errors.insufficientPermissions');
             }
             guild = kickingMember.guild;

@@ -44,6 +44,16 @@ export class GuildComponent implements OnInit {
     });
   }
 
+  onGuildDeleted() {
+    this.guilds$ = this.guildController.getAll({
+      page: this.guildPage,
+      limit: this.guildPageLimit,
+    });
+    this.founderGuild$ = undefined;
+    this.memberGuild$ = undefined;
+    this.viewMode = GuildView.DefaultView;
+  }
+
   onGuildLeft() {
     this.guilds$ = this.guildController.getAll({
       page: this.guildPage,
