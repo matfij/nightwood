@@ -67,7 +67,7 @@ export const AUCTION_OUT_OF_DATE_DAYS = 30;
 /**
  * Guilds
  */
-export const GUILD_COST = 100;
+export const GUILD_COST = 10_000;
 export const GUILD_NAME_MIN_LENGT = 4;
 export const GUILD_NAME_MAX_LENGT = 20;
 export const GUILD_TAG_MIN_LENGT = 2;

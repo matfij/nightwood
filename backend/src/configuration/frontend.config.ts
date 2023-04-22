@@ -62,7 +62,7 @@ export const AUCTION_MAX_SEARCH_LEVEL = 9999;
 /**
  * Guilds
  */
-export const GUILD_COST = 100;
+export const GUILD_COST = 10_000;
 export const GUILD_NAME_MIN_LENGT = 4;
 export const GUILD_NAME_MAX_LENGT = 20;
 export const GUILD_TAG_MIN_LENGT = 2;
