@@ -8,13 +8,13 @@ PATTERN_PATH = 'img/patterns/'
 INPUT_PATH = 'img/input/'
 OUTPUT_PATH = 'img/output/'
 
-pattern = 'p-3'
+pattern = 'p-2'
 dragons = ['d-1-1', 'd-1-2', 'd-1-3', 'd-1-4']
 masks = ['m-1-1', 'm-1-2', 'm-1-3', 'm-1-4']
 
 def gen_dragons():
 
-    tf_model = tf_hub.load('models/aim')
+    tf_model = tf_hub.load('models/magenta')
     tf_pattern = load_image(f'{INPUT_PATH}{pattern}.jpg')
 
     for dragon, mask in zip (dragons, masks):

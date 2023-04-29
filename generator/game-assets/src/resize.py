@@ -4,10 +4,10 @@ from PIL import Image
 from shutil import copy
 
 TARGET_SIZE = 400
-APPLY_FILTERS = False
-RESIZE = False
-REMOVE_BG = False
-ROTATE = -180
+APPLY_FILTERS = True
+RESIZE = True
+REMOVE_BG = True
+ROTATE = 0
 
 INPUT_FOLDER = 'img/to-resize/'
 OUTPUT_FOLDER = 'img/output/'

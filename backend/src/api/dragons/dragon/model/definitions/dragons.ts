@@ -6,4 +6,5 @@ export enum DragonNature {
     Electric = 'Electric',
     Nature = 'Nature',
     Dark = 'Dark',
+    Power = 'Power',
 }
