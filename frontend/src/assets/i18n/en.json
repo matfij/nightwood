@@ -24,7 +24,8 @@
       "Earth": "Earth",
       "Electric": "Electric",
       "Nature": "Nature",
-      "Dark": "Dark"
+      "Dark": "Dark",
+      "Power": "Power"
     },
     "itemType": {
       "Food": "Food",
@@ -299,7 +300,8 @@
     "dragonRenamed": "Dragon renamed",
     "dragonLimitExtended": "Dragon limit extended",
     "currentDragonLimit": "Current dragon limit",
-    "extend": "Extend"
+    "extend": "Extend",
+    "ascentDragonPowerHint": "Unlock your dragon's true combat potential"
   },
   "arena": {
     "dragon": "Dragon",

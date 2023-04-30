@@ -99,6 +99,12 @@ export class ActionController {
         return this.actionDragonService.changeDragonNature(req.user.id, dto);
     }
 
+    @Post('ascentDragonPower/:id')
+    @ApiOkResponse({ type: DragonDto })
+    ascentDragonPower(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<DragonDto> {
+        return this.actionDragonService.ascentDragonPower(req.user.id, +id);
+    }
+
     @Post('releaseDragon/:id')
     @ApiOkResponse()
     releaseDragon(@Request() req: AuthorizedRequest, @Param('id') id: string) {

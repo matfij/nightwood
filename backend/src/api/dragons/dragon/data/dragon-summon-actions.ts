@@ -8,9 +8,9 @@ export const SUMMON_THUNDER: DragonSummonActionDto = {
     nature: DragonNature.Electric,
     cost: 3000,
     requiredItems: [
-        { ...SUPERCHARGED_CRYSTAL, quantity: 1 },
-        { ...GATE_KEY, quantity: 1 },
-        { ...GATE_PARTICLE, quantity: 50 },
+        { ...SUPERCHARGED_CRYSTAL, quantity: 3 },
+        { ...GATE_KEY, quantity: 3 },
+        { ...GATE_PARTICLE, quantity: 60 },
     ],
 }
 
@@ -20,9 +20,9 @@ export const SUMMON_NATURE: DragonSummonActionDto = {
     nature: DragonNature.Nature,
     cost: 3000,
     requiredItems: [
-        { ...ETERNAL_FLOWER, quantity: 1 },
-        { ...GATE_KEY, quantity: 1 },
-        { ...GATE_PARTICLE, quantity: 50 },
+        { ...ETERNAL_FLOWER, quantity: 3 },
+        { ...GATE_KEY, quantity: 3 },
+        { ...GATE_PARTICLE, quantity: 60 },
     ],
 }
 
@@ -32,9 +32,9 @@ export const SUMMON_DARK: DragonSummonActionDto = {
     nature: DragonNature.Dark,
     cost: 3000,
     requiredItems: [
-        { ...MIDNIGHT_ESSENCE, quantity: 1 },
-        { ...GATE_KEY, quantity: 1 },
-        { ...GATE_PARTICLE, quantity: 50 },
+        { ...MIDNIGHT_ESSENCE, quantity: 3 },
+        { ...GATE_KEY, quantity: 3 },
+        { ...GATE_PARTICLE, quantity: 60 },
     ],
 }
 

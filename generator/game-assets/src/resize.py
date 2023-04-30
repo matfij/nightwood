@@ -7,7 +7,7 @@ TARGET_SIZE = 400
 APPLY_FILTERS = True
 RESIZE = True
 REMOVE_BG = True
-ROTATE = 0
+ROTATE = -180
 
 INPUT_FOLDER = 'img/to-resize/'
 OUTPUT_FOLDER = 'img/output/'

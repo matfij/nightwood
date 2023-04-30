@@ -11,7 +11,7 @@ import { MAX_RUNES } from "src/configuration/backend.config";
 import { Item } from "src/api/items/item/model/item.entity";
 import { DragonChangeNatureDto, DragonRenameDto } from "src/api/dragons/dragon/model/dto/dragon-tamer-params.dto";
 import { DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from "src/configuration/frontend.config";
-import { ACTION_CHANGE_NATURE, ACTION_RENAME, ACTION_RESET_SKILLS, ACTION_RESTORE_STAMINA } from "src/api/dragons/dragon/data/dragon-tamer-actions";
+import { ACTION_ASCENT_DRAGON_POWER, ACTION_CHANGE_NATURE, ACTION_RENAME, ACTION_RESET_SKILLS, ACTION_RESTORE_STAMINA } from "src/api/dragons/dragon/data/dragon-tamer-actions";
 import { DragonSummonDto } from "src/api/dragons/dragon/model/dto/dragon-summon.dto";
 import { DRAGON_SUMMON_ACTIONS } from "src/api/dragons/dragon/data/dragon-summon-actions";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
@@ -19,6 +19,7 @@ import { BoosterActivateDto } from "src/api/items/alchemy/model/dto/booster-acti
 import { AlchemyService } from "src/api/items/alchemy/service/alchemy.service";
 import { BOOSTER_RECIPES } from "src/api/items/alchemy/data/booster-recipe";
 import { AchievementsService } from "src/api/users/achievements/service/achievements.service";
+import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragons";
 
 @Injectable()
 export class ActionDragonService {
@@ -186,5 +187,20 @@ export class ActionDragonService {
 
         await this.userService.updateGold(userId, -actionCost);
         return await this.dragonService.changeNature(dragon, dto.newNature);
+    }
+
+    async ascentDragonPower(userId: number, dragonId: number): Promise<DragonDto> {
+        const dragon = await this.dragonService.checkDragon(userId, dragonId);
+        const actionCost = ACTION_ASCENT_DRAGON_POWER.baseCost + dragon.level * ACTION_ASCENT_DRAGON_POWER.costFactor;
+
+        if (dragon.experience < ACTION_ASCENT_DRAGON_POWER.requiredExperience) this.errorService.throw('errors.dragonNotExperiencedEnough');
+        if (DragonNature.Power === dragon.nature) this.errorService.throw('errors.dragonAlreadyHasThisNature');
+
+        const user = await this.userService.getOne(userId);
+        if (user.gold < actionCost) this.errorService.throw('errors.insufficientsFound');
+
+        await this.itemService.checkAndConsumeItems(ACTION_ASCENT_DRAGON_POWER.requiredItems, userId);
+        await this.userService.updateGold(userId, -actionCost);
+        return await this.dragonService.changeNature(dragon, DragonNature.Power);
     }
 }

@@ -161,6 +161,13 @@ export const AZURE_PEBBLE: ItemDto = {
     type: ItemType.Ingredient,
 };
 
+export const CRIMSON_TEAR: ItemDto = {
+    uid: 'item-i-15',
+    name: 'Crimson Tear',
+    level: 1,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Ingredient,
+};
 
 export const INGREDIENTS = [
     TRANSMUTATION_STONE,
@@ -183,4 +190,5 @@ export const INGREDIENTS = [
     SHARD_BLANK,
     SCORIA_ORE,
     AZURE_PEBBLE,
+    CRIMSON_TEAR,
 ];

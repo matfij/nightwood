@@ -23,4 +23,7 @@ export class DragonTamerActionDto {
 
     @ApiProperty({ type: [ItemDto] })
     requiredItems: ItemDto[];
+
+    @ApiProperty()
+    requiredExperience?: number;
 }
