@@ -26,6 +26,7 @@ export interface IActionController {
     resetDragonSkills(id: string): Observable<DragonDto>;
     restoreDragonStamina(id: string): Observable<DragonDto>;
     changeDragonNature(body: DragonChangeNatureDto): Observable<DragonDto>;
+    ascentDragonPower(id: string): Observable<DragonDto>;
     releaseDragon(id: string): Observable<void>;
     startExpedition(body: StartExpeditionDto): Observable<DragonActionDto>;
     checkExpeditions(): Observable<ExpeditionReportDto[]>;
@@ -578,6 +579,56 @@ export class ActionController implements IActionController {
     }
 
     protected processChangeDragonNature(response: HttpResponseBase): Observable<DragonDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <DragonDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(<any>null);
+    }
+
+    ascentDragonPower(id: string): Observable<DragonDto> {
+        let url_ = this.baseUrl + "/api/v1/action/ascentDragonPower/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAscentDragonPower(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAscentDragonPower(<any>response_);
+                } catch (e) {
+                    return <Observable<DragonDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DragonDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAscentDragonPower(response: HttpResponseBase): Observable<DragonDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4745,6 +4796,7 @@ export enum DragonNature {
     Electric = "Electric",
     Nature = "Nature",
     Dark = "Dark",
+    Power = "Power",
 }
 
 export interface DragonDto {
@@ -5166,6 +5218,7 @@ export interface DragonTamerActionDto {
     requiredLevel: number;
     withoutDragon: boolean;
     requiredItems: ItemDto[];
+    requiredExperience: number;
 }
 
 export interface DragonSummonActionDto {

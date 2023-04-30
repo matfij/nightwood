@@ -6,6 +6,7 @@ import { ActionGuildController, GuildCreateDto } from 'src/app/client/api';
 import { GUILD_COST, GUILD_DESCRIPTION_MAX_LENGT, GUILD_NAME_MAX_LENGT, GUILD_NAME_MIN_LENGT, GUILD_TAG_MAX_LENGT, GUILD_TAG_MIN_LENGT } from 'src/app/client/config/frontend.config';
 import { FormInputOptions } from 'src/app/common/definitions/forms';
 import { ToastService } from 'src/app/common/services/toast.service';
+import { EngineService } from 'src/app/core/services/engine.service';
 
 @Component({
   selector: 'app-create-guild',
@@ -41,7 +42,8 @@ export class CreateGuildComponent {
   constructor(
     private actionGuildController: ActionGuildController,
     private translateService: TranslateService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private engineService: EngineService
   ) {
     this.createGuildFormFields[1].hint = this.translateService.instant(
       'guild.tagHint', { min: GUILD_TAG_MIN_LENGT, max: GUILD_TAG_MAX_LENGT }
@@ -61,6 +63,7 @@ export class CreateGuildComponent {
     this.createGuild$ = this.actionGuildController.createGuild(params).pipe(
       tap(() => {
         this.toastService.showSuccess('common.success', 'guild.guildFounded');
+        this.engineService.tick();
         this.guildCreated.next(true);
       }),
       catchError((err) => {

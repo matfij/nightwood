@@ -152,7 +152,8 @@
     "guildRolePriorityNotUnique": "Role priority must be unique",
     "guildNotFound": "Guild not found",
     "guildMemberNotFound": "Member not found",
-    "guildRoleNotFound": "Role not found"
+    "guildRoleNotFound": "Role not found",
+    "dragonNotExperiencedEnough": "Selected dragon is not experienced enough"
   },
   "game": {
     "menu": "Menu",
@@ -301,7 +302,8 @@
     "dragonLimitExtended": "Dragon limit extended",
     "currentDragonLimit": "Current dragon limit",
     "extend": "Extend",
-    "ascentDragonPowerHint": "Unlock your dragon's true combat potential"
+    "ascentDragonPowerHint": "Unlock your dragon's true combat potential. In order to complete this transformation, a dragon must collect at least 10000 experience points.",
+    "ascentDragonPowerSuccess": "Dragon potential unlocked"
   },
   "arena": {
     "dragon": "Dragon",

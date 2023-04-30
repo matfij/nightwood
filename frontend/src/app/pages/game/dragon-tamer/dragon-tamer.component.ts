@@ -78,6 +78,7 @@ export class DragonTamerComponent implements OnInit {
       case 'tamer-action-2': { this.resetDragonSkills(dragon); break; }
       case 'tamer-action-3': { this.restoreDragonStamina(dragon); break; }
       case 'tamer-action-4': { this.changeDragonNature(dragon); break; }
+      case 'tamer-action-6': { this.ascentDragonPower(dragon); break; }
       default: { this.toastService.showError('errors.error', 'errors.actionNotFound'); }
     }
   }
@@ -133,6 +134,17 @@ export class DragonTamerComponent implements OnInit {
     this.dragonsLoading$.next(true);
     this.actionController.changeDragonNature(params).subscribe(_ => {
       this.toastService.showSuccess('common.success', 'dragonTamer.natureChanged');
+      this.getOwnedDragons();
+      this.engineService.tick();
+    }, () => this.dragonsLoading$.next(false));
+  }
+
+  ascentDragonPower(dragon: DragonDto) {
+    if (dragon.nature === DragonNature.Power) { this.toastService.showError('errors.error', 'errors.dragonAlreadyHasThisNature'); return; }
+
+    this.dragonsLoading$.next(true);
+    this.actionController.ascentDragonPower(dragon.id.toString()).subscribe(_ => {
+      this.toastService.showSuccess('common.success', 'dragonTamer.ascentDragonPowerSuccess');
       this.getOwnedDragons();
       this.engineService.tick();
     }, () => this.dragonsLoading$.next(false));
