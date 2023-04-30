@@ -107,4 +107,13 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     terribleOmen: number;
+
+    @Column({ default: 0 })
+    veritableStrike: number;
+
+    @Column({ default: 0 })
+    woundedPride: number;
+
+    @Column({ default: 0 })
+    prominenceBlast: number;
 }

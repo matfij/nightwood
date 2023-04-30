@@ -106,4 +106,13 @@ export class DragonSkillsDto {
 
     @ApiProperty()
     terribleOmen?: number;
+
+    @ApiProperty()
+    veritableStrike?: number;
+
+    @ApiProperty()
+    woundedPride?: number;
+
+    @ApiProperty()
+    prominenceBlast?: number;
 }

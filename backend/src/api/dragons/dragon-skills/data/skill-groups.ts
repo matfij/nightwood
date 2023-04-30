@@ -1,6 +1,6 @@
 import { Skill } from "../model/definitions/dragons-skills";
 import { ArmorPenetration, BeginnersLuck, Block, Dodge, GreatVigor, InnateSpeed, InnerFlow, LethalBlow, LuckyStrike, MagicArrow, Rage, ThoughtfulStrike, TreasureHunter } from "./skills-common";
-import { FireBreath, SoundBody, PugnaciousStrike, RoughSkin, FireBolt, IceBolt, AirVector, RockBlast, Thunderbolt, StaticStrike, LeafCut, CriticalDrain, Poison, LifeLink, InferialBlessing, Freeze, Zeal, DeepWounds, SuperCharge, EnchantedBarrier, TerribleOmen } from "./skills-exclusive";
+import { FireBreath, SoundBody, PugnaciousStrike, RoughSkin, FireBolt, IceBolt, AirVector, RockBlast, Thunderbolt, StaticStrike, LeafCut, CriticalDrain, Poison, LifeLink, InferialBlessing, Freeze, Zeal, DeepWounds, SuperCharge, EnchantedBarrier, TerribleOmen, VeritableStrike, WoundedPride, ProminenceBlast } from "./skills-exclusive";
 
 export const COMMON_SKILLS: Skill[] = [
     InnateSpeed,
@@ -46,6 +46,10 @@ export const EXCLUSIVE_SKILLS: Skill[] = [
     Poison,
     LifeLink,
     TerribleOmen,
+
+    VeritableStrike,
+    WoundedPride,
+    ProminenceBlast,
 ];
 
 export const ALL_SKILLS: Skill[] = [

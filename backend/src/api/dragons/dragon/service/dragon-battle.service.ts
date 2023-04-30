@@ -122,7 +122,7 @@ export class DragonBattleService {
         /**
          * Special attacks
          */
-        turnResult = this.executeSpecialAttacks(turnResult);
+        turnResult = this.executeSpecialAttacks(turnResult, turn);
 
         /**
          * Dodge chance
@@ -153,7 +153,7 @@ export class DragonBattleService {
         return turnResult;
     }
 
-    private executeSpecialAttacks(turnResult: TurnResult): TurnResult {
+    private executeSpecialAttacks(turnResult: TurnResult, turn: number): TurnResult {
         let attacker = turnResult.attacker;
         let defender = turnResult.defender;
         let log = turnResult.log;
@@ -165,12 +165,34 @@ export class DragonBattleService {
         /**
          * Pre-spell effects
          */
-         if (defender.skills.block > 0) {
+        if (defender.skills.block > 0) {
             const blockChance = 0.05 + defender.skills.block / 100;
             if (blockChance > Math.random()) {
                 blockedHit = this.mathService.randRange(0.95, 1.05) * (40 + defender.skills.block) / 120;
                 extraLogs.push(`<div class="log-extra">- blocked ${(100*blockedHit).toFixed(1)}% damage</div>`);
             }
+        }
+
+        if (!attacker.prominenceBlastUsed && attacker.skills.prominenceBlast > 0) {
+            let skillHit = 
+                (1 + attacker.skills.prominenceBlast / 6) 
+                * (3.7 * attacker.magicalAttack)
+                - defender.resistance;
+            skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+            skillHit *= (1 - blockedHit);
+            defender.health -= skillHit;
+            attacker.prominenceBlastUsed = true;
+            attacker.mana = 0;
+
+            cssClasses += ' log-skill skill-special';
+            log = `
+            <div class="${cssClasses}">
+                ${attacker.name} (${attacker.health.toFixed(1)}) uses <b style="color: red;">Prominence Blast</b> 
+                and strikes ${defender.name} (${defender.health.toFixed(1)}) for ${skillHit.toFixed(1)} damage.`
+            extraLogs.forEach(extraLog => log += extraLog);
+            log += `</div>`;
+
+            return { attacker: attacker, defender: defender, skip: true, log: log };
         }
 
         if (attacker.skills.magicArrow > 0) {
@@ -469,6 +491,12 @@ export class DragonBattleService {
             }
         }
 
+        if (attacker.skills.veritableStrike) {
+            const trueDamage = 0.3 * attacker.physicalAttack + 0.3 * attacker.magicalAttack;
+            defender.health -= trueDamage;
+            extraLogs.push(`<div class="log-extra">+ ${trueDamage.toFixed(1)} true damage</div>`);
+        }
+
         if (attacker.skills.lifeLink) {
             const drainedHealth = baseHit * (0.04 + attacker.skills.lifeLink / 80);
             attacker.health += drainedHealth;
@@ -574,6 +602,22 @@ export class DragonBattleService {
             attacker.health -= attacker.deepWounds;
             attacker.deepWounds *= 0.82;
             independentLogs.push(`<div class="item-log log-status">${attacker.name} suffered ${attacker.deepWounds.toFixed(1)} internal damage.</div>`);
+        }
+
+        if (defender.skills.woundedPride > 0) {
+            const woundedPrideFactor = 
+                (1 + (defender.maxHealth - defender.health) / defender.maxHealth) 
+                * (1 + defender.skills.woundedPride / 25);
+            defender.speed += woundedPrideFactor;
+            defender.physicalAttack += woundedPrideFactor;
+            defender.magicalAttack += woundedPrideFactor;
+            defender.resistance += woundedPrideFactor
+            defender.armor += woundedPrideFactor;
+            defender.critChance += woundedPrideFactor / 100;
+
+            console.log(
+                defender.speed, defender.physicalAttack, defender.magicalAttack, defender.armor, defender.resistance, defender.critChance
+            )
         }
 
         independentLogs.forEach(independentLog => log += independentLog);

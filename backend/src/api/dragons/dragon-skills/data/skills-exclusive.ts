@@ -209,3 +209,31 @@ export const TerribleOmen: Skill = {
     level: 60,
     requiredNature: [DragonNature.Dark],
 };
+
+/**
+ * Power
+ */
+
+export const VeritableStrike: Skill = {
+    uid: 'veritableStrike',
+    name: 'Veritable Strike',
+    hint: 'Base attacks are enhanced with true damage component.',
+    level: 10,
+    requiredNature: [DragonNature.Power]
+}
+
+export const WoundedPride: Skill = {
+    uid: 'woundedPride',
+    name: 'Wounded Pride',
+    hint: 'Taking damage increases dragon base stats.',
+    level: 30,
+    requiredNature: [DragonNature.Power]
+}
+
+export const ProminenceBlast: Skill = {
+    uid: 'prominenceBlast',
+    name: 'Prominence Blast',
+    hint: 'Performs a powerful attack at the beginning of the combat that uses all the dragons mana.',
+    level: 60,
+    requiredNature: [DragonNature.Power]
+}
