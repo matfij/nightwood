@@ -90,7 +90,7 @@ export class AuthService {
         user.isConfirmed = true;
         this.userRepository.save(user);
 
-        this.itemService.createStartingItems(user);
+        this.itemService.createStartingItems(user.id);
     }
 
     async refreshToken(dto: UserAuthDto) {

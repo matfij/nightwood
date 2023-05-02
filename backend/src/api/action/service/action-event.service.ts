@@ -36,17 +36,15 @@ export class ActionEventService {
 
     async checkExpeditions(userId: number): Promise<ExpeditionReportDto[]> {
         const user = await this.userService.getOne(userId);
-        const dragons = await this.dragonService.getOwnedDragons(user);
+        const dragons = await this.dragonService.getOwnedDragons(userId);
 
         let results: ExpeditionReportDto[] = [];
         let totalExpeditionTime = 0;
         for (const dragon of dragons) {
             const expedition = await this.dragonActionService.checkExpedition(dragon);
             if (expedition) {
-                const user = await this.userService.getOne(userId);
-
                 const gainedGold = await this.dragonService.awardExpeditionGold(dragon, expedition);
-                const loots = await this.itemService.awardExpeditionItems(user, dragon, expedition);
+                const loots = await this.itemService.awardExpeditionItems(userId, dragon, expedition);
 
                 await this.userService.updateGold(userId, gainedGold);
 
@@ -78,7 +76,7 @@ export class ActionEventService {
 
     async extendDragonLimit(userId: number): Promise<void> {
         const user = await this.userService.getOne(userId);
-        const dragons = await this.dragonService.getOwnedDragons(user);
+        const dragons = await this.dragonService.getOwnedDragons(userId);
 
         if (user.maxOwnedDragons >= 5) this.errorService.throw('errors.currentDragonLimitReached');
         

@@ -55,7 +55,7 @@ export class DragonController {
     @Post('getOwned')
     @ApiOkResponse({ type: [DragonDto] })
     getOwned(@Request() req: AuthorizedRequest): Promise<DragonDto[]> {
-        return this.dragonService.getOwnedDragons(req.user);
+        return this.dragonService.getOwnedDragons(req.user.id);
     }
 
     @Get('getPublicPlayerDragons/:id')

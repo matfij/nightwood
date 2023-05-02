@@ -614,10 +614,6 @@ export class DragonBattleService {
             defender.resistance += woundedPrideFactor
             defender.armor += woundedPrideFactor;
             defender.critChance += woundedPrideFactor / 100;
-
-            console.log(
-                defender.speed, defender.physicalAttack, defender.magicalAttack, defender.armor, defender.resistance, defender.critChance
-            )
         }
 
         independentLogs.forEach(independentLog => log += independentLog);

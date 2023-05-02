@@ -43,7 +43,7 @@ export class UserService {
         const createdUser = this.userRepository.create(newUser);
         const savedUser = await this.userRepository.save(createdUser);
 
-        this.itemService.createStartingItems(savedUser);
+        this.itemService.createStartingItems(savedUser.id);
 
         return savedUser;
     }

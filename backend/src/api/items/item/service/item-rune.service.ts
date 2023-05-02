@@ -26,9 +26,9 @@ export class ItemRuneService {
         return RUNE_SPECIAL_RECIPES;
     }
 
-    async composeRecipe(user: UserDto, dto: RecipeComposeDto): Promise<ItemDto> {
+    async composeRecipe(userId: number, dto: RecipeComposeDto): Promise<ItemDto> {
         const items = await this.itemRepository.find({
-            where: { user: user, quantity: MoreThan(0) },
+            where: { user: { id: userId }, quantity: MoreThan(0) },
         });
 
         const recipe = [...RUNE_BASE_RECIPES, ...RUNE_SPECIAL_RECIPES].find(x => x.uid === dto.recipeUid);
@@ -49,7 +49,7 @@ export class ItemRuneService {
         });
 
         const product = recipe.product;
-        const newItem = this.itemRepository.create({ ...product, user });
+        const newItem = this.itemRepository.create({ ...product, user: { id: userId } });
         this.itemRepository.save(newItem);
 
         return product;

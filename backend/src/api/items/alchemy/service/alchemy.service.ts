@@ -68,16 +68,16 @@ export class AlchemyService {
         return page;
     }
 
-    async collectMixture(user: UserDto, mixtureId: number): Promise<ItemDto> {
+    async collectMixture(userId: number, mixtureId: number): Promise<ItemDto> {
         const mixture = await this.mixtureRepository.findOne({
-            where: { id: mixtureId, user: user },
+            where: { id: mixtureId, user: { id: userId } },
         });
         if (!mixture) this.errorService.throw('errors.mixtureNotFound');
         if (!this.dateService.checkIfNextEventAvailable(mixture.readyOn)) this.errorService.throw('errors.mixtureNotReady');
 
         const recipe = MIXTURE_RECIPES.find(x => x.uid === mixture.uid);
 
-        await this.itemService.updateInventory(user, [recipe.product]);
+        await this.itemService.updateInventory(userId, [recipe.product]);
 
         await this.mixtureRepository.delete(mixture.id);
 

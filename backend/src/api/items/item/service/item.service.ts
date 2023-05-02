@@ -10,7 +10,6 @@ import { Item } from "../model/item.entity";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { ExpeditionDto } from "src/api/dragons/dragon-action/model/dto/expedition.dto";
 import { ItemType, LootChance } from "../model/definitions/items";
-import { MathService } from "src/common/services/math.service";
 import { DataService } from "src/common/services/data.service";
 
 @Injectable()
@@ -21,18 +20,17 @@ export class ItemService {
         private itemRepository: Repository<Item>,
         private dataService: DataService,
         private errorService: ErrorService,
-        private mathService: MathService,
     ) {}
 
-    async createStartingItems(user: UserDto) {
+    async createStartingItems(userId: number) {
         STARTING_ITEMS.forEach(x => {
-            const item = this.itemRepository.create({ ...x, user });
+            const item = this.itemRepository.create({ ...x, user: { id: userId } });
             this.itemRepository.save(item);
         });
     }
 
-    async getOwnedFoods(user: UserDto): Promise<ItemPageDto> {
-        const items = await this.itemRepository.find({ where: { user: user, type: ItemType.Food, quantity: MoreThan(0) }});
+    async getOwnedFoods(userId: number): Promise<ItemPageDto> {
+        const items = await this.itemRepository.find({ where: { user: { id: userId }, type: ItemType.Food, quantity: MoreThan(0) }});
         const itemsPage: ItemPageDto = {
             data: items,
             meta: {},
@@ -40,9 +38,9 @@ export class ItemService {
         return itemsPage;
     }
 
-    async getOwnedItems(user: UserDto): Promise<ItemPageDto> {
+    async getOwnedItems(userId: number): Promise<ItemPageDto> {
         let items = await this.itemRepository.find({
-            where: { user: user, quantity: MoreThan(0) },
+            where: { user: { id: userId }, quantity: MoreThan(0) },
             order: { id: 'DESC' },
         });
 
@@ -135,8 +133,8 @@ export class ItemService {
         return await this.itemRepository.save(item);
     }
 
-    async updateInventory(user: UserDto, loots: ItemDto[]) {
-        const items = await this.itemRepository.find({ where: { user: { id: user.id } }});
+    async updateInventory(userId: number, loots: ItemDto[]) {
+        const items = await this.itemRepository.find({ where: { user: { id: userId } }});
 
         const newItems = [];
         loots.forEach(loot => {
@@ -144,7 +142,7 @@ export class ItemService {
                 const item = items[items.map(x => x.uid).findIndex(x => x === loot.uid)];
                 item.quantity += loot.quantity;
             } else {
-                const newItem = this.itemRepository.create({ ...loot, user });
+                const newItem = this.itemRepository.create({ ...loot, user: { id: userId } });
                 newItems.push(newItem);
             }
         });
@@ -152,7 +150,7 @@ export class ItemService {
         await this.itemRepository.save([...items, ...newItems]);
     }
 
-    async awardExpeditionItems(user: UserDto, dragon: DragonDto, expedition: ExpeditionDto): Promise<ItemDto[]> {
+    async awardExpeditionItems(userId: number, dragon: DragonDto, expedition: ExpeditionDto): Promise<ItemDto[]> {
         const loots: ItemDto[] = [];
         let baseLoots = expedition.loots;
         if (dragon.unlockedExpeditions.includes(expedition.uid)) baseLoots = [...baseLoots, ...expedition.extraLoots];
@@ -168,7 +166,7 @@ export class ItemService {
             }
         });
 
-        await this.updateInventory(user, loots);
+        await this.updateInventory(userId, loots);
 
         return loots;
     }

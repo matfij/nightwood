@@ -39,7 +39,7 @@ export class ActionDragonService {
             limit: 1000,
         });
         for (const user of users.data) {
-            const dragons = await this.dragonService.getOwnedDragons(user);
+            const dragons = await this.dragonService.getOwnedDragons(user.id);
             if (dragons.length > 0) {
                 const oldestDragon = dragons.reduce((prev, current) => (prev.level > current.level) ? prev : current);
                 const mostExperiencedDragon = dragons.reduce((prev, current) => (prev.experience > current.experience) ? prev : current);

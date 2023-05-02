@@ -32,7 +32,7 @@ export class ActionItemService {
         seller = await this.userService.updateGold(seller.id, auction.totalGoldPrice);
 
         await this.auctionService.finalizeAuction(auctionId);
-        await this.itemService.updateInventory(user, [{...auction.item as ItemDto, quantity: auction.quantity}]);
+        await this.itemService.updateInventory(userId, [{...auction.item as ItemDto, quantity: auction.quantity}]);
 
         const mailParams: MailSendSystemParams = {
             senderName: 'Marketplace',

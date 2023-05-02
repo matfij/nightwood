@@ -134,9 +134,9 @@ export class DragonService {
         return savedDragon;
     }
 
-    async getOwnedDragons(user: UserDto): Promise<DragonDto[]> {
+    async getOwnedDragons(userId: number): Promise<DragonDto[]> {
         const filterOptions: FindManyOptions<Dragon> = {
-            where: { user: { id: user.id } },
+            where: { user: { id: userId } },
             relations: ['action', 'skills'],
             order: { experience: 'DESC' },
         };

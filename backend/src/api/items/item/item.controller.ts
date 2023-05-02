@@ -22,13 +22,13 @@ export class ItemController {
     @Post('getOwnedItems')
     @ApiOkResponse({ type: ItemPageDto })
     getOwnedItems(@Request() req: AuthorizedRequest): Promise<ItemPageDto> {
-        return this.itemService.getOwnedItems(req.user);
+        return this.itemService.getOwnedItems(req.user.id);
     }
 
     @Post('getOwnedFoods')
     @ApiOkResponse({ type: ItemPageDto })
     getOwnedFoods(@Request() req: AuthorizedRequest): Promise<ItemPageDto> {
-        return this.itemService.getOwnedFoods(req.user);
+        return this.itemService.getOwnedFoods(req.user.id);
     }
 
     @Post('getRuneBaseRecipes')
@@ -46,6 +46,6 @@ export class ItemController {
     @Post('composeRecipe')
     @ApiOkResponse({ type: ItemDto })
     composeRecipe(@Request() req: AuthorizedRequest, @Body() dto: RecipeComposeDto): Promise<ItemDto> {
-        return this.itemRuneService.composeRecipe(req.user, dto);
+        return this.itemRuneService.composeRecipe(req.user.id, dto);
     }
 }

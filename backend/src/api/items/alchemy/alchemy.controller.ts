@@ -40,7 +40,7 @@ export class AlchemyController {
     @Post('collectMixture/:id')
     @ApiOkResponse({ type: ItemDto })
     collectMixture(@Request() req: AuthorizedRequest, @Param('id') id: string): Promise<ItemDto> {
-        return this.alchemyService.collectMixture(req.user, +id);
+        return this.alchemyService.collectMixture(req.user.id, +id);
     }
 
     @Post('getBoosterRecipes')
