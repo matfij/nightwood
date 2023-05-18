@@ -23,7 +23,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       await this.authService.getUserFromToken(socket.handshake.headers.authorization);
       socket.emit(ChatMode.General, this.chatService.getMessages());
     } catch (err) {
-      console.log(err)
       return socket.disconnect();
     }
   }

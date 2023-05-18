@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { UserAuthDto } from "src/app/client/api";
-import { ACCESS_TOKEN, StoreService, USER_DATA } from "./store.service";
+import { ACCESS_TOKEN, REFRESH_TOKEN, StoreService, USER_DATA } from "./store.service";
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +26,16 @@ export class RepositoryService {
     this.storeService.setItem(ACCESS_TOKEN, accessToken);
   }
 
+  setRefreshToken(refreshToken: string) {
+    this.storeService.setItem(REFRESH_TOKEN, refreshToken);
+  }
+
   getAccessToken(): string {
     return this.storeService.getItem(ACCESS_TOKEN);
+  }
+
+  getRefreshToken(): string {
+    return this.storeService.getItem(REFRESH_TOKEN);
   }
 
   logout() {

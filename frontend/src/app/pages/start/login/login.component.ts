@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit {
         switchMap((user) => {
           this.repositoryService.clearUserData();
           this.repositoryService.setAccessToken(user.accessToken);
+          this.repositoryService.setRefreshToken(user.refreshToken);
           this.repositoryService.setUserData(user);
           this.engineService.setInitialState(user);
           return this.engineService.getExpeditionReports();

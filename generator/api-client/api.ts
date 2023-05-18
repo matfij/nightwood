@@ -4705,6 +4705,9 @@ export interface DragonSkillsDto {
     superCharge: number;
     enchantedBarrier: number;
     terribleOmen: number;
+    veritableStrike: number;
+    woundedPride: number;
+    prominenceBlast: number;
 }
 
 export enum ItemRarity {
@@ -5028,6 +5031,7 @@ export interface UserAuthDto {
     email?: string;
     nickname: string;
     accessToken: string;
+    refreshToken: string;
     expires?: string;
     gold: number;
     ownedDragons: number;
@@ -5186,6 +5190,7 @@ export interface DragonBattleDto {
     dodgeChance: number;
     healthRegen: number;
     deepWounds?: number;
+    prominenceBlastUsed?: boolean;
 }
 
 export interface BattleStartDto {

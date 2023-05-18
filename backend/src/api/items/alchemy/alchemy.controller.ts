@@ -34,7 +34,7 @@ export class AlchemyController {
     @Post('getOngoingMixtures')
     @ApiOkResponse({ type: MixturePageDto })
     getOnGoingMixtures(@Request() req: AuthorizedRequest, @Body() dto: MixtureGetDto): Promise<MixturePageDto> {
-        return this.alchemyService.getOnGoingMixtures(req.user, dto);
+        return this.alchemyService.getOnGoingMixtures(req.user.id, dto);
     }
 
     @Post('collectMixture/:id')

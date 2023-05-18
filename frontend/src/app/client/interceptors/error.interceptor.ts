@@ -61,6 +61,7 @@ export class ErrorInterceptor {
   }
 
   private refreshToken(user: UserAuthDto): Observable<string> {
+    user.refreshToken = this.repositoryService.getRefreshToken();
     const ob$ = this.authController.refreshToken(user).pipe(
       tap((user: UserAuthDto) => this.repositoryService.setAccessToken(user.accessToken)),
       map((user: UserAuthDto) => user.accessToken),

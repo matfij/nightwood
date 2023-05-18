@@ -9,7 +9,7 @@ import { UserAuthDto } from '../model/dto/user-auth.dto';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { ErrorService } from '../../../../common/services/error.service';
-import { JwtData, JwtPayload, UserJwt } from '../model/definitions/jwt';
+import { JwtPayload } from '../model/definitions/jwt';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
 import { EmailReplaceToken, EmailType } from 'src/common/definitions/emails';
@@ -101,12 +101,16 @@ export class AuthService {
     async refreshToken(dto: UserAuthDto): Promise<UserAuthDto> {
         try {
             const payload = await this.jwtService.verifyAsync<JwtPayload>(dto.refreshToken);
-            const [accessToken] = await this.generateTokens(payload);
+            const [accessToken] = await this.generateTokens({
+                id: payload.id,
+                nickname: payload.nickname,
+                role: payload.role,
+            });
             return {
                 ...dto,
                 accessToken: accessToken,
             };
-        } catch (error) {
+        } catch (err) {
             throw new UnauthorizedException();
         }
     }
@@ -116,8 +120,7 @@ export class AuthService {
             const payload = await this.jwtService.verifyAsync<JwtPayload>(accessToken);
             return payload;
         } catch (err) {
-            console.log('getUserFromToken', accessToken) 
-            // throw new UnauthorizedException();
+            throw new UnauthorizedException();
         };
     }
 
