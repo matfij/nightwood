@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,21 +8,19 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './service/auth.service';
 import { ErrorService } from '../../../common/services/error.service';
 import { JwtAuthGuard } from './util/jwt.guard';
-import { JwtStrategy } from './util/jwt.strategy';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
 import { AchievementsModule } from '../achievements/achievements.module';
-import { JWT_VALIDITY } from 'src/configuration/app.config';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async(x: ConfigService) => ({ 
-        secret: x.get('JWT_KEY'), 
-        signOptions: { expiresIn: JWT_VALIDITY } 
+      useFactory: async(config: ConfigService) => ({ 
+        secret: config.get('JWT_KEY'),
       }),
     }),
     ItemModule,
@@ -31,14 +29,15 @@ import { JWT_VALIDITY } from 'src/configuration/app.config';
   controllers: [AuthController],
   providers: [
     AuthService,
-    JwtStrategy,
     JwtAuthGuard,
     ErrorService,
     DateService,
     EmailService,
   ],
   exports: [
+    JwtModule,
     AuthService,
+    JwtAuthGuard,
   ],
 })
 export class AuthModule {}

@@ -12,3 +12,10 @@ export interface JwtData {
     iat: number;
     exp: number;
 }
+
+export interface JwtPayload {
+    id: number;
+    nickname: string;
+    role: UserRole;
+    isRefresh?: boolean;
+}

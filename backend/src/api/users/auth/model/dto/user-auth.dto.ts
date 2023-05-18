@@ -18,6 +18,9 @@ export class UserAuthDto {
     @ApiProperty()
     accessToken: string;
 
+    @ApiProperty()
+    refreshToken: string;
+
     @ApiPropertyOptional({ type: Date })
     expires?: string;
     

@@ -17,8 +17,8 @@ export const WS_REQUEST_LIMIT = 3;
 /**
  * JWT
  */
-export const JWT_VALIDITY = 24 * 3600;  // seconds
-export const JWT_REFRESH_VALIDITY = 48 * 3600;  // seconds
+export const JWT_ACCESS_VALIDITY = 15 * 60;  // seconds
+export const JWT_REFRESH_VALIDITY = 48 * 60 * 60;  // seconds
 
 /**
  * Database & typeorm

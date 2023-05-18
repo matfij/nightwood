@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,13 +9,13 @@ import { UserAuthDto } from '../model/dto/user-auth.dto';
 import { UserDto } from '../../user/model/dto/user.dto';
 import { ItemService } from 'src/api/items/item/service/item.service';
 import { ErrorService } from '../../../../common/services/error.service';
-import { JwtData, UserJwt } from '../model/definitions/jwt';
+import { JwtData, JwtPayload, UserJwt } from '../model/definitions/jwt';
 import { DateService } from 'src/common/services/date.service';
 import { EmailService } from 'src/common/services/email.service';
 import { EmailReplaceToken, EmailType } from 'src/common/definitions/emails';
 import { UserConfirmDto } from '../model/dto/user-confirm.dto';
 import { AchievementsService } from '../../achievements/service/achievements.service';
-import { JWT_REFRESH_VALIDITY } from 'src/configuration/app.config';
+import { JWT_ACCESS_VALIDITY, JWT_REFRESH_VALIDITY } from 'src/configuration/app.config';
 import { PasswordRecoverDto } from '../model/dto/password-recover.dto';
 import { PasswordResetDto } from '../model/dto/password-reset.dto';
 
@@ -45,11 +45,16 @@ export class AuthService {
 
         if (!this.dateService.checkIfNextEventAvailable(user.bannedUnitl)) this.errorService.throw('errors.userBanned');
 
-        const token = await this.generateJwt(user);
+        const [accessToken, refreshToken] = await this.generateTokens({
+            id: user.id,
+            nickname: user.nickname,
+            role: user.role,
+        });
         return {
             id: user.id,
             nickname: user.nickname,
-            accessToken: token,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
             gold: user.gold,
         };
     }
@@ -93,20 +98,27 @@ export class AuthService {
         this.itemService.createStartingItems(user.id);
     }
 
-    async refreshToken(dto: UserAuthDto) {
-        const userData = this.jwtService.decode(dto.accessToken) as JwtData;
-        if (!this.dateService.isTokenValid(userData.exp, JWT_REFRESH_VALIDITY)) this.errorService.throw('errors.tokenInvalid');
-
-        dto.accessToken = null;
-        dto.accessToken = await this.generateJwt(dto);
-
-        return dto;
+    async refreshToken(dto: UserAuthDto): Promise<UserAuthDto> {
+        try {
+            const payload = await this.jwtService.verifyAsync<JwtPayload>(dto.refreshToken);
+            const [accessToken] = await this.generateTokens(payload);
+            return {
+                ...dto,
+                accessToken: accessToken,
+            };
+        } catch (error) {
+            throw new UnauthorizedException();
+        }
     }
 
-    async getUserFromToken(accessToken: string): Promise<UserDto> {
-        try { this.jwtService.verify(accessToken) } catch (_) { return null; };
-        const decodedToken = this.jwtService.decode(accessToken);
-        return decodedToken['jwtData'];
+    async getUserFromToken(accessToken: string): Promise<JwtPayload> {
+        try {
+            const payload = await this.jwtService.verifyAsync<JwtPayload>(accessToken);
+            return payload;
+        } catch (err) {
+            console.log('getUserFromToken', accessToken) 
+            // throw new UnauthorizedException();
+        };
     }
 
     async getUserData(userId: number): Promise<UserDto> {
@@ -115,14 +127,16 @@ export class AuthService {
         return user;
     }
 
-    async generateJwt(user: Partial<UserDto>): Promise<string> {
-        const jwtData: UserJwt = {
-            id: user.id,
-            email: user.email,
-            nickname: user.nickname,
-            role: user.role
-        };
-        return this.jwtService.signAsync({jwtData});
+    async generateTokens(payload: JwtPayload): Promise<[string, string]> {
+        const accessToken = await this.jwtService.signAsync(
+            { ...payload, isRefresh: false }, 
+            { expiresIn: JWT_ACCESS_VALIDITY}
+        );
+        const refeshToken = await this.jwtService.signAsync(
+            { ...payload, isRefresh: true },
+            { expiresIn: JWT_REFRESH_VALIDITY },
+        );
+        return [accessToken, refeshToken];
     }
 
     async recoverPassword(dto: PasswordRecoverDto): Promise<void> {

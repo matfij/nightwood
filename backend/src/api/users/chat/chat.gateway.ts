@@ -2,7 +2,6 @@ import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AuthService } from '../auth/service/auth.service';
-import { UserDto } from '../user/model/dto/user.dto';
 import { ChatMessage, ChatMode } from './model/chat';
 import { ChatService } from './service/chat.service';
 import { WsThrottlerGuard } from './service/ws-throttler.guard';
@@ -20,8 +19,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {}
 
   async handleConnection(socket: Socket) {
-    if (!await this.authorize(socket)) return;
-    socket.emit(ChatMode.General, this.chatService.getMessages());
+    try {
+      await this.authService.getUserFromToken(socket.handshake.headers.authorization);
+      socket.emit(ChatMode.General, this.chatService.getMessages());
+    } catch (err) {
+      console.log(err)
+      return socket.disconnect();
+    }
   }
 
   @SubscribeMessage(ChatMode.General)
@@ -34,15 +38,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleDisconnect(client: Socket) {
     this.disconnect(client);
-  }
-
-  private async authorize(socket: Socket): Promise<UserDto | null> {
-    const userFromToken = await this.authService.getUserFromToken(socket.handshake.headers.authorization);
-    if (!userFromToken) { return null; };
-
-    const user = await this.authService.getUserData(userFromToken.id);
-    if (!user) { this.disconnect(socket); return null; };
-    return user;
   }
 
   private disconnect(socket: Socket) {

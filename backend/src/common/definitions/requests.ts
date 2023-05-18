@@ -1,5 +1,5 @@
-import { UserDto } from "src/api/users/user/model/dto/user.dto";
+import { JwtPayload } from "src/api/users/auth/model/definitions/jwt";
 
 export interface AuthorizedRequest {
-    user: Partial<UserDto>;
+    user: JwtPayload;
 }
