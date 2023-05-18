@@ -16,7 +16,7 @@ export class GuildMember {
     @JoinColumn()
     user: User;
 
-    @OneToOne(_ => GuildRole, { nullable: true })
+    @ManyToOne(_ => GuildRole, { nullable: true })
     @JoinColumn()
     role: GuildRole;
 }
