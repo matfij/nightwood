@@ -16,6 +16,8 @@ import { DragonSummonActionDto } from "./model/dto/dragon-summon.dto";
 import { DragonBattleDto } from "./model/dto/dragon-battle.dto";
 import { DragonBestDto } from "./model/dto/dragon-best.dto";
 import { DragonPublicDto } from "./model/dto/dragon-public.dto";
+import { Throttle } from "@nestjs/throttler";
+import { AUTH_REQUEST_LIMIT, LEARN_SKILL_LIMIT, LEARN_SKILL_TTL } from "src/configuration/app.config";
 
 @Controller('dragon')
 @UseGuards(JwtAuthGuard)
@@ -85,6 +87,7 @@ export class DragonController {
     }
 
     @Post('learnSkill')
+    @Throttle(LEARN_SKILL_LIMIT, LEARN_SKILL_TTL)
     @ApiOkResponse({ type: DragonDto })
     learnSkill(@Request() req: AuthorizedRequest, @Body() dto: SkillLearnDto): Promise<DragonDto> {
       return this.dragonService.learnSkill(req.user.id, dto);

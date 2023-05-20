@@ -103,7 +103,6 @@ export class BattleHelperService {
             dodgeChance: dodgeChance,
             healthRegen: healthRegen,
             deepWounds: 0,
-            prominenceBlastUsed: false,
         };
     }
 

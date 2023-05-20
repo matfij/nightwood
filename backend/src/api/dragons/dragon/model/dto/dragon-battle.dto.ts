@@ -50,7 +50,4 @@ export class DragonBattleDto extends PartialType(DragonDto) {
 
     @ApiPropertyOptional()
     deepWounds: number;
-
-    @ApiPropertyOptional()
-    prominenceBlastUsed: boolean;
 }

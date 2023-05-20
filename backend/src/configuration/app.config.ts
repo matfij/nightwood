@@ -13,6 +13,8 @@ export const AUTH_REQUEST_TTL = 10;  // seconds
 export const AUTH_REQUEST_LIMIT = 2;
 export const WS_REQUEST_TTL = 10;  // seconds
 export const WS_REQUEST_LIMIT = 3;
+export const LEARN_SKILL_TTL = 30;
+export const LEARN_SKILL_LIMIT = 150;
 
 /**
  * JWT

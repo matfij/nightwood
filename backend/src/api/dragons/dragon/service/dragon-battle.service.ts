@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/data/skills-common";
-import { AirVector, DeepWounds, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
+import { AirVector, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
 import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -26,7 +26,7 @@ export class DragonBattleService {
         let owned = this.battleHelperService.calculateBattleStats(ownedDragon);
         let enemy = this.battleHelperService.calculateBattleStats(enemyDragon);
 
-        const logs = [];
+        const logs = this.performInitialMovement(owned, enemy);
         let result = '';
 
         while (owned.health > 0 && enemy.health > 0 && logs.length <= 100) {
@@ -72,7 +72,7 @@ export class DragonBattleService {
         let owned = this.battleHelperService.calculateBattleStats(ownedDragon);
         let enemy = this.battleHelperService.calculateBattleStats(enemyDragon);
 
-        const logs = [];
+        const logs = this.performInitialMovement(owned, enemy);
         let result = '';
 
         while (owned.health > 0 && enemy.health > 0 && logs.length <= 100) {
@@ -107,6 +107,42 @@ export class DragonBattleService {
             logs: logs,
             result: result,
         };
+    }
+
+    private performInitialMovement(owned: DragonBattleDto, enemy: DragonBattleDto): string[] {
+        const logs = [];
+        let attacker = owned;
+        let defender = enemy;
+        
+        if (owned.initiative <= enemy.initiative) {
+          [attacker, defender] = [defender, attacker];
+        }
+        
+        let initialResult = this.executeOneTimeAttacks({
+          attacker: attacker,
+          defender: defender,
+          log: '',
+        });
+        [owned, enemy] = [initialResult.attacker, initialResult.defender];
+        if (initialResult.log.length) {
+            logs.push(initialResult.log);
+        }
+        
+        if (enemy.health <= 0) {
+            return logs;
+        }
+
+        initialResult = this.executeOneTimeAttacks({
+          attacker: enemy,
+          defender: owned,
+          log: '',
+        });
+        [owned, enemy] = [initialResult.defender, initialResult.attacker];
+        if (initialResult.log.length) {
+            logs.push(initialResult.log);
+        }
+
+        return logs;
     }
 
     private performMovement(attacker: DragonBattleDto, defender: DragonBattleDto, ownedTurn: boolean, turn: number): TurnResult {
@@ -153,6 +189,33 @@ export class DragonBattleService {
         return turnResult;
     }
 
+    private executeOneTimeAttacks(turnResult: TurnResult): TurnResult {
+        let attacker = turnResult.attacker;
+        let defender = turnResult.defender;
+        let log = turnResult.log;
+        let extraLogs = [];
+
+        if (attacker.skills.prominenceBlast > 0) {
+            let skillHit = 
+                (1 + attacker.skills.prominenceBlast / 8) 
+                * (2.5 * (attacker.magicalAttack + attacker.physicalAttack))
+                - (defender.resistance + defender.armor);
+            skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
+            defender.health -= skillHit;
+            attacker.mana = 0;
+
+            log = `
+            <div class="item-log log-skill skill-special skill-initial">
+                ${attacker.name} (${attacker.health.toFixed(1)}) uses <b>Prominence Blast</b> 
+                and strikes ${defender.name} (${defender.health.toFixed(1)}) for ${skillHit.toFixed(1)} damage.`
+            extraLogs.forEach(extraLog => log += extraLog);
+            log += `</div>`;
+
+            return { attacker: attacker, defender: defender, skip: false, log: log };
+        }
+        return turnResult;
+    }
+
     private executeSpecialAttacks(turnResult: TurnResult, turn: number): TurnResult {
         let attacker = turnResult.attacker;
         let defender = turnResult.defender;
@@ -172,29 +235,6 @@ export class DragonBattleService {
                 extraLogs.push(`<div class="log-extra">- blocked ${(100*blockedHit).toFixed(1)}% damage</div>`);
             }
         }
-
-        if (!attacker.prominenceBlastUsed && attacker.skills.prominenceBlast > 0) {
-            let skillHit = 
-                (1 + attacker.skills.prominenceBlast / 6) 
-                * (3.7 * attacker.magicalAttack)
-                - defender.resistance;
-            skillHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, skillHit, skillHit);
-            skillHit *= (1 - blockedHit);
-            defender.health -= skillHit;
-            attacker.prominenceBlastUsed = true;
-            attacker.mana = 0;
-
-            cssClasses += ' log-skill skill-special';
-            log = `
-            <div class="${cssClasses}">
-                ${attacker.name} (${attacker.health.toFixed(1)}) uses <b style="color: red;">Prominence Blast</b> 
-                and strikes ${defender.name} (${defender.health.toFixed(1)}) for ${skillHit.toFixed(1)} damage.`
-            extraLogs.forEach(extraLog => log += extraLog);
-            log += `</div>`;
-
-            return { attacker: attacker, defender: defender, skip: true, log: log };
-        }
-
         if (attacker.skills.magicArrow > 0) {
             const castCost = MagicArrow.castMana * (1 + attacker.skills.magicArrow / 10);
             if (attacker.mana > castCost && Math.random() < MagicArrow.castChance) {
