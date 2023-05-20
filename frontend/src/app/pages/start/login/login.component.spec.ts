@@ -135,12 +135,13 @@ describe('LoginComponent', () => {
   it('should login successfully', async () => {
     const userData: UserAuthDto = {
       accessToken: 'a-01',
+      refreshToken: 'r-01',
       gold: 100,
       id: 1,
       maxOwnedDragons: 5,
       nickname: 'user',
       ownedDragons: 3,
-      role: UserRole.Player
+      role: UserRole.Player,
     };
 
     loginInutElement.value = 'login';

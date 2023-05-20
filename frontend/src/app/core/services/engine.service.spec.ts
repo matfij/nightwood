@@ -12,6 +12,7 @@ describe('EngineService', () => {
   const initialUserData: UserAuthDto = {
     id: 0,
     accessToken: '',
+    refreshToken: '',
     gold: 100,
     maxOwnedDragons: 3,
     nickname: 'player',
