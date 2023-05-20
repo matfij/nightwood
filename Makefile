@@ -38,7 +38,8 @@ clear.assets:
 	rm -rf generator/game-assets/input/*
 	rm -rf generator/game-assets/output/*
 
-copy.static: 
+gen.static: 
+	cd frontend && npm run build-prod
 	rm -rf backend/client/*
 	cp -r frontend/dist/nightwood-frontend/* backend/client/
 
