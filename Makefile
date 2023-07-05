@@ -1,19 +1,16 @@
 .ONESHELL:
 
 
-start:
-	docker-compose up
+start.dev:
+	cd .infra/dev && docker-compose up
 
-restart:
-	docker-compose up --build
+restart.dev:
+	cd .infra/dev && docker-compose up --build
 
-build:
-	docker-compose build
+stop.dev:
+	cd .infra/dev && docker-compose down
 
-stop:
-	docker-compose down
-
-clear:
+prune.all:
 	docker system prune --all --volumes --force
 
 

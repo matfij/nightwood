@@ -1,13 +1,10 @@
 version: '3.8'
 
 services:
-
-  # NestJS backend
   backend:
     build:
       context: ../../apps/backend
       dockerfile: Dockerfile
-      target: ${TARGET}
     env_file:
       - .env
     volumes:
@@ -19,28 +16,27 @@ services:
       - postgres
     command: npm run start:dev
 
-  # Angular frontend
   frontend:
     build:
       context: ../../apps/frontend
       dockerfile: Dockerfile
-      target: development
     env_file:
       - .env
     volumes:
       - ../../apps/frontend:${FRONTEND_SRC}
-      - ${FRONTEND_SRC}/node_modules
+      - ${FRONTEND_SRC}/node_modules/
     ports:
       - '${FRONTEND_PORT}:${FRONTEND_PORT}'
     command: ng serve --host=${HOST} --port ${FRONTEND_PORT}
 
-  # Postgres database
   postgres:
     image: postgres:14.1
     env_file:
       - .env
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    volumes:
+      - /var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
