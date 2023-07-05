@@ -5,6 +5,7 @@ services:
     build:
       context: ../../apps/backend
       dockerfile: Dockerfile
+      target: ${TARGET}
     env_file:
       - .env
     volumes:
@@ -27,7 +28,7 @@ services:
       - ${FRONTEND_SRC}/node_modules/
     ports:
       - '${FRONTEND_PORT}:${FRONTEND_PORT}'
-    command: ng serve --host=${HOST} --port ${FRONTEND_PORT}
+    command: ng serve --host=${HOST} --port ${FRONTEND_PORT} --poll 2000
 
   postgres:
     image: postgres:14.1

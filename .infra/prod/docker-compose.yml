@@ -4,19 +4,18 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ../../apps/backend
       dockerfile: Dockerfile
       target: ${TARGET}
     env_file:
       - .env
     volumes:
-      - ./backend:${BACKEND_SRC}
       - ${BACKEND_SRC}/node_modules/
     ports:
       - '${BACKEND_PORT}:${BACKEND_PORT}'
     depends_on:
       - postgres
-    command: npm run start:dev
+    command: npm run start:prod
 
   postgres:
     image: postgres:14.1
@@ -25,13 +24,4 @@ services:
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
-    
-  pgadmin:
-    image: dpage/pgadmin4
-    env_file:
-      - .env
-    ports:
-      - '${PG_ADMIN_PORT}:${PG_ADMIN_PORT}'
-    logging:
-      driver: none
+      - /var/lib/postgresql/data

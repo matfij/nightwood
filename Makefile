@@ -32,10 +32,8 @@ gen.static:
 	cp apps/frontend/dist/nightwood-frontend/* apps/backend/client/
 
 
-sync.prod:
-	cp backend/package.json prod/package.json
-	cp backend/yarn.lock prod/yarn.lock
-	cp -r frontend/dist/nightwood-frontend/* prod/client/
+start.prod:
+	cd .infra/prod && docker-compose up
 
 
 system.init:
