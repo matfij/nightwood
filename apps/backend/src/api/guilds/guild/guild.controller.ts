@@ -85,7 +85,7 @@ export class GuildController {
         return this.guildMemberService.updateRole(req.user.id, dto);
     }
 
-    @Post('deleteMember')
+    @Post('deleteMember/:id')
     @ApiOkResponse({ type: GuildMemberDto })
     async deleteMember(@Request() req: AuthorizedRequest, @Param('id') id: number): Promise<GuildMemberDto> {
         return this.guildMemberService.deleteMember(req.user.id, id);

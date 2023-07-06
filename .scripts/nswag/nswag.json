@@ -65,7 +65,7 @@
             "enumNameGeneratorType": null,
             "serviceHost": null,
             "serviceSchemes": null,
-            "output": "generator/api-client/api.ts"
+            "output": "api.ts"
         }
     }
 }

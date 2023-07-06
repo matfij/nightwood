@@ -894,6 +894,7 @@ export interface IActionGuildController {
     createGuild(body: GuildCreateDto): Observable<GuildDto>;
     createGuildApplication(body: GuildApplicationCreateDto): Observable<GuildApplicatonDto>;
     processApplication(body: GuildApplicationProcessDto): Observable<GuildMemberDto>;
+    donateGold(): Observable<void>;
 }
 
 @Injectable({
@@ -1053,6 +1054,50 @@ export class ActionGuildController implements IActionGuildController {
             let result200: any = null;
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GuildMemberDto;
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    donateGold(): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/actionGuild/donateGold";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDonateGold(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDonateGold(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDonateGold(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -4402,7 +4447,7 @@ export class GuildController implements IGuildController {
     }
 
     deleteMember(id: number): Observable<GuildMemberDto> {
-        let url_ = this.baseUrl + "/api/v1/guild/deleteMember";
+        let url_ = this.baseUrl + "/api/v1/guild/deleteMember/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -4956,6 +5001,10 @@ export interface GuildDto {
     applications: GuildApplicatonDto[];
     roles: GuildRoleDto[];
     members: GuildMemberDto[];
+    gold: number;
+    wood: number;
+    stone: number;
+    steel: number;
 
     [key: string]: any;
 }

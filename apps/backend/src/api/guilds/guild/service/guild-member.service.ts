@@ -1,17 +1,16 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { UserDto } from "src/api/users/user/model/dto/user.dto";
-import { Repository } from "typeorm";
-import { GuildMemberDto } from "../model/dto/guild-member.dto";
-import { GuildDto } from "../model/dto/guild.dto";
-import { GuildMember } from "../model/guild-member.entity";
-import { GuildMemberUpdateDto } from "../model/dto/guild-member-update.dto";
-import { GuildValidatorService } from "./guild-validator.service";
-import { ErrorService } from "src/common/services/error.service";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto } from 'src/api/users/user/model/dto/user.dto';
+import { Repository } from 'typeorm';
+import { GuildMemberDto } from '../model/dto/guild-member.dto';
+import { GuildDto } from '../model/dto/guild.dto';
+import { GuildMember } from '../model/guild-member.entity';
+import { GuildMemberUpdateDto } from '../model/dto/guild-member-update.dto';
+import { GuildValidatorService } from './guild-validator.service';
+import { ErrorService } from 'src/common/services/error.service';
 
 @Injectable()
 export class GuildMemberService {
-
     constructor(
         @InjectRepository(GuildMember)
         private guildMemberRepository: Repository<GuildMember>,
@@ -34,9 +33,16 @@ export class GuildMemberService {
             select: {
                 id: true,
                 user: { id: true, nickname: true },
-                role: { id: true, name: true, priority: true, canAddMembers: true, canRemoveMembers: true, canConstruct: true },
-            }
-        })
+                role: {
+                    id: true,
+                    name: true,
+                    priority: true,
+                    canAddMembers: true,
+                    canRemoveMembers: true,
+                    canConstruct: true,
+                },
+            },
+        });
         return member;
     }
 
@@ -49,16 +55,16 @@ export class GuildMemberService {
     }
 
     async deleteMember(userId: number, memberId: number): Promise<GuildMemberDto> {
-        const member = await this.guildValidatorService.validateDeleteGuildMember(userId, memberId);
+        const member = await this.guildValidatorService.validateGuildMember(userId, memberId);
         await this.guildMemberRepository.delete(member.id);
         return member;
     }
 
     async leaveGuild(userId: number): Promise<void> {
-        const member = await this.guildMemberRepository.findOne({ 
+        const member = await this.guildMemberRepository.findOne({
             where: {
-                user: { id: userId }
-            }
+                user: { id: userId },
+            },
         });
         if (!member) {
             this.errorService.throw('errors.guildMemberNotFound');
