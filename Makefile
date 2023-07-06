@@ -29,7 +29,7 @@ gen.api.client:
 gen.static: 
 	cd apps/frontend && npm run build-prod
 	rm -r apps/backend/client
-	cp apps/frontend/dist/nightwood-frontend/* apps/backend/client/
+	cp -r apps/frontend/dist/nightwood-frontend/* apps/backend/client/
 
 
 start.prod:

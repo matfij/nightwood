@@ -29,4 +29,16 @@ export class GuildDto {
 
     @ApiProperty({ type: [GuildMemberDto] })
     members: Partial<GuildMemberDto>[];
+
+    @ApiProperty()
+    gold: number;
+
+    @ApiProperty()
+    wood: number;
+
+    @ApiProperty()
+    stone: number;
+
+    @ApiProperty()
+    steel: number;
 }

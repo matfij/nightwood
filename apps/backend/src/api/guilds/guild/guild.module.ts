@@ -11,6 +11,7 @@ import { GuildMemberService } from "./service/guild-member.service";
 import { GuildRoleService } from "./service/guild-role.service";
 import { GuildValidatorService } from "./service/guild-validator.service";
 import { GuildService } from "./service/guild.service";
+import { GuildConstructionService } from "./service/guild-construction.service";
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { GuildService } from "./service/guild.service";
         GuildApplicatonService,
         GuildMemberService,
         GuildRoleService,
+        GuildConstructionService,
         GuildValidatorService,
         ErrorService,
     ],
@@ -35,6 +37,7 @@ import { GuildService } from "./service/guild.service";
         GuildApplicatonService,
         GuildMemberService,
         GuildRoleService,
+        GuildConstructionService,
         GuildValidatorService,
     ],
 })

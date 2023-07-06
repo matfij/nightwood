@@ -31,4 +31,16 @@ export class Guild {
 
     @OneToMany(_ => GuildMember, x => x.guild, { onDelete: 'CASCADE' })
     members: GuildMember[];
+
+    @Column({ default: 0 })
+    gold: number;
+
+    @Column({ default: 0 })
+    wood: number;
+
+    @Column({ default: 0 })
+    stone: number;
+
+    @Column({ default: 0 })
+    steel: number;
 }

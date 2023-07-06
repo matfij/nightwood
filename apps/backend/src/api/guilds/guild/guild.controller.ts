@@ -1,28 +1,26 @@
-import { Controller, Param, Post, UseGuards, Request, Body } from "@nestjs/common";
-import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/api/users/auth/util/jwt.guard";
-import { AuthorizedRequest } from "src/common/definitions/requests";
-import { GuildApplicationPageDto } from "./model/dto/guild-application-page.dto";
-import { GuildApplicationProcessDto } from "./model/dto/guild-application-process.dto";
-import { GuildGetDto } from "./model/dto/guild-get.dto";
-import { GuildPageDto } from "./model/dto/guild-page.dto";
-import { GuildRoleCreateDto } from "./model/dto/guild-role-create.dto";
-import { GuildRoleDto } from "./model/dto/guild-role.dto";
-import { GuildDto } from "./model/dto/guild.dto";
-import { GuildApplicatonService } from "./service/guild-application.service";
-import { GuildRoleService } from "./service/guild-role.service";
-import { GuildService } from "./service/guild.service";
-import { GuildRoleUpdateDto } from "./model/dto/guild-role-update.dto";
-import { GuildMemberService } from "./service/guild-member.service";
-import { GuildMemberDto } from "./model/dto/guild-member.dto";
-import { GuildMemberUpdateDto } from "./model/dto/guild-member-update.dto";
-import { GuildUserCheckResultDto } from "./model/dto/guild-user-check-result.dto";
+import { Controller, Param, Post, UseGuards, Request, Body } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/api/users/auth/util/jwt.guard';
+import { AuthorizedRequest } from 'src/common/definitions/requests';
+import { GuildApplicationPageDto } from './model/dto/guild-application-page.dto';
+import { GuildGetDto } from './model/dto/guild-get.dto';
+import { GuildPageDto } from './model/dto/guild-page.dto';
+import { GuildRoleCreateDto } from './model/dto/guild-role-create.dto';
+import { GuildRoleDto } from './model/dto/guild-role.dto';
+import { GuildDto } from './model/dto/guild.dto';
+import { GuildApplicatonService } from './service/guild-application.service';
+import { GuildRoleService } from './service/guild-role.service';
+import { GuildService } from './service/guild.service';
+import { GuildRoleUpdateDto } from './model/dto/guild-role-update.dto';
+import { GuildMemberService } from './service/guild-member.service';
+import { GuildMemberDto } from './model/dto/guild-member.dto';
+import { GuildMemberUpdateDto } from './model/dto/guild-member-update.dto';
+import { GuildUserCheckResultDto } from './model/dto/guild-user-check-result.dto';
 
 @Controller('guild')
 @UseGuards(JwtAuthGuard)
 @ApiTags('GuildController')
 export class GuildController {
-
     constructor(
         private guildService: GuildService,
         private guildApplicatonService: GuildApplicatonService,
@@ -62,19 +60,28 @@ export class GuildController {
 
     @Post('createGuildRole')
     @ApiOkResponse({ type: GuildRoleDto })
-    async createGuildRole(@Request() req: AuthorizedRequest, @Body() dto: GuildRoleCreateDto): Promise<GuildRoleDto> {
+    async createGuildRole(
+        @Request() req: AuthorizedRequest,
+        @Body() dto: GuildRoleCreateDto,
+    ): Promise<GuildRoleDto> {
         return this.guildRoleService.createGuildRole(req.user, dto);
     }
 
     @Post('updateGuildRole')
     @ApiOkResponse({ type: GuildRoleDto })
-    async updateGuildRole(@Request() req: AuthorizedRequest, @Body() dto: GuildRoleUpdateDto): Promise<GuildRoleDto> {
+    async updateGuildRole(
+        @Request() req: AuthorizedRequest,
+        @Body() dto: GuildRoleUpdateDto,
+    ): Promise<GuildRoleDto> {
         return this.guildRoleService.updateGuildRole(req.user, dto);
     }
 
     @Post('updateGuildMemberRole')
     @ApiOkResponse({ type: GuildMemberDto })
-    async updateGuildMemberRole(@Request() req: AuthorizedRequest, @Body() dto: GuildMemberUpdateDto): Promise<GuildMemberDto> {
+    async updateGuildMemberRole(
+        @Request() req: AuthorizedRequest,
+        @Body() dto: GuildMemberUpdateDto,
+    ): Promise<GuildMemberDto> {
         return this.guildMemberService.updateRole(req.user.id, dto);
     }
 
@@ -89,7 +96,7 @@ export class GuildController {
     async leaveGuild(@Request() req: AuthorizedRequest): Promise<void> {
         return this.guildMemberService.leaveGuild(req.user.id);
     }
-    
+
     @Post('deleteGuild')
     @ApiOkResponse()
     async deleteGuild(@Request() req: AuthorizedRequest): Promise<void> {
