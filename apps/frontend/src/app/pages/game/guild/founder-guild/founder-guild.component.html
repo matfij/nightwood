@@ -1,133 +1,148 @@
 <div class="wrapper-guild">
-  <div class="wrapper-info">
-    {{ "guild.guild" | translate }}:
-    <b>{{ guild.name }} [{{ guild.tag }}]</b>
-  </div>
-  <div class="wrapper-actions">
-    <button (click)="viewMode = GuildView.Members" class="btn-base">
-      {{ "guild.members" | translate }}
-    </button>
-    <button (click)="viewMode = GuildView.Roles" class="btn-base">
-      {{ "guild.roles" | translate }}
-    </button>
-    <button (click)="viewMode = GuildView.Applications" class="btn-base">
-      {{ "guild.applications" | translate }}
-    </button>
-    <button (click)="viewMode = GuildView.Structures" class="btn-base">
-      {{ "guild.structures" | translate }}
-    </button>
-  </div>
+    <div class="wrapper-info">
+        {{ 'guild.guild' | translate }}:
+        <b>{{ guild.name }} [{{ guild.tag }}]</b>
+    </div>
+    <div class="wrapper-actions">
+        <button (click)="viewMode = GuildView.Members" class="btn-base">
+            {{ 'guild.members' | translate }}
+        </button>
+        <button (click)="viewMode = GuildView.Roles" class="btn-base">
+            {{ 'guild.roles' | translate }}
+        </button>
+        <button (click)="viewMode = GuildView.Applications" class="btn-base">
+            {{ 'guild.applications' | translate }}
+        </button>
+        <button (click)="viewMode = GuildView.Structures" class="btn-base">
+            {{ 'guild.structures' | translate }}
+        </button>
+    </div>
 
-  <div *ngIf="viewMode === GuildView.Members" class="wrapper-members">
-    <div class="item-member-header">
-      <div>
-        {{ "guild.member" | translate }}
-      </div>
-      <div>{{ "guild.role" | translate }}</div>
-    </div>
-    <div class="item-member member-founder">
-      <a (click)="showUserDetails(guild.founder.id)">1. {{ guild.founder.nickname }}</a>
-      <div>{{ "guild.founder" | translate }}</div>
-      <img (click)="displayManageGuild = true" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
-    </div>
-    <div
-      *ngFor="let member of sortMembers(guild.members); let i = index"
-      class="item-member"
-    >
-      <a (click)="showUserDetails(member.user.id)">{{ i + 2 }}. {{ member.user.nickname }}</a>
-      <div>{{ member.role && member.role.name ? member.role.name : "guild.member" | translate }}</div>
-      <img (click)="manageGuildMember(member)" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
-    </div>
-  </div>
-
-  <div *ngIf="viewMode === GuildView.Roles" class="wrapper-roles">
-    <div class="item-role-header">
-      <div>{{ 'guild.name' | translate }}</div>
-      <div tooltip class="wrapper-tooltip">
-        <ng-template #tooltipTemplate>
-          <div class="item-tooltip">
-            {{ 'guild.canAddMembers' | translate }}
-          </div>
-        </ng-template>
-        <img src="assets/img/icons/user-add.svg" class="icon-permission">
-      </div>
-      <div tooltip class="wrapper-tooltip">
-        <ng-template #tooltipTemplate>
-          <div class="item-tooltip">
-            {{ 'guild.canRemoveMembers' | translate }}
-          </div>
-        </ng-template>
-        <img src="assets/img/icons/user-remove.svg" class="icon-permission">
-      </div>
-      <div tooltip class="wrapper-tooltip">
-        <ng-template #tooltipTemplate>
-          <div class="item-tooltip">
-            {{ 'guild.canConstruct' | translate }}
-          </div>
-        </ng-template>
-        <img src="assets/img/icons/construct.svg" class="icon-permission">
-      </div>
-    </div>
-    <div *ngFor="let role of sortRoles(guild.roles)" class="item-role">
-      <div>[{{ role.priority }}] {{ role.name }}</div>
-      <img [src]="parseRolePermission(role.canAddMembers)" class="icon-permission">
-      <img [src]="parseRolePermission(role.canRemoveMembers)" class="icon-permission">
-      <img [src]="parseRolePermission(role.canConstruct)" class="icon-permission">
-      <img (click)="editRole(role)" src="assets/img/icons/edit.svg" class="icon-permission icon-edit">
-    </div>
-    <button (click)="displayGuildRoleForm = true" class="btn-base" style="width: 100%; max-width: 100%; margin: 10px 0;">
-      {{ "guild.addNewRole" | translate }}
-    </button>
-  </div>
-
-  <div *ngIf="viewMode === GuildView.Applications" class="wrapper-applications">
-    <h2 style="font-weight: 500; margin-top: 15px;">
-      {{ "guild.pendingApplications" | translate }}
-    </h2>
-    <div *ngIf="(guildApplications$ | async)?.data as applications">
-      <div *ngFor="let application of applications" class="item-application">
-        <a (click)="showUserDetails(application.user.id)">{{ application.user.nickname }}</a>
-        <div style="display: flex; gap: 5px;">
-          <button
-            (click)="processApplication(application.id, true)"
-            [disabled]="processApplicationLoading$ | async"
-            class="btn-base btn-small">
-            {{ "guild.accept" | translate }}
-          </button>
-          <button
-            (click)="processApplication(application.id, false)"
-            [disabled]="processApplicationLoading$ | async"
-            class="btn-base btn-small">
-            {{ "guild.reject" | translate }}
-          </button>
+    <div *ngIf="viewMode === GuildView.Members" class="wrapper-members">
+        <div class="item-member-header">
+            <div>{{ 'guild.member' | translate }}</div>
+            <div>{{ 'guild.role' | translate }}</div>
         </div>
-      </div>
+        <div class="item-member member-founder">
+            <a (click)="showUserDetails(guild.founder.id)">1. {{ guild.founder.nickname }}</a>
+            <div>{{ 'guild.founder' | translate }}</div>
+            <img
+                (click)="displayManageGuild = true"
+                src="assets/img/icons/edit.svg"
+                class="icon-permission icon-edit"
+            />
+        </div>
+        <div *ngFor="let member of sortMembers(guild.members); let i = index" class="item-member">
+            <a (click)="showUserDetails(member.user.id)">{{ i + 2 }}. {{ member.user.nickname }}</a>
+            <div>{{ member.role && member.role.name ? member.role.name : ('guild.member' | translate) }}</div>
+            <img
+                (click)="manageGuildMember(member)"
+                src="assets/img/icons/edit.svg"
+                class="icon-permission icon-edit"
+            />
+        </div>
     </div>
-  </div>
 
+    <div *ngIf="viewMode === GuildView.Roles" class="wrapper-roles">
+        <div class="item-role-header">
+            <div>{{ 'guild.name' | translate }}</div>
+            <div tooltip class="wrapper-tooltip">
+                <ng-template #tooltipTemplate>
+                    <div class="item-tooltip">
+                        {{ 'guild.canAddMembers' | translate }}
+                    </div>
+                </ng-template>
+                <img src="assets/img/icons/user-add.svg" class="icon-permission" />
+            </div>
+            <div tooltip class="wrapper-tooltip">
+                <ng-template #tooltipTemplate>
+                    <div class="item-tooltip">
+                        {{ 'guild.canRemoveMembers' | translate }}
+                    </div>
+                </ng-template>
+                <img src="assets/img/icons/user-remove.svg" class="icon-permission" />
+            </div>
+            <div tooltip class="wrapper-tooltip">
+                <ng-template #tooltipTemplate>
+                    <div class="item-tooltip">
+                        {{ 'guild.canConstruct' | translate }}
+                    </div>
+                </ng-template>
+                <img src="assets/img/icons/construct.svg" class="icon-permission" />
+            </div>
+        </div>
+        <div *ngFor="let role of sortRoles(guild.roles)" class="item-role">
+            <div>[{{ role.priority }}] {{ role.name }}</div>
+            <img [src]="parseRolePermission(role.canAddMembers)" class="icon-permission" />
+            <img [src]="parseRolePermission(role.canRemoveMembers)" class="icon-permission" />
+            <img [src]="parseRolePermission(role.canConstruct)" class="icon-permission" />
+            <img (click)="editRole(role)" src="assets/img/icons/edit.svg" class="icon-permission icon-edit" />
+        </div>
+        <button
+            (click)="displayGuildRoleForm = true"
+            class="btn-base"
+            style="width: 100%; max-width: 100%; margin: 10px 0"
+        >
+            {{ 'guild.addNewRole' | translate }}
+        </button>
+    </div>
+
+    <div *ngIf="viewMode === GuildView.Applications" class="wrapper-applications">
+        <h2 style="font-weight: 500; margin-top: 15px">
+            {{ 'guild.pendingApplications' | translate }}
+        </h2>
+        <div *ngIf="(guildApplications$ | async)?.data as applications">
+            <div *ngFor="let application of applications" class="item-application">
+                <a (click)="showUserDetails(application.user.id)">{{ application.user.nickname }}</a>
+                <div style="display: flex; gap: 5px">
+                    <button
+                        (click)="processApplication(application.id, true)"
+                        [disabled]="processApplicationLoading$ | async"
+                        class="btn-base btn-small"
+                    >
+                        {{ 'guild.accept' | translate }}
+                    </button>
+                    <button
+                        (click)="processApplication(application.id, false)"
+                        [disabled]="processApplicationLoading$ | async"
+                        class="btn-base btn-small"
+                    >
+                        {{ 'guild.reject' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="viewMode === GuildView.Structures">
+        <app-guild-structures [guild]="guild"></app-guild-structures>
+    </div>
 </div>
 
 <div *ngIf="processApplication$ | async" class="gone"></div>
 
 <app-manage-member
-  *ngIf="displayManageGuildMember && managedGuildMember"
-  [member]="managedGuildMember"
-  [roles]="guild.roles"
-  (managedMember)="onManageMember($event)"
-  (kickedMember)="onKickMember($event)"
-  (close)="displayManageGuildMember = false">
+    *ngIf="displayManageGuildMember && managedGuildMember"
+    [member]="managedGuildMember"
+    [roles]="guild.roles"
+    (managedMember)="onManageMember($event)"
+    (kickedMember)="onKickMember($event)"
+    (close)="displayManageGuildMember = false"
+>
 </app-manage-member>
 
 <app-add-edit-role
-  *ngIf="displayGuildRoleForm"
-  [guildRole]="editedGuildRole"
-  (newRole)="onAddEditRole($event)"
-  (close)="onAddEditRoleClose()">
+    *ngIf="displayGuildRoleForm"
+    [guildRole]="editedGuildRole"
+    (newRole)="onAddEditRole($event)"
+    (close)="onAddEditRoleClose()"
+>
 </app-add-edit-role>
 
 <app-manage-guild
-  *ngIf="displayManageGuild"
-  [guildName]="guild.name"
-  (guildDeleted)="guildDeleted.next(true)"
-  (close)="displayManageGuild = false">
+    *ngIf="displayManageGuild"
+    [guildName]="guild.name"
+    (guildDeleted)="guildDeleted.next(true)"
+    (close)="displayManageGuild = false"
+>
 </app-manage-guild>

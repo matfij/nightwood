@@ -1,0 +1,27 @@
+<div class="wrapper-structures">
+    <div class="item-resource">
+        <div>{{ 'guild.gold' | translate }}</div>
+        <div>{{ guild.gold }}</div>
+        <button
+            (click)="displayDonateGold = true"
+            [disabled]="donateGoldLoading$ | async"
+            class="btn-base btn-small"
+            style="justify-self: end"
+        >
+            {{ 'guild.deposit' | translate }}
+        </button>
+    </div>
+    <div class="item-resource">
+        <div>{{ 'guild.wood' | translate }}</div>
+        <div>{{ guild.wood }}</div>
+    </div>
+    <div class="item-resource">
+        <div>{{ 'guild.stone' | translate }}</div>
+        <div>{{ guild.stone }}</div>
+    </div>
+    <div class="item-resource">
+        <div>{{ 'guild.steel' | translate }}</div>
+        <div>{{ guild.steel }}</div>
+    </div>
+    <hr />
+</div>

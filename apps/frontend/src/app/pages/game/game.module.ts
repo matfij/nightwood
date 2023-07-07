@@ -25,37 +25,34 @@ import { AddEditRoleComponent } from './guild/founder-guild/add-edit-role/add-ed
 import { ManageMemberComponent } from './guild/founder-guild/manage-member/manage-member.component';
 import { MemberGuildComponent } from './guild/member-guild/member-guild.component';
 import { ManageGuildComponent } from './guild/founder-guild/manage-guild/manage-guild.component';
+import { GuildStructuresComponent } from './guild/guild-structures/guild-structures.component';
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    AdoptDragonComponent,
-    MyDragonsComponent,
-    InventoryComponent,
-    ExpeditionsComponent,
-    ArenaComponent,
-    ShoutboxComponent,
-    AuctionsComponent,
-    MailComponent,
-    CraftingComponent,
-    DragonTamerComponent,
-    DragonSummonComponent,
-    AlchemyComponent,
-    UserProfileComponent,
-    GuildComponent,
-    FounderGuildComponent,
-    NoGuildComponent,
-    CreateGuildComponent,
-    AddEditRoleComponent,
-    ManageMemberComponent,
-    MemberGuildComponent,
-    ManageGuildComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    GameRoutingModule,
-    CoreModule.forChild(),
-  ]
+    declarations: [
+        HomeComponent,
+        AdoptDragonComponent,
+        MyDragonsComponent,
+        InventoryComponent,
+        ExpeditionsComponent,
+        ArenaComponent,
+        ShoutboxComponent,
+        AuctionsComponent,
+        MailComponent,
+        CraftingComponent,
+        DragonTamerComponent,
+        DragonSummonComponent,
+        AlchemyComponent,
+        UserProfileComponent,
+        GuildComponent,
+        FounderGuildComponent,
+        NoGuildComponent,
+        CreateGuildComponent,
+        AddEditRoleComponent,
+        ManageMemberComponent,
+        MemberGuildComponent,
+        ManageGuildComponent,
+        GuildStructuresComponent,
+    ],
+    imports: [CommonModule, FormsModule, GameRoutingModule, CoreModule.forChild()],
 })
 export class GameModule {}

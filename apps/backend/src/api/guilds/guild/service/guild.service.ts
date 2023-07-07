@@ -136,6 +136,10 @@ export class GuildService {
                     name: true,
                     description: true,
                     roles: true,
+                    gold: true,
+                    wood: true,
+                    stone: true,
+                    steel: true,
                     founder: {
                         id: true,
                         nickname: true,

@@ -1,0 +1,26 @@
+@import '../../../../core/theme/variables.scss';
+@import '../../../../core/theme/mixins.scss';
+
+.wrapper-members {
+    margin: 5px auto 10px auto;
+    display: flex;
+    gap: 1px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-resource {
+    @include tile($app-light, 8px);
+
+    width: 100%;
+    margin: 5px auto;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 4fr 1fr 3fr;
+    font-weight: 600;
+    text-align: left;
+
+    &:hover {
+        @include tile(darken($app-light, 5), 8px);
+    }
+}
