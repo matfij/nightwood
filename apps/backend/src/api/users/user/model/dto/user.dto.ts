@@ -26,6 +26,9 @@ export class UserDto {
     gold?: number;
 
     @ApiProperty()
+    eter?: number;
+
+    @ApiProperty()
     ownedDragons?: number;
 
     @ApiProperty()

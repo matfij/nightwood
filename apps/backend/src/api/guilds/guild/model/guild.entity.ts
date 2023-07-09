@@ -36,6 +36,9 @@ export class Guild {
     gold: number;
 
     @Column({ default: 0 })
+    eter: number;
+
+    @Column({ default: 0 })
     wood: number;
 
     @Column({ default: 0 })
@@ -43,4 +46,22 @@ export class Guild {
 
     @Column({ default: 0 })
     steel: number;
+
+    @Column({ default: 0 })
+    sawmillLevel: number;
+
+    @Column({ default: 0 })
+    quarryLevel: number;
+
+    @Column({ default: 0 })
+    forgeLevel: number;
+
+    @Column({ default: 0 })
+    tamerTowerLevel: number;
+
+    @Column({ default: 0 })
+    tenacityTowerLevel: number;
+
+    @Column({ default: 0 })
+    beaconTowerLevel: number;
 }

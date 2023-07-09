@@ -49,6 +49,9 @@ export class User {
     gold: number;
 
     @Column({ default: 0 })
+    eter: number;
+
+    @Column({ default: 0 })
     ownedDragons: number;
 
     @Column({ default: 3 })

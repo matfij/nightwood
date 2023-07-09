@@ -34,6 +34,9 @@ export class GuildDto {
     gold: number;
 
     @ApiProperty()
+    eter: number;
+
+    @ApiProperty()
     wood: number;
 
     @ApiProperty()
@@ -41,4 +44,22 @@ export class GuildDto {
 
     @ApiProperty()
     steel: number;
+    
+    @ApiProperty()
+    sawmillLevel: number;
+
+    @ApiProperty()
+    quarryLevel: number;
+
+    @ApiProperty()
+    forgeLevel: number;
+
+    @ApiProperty()
+    tamerTowerLevel: number;
+
+    @ApiProperty()
+    tenacityTowerLevel: number;
+
+    @ApiProperty()
+    beaconTowerLevel: number;
 }

@@ -16,6 +16,8 @@ import { GuildMemberService } from './service/guild-member.service';
 import { GuildMemberDto } from './model/dto/guild-member.dto';
 import { GuildMemberUpdateDto } from './model/dto/guild-member-update.dto';
 import { GuildUserCheckResultDto } from './model/dto/guild-user-check-result.dto';
+import { GuildStructureUpgrades } from './model/dto/guild-structure-upgrades.dto';
+import { GuildConstructionService } from './service/guild-construction.service';
 
 @Controller('guild')
 @UseGuards(JwtAuthGuard)
@@ -26,6 +28,7 @@ export class GuildController {
         private guildApplicatonService: GuildApplicatonService,
         private guildRoleService: GuildRoleService,
         private guildMemberService: GuildMemberService,
+        private guildConstructionService: GuildConstructionService,
     ) {}
 
     @Post('getDetails/:id')
@@ -107,5 +110,11 @@ export class GuildController {
     @ApiOkResponse({ type: GuildUserCheckResultDto })
     async checkUserGuild(@Request() req: AuthorizedRequest, @Param('id') id: number) {
         return this.guildService.checkUserGuild(id);
+    }
+
+    @Post('getStructureUpgrades')
+    @ApiOkResponse({ type: GuildStructureUpgrades })
+    async getGuildStructureUpgrades() {
+        return this.guildConstructionService.getGuildStructureUpgrades();
     }
 }
