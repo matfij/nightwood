@@ -315,6 +315,7 @@
     },
     "inventory": {
         "gold": "Gold",
+        "eter": "Eter",
         "type": "Type",
         "rarity": "Rarity",
         "level": "Required level",
@@ -438,10 +439,19 @@
         "deleteHint": "In order to close guild type guild name in the field below and press confirm button, this operation is irreversible",
         "guildDeleted": "Guild closed",
         "gold": "Gold",
+        "eter": "Eter",
         "wood": "Wood",
         "stone": "Stone",
         "steel": "Steel",
-        "deposit": "Deposit"
+        "deposit": "Deposit",
+        "building": "Building",
+        "level": "Level",
+        "sawmill": "Sawmill",
+        "quarry": "Quarry",
+        "forge": "Forge",
+        "tamerTower": "Tamer Tower",
+        "beaconTower": "Beacon Tower",
+        "tenacityTower": "Tenacity Tower"
     },
     "mails": {
         "topic": "Topic",

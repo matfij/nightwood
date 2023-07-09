@@ -15,6 +15,7 @@ import { ItemsService } from 'src/app/core/services/items.service';
 export class InventoryComponent implements OnInit {
 
   gold: number = 0;
+  eter: number = 0;
   ownedItems$: Observable<DisplayItem[]> = new Observable<DisplayItem[]>();
 
   constructor(
@@ -26,6 +27,7 @@ export class InventoryComponent implements OnInit {
   ngOnInit(): void {
     this.getOwnedItems();
     this.gold = this.engineSerivce.user.gold;
+    this.eter = this.engineSerivce.user.eter;
   }
 
   getOwnedItems(): void {

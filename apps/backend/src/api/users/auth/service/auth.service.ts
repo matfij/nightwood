@@ -56,6 +56,7 @@ export class AuthService {
             accessToken: accessToken,
             refreshToken: refreshToken,
             gold: user.gold,
+            eter: user.eter,
         };
     }
 

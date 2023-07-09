@@ -4036,6 +4036,7 @@ export interface IGuildController {
     leaveGuild(): Observable<void>;
     deleteGuild(): Observable<void>;
     checkUserGuild(id: number): Observable<GuildUserCheckResultDto>;
+    getGuildStructureUpgrades(): Observable<GuildStructureUpgrades>;
 }
 
 @Injectable({
@@ -4633,6 +4634,53 @@ export class GuildController implements IGuildController {
         }
         return _observableOf(null as any);
     }
+
+    getGuildStructureUpgrades(): Observable<GuildStructureUpgrades> {
+        let url_ = this.baseUrl + "/api/v1/guild/getStructureUpgrades";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetGuildStructureUpgrades(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetGuildStructureUpgrades(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GuildStructureUpgrades>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GuildStructureUpgrades>;
+        }));
+    }
+
+    protected processGetGuildStructureUpgrades(response: HttpResponseBase): Observable<GuildStructureUpgrades> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GuildStructureUpgrades;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export interface IPenaltyController {
@@ -5002,9 +5050,16 @@ export interface GuildDto {
     roles: GuildRoleDto[];
     members: GuildMemberDto[];
     gold: number;
+    eter: number;
     wood: number;
     stone: number;
     steel: number;
+    sawmillLevel: number;
+    quarryLevel: number;
+    forgeLevel: number;
+    tamerTowerLevel: number;
+    tenacityTowerLevel: number;
+    beaconTowerLevel: number;
 
     [key: string]: any;
 }
@@ -5057,6 +5112,7 @@ export interface UserDto {
     nickname: string;
     achievements?: AchievementsDto;
     gold: number;
+    eter: number;
     ownedDragons: number;
     maxOwnedDragons: number;
     isConfirmed: boolean;
@@ -5152,6 +5208,7 @@ export interface UserAuthDto {
     refreshToken: string;
     expires?: string;
     gold: number;
+    eter: number;
     ownedDragons: number;
     maxOwnedDragons: number;
     bannedUnitl?: number;
@@ -5601,6 +5658,29 @@ export interface GuildUserCheckResultDto {
     guildId: number;
     guildName: string;
     guildTag: string;
+
+    [key: string]: any;
+}
+
+export interface StructureUpgradeDto {
+    level: number;
+    gold: number;
+    eter: number;
+    wood: number;
+    stone: number;
+    steel: number;
+    description: string;
+
+    [key: string]: any;
+}
+
+export interface GuildStructureUpgrades {
+    sawmillUpgrades: StructureUpgradeDto[];
+    quarryUpgrades: StructureUpgradeDto[];
+    forgeUpgrades: StructureUpgradeDto[];
+    tamerTowerUpgrades: StructureUpgradeDto[];
+    tenacityTowerUpgrades: StructureUpgradeDto[];
+    beaconTowerUpgrades: StructureUpgradeDto[];
 
     [key: string]: any;
 }

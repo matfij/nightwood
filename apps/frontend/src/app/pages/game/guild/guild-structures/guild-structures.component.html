@@ -3,8 +3,18 @@
         <div>{{ 'guild.gold' | translate }}</div>
         <div>{{ guild.gold }}</div>
         <button
-            (click)="displayDonateGold = true"
-            [disabled]="donateGoldLoading$ | async"
+            (click)="depositResourceType = ResourceType.Gold"
+            class="btn-base btn-small"
+            style="justify-self: end"
+        >
+            {{ 'guild.deposit' | translate }}
+        </button>
+    </div>
+    <div class="item-resource">
+        <div>{{ 'guild.eter' | translate }}</div>
+        <div>{{ guild.eter }}</div>
+        <button
+            (click)="depositResourceType = ResourceType.Eter"
             class="btn-base btn-small"
             style="justify-self: end"
         >
@@ -24,4 +34,21 @@
         <div>{{ guild.steel }}</div>
     </div>
     <hr />
+    <div class="item-structure">
+        <p></p>
+        <div>{{ 'guild.building' | translate }}</div>
+        <div>{{ 'guild.level' | translate }}</div>
+    </div>
+    <div *ngFor="let building of buildings" class="item-structure">
+        <div tooltip class="wrapper-tooltip">
+            <ng-template #tooltipTemplate>
+                <div class="item-tooltip">
+                    {{ building.hint | translate }}
+                </div>
+            </ng-template>
+            <img [src]="'assets/img/guild/' + building.icon" class="icon-structure" />
+        </div>
+        <div>{{ building.name | translate }}</div>
+        <div>{{ building.level }}</div>
+    </div>
 </div>

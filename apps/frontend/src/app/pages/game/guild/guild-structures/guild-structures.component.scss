@@ -24,3 +24,24 @@
         @include tile(darken($app-light, 5), 8px);
     }
 }
+
+.item-structure {
+    @include tile($app-light, 8px);
+
+    width: 100%;
+    margin: 5px auto;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr 4fr 3fr;
+    font-weight: 600;
+    text-align: left;
+
+    &:hover {
+        @include tile(darken($app-light, 5), 8px);
+    }
+}
+
+.icon-structure {
+    width: 28px;
+    margin-left: 5px;
+}
