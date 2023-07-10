@@ -2,13 +2,22 @@ import { StructureUpgradeDto } from '../model/dto/structure-upgrade.dto';
 
 export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
     {
+        level: 0,
+        gold: 0,
+        eter: 0,
+        wood: 0,
+        stone: 0,
+        steel: 0,
+        description: 'Produces 0 wood per hour',
+    },
+    {
         level: 1,
         gold: 1000,
         eter: 0,
         wood: 0,
         stone: 0,
         steel: 0,
-        description: 'guiild.sawmill1',
+        description: 'Produces 2 wood per hour',
     },
     {
         level: 2,
@@ -17,7 +26,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 100,
         stone: 50,
         steel: 0,
-        description: 'guiild.sawmill2',
+        description: 'Produces 10 wood per hour',
     },
     {
         level: 3,
@@ -26,7 +35,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 500,
         stone: 150,
         steel: 10,
-        description: 'guiild.sawmill3',
+        description: 'Produces 25 wood per hour',
     },
     {
         level: 4,
@@ -35,7 +44,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 2000,
         stone: 500,
         steel: 100,
-        description: 'guiild.sawmill4',
+        description: 'Produces 50 wood per hour',
     },
     {
         level: 5,
@@ -44,11 +53,20 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 25_000,
         stone: 5000,
         steel: 1000,
-        description: 'guiild.sawmill5',
+        description: 'Produces 100 wood per hour',
     },
 ];
 
 export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
+    {
+        level: 0,
+        gold: 0,
+        eter: 0,
+        wood: 0,
+        stone: 0,
+        steel: 0,
+        description: 'Produces 0 stone per hour',
+    },
     {
         level: 1,
         gold: 3000,
@@ -56,7 +74,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 500,
         stone: 0,
         steel: 0,
-        description: 'guiild.quarry1',
+        description: 'Produces 5 stone per hour',
     },
     {
         level: 2,
@@ -65,7 +83,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 1500,
         stone: 500,
         steel: 0,
-        description: 'guiild.quarry2',
+        description: 'Produces 20 stone per hour',
     },
     {
         level: 3,
@@ -74,7 +92,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 5000,
         stone: 1500,
         steel: 100,
-        description: 'guiild.quarry3',
+        description: 'Produces 40 stone per hour',
     },
     {
         level: 4,
@@ -83,7 +101,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 20_000,
         stone: 5000,
         steel: 1000,
-        description: 'guiild.quarry4',
+        description: 'Produces 60 stone per hour',
     },
     {
         level: 5,
@@ -92,11 +110,20 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 25_000,
         steel: 10_000,
-        description: 'guiild.quarry5',
+        description: 'Produces 80 stone per hour',
     },
 ];
 
 export const FORGE_UPGRADES: StructureUpgradeDto[] = [
+    {
+        level: 0,
+        gold: 0,
+        eter: 0,
+        wood: 0,
+        stone: 0,
+        steel: 0,
+        description: 'Produces 0 steel per hour',
+    },
     {
         level: 1,
         gold: 20_000,
@@ -104,7 +131,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 5000,
         stone: 5000,
         steel: 0,
-        description: 'guiild.forge1',
+        description: 'Produces 3 steel per hour',
     },
     {
         level: 2,
@@ -113,7 +140,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 25_000,
         stone: 15_000,
         steel: 1000,
-        description: 'guiild.forge2',
+        description: 'Produces 10 steel per hour',
     },
     {
         level: 3,
@@ -122,7 +149,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 30_000,
         steel: 5000,
-        description: 'guiild.forge3',
+        description: 'Produces 25 steel per hour',
     },
     {
         level: 4,
@@ -131,7 +158,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 100_000,
         stone: 75_000,
         steel: 10_000,
-        description: 'guiild.forge4',
+        description: 'Produces 40 steel per hour',
     },
     {
         level: 5,
@@ -140,11 +167,20 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 250_000,
         stone: 200_000,
         steel: 50_000,
-        description: 'guiild.forge5',
+        description: 'Produces 60 steel per hour',
     },
 ];
 
 export const TAMER_TOWER_UPGRADES: StructureUpgradeDto[] = [
+    {
+        level: 0,
+        gold: 0,
+        eter: 0,
+        wood: 0,
+        stone: 0,
+        steel: 0,
+        description: 'Allows to have 0 more dragons',
+    },
     {
         level: 1,
         gold: 500_000,
@@ -152,11 +188,20 @@ export const TAMER_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 150_000,
         stone: 150_000,
         steel: 10_000,
-        description: 'guiild.tamerTower1',
+        description: 'Allows to have 1 more dragon',
     },
 ];
 
 export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
+    {
+        level: 0,
+        gold: 0,
+        eter: 0,
+        wood: 0,
+        stone: 0,
+        steel: 0,
+        description: 'Increases the stamina of owned dragons by 0',
+    },
     {
         level: 1,
         gold: 100_000,
@@ -164,7 +209,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 50_000,
         steel: 1_000,
-        description: 'guiild.tenacityTower1',
+        description: 'Increases the stamina of owned dragons by 5',
     },
     {
         level: 2,
@@ -173,7 +218,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 125_000,
         stone: 125_000,
         steel: 5_000,
-        description: 'guiild.tenacityTower2',
+        description: 'Increases the stamina of owned dragons by 9',
     },
     {
         level: 3,
@@ -182,11 +227,20 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 250_000,
         stone: 250_000,
         steel: 10_000,
-        description: 'guiild.tenacityTower3',
+        description: 'Increases the stamina of owned dragons by 12',
     },
 ];
 
 export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
+    {
+        level: 0,
+        gold: 0,
+        eter: 0,
+        wood: 0,
+        stone: 0,
+        steel: 0,
+        description: 'Reduces expeditions time by 0%',
+    },
     {
         level: 1,
         gold: 100_000,
@@ -194,7 +248,7 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 50_000,
         steel: 1_000,
-        description: 'guiild.beaconTower1',
+        description: 'Reduces expeditions time by 5%',
     },
     {
         level: 2,
@@ -203,7 +257,7 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 125_000,
         stone: 125_000,
         steel: 4_000,
-        description: 'guiild.beaconTower2',
+        description: 'Reduces expeditions time by 8%',
     },
     {
         level: 3,
@@ -212,6 +266,6 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 200_000,
         stone: 200_000,
         steel: 10_000,
-        description: 'guiild.beaconTower3',
+        description: 'Reduces expeditions time by 10%',
     },
 ];

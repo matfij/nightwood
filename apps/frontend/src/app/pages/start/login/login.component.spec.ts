@@ -137,6 +137,7 @@ describe('LoginComponent', () => {
       accessToken: 'a-01',
       refreshToken: 'r-01',
       gold: 100,
+      eter: 0,
       id: 1,
       maxOwnedDragons: 5,
       nickname: 'user',

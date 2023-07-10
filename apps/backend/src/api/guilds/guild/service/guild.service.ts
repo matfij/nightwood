@@ -137,6 +137,7 @@ export class GuildService {
                     description: true,
                     roles: true,
                     gold: true,
+                    eter: true,
                     wood: true,
                     stone: true,
                     steel: true,
@@ -158,7 +159,13 @@ export class GuildService {
                             id: true,
                             nickname: true,
                         }
-                    }
+                    },
+                    sawmillLevel: true,
+                    quarryLevel: true,
+                    forgeLevel: true,
+                    tamerTowerLevel: true,
+                    beaconTowerLevel: true,
+                    tenacityTowerLevel: true,
                 }
             }
         });
