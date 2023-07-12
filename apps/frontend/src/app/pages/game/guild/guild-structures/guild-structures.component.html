@@ -50,3 +50,12 @@
         />
     </div>
 </div>
+
+<app-deposit-resource
+    *ngIf="depositResourceType"
+    [guildId]="guild.id"
+    [resourceType]="depositResourceType"
+    (close)="depositResourceType = undefined"
+    (depositedAmount)="updateGuildResource($event)"
+>
+</app-deposit-resource>

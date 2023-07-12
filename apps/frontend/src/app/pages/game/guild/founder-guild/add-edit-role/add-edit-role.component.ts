@@ -119,7 +119,6 @@ export class AddEditRoleComponent implements OnInit {
   }
 
   onClose() {
-    console.log(this.guildRole)
     this.close.next(true);
   }
 }

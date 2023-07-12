@@ -13,7 +13,7 @@ import { GuildService } from 'src/api/guilds/guild/service/guild.service';
 import { MailSendSystemParams } from 'src/api/users/mail/model/definitions/mails';
 import { MailService } from 'src/api/users/mail/service/mail.service';
 import { UserService } from 'src/api/users/user/service/user.service';
-import { GuildDonateGoldDto } from '../../guilds/guild/model/dto/guild-donate-gold.dto';
+import { GuildDepositResourceDto } from '../../guilds/guild/model/dto/guild-deposit-resource';
 import { GuildConstructionService } from '../../guilds/guild/service/guild-construction.service';
 
 @Injectable()
@@ -59,8 +59,8 @@ export class ActionGuildService {
             receiverId: application.user.id,
             topic: 'Guild',
             message: dto.accept
-                ? `Your guild application has been accepted.`
-                : `Your guild application has been rejected.`,
+                ? `Your guild application to ${guild.name} has been accepted.`
+                : `Your guild application to ${guild.name} has been rejected.`,
         };
         let member = undefined;
         if (dto.accept) {
@@ -73,8 +73,11 @@ export class ActionGuildService {
         return member;
     }
 
-    async donateGold(userId: number, dto: GuildDonateGoldDto): Promise<void> {
+    async depositResource(userId: number, dto: GuildDepositResourceDto): Promise<void> {
+        this.guildValidatorService.validateDepositResource(dto);
         await this.userService.updateGold(userId, -dto.gold);
         await this.guildConstructionService.donateGold(dto.guildId, dto.gold);
+        await this.userService.updateEter(userId, -dto.eter);
+        await this.guildConstructionService.donateEter(dto.guildId, dto.eter);
     }
 }

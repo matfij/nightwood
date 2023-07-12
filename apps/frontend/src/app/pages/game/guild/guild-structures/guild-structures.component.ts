@@ -96,7 +96,17 @@ export class GuildStructuresComponent implements OnInit {
         );
     }
 
-    donateGold() {
-        console.log('donating');
+    updateGuildResource(amount: number) {
+        switch (this.depositResourceType) {
+            case ResourceType.Gold: {
+                this.guild.gold += amount;
+                break;
+            }
+            case ResourceType.Eter: {
+                this.guild.eter += amount;
+                break;
+            }
+        }
+        this.depositResourceType = undefined;
     }
 }

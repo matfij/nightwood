@@ -1,1 +1,28 @@
-<p>deposit-resource works!</p>
+<div class="wrapper-modal">
+    <div class="wrapper-modal-conent">
+        <h2 *ngIf="resourceType === ResourceType.Gold">{{ 'guild.depositGold' | translate }}</h2>
+        <h2 *ngIf="resourceType === ResourceType.Eter">{{ 'guild.depositEter' | translate }}</h2>
+        <p class="text-hint">{{ 'guild.depositHint' | translate }}</p>
+        <form [formGroup]="depositResourceForm" (ngSubmit)="onSubmit()" class="wrapper-form">
+            <app-input-base
+                *ngFor="let field of depositResourceFormFields"
+                [options]="field"
+            ></app-input-base>
+            <button
+                *ngIf="!(depositResourceLoading$ | async)"
+                [disabled]="!depositResourceForm.valid"
+                class="btn-base"
+            >
+                {{ 'guild.deposit' | translate }}
+            </button>
+            <div *ngIf="depositResourceLoading$ | async" style="margin-top: 15px">
+                <app-loading-indicator>
+                    {{ depositResource$ | async }}
+                </app-loading-indicator>
+            </div>
+        </form>
+        <button (click)="onClose()" [disabled]="depositResourceLoading$ | async" class="btn-base">
+            {{ 'common.close' | translate }}
+        </button>
+    </div>
+</div>

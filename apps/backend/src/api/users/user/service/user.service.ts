@@ -20,7 +20,6 @@ import { AVATAR_MAX_SIZE } from 'src/configuration/backend.config';
 
 @Injectable()
 export class UserService {
-
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
@@ -52,8 +51,10 @@ export class UserService {
         const user = await this.userRepository.findOne({ where: { id: +id } });
         if (!user) throw new NotFoundException();
 
-        if (dto.email && dto.email !== user.email && await this.emailExists(dto.email)) this.errorService.throw('errors.emailNotUnique');
-        if (dto.nickname && dto.nickname !== user.nickname && await this.nicknameExists(dto.nickname)) this.errorService.throw('errors.nicknameNotUnique');
+        if (dto.email && dto.email !== user.email && (await this.emailExists(dto.email)))
+            this.errorService.throw('errors.emailNotUnique');
+        if (dto.nickname && dto.nickname !== user.nickname && (await this.nicknameExists(dto.nickname)))
+            this.errorService.throw('errors.nicknameNotUnique');
 
         if (dto.email) user.email = dto.email;
         if (dto.nickname) user.nickname = dto.nickname;
@@ -73,7 +74,7 @@ export class UserService {
     }
 
     async getByName(name: string): Promise<UserDto> {
-        const user = await this.userRepository.findOne({ where: { nickname: name }});
+        const user = await this.userRepository.findOne({ where: { nickname: name } });
 
         if (!user) this.errorService.throw('errors.userNotFound');
 
@@ -84,8 +85,8 @@ export class UserService {
         const page = await this.userRepository.find({
             skip: dto.page * dto.limit,
             take: dto.limit,
-        })
-        
+        });
+
         const pageUser: UserPageDto = {
             data: page,
             meta: {},
@@ -96,21 +97,31 @@ export class UserService {
     async updateOwnedDragons(id: number | string, increment: boolean = true) {
         const user = await this.userRepository.findOne({ where: { id: +id } });
         if (!user) throw new NotFoundException();
-        
-        if (increment && user.ownedDragons >= user.maxOwnedDragons) this.errorService.throw('errors.maxDragonsExceeded');
-        increment ? user.ownedDragons += 1 : user.ownedDragons -= 1;
+
+        if (increment && user.ownedDragons >= user.maxOwnedDragons)
+            this.errorService.throw('errors.maxDragonsExceeded');
+        increment ? (user.ownedDragons += 1) : (user.ownedDragons -= 1);
 
         return this.userRepository.save(user);
     }
 
     async updateGold(userId: number, gold: number): Promise<UserDto> {
         const user = await this.getOne(userId);
-
-        if (gold < 0 && user.gold < Math.abs(gold)) this.errorService.throw('errors.insufficientsFound');
-        
+        if (gold < 0 && user.gold < Math.abs(gold)) {
+            this.errorService.throw('errors.insufficientsFound');
+        }
         user.gold += gold;
         await this.userRepository.update(userId, { gold: user.gold });
+        return user;
+    }
 
+    async updateEter(userId: number, eter: number): Promise<UserDto> {
+        const user = await this.getOne(userId);
+        if (eter < 0 && user.eter < Math.abs(eter)) {
+            this.errorService.throw('errors.insufficientsFound');
+        }
+        user.eter += eter;
+        await this.userRepository.update(userId, { eter: user.eter });
         return user;
     }
 
@@ -125,11 +136,12 @@ export class UserService {
 
     async setAvatar(userId: number, file: Express.Multer.File) {
         if (file.size > AVATAR_MAX_SIZE) this.errorService.throw('errors.fileTooLarge');
-        if (!['image/jpeg', 'image/png'].includes(file.mimetype)) this.errorService.throw('errors.avatarIncorrectFormat');
+        if (!['image/jpeg', 'image/png'].includes(file.mimetype))
+            this.errorService.throw('errors.avatarIncorrectFormat');
 
         const path = `${AVATARS_PATH}/${userId}.png`;
-        
-        const fs = require('fs')
+
+        const fs = require('fs');
         if (!fs.existsSync(AVATARS_PATH)) fs.mkdirSync(AVATARS_PATH, { recursive: true });
         fs.writeFile(path, file.buffer, () => {});
     }
@@ -144,7 +156,7 @@ export class UserService {
                 return new StreamableFile(avatar);
             }
             return null;
-        } catch(err) {
+        } catch (err) {
             return null;
         }
     }
@@ -166,23 +178,28 @@ export class UserService {
 
     async requestFriendship(userId: number, dto: FriendshipRequestDto) {
         const user = await this.userRepository.findOne({ where: { id: userId } });
-        const targetUser = await this.userRepository.findOne({ 
+        const targetUser = await this.userRepository.findOne({
             where: { id: dto.targetUserId },
-            relations: ['friends', 'friendRequests'] 
+            relations: ['friends', 'friendRequests'],
         });
         if (!targetUser) this.errorService.throw('errors.userNotFound');
         if (user.id === targetUser.id) this.errorService.throw('errors.cannotInviteSelf');
 
-        if (targetUser.friends.map((x) => x.id).includes(user.id)) this.errorService.throw('errors.alreadyFriend');
-        if (targetUser.friendRequests.map((x) => x.id).includes(user.id)) this.errorService.throw('errors.alreadyFriendRequest');
+        if (targetUser.friends.map((x) => x.id).includes(user.id))
+            this.errorService.throw('errors.alreadyFriend');
+        if (targetUser.friendRequests.map((x) => x.id).includes(user.id))
+            this.errorService.throw('errors.alreadyFriendRequest');
 
         targetUser.friendRequests.push(user);
         await this.userRepository.save(targetUser);
     }
 
     async getPendingFriendshipRequests(userId: number): Promise<FriendshipPendingRequestDto[]> {
-        const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['friendRequests'] });
-        
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            relations: ['friendRequests'],
+        });
+
         return user.friendRequests.map((requester) => ({
             requesterId: requester.id,
             requesterNick: requester.nickname,
@@ -190,16 +207,17 @@ export class UserService {
     }
 
     async respondToFriendshipRequest(userId: number, dto: FriendshipRespondDto): Promise<UserPublicDto> {
-        const user = await this.userRepository.findOne({ 
-            where: { id: userId }, 
-            relations: ['friends', 'friendRequests'] 
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            relations: ['friends', 'friendRequests'],
         });
-        const requester = await this.userRepository.findOne({ 
-            where: { id: dto.requesterId }, 
-            relations: ['friends', 'friendRequests'] 
+        const requester = await this.userRepository.findOne({
+            where: { id: dto.requesterId },
+            relations: ['friends', 'friendRequests'],
         });
-        
-        if (!user.friendRequests.map((x) => x.id).includes(requester.id)) this.errorService.throw('errors.friendRequestNotFound');
+
+        if (!user.friendRequests.map((x) => x.id).includes(requester.id))
+            this.errorService.throw('errors.friendRequestNotFound');
 
         const requestInd = user.friendRequests.findIndex((x) => x.id === requester.id);
         user.friendRequests.splice(requestInd);
@@ -221,7 +239,7 @@ export class UserService {
     }
 
     async getFriends(userId: number): Promise<UserPublicDto[]> {
-        const user = await this.userRepository.findOne({ where: { id:userId }, relations: ['friends'] });
+        const user = await this.userRepository.findOne({ where: { id: userId }, relations: ['friends'] });
 
         return user.friends.map((friend) => ({
             id: friend.id,
@@ -236,7 +254,7 @@ export class UserService {
     }
 
     private async nicknameExists(nickname: string): Promise<boolean> {
-        const users = await this.userRepository.find({ where: { nickname: nickname }});
+        const users = await this.userRepository.find({ where: { nickname: nickname } });
         return users.length > 0;
     }
 }

@@ -27,7 +27,8 @@ export class GuildConstructionService {
             this.errorService.throw('errors.guildNotFound');
         }
         guild.gold += gold;
-        await this.guildRepository.update({ id: guild.id }, { gold: guild.gold });
+        let g = await this.guildRepository.update(guildId, { gold: guild.gold });
+
     }
 
     async donateEter(guildId: number, eter: number): Promise<void> {
@@ -36,7 +37,7 @@ export class GuildConstructionService {
             this.errorService.throw('errors.guildNotFound');
         }
         guild.eter += eter;
-        await this.guildRepository.update({ id: guild.id }, { eter: guild.eter });
+        await this.guildRepository.update(guildId, { eter: guild.eter });
     }
 
     async getGuildStructureUpgrades(): Promise<GuildStructureUpgrades> {

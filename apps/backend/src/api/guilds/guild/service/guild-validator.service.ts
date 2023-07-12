@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserDto } from "src/api/users/user/model/dto/user.dto";
 import { ErrorService } from "src/common/services/error.service";
-import { GUILD_APPLICATION_MESSAGE_MAX_LENGTH, GUILD_DESCRIPTION_MAX_LENGT, GUILD_NAME_MAX_LENGT, GUILD_NAME_MIN_LENGT, GUILD_ROLE_NAME_MAX_LENGTH, GUILD_ROLE_NAME_MIN_LENGTH, GUILD_ROLE_PRIORITY_MAX, GUILD_ROLE_PRIORITY_MIN, GUILD_TAG_MAX_LENGT, GUILD_TAG_MIN_LENGT } from "src/configuration/backend.config";
+import { GUILD_APPLICATION_MESSAGE_MAX_LENGTH, GUILD_DESCRIPTION_MAX_LENGT, GUILD_MAX_DEPOSIT_AMOUNT, GUILD_MIN_DEPOSIT_AMOUNT, GUILD_NAME_MAX_LENGT, GUILD_NAME_MIN_LENGT, GUILD_ROLE_NAME_MAX_LENGTH, GUILD_ROLE_NAME_MIN_LENGTH, GUILD_ROLE_PRIORITY_MAX, GUILD_ROLE_PRIORITY_MIN, GUILD_TAG_MAX_LENGT, GUILD_TAG_MIN_LENGT } from "src/configuration/backend.config";
 import { Repository } from "typeorm";
 import { GuildApplicationCreateDto } from "../model/dto/guild-application.create";
 import { GuildCreateDto } from "../model/dto/guild-create.dto";
@@ -15,6 +15,7 @@ import { GuildRoleDto } from "../model/dto/guild-role.dto";
 import { GuildRole } from "../model/guild-role.entity";
 import { GuildMember } from "../model/guild-member.entity";
 import { GuildMemberDto } from "../model/dto/guild-member.dto";
+import { GuildDepositResourceDto } from "../model/dto/guild-deposit-resource";
 
 @Injectable()
 export class GuildValidatorService {
@@ -216,5 +217,17 @@ export class GuildValidatorService {
             return;
         }
         this.errorService.throw('errors.insufficientPermissions');
+    }
+
+    async validateDepositResource(dto: GuildDepositResourceDto) {
+        if (!dto.guildId) {
+            this.errorService.throw('errors.guildNotFound');
+        }
+        if (dto.gold < GUILD_MIN_DEPOSIT_AMOUNT || dto.gold > GUILD_MAX_DEPOSIT_AMOUNT) {
+            this.errorService.throw('errors.incorrectAmount');
+        }
+        if (dto.eter < GUILD_MIN_DEPOSIT_AMOUNT || dto.eter > GUILD_MAX_DEPOSIT_AMOUNT) {
+            this.errorService.throw('errors.incorrectAmount');
+        }
     }
 }

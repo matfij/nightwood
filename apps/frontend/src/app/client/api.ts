@@ -894,7 +894,7 @@ export interface IActionGuildController {
     createGuild(body: GuildCreateDto): Observable<GuildDto>;
     createGuildApplication(body: GuildApplicationCreateDto): Observable<GuildApplicatonDto>;
     processApplication(body: GuildApplicationProcessDto): Observable<GuildMemberDto>;
-    donateGold(): Observable<void>;
+    depositResource(body: GuildDepositResourceDto): Observable<void>;
 }
 
 @Injectable({
@@ -1063,23 +1063,27 @@ export class ActionGuildController implements IActionGuildController {
         return _observableOf(null as any);
     }
 
-    donateGold(): Observable<void> {
-        let url_ = this.baseUrl + "/api/v1/actionGuild/donateGold";
+    depositResource(body: GuildDepositResourceDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/actionGuild/depositResource";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDonateGold(response_);
+            return this.processDepositResource(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDonateGold(response_ as any);
+                    return this.processDepositResource(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -1088,7 +1092,7 @@ export class ActionGuildController implements IActionGuildController {
         }));
     }
 
-    protected processDonateGold(response: HttpResponseBase): Observable<void> {
+    protected processDepositResource(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5074,6 +5078,14 @@ export interface GuildApplicationCreateDto {
 export interface GuildApplicationProcessDto {
     applicationId: number;
     accept: boolean;
+
+    [key: string]: any;
+}
+
+export interface GuildDepositResourceDto {
+    guildId: number;
+    gold: number;
+    eter: number;
 
     [key: string]: any;
 }

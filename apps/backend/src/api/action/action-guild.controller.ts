@@ -9,7 +9,7 @@ import { GuildDto } from '../guilds/guild/model/dto/guild.dto';
 import { JwtAuthGuard } from '../users/auth/util/jwt.guard';
 import { ActionGuildService } from './service/action-guild.service';
 import { GuildMemberDto } from '../guilds/guild/model/dto/guild-member.dto';
-import { GuildDonateGoldDto } from '../guilds/guild/model/dto/guild-donate-gold.dto';
+import { GuildDepositResourceDto } from '../guilds/guild/model/dto/guild-deposit-resource';
 
 @Controller('actionGuild')
 @UseGuards(JwtAuthGuard)
@@ -41,9 +41,9 @@ export class ActionGuildController {
         return this.actionGuildService.processApplication(req.user.id, dto);
     }
 
-    @Post('donateGold')
+    @Post('depositResource')
     @ApiOkResponse()
-    async donateGold(@Request() req: AuthorizedRequest, dto: GuildDonateGoldDto) {
-        return this.actionGuildService.donateGold(req.user.id, dto);
+    async depositResource(@Request() req: AuthorizedRequest, @Body() dto: GuildDepositResourceDto) {
+        return this.actionGuildService.depositResource(req.user.id, dto);
     }
 }

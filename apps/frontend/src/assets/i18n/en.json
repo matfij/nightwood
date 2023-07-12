@@ -153,7 +153,8 @@
         "guildNotFound": "Guild not found",
         "guildMemberNotFound": "Member not found",
         "guildRoleNotFound": "Role not found",
-        "dragonNotExperiencedEnough": "Selected dragon is not experienced enough"
+        "dragonNotExperiencedEnough": "Selected dragon is not experienced enough",
+        "incorrectAmount": "Incorrect amount"
     },
     "game": {
         "menu": "Menu",
@@ -451,7 +452,12 @@
         "forge": "Forge",
         "tamerTower": "Tamer Tower",
         "beaconTower": "Beacon Tower",
-        "tenacityTower": "Tenacity Tower"
+        "tenacityTower": "Tenacity Tower",
+        "depositGold": "Deposit gold",
+        "depositEter": "Deposit eter",
+        "depositHint": "This operation is irreversible",
+        "amount": "Amount",
+        "resourceDeposited": "Resource deposited"
     },
     "mails": {
         "topic": "Topic",
