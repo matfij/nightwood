@@ -18,6 +18,7 @@ import { GuildMemberUpdateDto } from './model/dto/guild-member-update.dto';
 import { GuildUserCheckResultDto } from './model/dto/guild-user-check-result.dto';
 import { GuildStructureUpgrades } from './model/dto/guild-structure-upgrades.dto';
 import { GuildConstructionService } from './service/guild-construction.service';
+import { GuildUpgradeStructureDto } from './model/dto/guild-upgrade-structure.dto';
 
 @Controller('guild')
 @UseGuards(JwtAuthGuard)
@@ -33,76 +34,67 @@ export class GuildController {
 
     @Post('getDetails/:id')
     @ApiOkResponse({ type: GuildDto })
-    async getDetails(@Request() req: AuthorizedRequest, @Param('id') id: number): Promise<GuildDto> {
+    async getDetails(@Request() req: AuthorizedRequest, @Param('id') id: number) {
         return this.guildService.getDetails(id);
     }
 
     @Post('getFounderGuild')
     @ApiOkResponse({ type: GuildDto })
-    async getFounderGuild(@Request() req: AuthorizedRequest): Promise<GuildDto> {
+    async getFounderGuild(@Request() req: AuthorizedRequest) {
         return this.guildService.getFounderGuild(req.user.id);
     }
 
     @Post('getMemberGuild')
     @ApiOkResponse({ type: GuildDto })
-    async getMemberGuild(@Request() req: AuthorizedRequest): Promise<GuildDto> {
+    async getMemberGuild(@Request() req: AuthorizedRequest) {
         return this.guildService.getMemberGuild(req.user.id);
     }
 
     @Post('getAll')
     @ApiOkResponse({ type: GuildPageDto })
-    async getAll(@Request() req: AuthorizedRequest, @Body() dto: GuildGetDto): Promise<GuildPageDto> {
+    async getAll(@Request() req: AuthorizedRequest, @Body() dto: GuildGetDto) {
         return this.guildService.getAll(dto);
     }
 
     @Post('getApplications')
     @ApiOkResponse({ type: GuildApplicationPageDto })
-    async getApplications(@Request() req: AuthorizedRequest): Promise<GuildApplicationPageDto> {
+    async getApplications(@Request() req: AuthorizedRequest) {
         return this.guildApplicatonService.getGuildApplications(req.user);
     }
 
     @Post('createGuildRole')
     @ApiOkResponse({ type: GuildRoleDto })
-    async createGuildRole(
-        @Request() req: AuthorizedRequest,
-        @Body() dto: GuildRoleCreateDto,
-    ): Promise<GuildRoleDto> {
+    async createGuildRole(@Request() req: AuthorizedRequest, @Body() dto: GuildRoleCreateDto) {
         return this.guildRoleService.createGuildRole(req.user, dto);
     }
 
     @Post('updateGuildRole')
     @ApiOkResponse({ type: GuildRoleDto })
-    async updateGuildRole(
-        @Request() req: AuthorizedRequest,
-        @Body() dto: GuildRoleUpdateDto,
-    ): Promise<GuildRoleDto> {
+    async updateGuildRole(@Request() req: AuthorizedRequest, @Body() dto: GuildRoleUpdateDto) {
         return this.guildRoleService.updateGuildRole(req.user, dto);
     }
 
     @Post('updateGuildMemberRole')
     @ApiOkResponse({ type: GuildMemberDto })
-    async updateGuildMemberRole(
-        @Request() req: AuthorizedRequest,
-        @Body() dto: GuildMemberUpdateDto,
-    ): Promise<GuildMemberDto> {
+    async updateGuildMemberRole(@Request() req: AuthorizedRequest, @Body() dto: GuildMemberUpdateDto) {
         return this.guildMemberService.updateRole(req.user.id, dto);
     }
 
     @Post('deleteMember/:id')
     @ApiOkResponse({ type: GuildMemberDto })
-    async deleteMember(@Request() req: AuthorizedRequest, @Param('id') id: number): Promise<GuildMemberDto> {
+    async deleteMember(@Request() req: AuthorizedRequest, @Param('id') id: number) {
         return this.guildMemberService.deleteMember(req.user.id, id);
     }
 
     @Post('leaveGuild')
     @ApiOkResponse()
-    async leaveGuild(@Request() req: AuthorizedRequest): Promise<void> {
+    async leaveGuild(@Request() req: AuthorizedRequest) {
         return this.guildMemberService.leaveGuild(req.user.id);
     }
 
     @Post('deleteGuild')
     @ApiOkResponse()
-    async deleteGuild(@Request() req: AuthorizedRequest): Promise<void> {
+    async deleteGuild(@Request() req: AuthorizedRequest) {
         return this.guildService.deleteGuild(req.user.id);
     }
 
@@ -116,5 +108,11 @@ export class GuildController {
     @ApiOkResponse({ type: GuildStructureUpgrades })
     async getGuildStructureUpgrades() {
         return this.guildConstructionService.getGuildStructureUpgrades();
+    }
+
+    @Post('upgradeStructure')
+    @ApiOkResponse()
+    async upgradeStructure(@Request() req: AuthorizedRequest, @Body() dto: GuildUpgradeStructureDto) {
+        return this.guildConstructionService.upgradeStructure(req.user.id, dto);
     }
 }

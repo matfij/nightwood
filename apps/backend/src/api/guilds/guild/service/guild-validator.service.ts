@@ -1,25 +1,38 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { UserDto } from "src/api/users/user/model/dto/user.dto";
-import { ErrorService } from "src/common/services/error.service";
-import { GUILD_APPLICATION_MESSAGE_MAX_LENGTH, GUILD_DESCRIPTION_MAX_LENGT, GUILD_MAX_DEPOSIT_AMOUNT, GUILD_MIN_DEPOSIT_AMOUNT, GUILD_NAME_MAX_LENGT, GUILD_NAME_MIN_LENGT, GUILD_ROLE_NAME_MAX_LENGTH, GUILD_ROLE_NAME_MIN_LENGTH, GUILD_ROLE_PRIORITY_MAX, GUILD_ROLE_PRIORITY_MIN, GUILD_TAG_MAX_LENGT, GUILD_TAG_MIN_LENGT } from "src/configuration/backend.config";
-import { Repository } from "typeorm";
-import { GuildApplicationCreateDto } from "../model/dto/guild-application.create";
-import { GuildCreateDto } from "../model/dto/guild-create.dto";
-import { GuildRoleCreateDto } from "../model/dto/guild-role-create.dto";
-import { GuildDto } from "../model/dto/guild.dto";
-import { GuildApplication } from "../model/guild-application.entity";
-import { Guild } from "../model/guild.entity";
-import { GuildRoleUpdateDto } from "../model/dto/guild-role-update.dto";
-import { GuildRoleDto } from "../model/dto/guild-role.dto";
-import { GuildRole } from "../model/guild-role.entity";
-import { GuildMember } from "../model/guild-member.entity";
-import { GuildMemberDto } from "../model/dto/guild-member.dto";
-import { GuildDepositResourceDto } from "../model/dto/guild-deposit-resource";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto } from 'src/api/users/user/model/dto/user.dto';
+import { ErrorService } from 'src/common/services/error.service';
+import {
+    GUILD_APPLICATION_MESSAGE_MAX_LENGTH,
+    GUILD_DESCRIPTION_MAX_LENGT,
+    GUILD_MAX_DEPOSIT_AMOUNT,
+    GUILD_MIN_DEPOSIT_AMOUNT,
+    GUILD_NAME_MAX_LENGT,
+    GUILD_NAME_MIN_LENGT,
+    GUILD_ROLE_NAME_MAX_LENGTH,
+    GUILD_ROLE_NAME_MIN_LENGTH,
+    GUILD_ROLE_PRIORITY_MAX,
+    GUILD_ROLE_PRIORITY_MIN,
+    GUILD_TAG_MAX_LENGT,
+    GUILD_TAG_MIN_LENGT,
+} from 'src/configuration/backend.config';
+import { Repository } from 'typeorm';
+import { GuildApplicationCreateDto } from '../model/dto/guild-application.create';
+import { GuildCreateDto } from '../model/dto/guild-create.dto';
+import { GuildRoleCreateDto } from '../model/dto/guild-role-create.dto';
+import { GuildDto } from '../model/dto/guild.dto';
+import { GuildApplication } from '../model/guild-application.entity';
+import { Guild } from '../model/guild.entity';
+import { GuildRoleUpdateDto } from '../model/dto/guild-role-update.dto';
+import { GuildRoleDto } from '../model/dto/guild-role.dto';
+import { GuildRole } from '../model/guild-role.entity';
+import { GuildMember } from '../model/guild-member.entity';
+import { GuildMemberDto } from '../model/dto/guild-member.dto';
+import { GuildDepositResourceDto } from '../model/dto/guild-deposit-resource';
+import { StructureUpgradeDto } from '../model/dto/structure-upgrade.dto';
 
 @Injectable()
 export class GuildValidatorService {
-    
     constructor(
         @InjectRepository(Guild)
         private guildRepository: Repository<Guild>,
@@ -54,22 +67,22 @@ export class GuildValidatorService {
     }
 
     async checkUniqueName(name: string): Promise<boolean> {
-        const guilds = await this.guildRepository.find({ 
-            where: { name: name } 
+        const guilds = await this.guildRepository.find({
+            where: { name: name },
         });
         return guilds.length === 0;
     }
 
     async checkUniqueTag(tag: string): Promise<boolean> {
-        const guilds = await this.guildRepository.find({ 
-            where: { tag: tag } 
+        const guilds = await this.guildRepository.find({
+            where: { tag: tag },
         });
         return guilds.length === 0;
     }
 
     async checkUniqueFounder(founder: UserDto): Promise<boolean> {
-        const guilds = await this.guildRepository.find({ 
-            where: { founder: { id: founder.id } } 
+        const guilds = await this.guildRepository.find({
+            where: { founder: { id: founder.id } },
         });
         return guilds.length === 0;
     }
@@ -87,14 +100,16 @@ export class GuildValidatorService {
     }
 
     async checkUserAppliedToGuild(user: UserDto, guild: GuildDto): Promise<boolean> {
-        const applications = await this.guildApplicatonRepository.find({ 
-            where: { guild: { id: guild.id }, user: { id: user.id } }
+        const applications = await this.guildApplicatonRepository.find({
+            where: { guild: { id: guild.id }, user: { id: user.id } },
         });
         return applications.length !== 0;
     }
 
     async checkUserInGuild(user: UserDto, guild: GuildDto): Promise<boolean> {
-        return user.id === guild.founder.id || guild.members.map((member) => member.user.id).includes(user.id);
+        return (
+            user.id === guild.founder.id || guild.members.map((member) => member.user.id).includes(user.id)
+        );
     }
 
     async validateCreateGuildRole(user: UserDto, dto: GuildRoleCreateDto): Promise<GuildDto> {
@@ -102,8 +117,9 @@ export class GuildValidatorService {
             this.errorService.throw('errors.guildRoleNameInvalid');
         }
         if (
-            dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX
-            || !Number.isInteger(+dto.priority)
+            dto.priority < GUILD_ROLE_PRIORITY_MIN ||
+            dto.priority > GUILD_ROLE_PRIORITY_MAX ||
+            !Number.isInteger(+dto.priority)
         ) {
             this.errorService.throw('errors.guildRolePriorityInvalid');
         }
@@ -122,27 +138,38 @@ export class GuildValidatorService {
             this.errorService.throw('errors.guildRoleNameInvalid');
         }
         if (
-            dto.priority < GUILD_ROLE_PRIORITY_MIN || dto.priority > GUILD_ROLE_PRIORITY_MAX
-            || !Number.isInteger(+dto.priority)
+            dto.priority < GUILD_ROLE_PRIORITY_MIN ||
+            dto.priority > GUILD_ROLE_PRIORITY_MAX ||
+            !Number.isInteger(+dto.priority)
         ) {
             this.errorService.throw('errors.guildRolePriorityInvalid');
         }
-        const role = await this.guildRoleRepository.findOne({ where: { id: dto.id }});
+        const role = await this.guildRoleRepository.findOne({ where: { id: dto.id } });
         if (!role) {
             this.errorService.throw('errors.guildRoleNotFound');
         }
         const guild = await this.checkGuildFounder(user);
-        if (guild.roles.filter((role) => role.id !== dto.id).map((role) => role.name).includes(dto.name)) {
+        if (
+            guild.roles
+                .filter((role) => role.id !== dto.id)
+                .map((role) => role.name)
+                .includes(dto.name)
+        ) {
             this.errorService.throw('errors.guildRoleNameNotUnique');
         }
-        if (guild.roles.filter((role) => role.id !== dto.id).map((role) => +role.priority).includes(+dto.priority)) {
+        if (
+            guild.roles
+                .filter((role) => role.id !== dto.id)
+                .map((role) => +role.priority)
+                .includes(+dto.priority)
+        ) {
             this.errorService.throw('errors.guildRolePriorityNotUnique');
         }
         return role;
     }
 
     async checkGuildFounder(user: UserDto): Promise<GuildDto> {
-        const guild = await this.guildRepository.findOne({ 
+        const guild = await this.guildRepository.findOne({
             where: { founder: { id: user.id } },
             relations: ['roles'],
         });
@@ -156,29 +183,29 @@ export class GuildValidatorService {
         const member = await this.guildMemberRepository.findOne({
             where: { id: memberId },
             relations: { guild: true, user: true },
-            select: { 
+            select: {
                 user: { id: true, nickname: true },
             },
         });
-        const guild = await this.guildRepository.findOne({ 
-            where: { founder: { id: userId} } 
+        const guild = await this.guildRepository.findOne({
+            where: { founder: { id: userId } },
         });
         if (!member || !guild || member.guild.id !== guild.id) {
             this.errorService.throw('errors.guildMemberNotFound');
         }
         return member;
     }
-    
+
     async validateDeleteGuildMember(userId: number, memberId: number): Promise<GuildMemberDto> {
         const member = await this.guildMemberRepository.findOne({
             where: { id: memberId },
             relations: { guild: true, user: true },
-            select: { 
+            select: {
                 user: { id: true, nickname: true },
             },
         });
-        let guild: Partial<GuildDto> = await this.guildRepository.findOne({ 
-            where: { founder: { id: userId} } 
+        let guild: Partial<GuildDto> = await this.guildRepository.findOne({
+            where: { founder: { id: userId } },
         });
         if (!guild) {
             const kickingMember: GuildMemberDto = await this.guildMemberRepository.findOne({
@@ -201,7 +228,7 @@ export class GuildValidatorService {
 
     async validateGuildRole(roleId: number): Promise<GuildRoleDto> {
         const role = await this.guildRoleRepository.findOne({
-            where: { id: roleId }
+            where: { id: roleId },
         });
         if (!role) {
             this.errorService.throw('errors.guildRoleNotFound');
@@ -213,7 +240,11 @@ export class GuildValidatorService {
         if (user.id === guild.founder.id) {
             return;
         }
-        if (guild.members.some((member) => member.user.id === user.id && member.role && member.role.canAddMembers)) {
+        if (
+            guild.members.some(
+                (member) => member.user.id === user.id && member.role && member.role.canAddMembers,
+            )
+        ) {
             return;
         }
         this.errorService.throw('errors.insufficientPermissions');
@@ -228,6 +259,32 @@ export class GuildValidatorService {
         }
         if (dto.eter < GUILD_MIN_DEPOSIT_AMOUNT || dto.eter > GUILD_MAX_DEPOSIT_AMOUNT) {
             this.errorService.throw('errors.incorrectAmount');
+        }
+    }
+
+    async checkCanUpgrade(userId: number, guild: GuildDto) {
+        if (userId === guild.founder.id) {
+            return;
+        }
+        if (
+            guild.members.some(
+                (member) => member.user.id === userId && member.role && member.role.canConstruct,
+            )
+        ) {
+            return;
+        }
+        this.errorService.throw('errors.insufficientPermissions');
+    }
+
+    async checkUpgradeResources(guild: GuildDto, upgrade: StructureUpgradeDto) {
+        if (
+            guild.gold < upgrade.gold ||
+            guild.eter < upgrade.eter ||
+            guild.wood < upgrade.wood ||
+            guild.stone < upgrade.stone ||
+            guild.steel < upgrade.steel
+        ) {
+            this.errorService.throw('errors.insufficientFounds');
         }
     }
 }
