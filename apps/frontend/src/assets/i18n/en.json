@@ -457,7 +457,9 @@
         "depositEter": "Deposit eter",
         "depositHint": "This operation is irreversible",
         "amount": "Amount",
-        "resourceDeposited": "Resource deposited"
+        "resourceDeposited": "Resource deposited",
+        "upgrade": "Upgrade ",
+        "nextLevel": "Next level: "
     },
     "mails": {
         "topic": "Topic",

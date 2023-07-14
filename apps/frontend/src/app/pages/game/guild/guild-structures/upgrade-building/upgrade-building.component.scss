@@ -1,0 +1,13 @@
+@import '../../../../../core/theme/mixins.scss';
+@import '../../../../../core/theme/variables.scss';
+
+.wrapper-modal {
+    @include modal();
+}
+
+.wrapper-modal-conent {
+    width: clamp(240px, 100%, 400px);
+    padding: 40px 0px;
+    border-radius: 4px;
+    background: lighten($color: $app-dark, $amount: 10);
+}

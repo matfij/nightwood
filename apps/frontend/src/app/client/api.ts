@@ -4041,6 +4041,7 @@ export interface IGuildController {
     deleteGuild(): Observable<void>;
     checkUserGuild(id: number): Observable<GuildUserCheckResultDto>;
     getGuildStructureUpgrades(): Observable<GuildStructureUpgrades>;
+    upgradeStructure(body: GuildUpgradeStructureDto): Observable<void>;
 }
 
 @Injectable({
@@ -4677,6 +4678,54 @@ export class GuildController implements IGuildController {
             let result200: any = null;
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GuildStructureUpgrades;
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    upgradeStructure(body: GuildUpgradeStructureDto): Observable<void> {
+        let url_ = this.baseUrl + "/api/v1/guild/upgradeStructure";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpgradeStructure(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpgradeStructure(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpgradeStructure(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -5697,6 +5746,13 @@ export interface GuildStructureUpgrades {
     [key: string]: any;
 }
 
+export interface GuildUpgradeStructureDto {
+    guildId: number;
+    structureType: GuildStructure;
+
+    [key: string]: any;
+}
+
 export enum PenaltyType {
     Ban = "Ban",
     Mute = "Mute",
@@ -5710,6 +5766,15 @@ export interface PenaltyImposeDto {
     message: string;
 
     [key: string]: any;
+}
+
+export enum GuildStructure {
+    Sawmill = "sawmill",
+    Quarry = "quarry",
+    Forge = "forge",
+    TamerTower = "tamerTower",
+    BeaconTower = "beaconTower",
+    TenacityTower = "tenacityTower",
 }
 
 export class SwaggerException extends Error {

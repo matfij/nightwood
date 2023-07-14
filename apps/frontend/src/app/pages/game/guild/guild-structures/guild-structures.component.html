@@ -35,7 +35,7 @@
             <ng-template #tooltipTemplate>
                 <div class="item-tooltip">
                     {{
-                        getStructuredescription(building.level, building.type, structureUpgrades) | translate
+                        getStructureDescription(building.level, building.type, structureUpgrades) | translate
                     }}
                 </div>
             </ng-template>
@@ -44,7 +44,8 @@
         <div>{{ building.name | translate }}</div>
         <div>{{ building.level }}</div>
         <img
-            *ngIf="checkConstructPermission()"
+            *ngIf="checkConstructPermission(building.level, building.type, structureUpgrades)"
+            (click)="markForUpgrade(building, structureUpgrades)"
             src="assets/img/guild/upgrade-building.svg"
             class="icon-action"
         />
@@ -59,3 +60,12 @@
     (depositedAmount)="updateGuildResource($event)"
 >
 </app-deposit-resource>
+
+<app-upgrade-building
+    *ngIf="upgradedBuilding && upgrade"
+    [building]="upgradedBuilding"
+    [upgrade]="upgrade"
+    (close)="upgradedBuilding = undefined"
+    (buildingUpgraded)="updateGuildBuilding()"
+>
+</app-upgrade-building>

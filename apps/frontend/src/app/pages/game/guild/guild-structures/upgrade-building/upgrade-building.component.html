@@ -1,0 +1,13 @@
+<div class="wrapper-modal">
+    <div class="wrapper-modal-conent">
+        <h2>{{ ('guild.upgrade' | translate) + (building.name | translate) }}</h2>
+        <p style="font-size: 14px">{{ ('guild.nextLevel' | translate) + upgrade.description }}</p>
+        <!-- COST -->
+        <button (click)="upgradeBuilding()" [disabled]="upgradeBuildingLoading$ | async" class="btn-base">
+            {{ 'common.confirm' | translate }}
+        </button>
+        <button (click)="onClose()" [disabled]="upgradeBuildingLoading$ | async" class="btn-base">
+            {{ 'common.close' | translate }}
+        </button>
+    </div>
+</div>

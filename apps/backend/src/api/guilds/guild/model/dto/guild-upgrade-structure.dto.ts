@@ -5,6 +5,6 @@ export class GuildUpgradeStructureDto {
     @ApiProperty()
     guildId: number;
 
-    @ApiProperty({ enum: GuildStructure })
+    @ApiProperty({ enum: GuildStructure, enumName: 'GuildStructure' })
     structureType: GuildStructure;
 }

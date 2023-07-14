@@ -27,6 +27,7 @@ import { MemberGuildComponent } from './guild/member-guild/member-guild.componen
 import { ManageGuildComponent } from './guild/founder-guild/manage-guild/manage-guild.component';
 import { GuildStructuresComponent } from './guild/guild-structures/guild-structures.component';
 import { DepositResourceComponent } from './guild/guild-structures/deposit-resource/deposit-resource.component';
+import { UpgradeBuildingComponent } from './guild/guild-structures/upgrade-building/upgrade-building.component';
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import { DepositResourceComponent } from './guild/guild-structures/deposit-resou
         ManageGuildComponent,
         GuildStructuresComponent,
         DepositResourceComponent,
+        UpgradeBuildingComponent,
     ],
     imports: [CommonModule, FormsModule, GameRoutingModule, CoreModule.forChild()],
 })

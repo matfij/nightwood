@@ -1,15 +1,8 @@
-export enum StructureType {
-    Sawmill,
-    Quarry,
-    Forge,
-    TamerTower,
-    TenacityTower,
-    BeaconTower,
-}
+import { GuildStructure } from "../../client/api";
 
 export interface DisplayBuilding {
     name: string;
-    type: StructureType;
+    type: GuildStructure;
     icon: string;
     level: number;
 }

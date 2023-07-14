@@ -2,12 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
     GuildController,
     GuildDto,
+    GuildStructure,
     GuildStructureUpgrades,
     StructureUpgradeDto,
 } from '../../../../client/api';
 import { Observable } from 'rxjs';
 import { ResourceType } from './deposit-resource/deposit-resource.component';
-import { DisplayBuilding, StructureType } from '../../../../core/definitions/structures';
+import { DisplayBuilding } from '../../../../core/definitions/structures';
 import { EngineService } from '../../../../core/services/engine.service';
 
 @Component({
@@ -22,6 +23,8 @@ export class GuildStructuresComponent implements OnInit {
     depositResourceType: ResourceType | undefined;
     displayDepositResource = false;
     buildings: DisplayBuilding[] = [];
+    upgradedBuilding?: DisplayBuilding;
+    upgrade?: StructureUpgradeDto;
 
     ResourceType = ResourceType;
 
@@ -29,70 +32,83 @@ export class GuildStructuresComponent implements OnInit {
 
     ngOnInit() {
         this.structureUpgrades$ = this.guildController.getGuildStructureUpgrades();
+        this.setGuildBuildings();
+    }
+
+    setGuildBuildings() {
         this.buildings = [
             {
                 name: 'guild.sawmill',
-                type: StructureType.Sawmill,
+                type: GuildStructure.Sawmill,
                 icon: 'wood.svg',
                 level: this.guild.sawmillLevel,
             },
             {
                 name: 'guild.quarry',
-                type: StructureType.Quarry,
+                type: GuildStructure.Quarry,
                 icon: 'stone.svg',
                 level: this.guild.quarryLevel,
             },
             {
                 name: 'guild.forge',
-                type: StructureType.Forge,
+                type: GuildStructure.Forge,
                 icon: 'steel.svg',
                 level: this.guild.forgeLevel,
             },
             {
                 name: 'guild.tamerTower',
-                type: StructureType.TamerTower,
+                type: GuildStructure.TamerTower,
                 icon: 'tower-tamer.svg',
                 level: this.guild.tamerTowerLevel,
             },
             {
                 name: 'guild.beaconTower',
-                type: StructureType.BeaconTower,
+                type: GuildStructure.BeaconTower,
                 icon: 'tower-beacon.svg',
                 level: this.guild.beaconTowerLevel,
             },
             {
                 name: 'guild.tenacityTower',
-                type: StructureType.TenacityTower,
+                type: GuildStructure.TenacityTower,
                 icon: 'tower-tenacity.svg',
                 level: this.guild.tenacityTowerLevel,
             },
         ];
     }
 
-    getStructuredescription(level: number, type: StructureType, upgrades: GuildStructureUpgrades): string {
+    getStructureDescription(level: number, type: GuildStructure, upgrades: GuildStructureUpgrades): string {
         switch (type) {
-            case StructureType.Sawmill:
+            case GuildStructure.Sawmill:
                 return upgrades.sawmillUpgrades[level].description;
-            case StructureType.Quarry:
+            case GuildStructure.Quarry:
                 return upgrades.quarryUpgrades[level].description;
-            case StructureType.Forge:
+            case GuildStructure.Forge:
                 return upgrades.forgeUpgrades[level].description;
-            case StructureType.TamerTower:
+            case GuildStructure.TamerTower:
                 return upgrades.tamerTowerUpgrades[level].description;
-            case StructureType.BeaconTower:
+            case GuildStructure.BeaconTower:
                 return upgrades.beaconTowerUpgrades[level].description;
-            case StructureType.TenacityTower:
+            case GuildStructure.TenacityTower:
                 return upgrades.tenacityTowerUpgrades[level].description;
         }
     }
 
-    checkConstructPermission(): boolean {
+    checkConstructPermission(level: number, type: GuildStructure, upgrades: GuildStructureUpgrades): boolean {
+        const upgradeArrays = {
+            [GuildStructure.Sawmill]: upgrades.sawmillUpgrades,
+            [GuildStructure.Quarry]: upgrades.quarryUpgrades,
+            [GuildStructure.Forge]: upgrades.forgeUpgrades,
+            [GuildStructure.TamerTower]: upgrades.tamerTowerUpgrades,
+            [GuildStructure.BeaconTower]: upgrades.beaconTowerUpgrades,
+            [GuildStructure.TenacityTower]: upgrades.tenacityTowerUpgrades,
+        };
         const currentUserId = this.engineService.user.id;
         return (
-            this.guild.founder.id === currentUserId ||
-            this.guild.members.some(
-                (member) => (member.id = currentUserId && member.role && member.role.canConstruct),
-            )
+            level < upgradeArrays[type].length - 1 &&
+            (this.guild.founder.id === currentUserId ||
+                this.guild.members.some(
+                    (member) => (member.id = currentUserId && member.role && member.role.canConstruct),
+                ))
         );
     }
 
@@ -108,5 +124,25 @@ export class GuildStructuresComponent implements OnInit {
             }
         }
         this.depositResourceType = undefined;
+    }
+
+    markForUpgrade(building: DisplayBuilding, upgrades: GuildStructureUpgrades) {
+        const upgradeArrays = {
+            [GuildStructure.Sawmill]: upgrades.sawmillUpgrades,
+            [GuildStructure.Quarry]: upgrades.quarryUpgrades,
+            [GuildStructure.Forge]: upgrades.forgeUpgrades,
+            [GuildStructure.TamerTower]: upgrades.tamerTowerUpgrades,
+            [GuildStructure.BeaconTower]: upgrades.beaconTowerUpgrades,
+            [GuildStructure.TenacityTower]: upgrades.tenacityTowerUpgrades,
+        };
+        this.upgradedBuilding = building;
+        this.upgrade = upgradeArrays[building.type][building.level + 1];
+    }
+
+    updateGuildBuilding() {
+        this.guild[this.upgradedBuilding?.type! + 'Level'] += 1;
+        this.setGuildBuildings();
+        this.upgradedBuilding = undefined;
+        console.log(this.guild)
     }
 }
