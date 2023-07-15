@@ -8,6 +8,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 0,
         stone: 0,
         steel: 0,
+        utility: 0,
         description: 'Produces 0 wood per hour',
     },
     {
@@ -17,6 +18,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 0,
         stone: 0,
         steel: 0,
+        utility: 2,
         description: 'Produces 2 wood per hour',
     },
     {
@@ -26,6 +28,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 100,
         stone: 50,
         steel: 0,
+        utility: 10,
         description: 'Produces 10 wood per hour',
     },
     {
@@ -35,6 +38,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 500,
         stone: 150,
         steel: 10,
+        utility: 25,
         description: 'Produces 25 wood per hour',
     },
     {
@@ -44,6 +48,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 2000,
         stone: 500,
         steel: 100,
+        utility: 50,
         description: 'Produces 50 wood per hour',
     },
     {
@@ -53,6 +58,7 @@ export const SAWMILL_UPGRADES: StructureUpgradeDto[] = [
         wood: 25_000,
         stone: 5000,
         steel: 1000,
+        utility: 100,
         description: 'Produces 100 wood per hour',
     },
 ];
@@ -65,6 +71,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 0,
         stone: 0,
         steel: 0,
+        utility: 0,
         description: 'Produces 0 stone per hour',
     },
     {
@@ -74,6 +81,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 500,
         stone: 0,
         steel: 0,
+        utility: 5,
         description: 'Produces 5 stone per hour',
     },
     {
@@ -83,6 +91,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 1500,
         stone: 500,
         steel: 0,
+        utility: 20,
         description: 'Produces 20 stone per hour',
     },
     {
@@ -92,6 +101,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 5000,
         stone: 1500,
         steel: 100,
+        utility: 40,
         description: 'Produces 40 stone per hour',
     },
     {
@@ -101,6 +111,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 20_000,
         stone: 5000,
         steel: 1000,
+        utility: 60,
         description: 'Produces 60 stone per hour',
     },
     {
@@ -110,6 +121,7 @@ export const QUARRY_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 25_000,
         steel: 10_000,
+        utility: 80,
         description: 'Produces 80 stone per hour',
     },
 ];
@@ -122,6 +134,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 0,
         stone: 0,
         steel: 0,
+        utility: 0,
         description: 'Produces 0 steel per hour',
     },
     {
@@ -131,6 +144,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 5000,
         stone: 5000,
         steel: 0,
+        utility: 3,
         description: 'Produces 3 steel per hour',
     },
     {
@@ -140,6 +154,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 25_000,
         stone: 15_000,
         steel: 1000,
+        utility: 10,
         description: 'Produces 10 steel per hour',
     },
     {
@@ -149,6 +164,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 30_000,
         steel: 5000,
+        utility: 25,
         description: 'Produces 25 steel per hour',
     },
     {
@@ -158,6 +174,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 100_000,
         stone: 75_000,
         steel: 10_000,
+        utility: 40,
         description: 'Produces 40 steel per hour',
     },
     {
@@ -167,6 +184,7 @@ export const FORGE_UPGRADES: StructureUpgradeDto[] = [
         wood: 250_000,
         stone: 200_000,
         steel: 50_000,
+        utility: 60,
         description: 'Produces 60 steel per hour',
     },
 ];
@@ -179,6 +197,7 @@ export const TAMER_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 0,
         stone: 0,
         steel: 0,
+        utility: 0,
         description: 'Allows to have 0 more dragons',
     },
     {
@@ -188,6 +207,7 @@ export const TAMER_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 150_000,
         stone: 150_000,
         steel: 10_000,
+        utility: 1,
         description: 'Allows to have 1 more dragon',
     },
 ];
@@ -200,6 +220,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 0,
         stone: 0,
         steel: 0,
+        utility: 0,
         description: 'Increases the stamina of owned dragons by 0',
     },
     {
@@ -209,6 +230,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 50_000,
         steel: 1_000,
+        utility: 5,
         description: 'Increases the stamina of owned dragons by 5',
     },
     {
@@ -218,6 +240,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 125_000,
         stone: 125_000,
         steel: 5_000,
+        utility: 9,
         description: 'Increases the stamina of owned dragons by 9',
     },
     {
@@ -227,6 +250,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 250_000,
         stone: 250_000,
         steel: 10_000,
+        utility: 12,
         description: 'Increases the stamina of owned dragons by 12',
     },
 ];
@@ -239,6 +263,7 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 0,
         stone: 0,
         steel: 0,
+        utility: 0,
         description: 'Reduces expeditions time by 0%',
     },
     {
@@ -248,6 +273,7 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 50_000,
         steel: 1_000,
+        utility: 5,
         description: 'Reduces expeditions time by 5%',
     },
     {
@@ -257,6 +283,7 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 125_000,
         stone: 125_000,
         steel: 4_000,
+        utility: 8,
         description: 'Reduces expeditions time by 8%',
     },
     {
@@ -266,6 +293,7 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 200_000,
         stone: 200_000,
         steel: 10_000,
+        utility: 10,
         description: 'Reduces expeditions time by 10%',
     },
 ];

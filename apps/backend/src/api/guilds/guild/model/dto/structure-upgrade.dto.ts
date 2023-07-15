@@ -20,5 +20,8 @@ export class StructureUpgradeDto {
     steel: number;
 
     @ApiProperty()
+    utility: number;
+
+    @ApiProperty()
     description: string;
 }
