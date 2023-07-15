@@ -27,6 +27,7 @@ import { AlchemyMixturesComponent } from './components/alchemy-mixtures/alchemy-
 import { AlchemyBoostersComponent } from './components/alchemy-boosters/alchemy-boosters.component';
 import { DragonFeedComponent } from './components/dragon-feed/dragon-feed.component';
 import { ForgotPasswordComponent } from '../common/components/forgot-password/forgot-password.component';
+import { SpreadNumberPipe } from '../common/utils/spread-number.pipe';
 
 const COMPONENTS = [
   AbstractModalComponent,
@@ -62,6 +63,7 @@ const UTILS = [
   TooltipDirective,
   TimerPipe,
   ShortNumberPipe,
+  SpreadNumberPipe,
 ];
 const CHILD_PROVIDERS = [
   ...(TranslateModule.forChild().providers ?? []),

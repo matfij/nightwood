@@ -66,12 +66,12 @@ export class GuildConstructionService {
         };
         const guild = await this.guildRepository.findOne({
             where: { id: dto.guildId },
-            relations: { founder: true, members: true },
+            relations: { founder: true, members: { role: true, user: true } },
         });
         if (!guild) {
             this.errorService.throw('errors.guildNotFound');
         }
-        this.guildValidatorService.checkCanUpgrade(userId, guild);
+        await this.guildValidatorService.checkCanUpgrade(userId, guild);
         let nextUpgrade: StructureUpgradeDto;
 
         const upgradeArray = upgradeArrays[dto.structureType];
@@ -86,7 +86,7 @@ export class GuildConstructionService {
         nextUpgrade = upgradeArray[guild[dto.structureType + 'Level'] + 1];
         guild[dto.structureType + 'Level'] += 1;
 
-        this.consumeUpgradeResources(guild, nextUpgrade);
+        await this.consumeUpgradeResources(guild, nextUpgrade);
 
         await this.guildRepository.update(guild.id, {
             gold: guild.gold,
@@ -94,11 +94,17 @@ export class GuildConstructionService {
             wood: guild.wood,
             stone: guild.stone,
             steel: guild.steel,
+            sawmillLevel: guild.sawmillLevel,
+            quarryLevel: guild.quarryLevel,
+            forgeLevel: guild.forgeLevel,
+            tamerTowerLevel: guild.tamerTowerLevel,
+            beaconTowerLevel: guild.beaconTowerLevel,
+            tenacityTowerLevel: guild.tenacityTowerLevel,
         });
     }
 
-    consumeUpgradeResources(guild: Guild, upgrade: StructureUpgradeDto) {
-        this.guildValidatorService.checkUpgradeResources(guild, upgrade);
+    async consumeUpgradeResources(guild: Guild, upgrade: StructureUpgradeDto) {
+        await this.guildValidatorService.checkUpgradeResources(guild, upgrade);
         guild.gold -= upgrade.gold;
         guild.eter -= upgrade.eter;
         guild.wood -= upgrade.wood;

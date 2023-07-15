@@ -62,7 +62,8 @@
 </app-deposit-resource>
 
 <app-upgrade-building
-    *ngIf="upgradedBuilding && upgrade"
+    *ngIf="guild && upgradedBuilding && upgrade"
+    [guild]="guild"
     [building]="upgradedBuilding"
     [upgrade]="upgrade"
     (close)="upgradedBuilding = undefined"

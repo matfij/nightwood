@@ -141,6 +141,11 @@ export class GuildStructuresComponent implements OnInit {
 
     updateGuildBuilding() {
         this.guild[this.upgradedBuilding?.type! + 'Level'] += 1;
+        this.guild.gold -= this.upgrade!.gold;
+        this.guild.eter -= this.upgrade!.eter;
+        this.guild.wood -= this.upgrade!.wood;
+        this.guild.stone -= this.upgrade!.stone;
+        this.guild.steel -= this.upgrade!.steel;
         this.setGuildBuildings();
         this.upgradedBuilding = undefined;
         console.log(this.guild)

@@ -1,11 +1,35 @@
 <div class="wrapper-modal">
     <div class="wrapper-modal-conent">
         <h2>{{ ('guild.upgrade' | translate) + (building.name | translate) }}</h2>
-        <p style="font-size: 14px">{{ ('guild.nextLevel' | translate) + upgrade.description }}</p>
-        <!-- COST -->
-        <button (click)="upgradeBuilding()" [disabled]="upgradeBuildingLoading$ | async" class="btn-base">
+        <p class="text-info">
+            <b>{{ 'guild.nextLevel' | translate }}</b> {{ upgrade.description }}
+        </p>
+        <p class="text-info">
+            <b>{{ 'guild.cost' | translate }}</b>
+            <li *ngIf="upgrade.gold > 0">
+                {{ (upgrade.gold | spreadNumber) + ' ' + ('guild.gold' | translate) }}
+            </li>
+            <li *ngIf="upgrade.eter > 0">
+                {{ (upgrade.eter | spreadNumber) + ' ' + ('guild.eter' | translate) }}
+            </li>
+            <li *ngIf="upgrade.wood > 0">
+                {{ (upgrade.wood | spreadNumber) + ' ' + ('guild.wood' | translate) }}
+            </li>
+            <li *ngIf="upgrade.stone > 0">
+                {{ (upgrade.stone | spreadNumber) + ' ' + ('guild.stone' | translate) }}
+            </li>
+            <li *ngIf="upgrade.steel > 0">
+                {{ (upgrade.steel | spreadNumber) + ' ' + ('guild.steel' | translate) }}
+            </li>
+        </p>
+        <button (click)="upgradeBuilding()" *ngIf="!(upgradeBuildingLoading$ | async)" class="btn-base">
             {{ 'common.confirm' | translate }}
         </button>
+        <div *ngIf="upgradeBuildingLoading$ | async" style="margin-top: 15px">
+            <app-loading-indicator>
+                {{ upgradeBuilding$ | async }}
+            </app-loading-indicator>
+        </div>
         <button (click)="onClose()" [disabled]="upgradeBuildingLoading$ | async" class="btn-base">
             {{ 'common.close' | translate }}
         </button>

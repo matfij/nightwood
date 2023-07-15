@@ -459,7 +459,9 @@
         "amount": "Amount",
         "resourceDeposited": "Resource deposited",
         "upgrade": "Upgrade ",
-        "nextLevel": "Next level: "
+        "nextLevel": "Next level: ",
+        "cost": "Cost: ",
+        "buildingUpgraded": "Building upgraded"
     },
     "mails": {
         "topic": "Topic",
