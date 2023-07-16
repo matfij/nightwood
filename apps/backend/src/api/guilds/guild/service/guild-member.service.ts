@@ -8,6 +8,8 @@ import { GuildMember } from '../model/guild-member.entity';
 import { GuildMemberUpdateDto } from '../model/dto/guild-member-update.dto';
 import { GuildValidatorService } from './guild-validator.service';
 import { ErrorService } from 'src/common/services/error.service';
+import { TAMER_TOWER_UPGRADES } from '../data/structure-upgrades';
+import { UserService } from '../../../users/user/service/user.service';
 
 @Injectable()
 export class GuildMemberService {
@@ -15,6 +17,7 @@ export class GuildMemberService {
         @InjectRepository(GuildMember)
         private guildMemberRepository: Repository<GuildMember>,
         private guildValidatorService: GuildValidatorService,
+        private userService: UserService,
         private errorService: ErrorService,
     ) {}
 
@@ -43,6 +46,7 @@ export class GuildMemberService {
                 },
             },
         });
+        await this.userService.updateGuild(user.id, guild.id);
         return member;
     }
 
@@ -57,6 +61,7 @@ export class GuildMemberService {
     async deleteMember(userId: number, memberId: number): Promise<GuildMemberDto> {
         const member = await this.guildValidatorService.validateGuildMember(userId, memberId);
         await this.guildMemberRepository.delete(member.id);
+        await this.userService.updateGuild(member.user.id, null);
         return member;
     }
 
@@ -70,5 +75,6 @@ export class GuildMemberService {
             this.errorService.throw('errors.guildMemberNotFound');
         }
         await this.guildMemberRepository.delete(member.id);
+        await this.userService.updateGuild(userId, null);
     }
 }

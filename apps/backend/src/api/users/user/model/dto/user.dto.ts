@@ -22,6 +22,9 @@ export class UserDto {
     @ApiPropertyOptional()
     achievements?: AchievementsDto;
 
+    @ApiPropertyOptional()
+    guildId?: number;
+
     @ApiProperty()
     gold?: number;
 

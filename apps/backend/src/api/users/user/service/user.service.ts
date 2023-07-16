@@ -248,6 +248,12 @@ export class UserService {
         }));
     }
 
+    async updateGuild(userId: number, guildId: number | undefined) {
+        const user = await this.getOne(userId);
+        user.guildId = guildId
+        await this.userRepository.save(user);
+    }
+
     private async emailExists(email: string): Promise<boolean> {
         const users = await this.userRepository.find({ where: { email: email } });
         return users.length > 0;

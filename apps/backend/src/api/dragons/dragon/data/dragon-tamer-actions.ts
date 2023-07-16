@@ -47,8 +47,8 @@ export const ACTION_INCREASE_DRAGON_LIMIT: DragonTamerActionDto = {
     uid: 'tamer-action-5',
     hint: 'dragonTamer.increaseDragonLimitHint',
     withoutDragon: true,
-    costFactor: 3000,
-    baseCost: 3000,
+    costFactor: 0,
+    baseCost: 5000,
     requiredLevel: 1,
     requiredItems: [],
 };

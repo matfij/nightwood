@@ -293,7 +293,7 @@
         "resetSkillsHint": "Reset the dragon's skills.",
         "refreshHint": "Refresh the dragon's stamina. This action cannot be performed when the dragon is fed. After the treatment, the dragon will not be hungry for some time.",
         "changeNatureHint": "Change the dragon's nature.",
-        "increaseDragonLimitHint": "Increase the dragon limit. Once one of your dragon reaches 30 maturity level, you can increase the limit by one, then when one of your dragons reaches 100 maturity level you can increase the limit again. The limit is the maximum number of dragons you can own at the same time.",
+        "increaseDragonLimitHint": "Increase the dragon limit. Once one of your dragon reaches 30 maturity level, you can increase the limit by one, then when one of your dragons reaches 100 maturity level you can increase the limit again. Additionally, the limit can be extended based on your Guild's structure upgrades. The limit is the maximum number of dragons you can own at the same time.",
         "actionCost": "Action cost",
         "requiredItems": "Required items",
         "staminaRestored": "Stamina restored",
@@ -301,7 +301,7 @@
         "natureChanged": "Nature changed",
         "dragonRenamed": "Dragon renamed",
         "dragonLimitExtended": "Dragon limit extended",
-        "currentDragonLimit": "Current dragon limit",
+        "currentDragonLimit": "Current maximum dragon limit",
         "extend": "Extend",
         "ascentDragonPowerHint": "Unlock your dragon's true combat potential. In order to complete this transformation, a dragon must collect at least 10000 experience points.",
         "ascentDragonPowerSuccess": "Dragon potential unlocked"

@@ -185,6 +185,7 @@ export class GuildValidatorService {
             relations: { guild: true, user: true },
             select: {
                 user: { id: true, nickname: true },
+                guild: { id: true, tamerTowerLevel: true },
             },
         });
         const guild = await this.guildRepository.findOne({

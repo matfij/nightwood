@@ -1,27 +1,28 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { UserDto } from "src/api/users/user/model/dto/user.dto";
-import { ErrorService } from "src/common/services/error.service";
-import { Repository } from "typeorm";
-import { GuildCreateDto } from "../model/dto/guild-create.dto";
-import { GuildGetDto } from "../model/dto/guild-get.dto";
-import { GuildMemberDto } from "../model/dto/guild-member.dto";
-import { GuildPageDto } from "../model/dto/guild-page.dto";
-import { GuildDto } from "../model/dto/guild.dto";
-import { GuildMember } from "../model/guild-member.entity";
-import { Guild } from "../model/guild.entity";
-import { GuildValidatorService } from "./guild-validator.service";
-import { GuildUserCheckResultDto } from "../model/dto/guild-user-check-result.dto";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto } from 'src/api/users/user/model/dto/user.dto';
+import { ErrorService } from 'src/common/services/error.service';
+import { Repository } from 'typeorm';
+import { GuildCreateDto } from '../model/dto/guild-create.dto';
+import { GuildGetDto } from '../model/dto/guild-get.dto';
+import { GuildMemberDto } from '../model/dto/guild-member.dto';
+import { GuildPageDto } from '../model/dto/guild-page.dto';
+import { GuildDto } from '../model/dto/guild.dto';
+import { GuildMember } from '../model/guild-member.entity';
+import { Guild } from '../model/guild.entity';
+import { GuildValidatorService } from './guild-validator.service';
+import { GuildUserCheckResultDto } from '../model/dto/guild-user-check-result.dto';
+import { UserService } from '../../../users/user/service/user.service';
 
 @Injectable()
 export class GuildService {
-
     constructor(
         @InjectRepository(Guild)
         private guildRepository: Repository<Guild>,
         @InjectRepository(GuildMember)
         private guildMemberRepository: Repository<GuildMember>,
         private guildValidatorService: GuildValidatorService,
+        private userService: UserService,
         private errorService: ErrorService,
     ) {}
 
@@ -35,14 +36,15 @@ export class GuildService {
         });
         const savedGuild = await this.guildRepository.save(newGuild);
         savedGuild.founder = null;
+        await this.userService.updateGuild(user.id, savedGuild.id);
         return savedGuild;
     }
 
     async getOne(id: number): Promise<GuildDto> {
-        const guild: GuildDto = await this.guildRepository.findOne({ 
-            where: { id: id }, 
+        const guild: GuildDto = await this.guildRepository.findOne({
+            where: { id: id },
             relations: ['founder', 'members', 'members.user', 'members.role'],
-            select: { 
+            select: {
                 founder: { id: true, nickname: true },
             },
         });
@@ -55,17 +57,17 @@ export class GuildService {
                 user: {
                     id: member.user.id,
                     nickname: member.user.nickname,
-                }
+                },
             };
         });
         return guild;
     }
 
     async getDetails(id: number): Promise<GuildDto> {
-        const guild: GuildDto = await this.guildRepository.findOne({ 
-            where: { id: id }, 
+        const guild: GuildDto = await this.guildRepository.findOne({
+            where: { id: id },
             relations: ['founder', 'members', 'members.user'],
-            select: { 
+            select: {
                 founder: { id: true, nickname: true },
             },
         });
@@ -78,14 +80,14 @@ export class GuildService {
                 user: {
                     id: member.user.id,
                     nickname: member.user.nickname,
-                }
+                },
             };
         });
         return guild;
     }
 
     async getFounderGuild(userId: number): Promise<GuildDto> {
-        const guild: GuildDto = await this.guildRepository.findOne({ 
+        const guild: GuildDto = await this.guildRepository.findOne({
             where: { founder: { id: userId } },
             relations: {
                 founder: true,
@@ -98,16 +100,16 @@ export class GuildService {
                 },
                 roles: true,
             },
-            select: { 
-                founder: { 
-                    id: true, 
-                    nickname: true 
+            select: {
+                founder: {
+                    id: true,
+                    nickname: true,
                 },
                 roles: true,
                 members: {
                     id: true,
-                    user: { id: true, nickname: true }
-                }
+                    user: { id: true, nickname: true },
+                },
             },
         });
         if (!guild) {
@@ -126,7 +128,7 @@ export class GuildService {
                         user: true,
                     },
                     roles: true,
-                    founder: true
+                    founder: true,
                 },
             },
             select: {
@@ -158,7 +160,7 @@ export class GuildService {
                         user: {
                             id: true,
                             nickname: true,
-                        }
+                        },
                     },
                     sawmillLevel: true,
                     quarryLevel: true,
@@ -166,8 +168,8 @@ export class GuildService {
                     tamerTowerLevel: true,
                     beaconTowerLevel: true,
                     tenacityTowerLevel: true,
-                }
-            }
+                },
+            },
         });
         if (!member) {
             return;
@@ -184,7 +186,7 @@ export class GuildService {
         });
         return {
             data: guilds,
-            meta: { 
+            meta: {
                 totalItems: guilds.length,
             },
         };
@@ -192,7 +194,7 @@ export class GuildService {
 
     async deleteGuild(userId: number): Promise<void> {
         const guild = await this.guildRepository.findOne({
-            where: { founder: { id: userId } }
+            where: { founder: { id: userId } },
         });
         if (!guild) {
             this.errorService.throw('errors.guildNotFound');
@@ -214,6 +216,6 @@ export class GuildService {
             guildId: guildData.id,
             guildName: guildData.name,
             guildTag: guildData.tag,
-        }
+        };
     }
 }

@@ -33,6 +33,9 @@ export class User {
     @JoinTable()
     friendRequests: User[];
 
+    @Column({ nullable: true })
+    guildId: number;
+
     @Column({ unique: true })
     email: string;
 

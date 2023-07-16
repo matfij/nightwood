@@ -13,9 +13,11 @@ import { GuildValidatorService } from "./service/guild-validator.service";
 import { GuildService } from "./service/guild.service";
 import { GuildConstructionService } from "./service/guild-construction.service";
 import { GuildConstructionJobService } from "./service/guild-construction-job.service";
+import { UserModule } from "../../users/user/user.module";
 
 @Module({
     imports: [
+        UserModule,
         TypeOrmModule.forFeature([Guild]),
         TypeOrmModule.forFeature([GuildApplication]),
         TypeOrmModule.forFeature([GuildRole]),
