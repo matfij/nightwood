@@ -13,6 +13,7 @@ import { UserService } from "src/api/users/user/service/user.service";
 import { ErrorService } from "src/common/services/error.service";
 import { DRAGON_BASE_LIMIT } from "src/configuration/frontend.config";
 import { GuildService } from "../../guilds/guild/service/guild.service";
+import { BEACON_TOWER_UPGRADES } from "../../guilds/guild/data/structure-upgrades";
 
 @Injectable()
 export class ActionEventService {
@@ -29,9 +30,13 @@ export class ActionEventService {
     ) {}
 
     async startExpedition(userId: number, dto: StartExpeditionDto): Promise<DragonActionDto> {
+        const user = await this.userService.getOne(userId);
         const dragon = await this.dragonService.checkIfEventAvailable(userId, dto.dragonId);
 
-        const action = await this.dragonActionService.startExpedition(dto.expeditionUid, dragon);
+        const guild = user.guildId ? await this.guildService.getOne(user.guildId) : null;
+        const timeReduction = BEACON_TOWER_UPGRADES[guild?.beaconTowerLevel || 0].utility;
+
+        const action = await this.dragonActionService.startExpedition(dto.expeditionUid, dragon, timeReduction);
 
         return action;
     }

@@ -273,8 +273,8 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 50_000,
         stone: 50_000,
         steel: 1_000,
-        utility: 5,
-        description: 'Reduces expeditions time by 5%',
+        utility: 6,
+        description: 'Reduces expeditions time by 6%',
     },
     {
         level: 2,
@@ -283,8 +283,8 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 125_000,
         stone: 125_000,
         steel: 4_000,
-        utility: 8,
-        description: 'Reduces expeditions time by 8%',
+        utility: 9,
+        description: 'Reduces expeditions time by 9%',
     },
     {
         level: 3,
@@ -293,7 +293,7 @@ export const BEACON_TOWER_UPGRADES: StructureUpgradeDto[] = [
         wood: 200_000,
         stone: 200_000,
         steel: 10_000,
-        utility: 10,
-        description: 'Reduces expeditions time by 10%',
+        utility: 12,
+        description: 'Reduces expeditions time by 12%',
     },
 ];
