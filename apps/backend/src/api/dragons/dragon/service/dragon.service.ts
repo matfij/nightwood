@@ -18,8 +18,18 @@ import { MathService } from 'src/common/services/math.service';
 import { ExpeditionDto } from '../../dragon-action/model/dto/expedition.dto';
 import { DragonSkillsService } from '../../dragon-skills/service/dragon-skills.service';
 import { SkillLearnDto } from '../../dragon-skills/model/dto/skill-learn.dto';
-import { FEED_INTERVAL, FOOD_STAMINA_GAIN, RESTORE_STAMINA_GAIN, RESTORE_STAMINA_INTERVAL } from 'src/configuration/backend.config';
-import { DRAGON_MAX_SEARCH_LEVEL, DRAGON_MIN_SEARCH_LEVEL, DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_MIN_LENGTH } from 'src/configuration/frontend.config';
+import {
+    FEED_INTERVAL,
+    FOOD_STAMINA_GAIN,
+    RESTORE_STAMINA_GAIN,
+    RESTORE_STAMINA_INTERVAL,
+} from 'src/configuration/backend.config';
+import {
+    DRAGON_MAX_SEARCH_LEVEL,
+    DRAGON_MIN_SEARCH_LEVEL,
+    DRAGON_NAME_MAX_LENGTH,
+    DRAGON_NAME_MIN_LENGTH,
+} from 'src/configuration/frontend.config';
 import { DataService } from 'src/common/services/data.service';
 import { DRAGON_TAMER_ACTIONS } from '../data/dragon-tamer-actions';
 import { DragonTamerActionDto } from '../model/dto/dragon-tamer-actions.dto';
@@ -40,7 +50,6 @@ import { User } from 'src/api/users/user/model/user.entity';
 
 @Injectable()
 export class DragonService {
-
     constructor(
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
@@ -65,13 +74,19 @@ export class DragonService {
     }
 
     async getOne(id: string | number): Promise<DragonDto> {
-        const dragon = await this.dragonRepository.findOne( { where: { id: +id }, relations: ['action', 'skills', 'runes', 'user'] });
+        const dragon = await this.dragonRepository.findOne({
+            where: { id: +id },
+            relations: ['action', 'skills', 'runes', 'user'],
+        });
         const dragonDto: DragonDto = {
-            ...dragon
+            ...dragon,
         };
 
-        dragon.runes = dragon.runes.map(rune => { return { ...rune, ...this.dataService.getItemData(rune.uid) } });
-        if (dragon.boosterUid) dragonDto.booster = BOOSTERS.find(booster => booster.uid === dragon.boosterUid);
+        dragon.runes = dragon.runes.map((rune) => {
+            return { ...rune, ...this.dataService.getItemData(rune.uid) };
+        });
+        if (dragon.boosterUid)
+            dragonDto.booster = BOOSTERS.find((booster) => booster.uid === dragon.boosterUid);
         if (dragon.user) dragonDto.userId = dragon.user.id;
 
         return dragonDto;
@@ -79,7 +94,12 @@ export class DragonService {
 
     async getAll(dto: DragonGetDto): Promise<DragonPageDto> {
         const filterOptions: FindManyOptions<Dragon> = {
-            where: { level: Between(dto.minLevel ?? DRAGON_MIN_SEARCH_LEVEL, dto.maxLevel ?? DRAGON_MAX_SEARCH_LEVEL) },
+            where: {
+                level: Between(
+                    dto.minLevel ?? DRAGON_MIN_SEARCH_LEVEL,
+                    dto.maxLevel ?? DRAGON_MAX_SEARCH_LEVEL,
+                ),
+            },
             select: ['id', 'name', 'level', 'nature'],
             order: { level: 'DESC' },
         };
@@ -123,7 +143,8 @@ export class DragonService {
     }
 
     async adopt(user: UserDto, dto: DragonAdoptDto): Promise<DragonDto> {
-        if (dto.name.length < DRAGON_NAME_MIN_LENGTH || dto.name.length > DRAGON_NAME_MAX_LENGTH) this.errorService.throw('errors.incorrectDragonName');
+        if (dto.name.length < DRAGON_NAME_MIN_LENGTH || dto.name.length > DRAGON_NAME_MAX_LENGTH)
+            this.errorService.throw('errors.incorrectDragonName');
         if (!this.errorService.isPhareClear(dto.name)) this.errorService.throw('errors.bannedWordUse');
 
         const dragon = this.dragonRepository.create({ ...dto, user }) as DragonDto;
@@ -173,7 +194,8 @@ export class DragonService {
     async checkFeedingDragon(ownerId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.checkDragon(ownerId, dragonId);
 
-        if (!this.dateService.checkIfNextEventAvailable(dragon.nextFeed)) this.errorService.throw('errors.dragonAlreadyFed');
+        if (!this.dateService.checkIfNextEventAvailable(dragon.nextFeed))
+            this.errorService.throw('errors.dragonAlreadyFed');
 
         return dragon;
     }
@@ -186,36 +208,87 @@ export class DragonService {
         return battleDragon;
     }
 
-    async feedDragon(item: ItemDto, dragon: DragonDto): Promise<DragonDto> {
-        if (dragon.level < item.level) this.errorService.throw('errors.dragonTooYoung');
-
+    async feedDragon(item: ItemDto, dragon: DragonDto, extraStaminaGain: number): Promise<DragonDto> {
+        if (dragon.level < item.level) {
+            this.errorService.throw('errors.dragonTooYoung');
+        }
         let levelGain = 1;
-        switch(item.foodType) {
-            case FoodType.Strength: { dragon.strength += 1; break; }
-            case FoodType.Dexterity: { dragon.dexterity += 1; break; }
-            case FoodType.Endurance: { dragon.endurance += 1; break; }
-            case FoodType.Will: { dragon.will += 1; break; }
-            case FoodType.Luck: { dragon.luck += 1; break; }
-            case FoodType.Complete: { dragon.strength += 1; dragon.dexterity += 1; dragon.endurance += 1; dragon.will += 1; dragon.luck += 1; break; }
-            case FoodType.StrengthPotion: { dragon.strength += 3; levelGain = 3; break; }
-            case FoodType.DexterityPotion: { dragon.dexterity += 3; levelGain = 3; break; }
-            case FoodType.EndurancePotion: { dragon.endurance += 3; levelGain = 3; break; }
-            case FoodType.WillPotion: { dragon.will += 3; levelGain = 3; break; }
-            case FoodType.LuckPotion: { dragon.luck += 3; levelGain = 3; break; }
-            case FoodType.CompletePotion: { dragon.strength += 1; dragon.dexterity += 1; dragon.endurance += 1; dragon.will += 1; dragon.luck += 1; levelGain = 3; break; }
-        };
+        switch (item.foodType) {
+            case FoodType.Strength: {
+                dragon.strength += 1;
+                break;
+            }
+            case FoodType.Dexterity: {
+                dragon.dexterity += 1;
+                break;
+            }
+            case FoodType.Endurance: {
+                dragon.endurance += 1;
+                break;
+            }
+            case FoodType.Will: {
+                dragon.will += 1;
+                break;
+            }
+            case FoodType.Luck: {
+                dragon.luck += 1;
+                break;
+            }
+            case FoodType.Complete: {
+                dragon.strength += 1;
+                dragon.dexterity += 1;
+                dragon.endurance += 1;
+                dragon.will += 1;
+                dragon.luck += 1;
+                break;
+            }
+            case FoodType.StrengthPotion: {
+                dragon.strength += 3;
+                levelGain = 3;
+                break;
+            }
+            case FoodType.DexterityPotion: {
+                dragon.dexterity += 3;
+                levelGain = 3;
+                break;
+            }
+            case FoodType.EndurancePotion: {
+                dragon.endurance += 3;
+                levelGain = 3;
+                break;
+            }
+            case FoodType.WillPotion: {
+                dragon.will += 3;
+                levelGain = 3;
+                break;
+            }
+            case FoodType.LuckPotion: {
+                dragon.luck += 3;
+                levelGain = 3;
+                break;
+            }
+            case FoodType.CompletePotion: {
+                dragon.strength += 1;
+                dragon.dexterity += 1;
+                dragon.endurance += 1;
+                dragon.will += 1;
+                dragon.luck += 1;
+                levelGain = 3;
+                break;
+            }
+        }
         dragon.level += levelGain;
         dragon.skillPoints += levelGain;
         dragon.nextFeed = Date.now() + FEED_INTERVAL;
 
         dragon.battledWith = [];
-        dragon.stamina = FOOD_STAMINA_GAIN;
+        dragon.stamina = FOOD_STAMINA_GAIN + extraStaminaGain;
         dragon.boosterUid = null;
 
         const fedDragon = await this.dragonRepository.save(dragon);
         return fedDragon;
     }
-    
+
     async activateBooster(dragon: DragonDto, booster: ItemDto): Promise<DragonDto> {
         dragon.boosterUid = booster.uid;
         await this.dragonRepository.save(dragon);
@@ -226,7 +299,8 @@ export class DragonService {
     async checkIfEventAvailable(ownerId: number, dragonId: number): Promise<DragonDto> {
         const dragon = await this.checkDragon(ownerId, dragonId);
 
-        if (!this.dateService.checkIfNextEventAvailable(dragon.action.nextAction)) this.errorService.throw('errors.dragonBusy');
+        if (!this.dateService.checkIfNextEventAvailable(dragon.action.nextAction))
+            this.errorService.throw('errors.dragonBusy');
 
         return dragon;
     }
@@ -235,7 +309,8 @@ export class DragonService {
         let baseGold = expedition.gold;
         if (dragon.unlockedExpeditions.includes(expedition.uid)) baseGold += expedition.extraGold;
 
-        const gainedGold = this.mathService.randRange(0.9, 1.1) * baseGold * (1 + dragon.skills.beginnersLuck/35);
+        const gainedGold =
+            this.mathService.randRange(0.9, 1.1) * baseGold * (1 + dragon.skills.beginnersLuck / 35);
         return Math.round(gainedGold);
     }
 
@@ -246,14 +321,15 @@ export class DragonService {
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
 
-        if (ownedDragon.battledWith.filter(id => id === dto.enemyDragonId).length > 1) this.errorService.throw('errors.alreadyBattled');
+        if (ownedDragon.battledWith.filter((id) => id === dto.enemyDragonId).length > 1)
+            this.errorService.throw('errors.alreadyBattled');
 
         const enemyDragon = await this.getOne(dto.enemyDragonId);
         enemyDragon.action = null;
 
         const partialResult = await this.dragonBattleService.executeBattle(ownedDragon, enemyDragon);
 
-        this.checkDragon(ownerId, dto.ownedDragonId).then(updatedDragon => {
+        this.checkDragon(ownerId, dto.ownedDragonId).then((updatedDragon) => {
             this.achievementsService.checkDragonTrainerAchievements(ownerId, updatedDragon);
         });
 
@@ -262,7 +338,7 @@ export class DragonService {
             enemyDragon: partialResult.enemyDragon,
             logs: partialResult.logs,
             result: partialResult.result,
-        }
+        };
         return battleResult;
     }
 
@@ -271,7 +347,7 @@ export class DragonService {
         ownedDragon.action = null;
         if (ownedDragon.stamina < 1) this.errorService.throw('errors.noStamina');
 
-        const expedition = [...EXPEDITIONS, ...EXPEDITIONS_EVENT].find(e => e.uid === dto.expeditionUid);
+        const expedition = [...EXPEDITIONS, ...EXPEDITIONS_EVENT].find((e) => e.uid === dto.expeditionUid);
         if (!expedition) this.errorService.throw('errors.expeditionNotFound');
 
         if (ownedDragon.level < expedition.guardian.level) this.errorService.throw('errors.dragonTooYoung');
@@ -283,7 +359,7 @@ export class DragonService {
             enemyDragon: partialResult.enemyDragon,
             logs: partialResult.logs,
             result: partialResult.result,
-        }
+        };
         return battleResult;
     }
 
@@ -316,9 +392,9 @@ export class DragonService {
         return await this.dragonRepository.save(dragon);
     }
 
-    async restoreStamina(dragon: DragonDto): Promise<DragonDto> {
+    async restoreStamina(dragon: DragonDto, extraStaminaGain: number): Promise<DragonDto> {
         dragon.battledWith = [];
-        dragon.stamina = RESTORE_STAMINA_GAIN;
+        dragon.stamina = RESTORE_STAMINA_GAIN + extraStaminaGain;
         dragon.boosterUid = null;
         dragon.nextFeed = Date.now() + RESTORE_STAMINA_INTERVAL;
 

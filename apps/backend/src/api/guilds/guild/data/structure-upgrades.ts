@@ -221,7 +221,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         stone: 0,
         steel: 0,
         utility: 0,
-        description: 'Increases the stamina of owned dragons by 0',
+        description: 'Increases the maximum stamina of owned dragons by 0',
     },
     {
         level: 1,
@@ -231,7 +231,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         stone: 50_000,
         steel: 1_000,
         utility: 5,
-        description: 'Increases the stamina of owned dragons by 5',
+        description: 'Increases the maximum stamina of owned dragons by 5',
     },
     {
         level: 2,
@@ -241,7 +241,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         stone: 125_000,
         steel: 5_000,
         utility: 9,
-        description: 'Increases the stamina of owned dragons by 9',
+        description: 'Increases the maximum stamina of owned dragons by 9',
     },
     {
         level: 3,
@@ -251,7 +251,7 @@ export const TENACITY_TOWER_UPGRADES: StructureUpgradeDto[] = [
         stone: 250_000,
         steel: 10_000,
         utility: 12,
-        description: 'Increases the stamina of owned dragons by 12',
+        description: 'Increases the maximum stamina of owned dragons by 12',
     },
 ];
 

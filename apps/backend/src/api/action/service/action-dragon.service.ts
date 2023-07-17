@@ -20,6 +20,8 @@ import { AlchemyService } from "src/api/items/alchemy/service/alchemy.service";
 import { BOOSTER_RECIPES } from "src/api/items/alchemy/data/booster-recipe";
 import { AchievementsService } from "src/api/users/achievements/service/achievements.service";
 import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragons";
+import { GuildService } from "../../guilds/guild/service/guild.service";
+import { TENACITY_TOWER_UPGRADES } from "../../guilds/guild/data/structure-upgrades";
 
 @Injectable()
 export class ActionDragonService {
@@ -30,6 +32,7 @@ export class ActionDragonService {
         private dragonService: DragonService,
         private itemService: ItemService,
         private alchemyService: AlchemyService,
+        private guildService: GuildService,
         private errorService: ErrorService,
     ) {}
 
@@ -82,11 +85,15 @@ export class ActionDragonService {
     }
 
     async feedDragon(userId: number, dto: DragonFeedDto): Promise<DragonDto> {
+        const user = await this.userService.getOne(userId);
         const item = await this.itemService.checkFeedingItem(userId, dto.itemId);
         const dragon = await this.dragonService.checkFeedingDragon(userId, dto.dragonId);
+
+        const guild = user.guildId ? await this.guildService.getOne(user.guildId) : null;
+        const extraStaminaGain = TENACITY_TOWER_UPGRADES[guild?.tenacityTowerLevel || 0].utility;
         
         await this.itemService.consumeItem(item);
-        const fedDragon = await this.dragonService.feedDragon(item, dragon);
+        const fedDragon = await this.dragonService.feedDragon(item, dragon, extraStaminaGain);
 
         this.achievementsService.checkPersistentBreederAchievements(userId, fedDragon);
         
@@ -161,16 +168,23 @@ export class ActionDragonService {
     }
 
     async restoreDragonStamina(userId: number, dragonId: number): Promise<DragonDto> {
+        const user = await this.userService.getOne(userId);
         const dragon = await this.dragonService.checkFeedingDragon(userId, dragonId);
         const actionCost = ACTION_RESTORE_STAMINA.baseCost + dragon.level * ACTION_RESTORE_STAMINA.costFactor;
-        const user = await this.userService.getOne(userId);
 
-        if (dragon.level < ACTION_RENAME.requiredLevel) this.errorService.throw('errors.dragonTooYoung');
-        if (user.gold < actionCost) this.errorService.throw('errors.insufficientsFound');
+        const guild = user.guildId ? await this.guildService.getOne(user.guildId) : null;
+        const extraStaminaGain = TENACITY_TOWER_UPGRADES[guild?.tenacityTowerLevel || 0].utility;
+
+        if (dragon.level < ACTION_RENAME.requiredLevel) {
+            this.errorService.throw('errors.dragonTooYoung');
+        }
+        if (user.gold < actionCost) {
+            this.errorService.throw('errors.insufficientsFound');
+        }
         
         await this.itemService.checkAndConsumeItems(ACTION_RESTORE_STAMINA.requiredItems, userId);
         await this.userService.updateGold(userId, -actionCost);
-        return await this.dragonService.restoreStamina(dragon);
+        return await this.dragonService.restoreStamina(dragon, extraStaminaGain);
     }
     
     async changeDragonNature(userId: number, dto: DragonChangeNatureDto): Promise<DragonDto> {
