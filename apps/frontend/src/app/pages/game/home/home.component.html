@@ -1,181 +1,241 @@
 <div class="wrapper-main">
-  <app-navigation-bar currentLocation="home"></app-navigation-bar>
+    <app-navigation-bar currentLocation="home"></app-navigation-bar>
 
-  <div class="wrapper-content">
+    <div class="wrapper-content">
+        <div class="section-news">
+            <div class="title">{{ 'game.recentChanges' | translate }}</div>
 
-    <div class="section-news">
-      <div class="title">{{ 'game.recentChanges' | translate }}</div>
+            <div class="wrapper-news">
+                <div class="item-news">
+                    <p>
+                        <b>19.07.2023 <br />Update - Guilds II.</b>
+                    </p>
+                    1. Introduced new Guild mechanic - structures.<br />
+                    2. Minor bug & typo fixes. <br />
+                    3. Bonus: for the next month guild structures will produce 50% more resources. <br />
+                    4. Next update: Eter & new equipment.
+                </div>
 
-      <div class="wrapper-news">
-        <div class="item-news">
-          <p><b>20.05.2023 <br>Update - the Power Dragon.</b></p>
-          1. New dragon nature is available, it can be unlocked by the Dragon tamer.<br>
-          2. Updated cost of some dragon-related actions. <br>
-          3. Fixed multiple guild role assignment bug. <br>
-          4. Modernized authentication mechanism. <br>
-          5. Next update: Guilds (resources & constructs).
+                <div class="item-news">
+                    <p>
+                        <b>20.05.2023 <br />Update - the Power Dragon.</b>
+                    </p>
+                    1. New dragon nature is available, it can be unlocked by the Dragon tamer.<br />
+                    2. Updated cost of some dragon-related actions. <br />
+                    3. Fixed multiple guild role assignment bug. <br />
+                    4. Modernized authentication mechanism. <br />
+                    5. Next update: Guilds (resources & constructs).
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>22.04.2023 <br />Update - Guilds I.</b>
+                    </p>
+                    1. Introduced first part of the Guild mechanic. Players can now found and manage
+                    guilds.<br />
+                    2. End of the First Anniversary event, expedition stats are back to normal. <br />
+                    3. Minor bug & display fixes. <br />
+                    4. Next update: new dragon nature.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b style="color: gold">01.04.2023 <br />Update - First Anniversary event.</b>
+                    </p>
+                    1. For a limited amount of time, a special expedition will be available. <br />
+                    2. During the event, all expeditions will require 50% less time to complete. <br />
+                    3. Guilds are almost finished and should be done by the end of April. <br />
+                    4. Increased the allowed size of avatars up to 200 kB. <br />
+                    5. Next update: Guilds (social).
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>01.02.2023 <br />Technical review.</b>
+                    </p>
+                    1. End of the New Year's event, expedition stats are back to normal. <br />
+                    2. Backend perfomance upgrade. <br />
+                    3. Next update: Guilds (social).
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b style="color: gold">01.01.2023 <br />Update - New Year's event.</b>
+                    </p>
+                    1. For a limited amount of time, a special expedition will be available. <br />
+                    2. During the event, all expeditions will require 50% less time to complete. <br />
+                    3. Implemented password recovery and improved backend safety - rate limiting. <br />
+                    4. Next update: backend performance, Angular version update.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>11.12.2022 <br />Technical review.</b>
+                    </p>
+                    1. QoL changes - marketplace auction form, new tooltips. <br />
+                    2. Frontend optimization - refactored change detection, disposal of Bootstrap lib. <br />
+                    3. Safety - updated JWT mechanism, added automated tests. <br />
+                    4. Next update: New Year's event.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>20.09.2022 <br />Update - User roles.</b>
+                    </p>
+                    1. Introduced new user roles - Moderators and Administrators. <br />
+                    2. Players can now be muted or banned for an inappropriate behavior. <br />
+                    3. Players can now view profiles by clicking on a nickname in the Shoutbox tab. <br />
+                    4. Next update: performacne optimization, code refactoring.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>13.08.2022 <br />Update - Social medias.</b>
+                    </p>
+                    1. Introduced user profiles. <br />
+                    2. Added achievements and friends mechanics. <br />
+                    3. Updated lore-related graphics. <br />
+                    4. For the next week expeditions and dragon feeding will require 50% less time to
+                    complete. <br />
+                    5. Next update: Player roles, banning system & marketplace bots.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>25.06.2022 <br />Update - Expeditions expansion.</b>
+                    </p>
+                    1. Introduced expedition guardians. <br />
+                    2. Expanded crafting section - new tinkerer, more runes. <br />
+                    3. Added new dragon skills, minor skills rebalance. <br />
+                    4. Removed Transient Caverns location, updated loot templates for other expeditions.
+                    <br />
+                    5. Next update: Player profiles & QoL changes.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>05.06.2022 <br />Technical review.</b>
+                    </p>
+                    1. Expedition rebalance - normalized gold awards, removed experience. <br />
+                    2. Updated dragon tamer offer - prices, owned dragons limit.<br />
+                    3. For the next week potion composing will require 50% less time. <br />
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>27.05.2022 <br />Update - Alchemy.</b>
+                    </p>
+                    1. Added alchemy - now players can craft enchanted elixirs and activate temporary boosts
+                    on their dragons. <br />
+                    2. New expedition added, new ingredients required for the new recipes can be found
+                    there.<br />
+                    3. For the next week expeditions will require 50% less time to complete. <br />
+                    4. Next update: expedition guardians, new skills and equipment (end of June).
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>15.05.2022 <br />Technical review.</b>
+                    </p>
+                    1. Combat system rework - the impact of attributes on the base stats has been changed,
+                    rebalanced skills, buffed magic.<br />
+                    2. Updated experience and stamina system - gained/lost experience is changing
+                    exponentially, stamina consumption is more constant.<br />
+                    3. Dragon's battle statistics can now be displayed in My Dragon's section.<br />
+                    4. For the next week, skill reset and nature change offered by Dragon Tamer will be 10x
+                    cheaper. <br />
+                    5. Next update: alchemy - extracts, boosters (end of May).
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>08.05.2022 <br />Update - Mirage Islands.</b>
+                    </p>
+                    1. A new expedition location has been discovered! This mysterious place hides the remains
+                    of relics from another dimension that the dragon summoner may use in her research.<br />
+                    2. Added 18 new skills including active skills that require mana and skills for another
+                    natures. Some of the existing skills were rebalanced.<br />
+                    3. Miracle Fruits were removed from regular expedition loots and will only be available
+                    during special events in the future. <br />
+                    4. For the next week expeditions will require 50% less time to complete. <br />
+                    5. Next update: combat system rework (skill multipliers, base attributes, relative
+                    strength), battle statistics preview.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>28.04.2022 <br />Technical review.</b>
+                    </p>
+                    1. Updated combat experience system, now your dragons can lose experience in battles, and
+                    you will only be able to fight the same opponent twice until your dragon rests.<br />
+                    2. QoL changes - dragon attributes & feeding hints.<br />
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>23.04.2022 <br />Update - Dragon Tamer.</b>
+                    </p>
+                    1. Dragon Tamer is out - check out his offer.<br />
+                    2. Expedition loots rebalance, some items required for Dragon Tamer actions will have a 2x
+                    loot chance for the next week.<br />
+                    3. Skills rebalance - Sound Body (gradually decreasing effect), Pugnacious Strike
+                    (calculated based on dexterity).<br />
+                    4. Minor bug fixes (expedition reports) & display improvements.<br />
+                    5. Next update: new dragon skills and special natures<br />
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>18.04.2022 <br />Update - Runes.</b>
+                    </p>
+                    1. Battle Runes introduction.<br />
+                    2. Dragon attributes rebalance.<br />
+                    3. Extra: for the next 48 hours expedition will take 50% less time.<br />
+                    4. Next update: new dragon skills (& skills rebalance) and special natures.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>13.04.2022 <br />Technical review.</b>
+                    </p>
+                    1. New experience formula, experience gained to this point was normalized.<br />
+                    2. QoL changes - expedition timers, expedition report mails.<br />
+                    3. Minor display fixes.<br />
+                    4. Expedition time is back to normal. <br />
+                    5. Next update: full rune implementation.
+                </div>
+
+                <div class="item-news">
+                    <p>
+                        <b>10.04.2022 <br />Technical review.</b>
+                    </p>
+                    1. New loots added to existing expeditions.<br />
+                    2. New game mechanic - rune crafting (for now runes do not have any statistics which will
+                    be introduced in a future update). <br />
+                    3. For the next 2 days the expedition time will be cut in half.<br />
+                </div>
+            </div>
         </div>
 
-        <div class="item-news">
-          <p><b>22.04.2023 <br>Update - Guilds I.</b></p>
-          1. Introduced first part of the Guild mechanic. Players can now found and manage guilds.<br>
-          2. End of the First Anniversary event, expedition stats are back to normal. <br>
-          3. Minor bug & display fixes. <br>
-          4. Next update: new dragon nature.
+        <div class="wrapper-dragons">
+            <div class="title">{{ 'game.bestDragons' | translate }}</div>
+            <div *ngIf="dragonsLoading" style="margin-top: 50px">
+                <app-loading-indicator></app-loading-indicator>
+            </div>
+            <div class="reports-scroll">
+                <div
+                    *ngFor="let dragon of dragons$ | async; index as i"
+                    [ngStyle]="{ 'font-size': 'clamp(13px, ' + (18 - 1.5 * i) + 'px, 18px)' }"
+                    [ngClass]="{ 'dragon-first': i === 0 }"
+                    class="item-dragon"
+                >
+                    {{ i + 1 }}. {{ dragon.name }} [{{ dragon.level }}] |
+                    {{ dragon.experience | shortNumber }} {{ 'dragon.exp' | translate }}
+                    <span *ngIf="dragon.userNickname">
+                        | <a (click)="showUserDetails(dragon.userId)">{{ dragon.userNickname }}</a>
+                    </span>
+                </div>
+            </div>
         </div>
-
-        <div class="item-news">
-          <p><b style="color: gold;">01.04.2023 <br>Update - First Anniversary event.</b></p>
-          1. For a limited amount of time, a special expedition will be available. <br>
-          2. During the event, all expeditions will require 50% less time to complete. <br>
-          3. Guilds are almost finished and should be done by the end of April. <br>
-          4. Increased the allowed size of avatars up to 200 kB. <br>
-          5. Next update: Guilds (social).
-        </div>
-
-        <div class="item-news">
-          <p><b>01.02.2023 <br>Technical review.</b></p>
-          1. End of the New Year's event, expedition stats are back to normal. <br>
-          2. Backend perfomance upgrade. <br>
-          3. Next update: Guilds (social).
-        </div>
-
-        <div class="item-news">
-          <p><b style="color: gold;">01.01.2023 <br>Update - New Year's event.</b></p>
-          1. For a limited amount of time, a special expedition will be available. <br>
-          2. During the event, all expeditions will require 50% less time to complete. <br>
-          3. Implemented password recovery and improved backend safety - rate limiting. <br>
-          4. Next update: backend performance, Angular version update.
-        </div>
-
-        <div class="item-news">
-          <p><b>11.12.2022 <br>Technical review.</b></p>
-          1. QoL changes - marketplace auction form, new tooltips. <br>
-          2. Frontend optimization - refactored change detection, disposal of Bootstrap lib. <br>
-          3. Safety - updated JWT mechanism, added automated tests. <br>
-          4. Next update: New Year's event.
-        </div>
-
-        <div class="item-news">
-          <p><b>20.09.2022 <br>Update - User roles.</b></p>
-          1. Introduced new user roles - Moderators and Administrators. <br>
-          2. Players can now be muted or banned for an inappropriate behavior. <br>
-          3. Players can now view profiles by clicking on a nickname in the Shoutbox tab. <br>
-          4. Next update: performacne optimization, code refactoring.
-        </div>
-
-        <div class="item-news">
-          <p><b>13.08.2022 <br>Update - Social medias.</b></p>
-          1. Introduced user profiles. <br>
-          2. Added achievements and friends mechanics. <br>
-          3. Updated lore-related graphics. <br>
-          4. For the next week expeditions and dragon feeding will require 50% less time to complete. <br>
-          5. Next update: Player roles, banning system & marketplace bots.
-        </div>
-
-        <div class="item-news">
-          <p><b>25.06.2022 <br>Update - Expeditions expansion.</b></p>
-          1. Introduced expedition guardians. <br>
-          2. Expanded crafting section - new tinkerer, more runes. <br>
-          3. Added new dragon skills, minor skills rebalance. <br>
-          4. Removed Transient Caverns location, updated loot templates for other expeditions. <br>
-          5. Next update: Player profiles & QoL changes.
-        </div>
-
-        <div class="item-news">
-          <p><b>05.06.2022 <br>Technical review.</b></p>
-          1. Expedition rebalance - normalized gold awards, removed experience. <br>
-          2. Updated dragon tamer offer - prices, owned dragons limit.<br>
-          3. For the next week potion composing will require 50% less time. <br>
-        </div>
-
-        <div class="item-news">
-          <p><b>27.05.2022 <br>Update - Alchemy.</b></p>
-          1. Added alchemy - now players can craft enchanted elixirs and activate temporary boosts on their dragons. <br>
-          2. New expedition added, new ingredients required for the new recipes can be found there.<br>
-          3. For the next week expeditions will require 50% less time to complete. <br>
-          4. Next update: expedition guardians, new skills and equipment (end of June).
-        </div>
-
-        <div class="item-news">
-          <p><b>15.05.2022 <br>Technical review.</b></p>
-          1. Combat system rework - the impact of attributes on the base stats has been changed, rebalanced skills, buffed magic.<br>
-          2. Updated experience and stamina system - gained/lost experience is changing exponentially, stamina consumption is more constant.<br>
-          3. Dragon's battle statistics can now be displayed in My Dragon's section.<br>
-          4. For the next week, skill reset and nature change offered by Dragon Tamer will be 10x cheaper. <br>
-          5. Next update: alchemy - extracts, boosters (end of May).
-        </div>
-
-        <div class="item-news">
-          <p><b>08.05.2022 <br>Update - Mirage Islands.</b></p>
-          1. A new expedition location has been discovered! This mysterious place hides the remains of relics from another dimension that the dragon summoner may use in her research.<br>
-          2. Added 18 new skills including active skills that require mana and skills for another natures. Some of the existing skills were rebalanced.<br>
-          3. Miracle Fruits were removed from regular expedition loots and will only be available during special events in the future. <br>
-          4. For the next week expeditions will require 50% less time to complete. <br>
-          5. Next update: combat system rework (skill multipliers, base attributes, relative strength), battle statistics preview.
-        </div>
-
-        <div class="item-news">
-          <p><b>28.04.2022 <br>Technical review.</b></p>
-          1. Updated combat experience system, now your dragons can lose experience in battles,
-          and you will only be able to fight the same opponent twice until your dragon rests.<br>
-          2. QoL changes - dragon attributes & feeding hints.<br>
-        </div>
-
-        <div class="item-news">
-          <p><b>23.04.2022 <br>Update - Dragon Tamer.</b></p>
-          1. Dragon Tamer is out - check out his offer.<br>
-          2. Expedition loots rebalance, some items required for Dragon Tamer actions will have a 2x loot chance for the next week.<br>
-          3. Skills rebalance - Sound Body (gradually decreasing effect), Pugnacious Strike (calculated based on dexterity).<br>
-          4. Minor bug fixes (expedition reports) & display improvements.<br>
-          5. Next update: new dragon skills and special natures<br>
-        </div>
-
-        <div class="item-news">
-          <p><b>18.04.2022 <br>Update - Runes.</b></p>
-          1. Battle Runes introduction.<br>
-          2. Dragon attributes rebalance.<br>
-          3. Extra: for the next 48 hours expedition will take 50% less time.<br>
-          4. Next update: new dragon skills (& skills rebalance) and special natures.
-        </div>
-
-        <div class="item-news">
-          <p><b>13.04.2022 <br>Technical review.</b></p>
-          1. New experience formula, experience gained to this point was normalized.<br>
-          2. QoL changes - expedition timers, expedition report mails.<br>
-          3. Minor display fixes.<br>
-          4. Expedition time is back to normal. <br>
-          5. Next update: full rune implementation.
-        </div>
-
-        <div class="item-news">
-          <p><b>10.04.2022 <br>Technical review.</b></p>
-          1. New loots added to existing expeditions.<br>
-          2. New game mechanic - rune crafting (for now runes do not have any statistics which will be introduced in a future update). <br>
-          3. For the next 2 days the expedition time will be cut in half.<br>
-        </div>
-      </div>
-
     </div>
-
-    <div class="wrapper-dragons">
-      <div class="title">{{ 'game.bestDragons' | translate }}</div>
-      <div *ngIf="dragonsLoading" style="margin-top: 50px;">
-        <app-loading-indicator></app-loading-indicator>
-      </div>
-      <div class="reports-scroll">
-        <div
-          *ngFor="let dragon of (dragons$ | async); index as i"
-          [ngStyle]="{'font-size': 'clamp(13px, '+(18-1.5*i)+'px, 18px)'}"
-          [ngClass]="{ 'dragon-first': i === 0 }"
-          class="item-dragon">
-          {{ i+1 }}. {{ dragon.name }} [{{ dragon.level }}] | {{ dragon.experience | shortNumber }} {{ 'dragon.exp' | translate }}
-          <span *ngIf="dragon.userNickname">
-            | <a (click)="showUserDetails(dragon.userId)">{{ dragon.userNickname }}</a>
-          </span>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>

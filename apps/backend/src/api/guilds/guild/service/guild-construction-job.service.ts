@@ -10,13 +10,13 @@ import { GUILD_RESOURCES_GAIN } from '../../../../configuration/backend.config';
 export class GuildConstructionJobService {
     constructor(@InjectRepository(Guild) private guildRepository: Repository<Guild>) {}
 
-    @Cron(CronExpression.EVERY_HOUR)
+    @Cron(CronExpression.EVERY_10_SECONDS)
     async updateResources() {
         const guilds = await this.guildRepository.find();
         for (const guild of guilds) {
-            guild.wood += GUILD_RESOURCES_GAIN * SAWMILL_UPGRADES[guild.sawmillLevel].utility;
-            guild.stone += GUILD_RESOURCES_GAIN * QUARRY_UPGRADES[guild.quarryLevel].utility;
-            guild.steel += GUILD_RESOURCES_GAIN * FORGE_UPGRADES[guild.forgeLevel].utility;
+            guild.wood += Math.round(GUILD_RESOURCES_GAIN * SAWMILL_UPGRADES[guild.sawmillLevel].utility);
+            guild.stone += Math.round(GUILD_RESOURCES_GAIN * QUARRY_UPGRADES[guild.quarryLevel].utility);
+            guild.steel += Math.round(GUILD_RESOURCES_GAIN * FORGE_UPGRADES[guild.forgeLevel].utility);
         }
         await this.guildRepository.save(guilds);
     }
