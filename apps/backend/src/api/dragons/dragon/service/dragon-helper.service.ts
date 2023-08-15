@@ -1,15 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { BOOSTERS } from "src/api/items/alchemy/data/boosters";
-import { EquipmentStatisticsDto } from "src/api/items/item/model/dto/equipment-statistics.dto";
-import { ItemDto } from "src/api/items/item/model/dto/item.dto";
-import { MathService } from "src/common/services/math.service";
-import { ExpeditionGuardianDto } from "../../dragon-action/model/dto/expedition-guardian.dto";
-import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
-import { DragonDto } from "../model/dto/dragon.dto";
+import { Injectable } from '@nestjs/common';
+import { BOOSTERS } from 'src/api/items/alchemy/data/boosters';
+import { EquipmentStatisticsDto } from 'src/api/items/item/model/dto/equipment-statistics.dto';
+import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
+import { MathService } from 'src/common/services/math.service';
+import { ExpeditionGuardianDto } from '../../dragon-action/model/dto/expedition-guardian.dto';
+import { DragonBattleDto } from '../model/dto/dragon-battle.dto';
+import { DragonDto } from '../model/dto/dragon.dto';
 
 @Injectable()
 export class BattleHelperService {
-
     private readonly BASE_HEALTH = 100;
     private readonly BASE_MANA = 20;
     private readonly BASE_ARMOR = 5;
@@ -25,9 +24,7 @@ export class BattleHelperService {
     private readonly MAX_CRIT_CHANCE = 0.5;
     private readonly MAX_CRIT_POWER = 3;
 
-    constructor (
-        private mathService: MathService,
-    ) {}
+    constructor(private mathService: MathService) {}
 
     calculateBattleStats(dragon: Partial<DragonDto>): DragonBattleDto {
         const runeStats = this.getRunesStats(dragon.runes);
@@ -39,39 +36,50 @@ export class BattleHelperService {
         dragon.will += runeStats.will + runeStats.allAttributes;
         dragon.luck += runeStats.luck + runeStats.allAttributes;
 
-        let health = this.BASE_HEALTH + 5 * dragon.endurance + dragon.strength + dragon.will + runeStats.health;
+        let health =
+            this.BASE_HEALTH + 5 * dragon.endurance + dragon.strength + dragon.will + runeStats.health;
         let mana = this.BASE_MANA + 4 * dragon.will + runeStats.mana;
         let armor = this.BASE_ARMOR + 0.9 * dragon.endurance + runeStats.armor;
-        let resistance = this.BASE_RESISTANCE + 0.6 * dragon.will + runeStats.resistance;
+        let resistance = this.BASE_RESISTANCE + 0.8 * dragon.will + runeStats.resistance;
         let speed = this.BASE_SPEED + 1.5 * dragon.dexterity + runeStats.speed;
-        let physicalAttack = this.BASE_PHYSICAL_ATTACK + dragon.strength + 0.1 * dragon.dexterity + 0.1 * dragon.will + runeStats.physicalAttack;
-        let magicalAttack = this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck + runeStats.magicalAttack;
-        
+        let physicalAttack =
+            this.BASE_PHYSICAL_ATTACK +
+            dragon.strength +
+            0.1 * dragon.dexterity +
+            0.1 * dragon.will +
+            runeStats.physicalAttack;
+        let magicalAttack =
+            this.BASE_MAGICAL_ATTACK + dragon.will + 0.1 * dragon.luck + runeStats.magicalAttack;
+
         health = health * (1 + (dragon.skills.greatVigor || 0) / 50) * (1 + boosterStats.healthBoost ?? 0);
         mana = mana * (1 + (dragon.skills.innerFlow || 0) / 40) * (1 + boosterStats.manaBoost ?? 0);
         armor = armor * (1 + boosterStats.armorBoost ?? 0) * (1 + (dragon.skills.inferialBlessing || 0) / 50);
-        resistance = (resistance + 0.2 * armor) * (1 + (dragon.skills.inferialBlessing || 0) / 50);
+        resistance = (resistance + 0.3 * armor) * (1 + (dragon.skills.inferialBlessing || 0) / 50);
         speed = speed * (1 + (dragon.skills.innateSpeed || 0) / 60) * (1 + boosterStats.speedBoost ?? 0);
         physicalAttack = physicalAttack * (1 + boosterStats.physicalAttackBoost ?? 0);
         magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
-        let manaRegen =  mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
+        let manaRegen = mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
         let healthRegen = 0 + runeStats.healthRegeneration;
 
         let initiative = speed + runeStats.initiative;
         let critChance = Math.min(
-            this.MAX_CRIT_CHANCE, 
-            (1 + boosterStats.criticalChanceBoost ?? 0) 
-            * (this.BASE_CRIT_CHANCE + dragon.luck / (dragon.level + 10) + runeStats.criticalChance / 100 
-            + ((dragon.skills.luckyStrike || 0) / 100))
+            this.MAX_CRIT_CHANCE,
+            (1 + boosterStats.criticalChanceBoost ?? 0) *
+                (this.BASE_CRIT_CHANCE +
+                    dragon.luck / (dragon.level + 10) +
+                    runeStats.criticalChance / 100 +
+                    (dragon.skills.luckyStrike || 0) / 100),
         );
         let critPower = Math.min(
-            this.MAX_CRIT_POWER, 
-            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower
+            this.MAX_CRIT_POWER,
+            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower,
         );
         let dodgeChance = Math.min(
-            this.MAX_DODGE_CHANCE, 
-            ((1 + boosterStats.dodgeBoost ?? 0) * ((dragon.dexterity + dragon.luck) / (2*dragon.level + 20)) 
-            + runeStats.dodge / 100 + dragon.skills.dodge / 170)
+            this.MAX_DODGE_CHANCE,
+            (1 + boosterStats.dodgeBoost ?? 0) *
+                ((dragon.dexterity + dragon.luck) / (2 * dragon.level + 20)) +
+                runeStats.dodge / 100 +
+                dragon.skills.dodge / 170,
         );
 
         health = Math.max(this.BASE_HEALTH, health);
@@ -128,7 +136,7 @@ export class BattleHelperService {
             magicalAttack: 0,
             dodge: 0,
         };
-        runes.forEach(rune => {
+        runes.forEach((rune) => {
             runeStats.health += rune.statistics.health ?? 0;
             runeStats.mana += rune.statistics.mana ?? 0;
             runeStats.armor += rune.statistics.armor ?? 0;
@@ -162,16 +170,34 @@ export class BattleHelperService {
             criticalChanceBoost: 0,
             speedBoost: 0,
             dodgeBoost: 0,
-        }
-        const booster = BOOSTERS.find(b => b.uid === boosterUid);
+        };
+        const booster = BOOSTERS.find((b) => b.uid === boosterUid);
         return { ...boosterStats, ...booster?.statistics };
     }
 
     createDragonFromGuardian(guardian: ExpeditionGuardianDto): Partial<DragonDto> {
         const dragon: Partial<DragonDto> = {
-            ...guardian
+            ...guardian,
         };
 
         return dragon;
+    }
+
+    getSkillLog(
+        name: string,
+        attacker: DragonBattleDto,
+        defender: DragonBattleDto,
+        baseDamage: number,
+        inflictedDamege: number,
+        extraLogs: string[],
+        extraClasses?: string,
+    ) {
+        let log = `
+        <div class="item-log log-skill ${extraClasses}">
+            ${attacker.name} (${Math.round(attacker.health)}) uses <b>${name}</b>
+            with power of ${Math.round(baseDamage)}`;
+        extraLogs.forEach((extraLog) => (log += extraLog));
+        log += `${defender.name} (${Math.round(defender.health)}) took ${Math.round(inflictedDamege)} damage</div>`;
+        return log;
     }
 }
