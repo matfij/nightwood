@@ -197,7 +197,7 @@ export class BattleHelperService {
             ${attacker.name} (${Math.round(attacker.health)}) uses <b>${name}</b>
             with power of ${Math.round(baseDamage)}`;
         extraLogs.forEach((extraLog) => (log += extraLog));
-        log += `${defender.name} (${Math.round(defender.health)}) took ${Math.round(inflictedDamege)} damage</div>`;
+        log += `<div>${defender.name} (${Math.round(defender.health)}) took ${Math.round(inflictedDamege)} damage</div></div>`;
         return log;
     }
 }
