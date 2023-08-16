@@ -14,6 +14,7 @@ describe('EngineService', () => {
     accessToken: '',
     refreshToken: '',
     gold: 100,
+    eter: 0,
     maxOwnedDragons: 3,
     nickname: 'player',
     ownedDragons: 1,
