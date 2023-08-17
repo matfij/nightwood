@@ -46,4 +46,10 @@ export class ActionItemService {
 
         return { consumedGold: auction.totalGoldPrice };
     }
+
+    async decomposeItem(userId: number, itemId: number): Promise<number> {
+        const gainedEter = await this.itemService.decomposeItem(userId, itemId);
+        await this.userService.updateEter(userId, gainedEter);
+        return gainedEter;
+    }
 }

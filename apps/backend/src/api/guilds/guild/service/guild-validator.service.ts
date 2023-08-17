@@ -285,7 +285,7 @@ export class GuildValidatorService {
             guild.stone < upgrade.stone ||
             guild.steel < upgrade.steel
         ) {
-            this.errorService.throw('errors.insufficientFounds');
+            this.errorService.throw('errors.insufficientsFound');
         }
     }
 }
