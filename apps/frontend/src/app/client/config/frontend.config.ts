@@ -58,6 +58,7 @@ export const AUCTION_MIN_SEARCH_NAME_LENGTH = 1;
 export const AUCTION_MAX_SEARCH_NAME_LENGTH = 20;
 export const AUCTION_MIN_SEARCH_LEVEL = 1;
 export const AUCTION_MAX_SEARCH_LEVEL = 9999;
+export const ETER_CONVERTER_SCALE = 1;
 
 /**
  * Guilds

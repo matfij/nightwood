@@ -1,60 +1,112 @@
 <div class="wrapper-main">
-  <app-navigation-bar currentLocation="crafting"></app-navigation-bar>
+    <app-navigation-bar currentLocation="crafting"></app-navigation-bar>
 
-  <div class="wrapper-content">
+    <div class="wrapper-content">
+        <div class="wrapper-crafting-section">
+            <div class="wrapper-lore">
+                <div class="wrapper-lore-img">
+                    <img src="assets/img/lore/crafting-eter.png" draggable="false" alt="Goblin thinkerer" />
+                </div>
+                <div class="wrapper-lore-text">
+                    <div>{{ 'crafting.eterCraftingHint' | translate }}</div>
+                    <button (click)="displayEterRecipes = !displayEterRecipes" class="btn-base btn-small">
+                        {{ 'alchemy.toggleOffer' | translate }}
+                    </button>
+                </div>
+            </div>
 
-    <div class="wrapper-crafting-section">
-      <div class="wrapper-lore">
-        <div class="wrapper-lore-img">
-          <img src="assets/img/lore/crafting-base-runes.png" draggable="false" alt="Goblin thinkerer">
+            <div *ngIf="displayEterRecipes">
+                <div *ngIf="items$ | async as items" class="item-action">
+                    <div>{{ 'crafting.decomposeHint' | translate }}</div>
+                    <select #itemSelect (change)="($event)" class="input-select" style="margin-top: 5px">
+                        <option value=""></option>
+                        <option
+                            class="input-select-option"
+                            *ngFor="let item of filterEquipment(items)"
+                            [value]="item.id"
+                        >
+                            {{ item.name }} ({{ item.quantity }})
+                        </option>
+                    </select>
+                    <div *ngIf="itemSelect.value">
+                        {{ 'crafting.eterGain' | translate }}
+                        {{ calculateEterGain(+itemSelect.value, items) }}
+                    </div>
+                    <button
+                        (click)="decomposeItem(+itemSelect.value)"
+                        [disabled]="!itemSelect.value || (decomposeLoading$ | async)"
+                        class="btn-base btn-action"
+                    >
+                        {{ 'common.confirm' | translate }}
+                    </button>
+                    <div *ngIf="decomposeLoading$ | async">{{ decomposeItem$ | async }}</div>
+                </div>
+            </div>
         </div>
-        <div class="wrapper-lore-text">
-          <div>{{ 'crafting.runeCraftingBaseHint' | translate }}</div>
-          <button (click)="displayBaseRecipes = !displayBaseRecipes" class="btn-base btn-small">
-            {{ 'alchemy.toggleOffer' | translate }}
-          </button>
-        </div>
-      </div>
 
-      <div *ngIf="displayBaseRecipes">
-        <div *ngIf="!(recipesBase$ | async)?.length" style="margin: 30px auto;">
-          <app-loading-indicator></app-loading-indicator>
-        </div>
-        <app-crafting-item-list
-          *ngIf="({items: items$ | async, recipes: recipesBase$ | async}) as vm"
-          [items]="vm.items"
-          [recipes]="vm.recipes"
-          (refreshItems)="getOwnedItems()">
-        </app-crafting-item-list>
-      </div>
+        <div class="wrapper-crafting-section">
+            <div class="wrapper-lore">
+                <div class="wrapper-lore-img">
+                    <img
+                        src="assets/img/lore/crafting-base-runes.png"
+                        draggable="false"
+                        alt="Goblin thinkerer"
+                    />
+                </div>
+                <div class="wrapper-lore-text">
+                    <div>{{ 'crafting.runeCraftingBaseHint' | translate }}</div>
+                    <button (click)="displayBaseRecipes = !displayBaseRecipes" class="btn-base btn-small">
+                        {{ 'alchemy.toggleOffer' | translate }}
+                    </button>
+                </div>
+            </div>
 
+            <div *ngIf="displayBaseRecipes">
+                <div *ngIf="!(recipesBase$ | async)?.length" style="margin: 30px auto">
+                    <app-loading-indicator></app-loading-indicator>
+                </div>
+                <app-crafting-item-list
+                    *ngIf="{ items: items$ | async, recipes: recipesBase$ | async } as vm"
+                    [items]="vm.items"
+                    [recipes]="vm.recipes"
+                    (refreshItems)="getOwnedItems()"
+                >
+                </app-crafting-item-list>
+            </div>
+        </div>
+
+        <div class="wrapper-crafting-section">
+            <div class="wrapper-lore">
+                <div class="wrapper-lore-img">
+                    <img
+                        src="assets/img/lore/crafting-special-runes.png"
+                        draggable="false"
+                        alt="Goblin thinkerer"
+                    />
+                </div>
+                <div class="wrapper-lore-text">
+                    <div>{{ 'crafting.runeCraftingSpecialHint' | translate }}</div>
+                    <button
+                        (click)="displaySpecialRecipes = !displaySpecialRecipes"
+                        class="btn-base btn-small"
+                    >
+                        {{ 'alchemy.toggleOffer' | translate }}
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="displaySpecialRecipes">
+                <div *ngIf="!(recipesSpecial$ | async)?.length" style="margin: 30px auto">
+                    <app-loading-indicator></app-loading-indicator>
+                </div>
+                <app-crafting-item-list
+                    *ngIf="{ items: items$ | async, recipes: recipesSpecial$ | async } as vm"
+                    [items]="vm.items"
+                    [recipes]="vm.recipes"
+                    (refreshItems)="getOwnedItems()"
+                >
+                </app-crafting-item-list>
+            </div>
+        </div>
     </div>
-
-    <div class="wrapper-crafting-section">
-      <div class="wrapper-lore">
-        <div class="wrapper-lore-img">
-          <img src="assets/img/lore/crafting-special-runes.png" draggable="false" alt="Goblin thinkerer">
-        </div>
-        <div class="wrapper-lore-text">
-          <div>{{ 'crafting.runeCraftingSpecialHint' | translate }}</div>
-          <button (click)="displaySpecialRecipes = !displaySpecialRecipes" class="btn-base btn-small">
-            {{ 'alchemy.toggleOffer' | translate }}
-          </button>
-        </div>
-      </div>
-
-      <div *ngIf="displaySpecialRecipes">
-        <div *ngIf="!(recipesSpecial$ | async)?.length" style="margin: 30px auto;">
-          <app-loading-indicator></app-loading-indicator>
-        </div>
-        <app-crafting-item-list
-          *ngIf="({items: items$ | async, recipes: recipesSpecial$ | async}) as vm"
-          [items]="vm.items"
-          [recipes]="vm.recipes"
-          (refreshItems)="getOwnedItems()">
-        </app-crafting-item-list>
-      </div>
-    </div>
-
-  </div>
 </div>

@@ -323,11 +323,15 @@
         "quantity": "Quantity"
     },
     "crafting": {
+        "eterCraftingHint": "Ezzik Bogwrench, the Eter Alchemist, amid Tinkerer's Guild's clangor, he harnesses Eter's essence. This mysterious material resonates with foregona aura from distant lands.",
         "runeCraftingBaseHint": "Versus Krinks, the goblin tinkerer is the master of rune crafting. He is knwon for his scrupulousness and engineering diligence which allowed to create solid and reliable runes. Each rune increases selected dragon's attributes.",
         "runeCraftingSpecialHint": "Ziblet Hertz is a young and zealous mechanic who specializes in unconventional runes. He is a great asset to the Tinkerer's Guild, and he is always looking for new ideas to improve his craft. Every dragon can equip up to three runes to boost its power.",
         "requiredIngredients": "Required ingredients",
         "craft": "Craft",
-        "itemCrafted": "{{ name }} crafted"
+        "itemCrafted": "{{ name }} crafted",
+        "decomposeHint": "Decompose items into Eter. The final quantity is influenced by item rarity and level. Item will be lost after this operation.",
+        "eterGain": "Eter gain:",
+        "itemDecomposed": "Item decomposed"
     },
     "alchemy": {
         "mixturesHint": "Tekno Ziomks, the goblin alchemist, used to prepare meals for the royal court. During the Northen Wars, he decided to explore the secrets of alchemy to give his tribe an advantage in the battle. Now Tekno can brew potions that can be used to accelerate dragon growth.",
