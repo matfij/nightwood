@@ -194,7 +194,8 @@ export class ItemService {
         if (item.type !== ItemType.Equipment) {
             this.errorService.throw('errors.itemNotDecomposable');
         }
-        await this.itemRepository.delete(item.id);
+        item.quantity = 0;
+        await this.itemRepository.update(item.id, { quantity: item.quantity });
 
         const itemDef = this.dataService.getItemData(item.uid);
         return CONVERT_ETER(itemDef.level, itemDef.rarity);

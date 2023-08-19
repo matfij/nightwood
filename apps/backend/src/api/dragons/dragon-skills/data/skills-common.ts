@@ -117,7 +117,7 @@ export const TreasureHunter: Skill = {
 export const LethalBlow: Skill = {
     uid: 'lethalBlow',
     name: 'Lethal Blow',
-    hint: 'Gives chance to hit ten times as much.',
+    hint: 'Gives chance to double critical power.',
     level: 60,
     requiredNature: [],
 }

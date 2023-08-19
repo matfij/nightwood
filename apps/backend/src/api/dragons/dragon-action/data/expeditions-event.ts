@@ -11,6 +11,8 @@ export const EXPEDITION_EVENT_ANNIVERSARY: ExpeditionDto = {
     level: 10,
     gold: 100,
     extraGold: 100,
+    eter: 10,
+    extraEter: 10,
     loots: [
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, 
         SHARD_ATTACK, SHARD_ATTACK, SHARD_ATTACK, SHARD_ATTACK,
@@ -37,6 +39,8 @@ export const EXPEDITION_EVENT_1: ExpeditionDto = {
     level: 10,
     gold: 100,
     extraGold: 50,
+    eter: 5,
+    extraEter: 5,
     loots: [
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, 
         SHARD_ATTACK, SHARD_ATTACK, SHARD_ATTACK, SHARD_ATTACK,

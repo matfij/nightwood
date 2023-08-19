@@ -233,7 +233,7 @@ export const WoundedPride: Skill = {
 export const ProminenceBlast: Skill = {
     uid: 'prominenceBlast',
     name: 'Prominence Blast',
-    hint: 'Performs a powerful attack at the beginning of the combat that uses all the dragons mana.',
+    hint: 'Performs a powerful attack at the beginning of the combat that uses all the dragons mana. Will not instantly kill the enemy.',
     level: 60,
     requiredNature: [DragonNature.Power]
 }

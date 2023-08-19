@@ -21,7 +21,13 @@ export class ExpeditionDto {
     gold: number;
 
     @ApiProperty()
+    eter: number;
+
+    @ApiProperty()
     extraGold: number;
+
+    @ApiProperty()
+    extraEter: number;
 
     @ApiProperty({ type: [ItemDto] })
     loots: ItemDto[];

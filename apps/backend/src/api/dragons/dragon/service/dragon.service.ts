@@ -314,6 +314,15 @@ export class DragonService {
         return Math.round(gainedGold);
     }
 
+    async awardExpeditionEter(dragon: DragonDto, expedition: ExpeditionDto): Promise<number> {
+        let baseEter = expedition.eter;
+        if (dragon.unlockedExpeditions.includes(expedition.uid)) baseEter += expedition.extraEter;
+
+        const gainedEter =
+            this.mathService.randRange(0, 1) * baseEter * (1 + dragon.skills.beginnersLuck / 60);
+        return Math.round(gainedEter);
+    }
+
     async startBattle(ownerId: number, dto: BattleStartDto): Promise<BattleResultDto> {
         if (dto.ownedDragonId === dto.enemyDragonId) this.errorService.throw('errors.battleItself');
 

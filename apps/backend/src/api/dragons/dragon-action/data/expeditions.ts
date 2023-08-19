@@ -12,6 +12,8 @@ export const ANDREW_FOREST: ExpeditionDto = {
     level: 1,
     gold: 30,
     extraGold: 10,
+    eter: 0,
+    extraEter: 2,
     loots: [
         FEEBLE_MUSHROOMS,
         BUBULAE_STEAK, BUBULAE_STEAK, BUBULAE_STEAK, BUBULAE_STEAK,
@@ -47,6 +49,8 @@ export const CARRAMBA_SANDS: ExpeditionDto = {
     level: 10,
     gold: 60,
     extraGold: 20,
+    eter: 0,
+    extraEter: 5,
     loots: [
         FEEBLE_MUSHROOMS, FEEBLE_MUSHROOMS,
         BUBULAE_STEAK, BUBULAE_STEAK,
@@ -85,6 +89,8 @@ export const HARNA_PEAKS: ExpeditionDto = {
     level: 10,
     gold: 90,
     extraGold: 30,
+    eter: 0,
+    extraEter: 5,
     loots: [
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
         SHARD_ATTACK, SHARD_ATTACK, SHARD_ATTACK,
@@ -118,6 +124,8 @@ export const MIRAGE_ISLANDS: ExpeditionDto = {
     level: 30,
     gold: 80,
     extraGold: 20,
+    eter: 1,
+    extraEter: 10,
     loots: [
         SOVAGA_LEAVES, SOVAGA_LEAVES, SOVAGA_LEAVES,
         SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK, SHARD_BLANK,
