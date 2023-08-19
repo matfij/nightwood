@@ -55,4 +55,4 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 -   Guilds - members, constructions [100%]
 -   Mini games [0%]
 -   Battle tournaments [0%]
--   New skills - 100 lvl, 200 lvl [0%]
+-   New skills - 100 lvl, 200 lvl [10%]
