@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { ActionController, ItemController, ItemDto, ItemRecipeDto, ItemType } from 'src/app/client/api';
 import { CONVERT_ETER } from '../../../core/data/eter-converter';
 import { ToastService } from '../../../common/services/toast.service';
@@ -62,6 +62,10 @@ export class CraftingComponent implements OnInit {
                 this.engineService.tick();
                 this.decomposeLoading$.next(false);
             }),
+            catchError((err) => {
+                this.decomposeLoading$.next(false);
+                throw err;
+            })
         );
     }
 }
