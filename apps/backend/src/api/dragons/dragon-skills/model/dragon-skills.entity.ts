@@ -116,4 +116,13 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     prominenceBlast: number;
+
+    @Column({ default: 0 })
+    conserve: number;
+
+    @Column({ default: 0 })
+    counterattack: number;
+
+    @Column({ default: 0 })
+    heavyImpact: number;
 }

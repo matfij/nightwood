@@ -4,7 +4,7 @@
 export const EXPEDITION_TIME_SCALE = 1 / 1;
 export const FEED_TIME_SCALE = 1 / 1;
 export const ALCHEMY_TIME_SCALE = 1 / 1;
-export const GUILD_RESOURCES_GAIN = 1.5;
+export const GUILD_RESOURCES_GAIN = 1;
 export const ETER_CONVERTER_SCALE = 1;
 
 export const PAGINATION_DEFAULT_PAGE = 0;

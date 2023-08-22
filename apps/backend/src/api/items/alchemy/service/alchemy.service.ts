@@ -35,7 +35,7 @@ export class AlchemyService {
         const recipe = MIXTURE_RECIPES.find(x => x.uid === dto.recipeUid);
         if (!recipe) this.errorService.throw('errors.recipeNotFound');
 
-        this.itemService.checkAndConsumeItems(recipe.ingredients, user.id);
+        await this.itemService.checkAndConsumeItems(recipe.ingredients, user.id);
 
         const newMixture: MixtureDto = {
             uid: recipe.uid,

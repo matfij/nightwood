@@ -115,4 +115,13 @@ export class DragonSkillsDto {
 
     @ApiProperty()
     prominenceBlast?: number;
+
+    @ApiProperty()
+    conserve?: number;
+
+    @ApiProperty()
+    counterattack?: number;
+
+    @ApiProperty()
+    heavyImpact?: number;
 }
