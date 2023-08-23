@@ -1,5 +1,5 @@
-import { DragonNature } from "src/api/dragons/dragon/model/definitions/dragons"
-import { Skill } from "../model/definitions/dragons-skills"
+import { DragonNature } from 'src/api/dragons/dragon/model/definitions/dragons';
+import { Skill } from '../model/definitions/dragons-skills';
 
 /**
  * Fire
@@ -16,7 +16,7 @@ export const FireBreath: Skill = {
 export const FireBolt: Skill = {
     uid: 'fireBolt',
     name: 'Fire Bolt',
-    hint: 'Enables a dragon to cast fire bolts that increase caster\'s critical power. Base mana cost: 20, grows with skill level.',
+    hint: "Enables a dragon to cast fire bolts that increase caster's critical power. Base mana cost: 20, grows with skill level.",
     level: 30,
     requiredNature: [DragonNature.Fire],
     castMana: 20,
@@ -26,10 +26,18 @@ export const FireBolt: Skill = {
 export const InferialBlessing: Skill = {
     uid: 'inferialBlessing',
     name: 'Inferial Blessing',
-    hint: 'Enhances dragon\'s armor and resistance.',
+    hint: "Enhances dragon's armor and resistance.",
     level: 60,
     requiredNature: [DragonNature.Fire],
-}
+};
+
+export const BlazeScar: Skill = {
+    uid: 'blazeScar',
+    name: 'Blaze Scar',
+    hint: 'Gives a chance to inflict a Blaze Scar that will deal damage over time.',
+    level: 100,
+    requiredNature: [DragonNature.Fire],
+};
 
 /**
  * Water
@@ -58,6 +66,14 @@ export const Freeze: Skill = {
     name: 'Freeze',
     hint: 'Gives a chance to freeze the opponent, preventing him from making a move in the next turn.',
     level: 60,
+    requiredNature: [DragonNature.Water],
+};
+
+export const TidalSurge: Skill = {
+    uid: 'tidalSurge',
+    name: 'Tidal Surge',
+    hint: 'Once, at the beggining of the battle, summons a powerful wave that deals damage and slows the enemy.',
+    level: 100,
     requiredNature: [DragonNature.Water],
 };
 
@@ -91,6 +107,16 @@ export const Zeal: Skill = {
     requiredNature: [DragonNature.Wind],
 };
 
+export const TempestFury: Skill = {
+    uid: 'tempestFury',
+    name: 'Tempest Fury',
+    hint: 'Unleash a raging tempest that deals devastating damage and guarantees critical during next action.',
+    level: 100,
+    requiredNature: [DragonNature.Wind],
+    castMana: 40,
+    castChance: 0.15,
+};
+
 /**
  * Earth
  */
@@ -121,6 +147,13 @@ export const DeepWounds: Skill = {
     requiredNature: [DragonNature.Earth],
 };
 
+export const Earthquake: Skill = {
+    uid: 'earthquake',
+    name: 'Earthquake',
+    hint: 'Once, at the beggining of the battle, summons almighty earthquake that breaks enemy armor.',
+    level: 100,
+    requiredNature: [DragonNature.Earth],
+};
 
 /**
  * Electric
@@ -147,8 +180,16 @@ export const Thunderbolt: Skill = {
 export const SuperCharge: Skill = {
     uid: 'superCharge',
     name: 'Super Charge',
-    hint: 'Grants the Thunder God blessing that may randomly restore a dragon\'s health.',
+    hint: "Grants the Thunder God blessing that may randomly restore a dragon's health.",
     level: 60,
+    requiredNature: [DragonNature.Electric],
+};
+
+export const ElectroStrike: Skill = {
+    uid: 'electroStrike',
+    name: 'Electro Strike',
+    hint: 'enchances Static Strike with ability to break magic resistance and paralyze enemies.',
+    level: 100,
     requiredNature: [DragonNature.Electric],
 };
 
@@ -168,7 +209,7 @@ export const LeafCut: Skill = {
 export const CriticalDrain: Skill = {
     uid: 'criticalDrain',
     name: 'Critical Drain',
-    hint: 'Critical strikes drain enemy\'s health and mana.',
+    hint: "Critical strikes drain enemy's health and mana.",
     level: 30,
     requiredNature: [DragonNature.Nature],
 };
@@ -180,6 +221,16 @@ export const EnchantedBarrier: Skill = {
     level: 60,
     requiredNature: [DragonNature.Nature],
     castMana: 5,
+};
+
+export const SolarBeam: Skill = {
+    uid: 'solarBeam',
+    name: 'Solar Beam',
+    hint: 'Enables a dragon to cast Solar beam that deals heavy damage and lowers the enemy accuracy. Base mana cost: 50, grows with skill level.',
+    level: 100,
+    requiredNature: [DragonNature.Nature],
+    castMana: 50,
+    castChance: 0.20,
 };
 
 /**
@@ -197,7 +248,7 @@ export const Poison: Skill = {
 export const LifeLink: Skill = {
     uid: 'lifeLink',
     name: 'Life Link',
-    hint: 'Base attacks drain enemy\'s health.',
+    hint: "Base attacks drain enemy's health.",
     level: 30,
     requiredNature: [DragonNature.Dark],
 };
@@ -210,6 +261,16 @@ export const TerribleOmen: Skill = {
     requiredNature: [DragonNature.Dark],
 };
 
+export const LaserExedra: Skill = {
+    uid: 'laserExedra',
+    name: 'Laser Exedra',
+    hint: 'Enables a dragon to cast almighty beam that deals heavy damage and reduces the enemy maximum health. Base mana cost: 50, grows with skill level.',
+    level: 100,
+    requiredNature: [DragonNature.Dark],
+    castMana: 50,
+    castChance: 0.20,
+};
+
 /**
  * Power
  */
@@ -219,21 +280,31 @@ export const VeritableStrike: Skill = {
     name: 'Veritable Strike',
     hint: 'Base attacks are enhanced with true damage component.',
     level: 10,
-    requiredNature: [DragonNature.Power]
-}
+    requiredNature: [DragonNature.Power],
+};
 
 export const WoundedPride: Skill = {
     uid: 'woundedPride',
     name: 'Wounded Pride',
     hint: 'Taking damage increases dragon base stats.',
     level: 30,
-    requiredNature: [DragonNature.Power]
-}
+    requiredNature: [DragonNature.Power],
+};
 
 export const ProminenceBlast: Skill = {
     uid: 'prominenceBlast',
     name: 'Prominence Blast',
     hint: 'Performs a powerful attack at the beginning of the combat that uses all the dragons mana. Will not instantly kill the enemy.',
     level: 60,
-    requiredNature: [DragonNature.Power]
-}
+    requiredNature: [DragonNature.Power],
+};
+
+export const AndromedaArrow: Skill = {
+    uid: 'andromedaArrow',
+    name: 'Andromeda Arrow',
+    hint: 'Enables a dragon to cast Andromeda Arrow that deals severe damage and diminishes enemy mana. Base mana cost: 50, grows with skill level.',
+    level: 100,
+    requiredNature: [DragonNature.Power],
+    castMana: 50,
+    castChance: 0.20,
+};

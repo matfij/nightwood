@@ -124,4 +124,28 @@ export class DragonSkillsDto {
 
     @ApiProperty()
     heavyImpact?: number;
+
+    @ApiProperty()
+    blazeScar?: number;
+
+    @ApiProperty()
+    tidalSurge?: number;
+
+    @ApiProperty()
+    tempestFury?: number;
+
+    @ApiProperty()
+    earthquake?: number;
+
+    @ApiProperty()
+    electroStrike?: number;
+
+    @ApiProperty()
+    solarBeam?: number;
+
+    @ApiProperty()
+    laserExedra?: number;
+
+    @ApiProperty()
+    andromedaArrow?: number;
 }

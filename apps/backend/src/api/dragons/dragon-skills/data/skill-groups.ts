@@ -42,6 +42,14 @@ import {
     VeritableStrike,
     WoundedPride,
     ProminenceBlast,
+    BlazeScar,
+    TidalSurge,
+    TempestFury,
+    Earthquake,
+    ElectroStrike,
+    SolarBeam,
+    LaserExedra,
+    AndromedaArrow,
 } from './skills-exclusive';
 
 export const COMMON_SKILLS: Skill[] = [
@@ -67,34 +75,42 @@ export const EXCLUSIVE_SKILLS: Skill[] = [
     FireBreath,
     FireBolt,
     InferialBlessing,
+    BlazeScar,
 
     SoundBody,
     IceBolt,
     Freeze,
+    TidalSurge,
 
     PugnaciousStrike,
     AirVector,
     Zeal,
+    TempestFury,
 
     RoughSkin,
     RockBlast,
     DeepWounds,
+    Earthquake,
 
     StaticStrike,
     Thunderbolt,
     SuperCharge,
+    ElectroStrike,
 
     LeafCut,
     CriticalDrain,
     EnchantedBarrier,
+    SolarBeam,
 
     Poison,
     LifeLink,
     TerribleOmen,
+    LaserExedra,
 
     VeritableStrike,
     WoundedPride,
     ProminenceBlast,
+    AndromedaArrow,
 ];
 
 export const ALL_SKILLS: Skill[] = [...COMMON_SKILLS, ...EXCLUSIVE_SKILLS];

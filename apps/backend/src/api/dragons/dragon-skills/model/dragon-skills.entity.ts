@@ -125,4 +125,28 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     heavyImpact: number;
+
+    @Column({ default: 0 })
+    blazeScar: number;
+
+    @Column({ default: 0 })
+    tidalSurge: number;
+
+    @Column({ default: 0 })
+    tempestFury: number;
+
+    @Column({ default: 0 })
+    earthquake: number;
+
+    @Column({ default: 0 })
+    electroStrike: number;
+
+    @Column({ default: 0 })
+    solarBeam: number;
+
+    @Column({ default: 0 })
+    laserExedra: number;
+
+    @Column({ default: 0 })
+    andromedaArrow: number;
 }
