@@ -72,7 +72,8 @@ export class BattleHelperService {
         );
         let critPower = Math.min(
             this.MAX_CRIT_POWER,
-            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower,
+            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower 
+                + (dragon.skills.heavyImpact || 0) / 50,
         );
         let dodgeChance = Math.min(
             this.MAX_DODGE_CHANCE,
