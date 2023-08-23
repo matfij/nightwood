@@ -221,6 +221,7 @@ export class DragonBattleService {
         let cssClasses = turnResult.cssClasses;
 
         let blockedHit = 0;
+        let castFactor = attacker.skills.conserve ? 1 - (attacker.skills.conserve / 60) : 1;
 
         /**
          * Pre-spell effects
@@ -233,7 +234,7 @@ export class DragonBattleService {
             }
         }
         if (attacker.skills.magicArrow > 0) {
-            const castCost = MagicArrow.castMana * (1 + attacker.skills.magicArrow / 10);
+            const castCost = castFactor * MagicArrow.castMana * (1 + attacker.skills.magicArrow / 10);
             if (attacker.mana > castCost && Math.random() < MagicArrow.castChance) {
                 let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.magicArrow / 10) * (1.1 * attacker.magicalAttack)
                 let inflictedDamege = baseDamage - defender.resistance;
@@ -252,7 +253,7 @@ export class DragonBattleService {
             }
         }
         if (attacker.skills.fireBolt > 0) {
-            const castCost = FireBolt.castMana * (1 + attacker.skills.fireBolt / 8);
+            const castCost = castFactor * FireBolt.castMana * (1 + attacker.skills.fireBolt / 8);
             if (attacker.mana > castCost && Math.random() < FireBolt.castChance) {
                 let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.fireBolt / 10) * (1.5 * attacker.magicalAttack);
                 let inflictedDamage = baseDamage - defender.resistance;
@@ -268,7 +269,7 @@ export class DragonBattleService {
             }
         }
         if (attacker.skills.iceBolt > 0) {
-            const castCost = IceBolt.castMana * (1 + attacker.skills.iceBolt / 8);
+            const castCost = castFactor * IceBolt.castMana * (1 + attacker.skills.iceBolt / 8);
             if (attacker.mana > castCost && Math.random() < IceBolt.castChance) {
                 let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.iceBolt / 10) * (1.4 * attacker.magicalAttack);
                 let inflictedDamage = baseDamage - defender.resistance;
@@ -284,7 +285,7 @@ export class DragonBattleService {
             }
         }
         if (attacker.skills.airVector > 0) {
-            const castCost = AirVector.castMana * (1 + attacker.skills.airVector / 8);
+            const castCost = castFactor * AirVector.castMana * (1 + attacker.skills.airVector / 8);
             if (attacker.mana > castCost && Math.random() < AirVector.castChance) {
                 let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.airVector / 10) * (1.3 * attacker.magicalAttack);
                 let inflictedDamage = baseDamage - defender.resistance;
@@ -300,7 +301,7 @@ export class DragonBattleService {
             }
         }
         if (attacker.skills.rockBlast > 0) {
-            const castCost = RockBlast.castMana * (1 + attacker.skills.rockBlast / 8);
+            const castCost = castFactor * RockBlast.castMana * (1 + attacker.skills.rockBlast / 8);
             if (attacker.mana > castCost && Math.random() < RockBlast.castChance) {
                 let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.rockBlast / 10) * (1.5 * attacker.magicalAttack);
                 let inflictedDamage = baseDamage - defender.resistance;
@@ -318,7 +319,7 @@ export class DragonBattleService {
             }
         }
         if (attacker.skills.thunderbolt > 0) {
-            const castCost = Thunderbolt.castMana * (1 + attacker.skills.thunderbolt / 9);
+            const castCost = castFactor * Thunderbolt.castMana * (1 + attacker.skills.thunderbolt / 9);
             if (attacker.mana > castCost && Math.random() < Thunderbolt.castChance) {
                 let baseDamage = this.mathService.randRange(0.5, 1.9) * (1 + attacker.skills.thunderbolt / 10) * (1.9 * attacker.magicalAttack);
                 let inflictedDamage = baseDamage - defender.resistance;
