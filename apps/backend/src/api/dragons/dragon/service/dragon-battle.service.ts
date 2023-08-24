@@ -148,6 +148,7 @@ export class DragonBattleService {
     private performMovement(attacker: DragonBattleDto, defender: DragonBattleDto, ownedTurn: boolean, turn: number): TurnResult {
         let cssClasses = ownedTurn ? 'item-log log-owned' : 'item-log log-enemy';
         let turnResult: TurnResult = { attacker: attacker, defender: defender, log: '', cssClasses: cssClasses };
+        let dodged = false;
 
         /**
          * Preamptive restore effects
@@ -172,6 +173,8 @@ export class DragonBattleService {
                 </div>`;
 
             turnResult.skip = true;
+            dodged 
+             =true;
         }
 
         /**
@@ -185,6 +188,17 @@ export class DragonBattleService {
          * Post-movement effects
          */
         turnResult = this.executePostTurnEffects(turnResult, turn);
+
+        /**
+         * Counterattack
+         */
+        if (!dodged && turnResult.skip && defender.skills.counterattack) {
+            const counterattackChance = defender.skills.counterattack / 40;
+            if (counterattackChance > Math.random()) {
+                defender.initiative = attacker.initiative + defender.speed;
+                turnResult.log += `<div class="item-log log-status">${defender.name} performs counterattack:</div>`
+            }
+        }
 
         return turnResult;
     }
@@ -613,7 +627,7 @@ export class DragonBattleService {
 
         independentLogs.forEach(independentLog => log += independentLog);
 
-        return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
+        return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: turnResult.skip };
     }
 
     private async saveBattleResults(result: BattleResultType, owned: DragonBattleDto, enemy: DragonBattleDto, battleLength: number): Promise<BattleResultExperience> {
