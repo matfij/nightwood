@@ -72,8 +72,10 @@ export class BattleHelperService {
         );
         let critPower = Math.min(
             this.MAX_CRIT_POWER,
-            this.BASE_CRIT_POWER + dragon.luck / (dragon.level + 10) + runeStats.criticalPower 
-                + (dragon.skills.heavyImpact || 0) / 50,
+            this.BASE_CRIT_POWER +
+                dragon.luck / (dragon.level + 10) +
+                runeStats.criticalPower +
+                (dragon.skills.heavyImpact || 0) / 50,
         );
         let dodgeChance = Math.min(
             this.MAX_DODGE_CHANCE,
@@ -112,6 +114,7 @@ export class BattleHelperService {
             dodgeChance: dodgeChance,
             healthRegen: healthRegen,
             deepWounds: 0,
+            blazeScar: 0,
         };
     }
 
@@ -198,7 +201,9 @@ export class BattleHelperService {
             ${attacker.name} (${Math.round(attacker.health)}) uses <b>${name}</b>
             with power of ${Math.round(baseDamage)}`;
         extraLogs.forEach((extraLog) => (log += extraLog));
-        log += `<div>${defender.name} (${Math.round(defender.health)}) took ${Math.round(inflictedDamege)} damage</div></div>`;
+        log += `<div>${defender.name} (${Math.round(defender.health)}) took ${Math.round(
+            inflictedDamege,
+        )} damage</div></div>`;
         return log;
     }
 }

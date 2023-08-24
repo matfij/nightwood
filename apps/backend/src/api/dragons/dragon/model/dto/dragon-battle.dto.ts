@@ -50,4 +50,7 @@ export class DragonBattleDto extends PartialType(DragonDto) {
 
     @ApiPropertyOptional()
     deepWounds: number;
+
+    @ApiPropertyOptional()
+    blazeScar: number;
 }

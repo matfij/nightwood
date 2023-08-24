@@ -563,6 +563,15 @@ export class DragonBattleService {
                 extraLogs.push(`<div class="log-extra">+ deep wound ${newWound.toFixed(1)} damage</div>`);
             }
         }
+
+        if (attacker.skills.blazeScar) {
+            const scarChance = 0.1 + attacker.skills.blazeScar / 60;
+            if (scarChance > Math.random()) {
+                const newScar = defender.maxHealth * (attacker.skills.blazeScar / 125);
+                defender.blazeScar += newScar;
+                extraLogs.push(`<div class="log-extra">+ blaze scar ${newScar.toFixed(1)} damage</div>`);
+            }
+        }
         
         /**
          * Post-defensive skills
@@ -609,8 +618,14 @@ export class DragonBattleService {
         
         if (attacker.deepWounds > 0) {
             attacker.health -= attacker.deepWounds;
-            attacker.deepWounds *= 0.82;
             independentLogs.push(`<div class="item-log log-status">${attacker.name} suffered ${attacker.deepWounds.toFixed(1)} internal damage.</div>`);
+            attacker.deepWounds *= 0.82;
+        }
+        
+        if (attacker.blazeScar > 0) {
+            attacker.health -= attacker.blazeScar;
+            independentLogs.push(`<div class="item-log log-status">${attacker.name} suffered ${attacker.blazeScar.toFixed(1)} blaze damage.</div>`);
+            attacker.blazeScar *= 0.66;
         }
 
         if (defender.skills.woundedPride > 0) {
