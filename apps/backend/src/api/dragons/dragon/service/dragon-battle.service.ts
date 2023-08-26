@@ -11,6 +11,7 @@ import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
 import { BattleHelperService } from "./dragon-helper.service";
 import { TurnResult, BattleResultType, BattleResultExperience } from "../model/definitions/dragon-battle";
+import { zip } from "rxjs";
 
 @Injectable()
 export class DragonBattleService {
@@ -210,18 +211,25 @@ export class DragonBattleService {
         let extraLogs = [];
 
         if (attacker.skills.prominenceBlast > 0) {
-            let baseDamage = 
-                (1 + attacker.skills.prominenceBlast / 8) 
-                * (2.5 * (attacker.magicalAttack + attacker.physicalAttack))
-                
+            let baseDamage =  this.mathService.randRange(0.9, 1.1) * (attacker.skills.prominenceBlast / 8) * (2.5 * (attacker.magicalAttack + attacker.physicalAttack));
             let inflictedDamege = baseDamage - (defender.resistance + defender.armor);
-            inflictedDamege = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(attacker.level / 5, inflictedDamege, inflictedDamege);
+            inflictedDamege = this.mathService.limit(attacker.level / 5, inflictedDamege, inflictedDamege);
             inflictedDamege = Math.min(inflictedDamege, 0.75 * defender.health)
             defender.health -= inflictedDamege;
             attacker.mana = 0;
-
             log = this.battleHelperService.getSkillLog('Prominence Blast', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
-
+            return { attacker: attacker, defender: defender, skip: false, log: log };
+        }
+        if (attacker.skills.tidalSurge > 0) {
+            let baseDamage = this.mathService.randRange(0.9, 1.1) * (attacker.skills.tidalSurge / 16) * (1 * attacker.magicalAttack);
+            let inflictedDamege = baseDamage - defender.resistance;
+            inflictedDamege = this.mathService.limit(attacker.skills.tidalSurge, inflictedDamege, inflictedDamege);
+            defender.health -= inflictedDamege;
+            let speedReduction = this.mathService.randRange(0.9, 1.1) * (5 + 0.025 * defender.speed * attacker.skills.tidalSurge);
+            speedReduction = this.mathService.limit(attacker.skills.tidalSurge, speedReduction, defender.speed / 3);
+            defender.speed -= speedReduction;
+            extraLogs.push(`<div class="log-extra">+ reduced speed by (${speedReduction.toFixed(1)})</div>`);
+            log = this.battleHelperService.getSkillLog('Tidal Surge', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
         return turnResult;
