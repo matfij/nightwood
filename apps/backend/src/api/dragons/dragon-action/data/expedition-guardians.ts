@@ -28,11 +28,12 @@ export const GUARDIAN_DESERT: ExpeditionGuardianDto = {
     name: 'Tyrrajnitos',
     level: 30,
     strength: 35,
-    dexterity: 15,
+    dexterity: 10,
     endurance: 25,
     will: 10,
     luck: 5,
     skills: {
+        earthquake: 30,
         roughSkin: 10,
         soundBody: 25,
         block: 10,

@@ -188,7 +188,7 @@ export const SuperCharge: Skill = {
 export const ElectroStrike: Skill = {
     uid: 'electroStrike',
     name: 'Electro Strike',
-    hint: 'enchances Static Strike with ability to break magic resistance and paralyze enemies.',
+    hint: 'Enchances the Static Strike with ability to break magic resistance and paralyze enemies.',
     level: 100,
     requiredNature: [DragonNature.Electric],
 };
@@ -268,7 +268,7 @@ export const LaserExedra: Skill = {
     level: 100,
     requiredNature: [DragonNature.Dark],
     castMana: 50,
-    castChance: 0.20,
+    castChance: 0.15,
 };
 
 /**

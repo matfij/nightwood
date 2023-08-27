@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/data/skills-common";
-import { AirVector, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
+import { AirVector, AndromedaArrow, EnchantedBarrier, FireBolt, IceBolt, LaserExedra, LeafCut, RockBlast, SolarBeam, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
 import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -165,17 +165,15 @@ export class DragonBattleService {
         /**
          * Dodge chance
          */
-        const dodgeChance = turnResult.defender.dodgeChance * (1 - attacker.skills.thoughtfulStrike / 70);
+        let dodgeChance = turnResult.defender.dodgeChance * (1 - (attacker.skills.thoughtfulStrike || 0) / 70);
+        // dodgeChance = Math.min(dodgeChance, 0.67);
         if (!turnResult.skip && dodgeChance > Math.random()) {
             turnResult.log = `
                 <div class="item-log log-miss">
-                    ${turnResult.attacker.name} (${Math.round(turnResult.attacker.health)}) 
-                    missess.
+                    ${turnResult.attacker.name} (${Math.round(turnResult.attacker.health)}) missess.
                 </div>`;
-
             turnResult.skip = true;
-            dodged 
-             =true;
+            dodged = true;
         }
 
         /**
@@ -388,7 +386,53 @@ export class DragonBattleService {
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
-
+        if (attacker.skills.solarBeam > 0) {
+            const castCost = castFactor * SolarBeam.castMana * (1 + attacker.skills.solarBeam / 7);
+            if (attacker.mana > castCost && Math.random() < SolarBeam.castChance) {
+                let baseDamage = this.mathService.randRange(0.9, 1.3) * (1 + attacker.skills.solarBeam / 7) * (1.9 * attacker.magicalAttack);
+                let inflictedDamage = baseDamage - defender.resistance;
+                inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
+                inflictedDamage *= (1 - blockedHit);
+                defender.health -= inflictedDamage;
+                attacker.mana -= castCost;
+                attacker.dodgeChance += 0.12;
+                extraLogs.push(`<div class="log-extra">+ dazzle</div>`);
+                log = this.battleHelperService.getSkillLog('Solar Beam', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
+        }
+        if (attacker.skills.laserExedra > 0) {
+            const castCost = castFactor * LaserExedra.castMana * (1 + attacker.skills.laserExedra / 7);
+            if (attacker.mana > castCost && Math.random() < LaserExedra.castChance) {
+                let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.laserExedra / 6) * (1.8 * attacker.magicalAttack);
+                let inflictedDamage = baseDamage - defender.resistance;
+                inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
+                inflictedDamage *= (1 - blockedHit);
+                defender.health -= inflictedDamage;
+                defender.maxHealth -= inflictedDamage;
+                attacker.mana -= castCost;
+                extraLogs.push(`<div class="log-extra">+ permanent loss (${inflictedDamage.toFixed(1)}) health</div>`);
+                log = this.battleHelperService.getSkillLog('Laser Exedra', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
+        }
+        if (attacker.skills.andromedaArrow > 0) {
+            const castCost = castFactor * AndromedaArrow.castMana * (1 + attacker.skills.andromedaArrow / 7);
+            if (attacker.mana > castCost && Math.random() < LaserExedra.castChance) {
+                let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.andromedaArrow / 9) * (1.8 * attacker.magicalAttack);
+                let inflictedDamage = baseDamage - defender.resistance;
+                inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
+                inflictedDamage *= (1 - blockedHit);
+                defender.health -= inflictedDamage;
+                let destroyedMana = defender.maxMana * (attacker.skills.andromedaArrow / 125);
+                defender.mana -= destroyedMana;
+                attacker.mana -= castCost;
+                extraLogs.push(`<div class="log-extra">+ destroyed (${destroyedMana.toFixed(1)}) mana</div>`);
+                log = this.battleHelperService.getSkillLog('Andromeda Arrow', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
+        }
+        
         return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
     }
 
@@ -576,6 +620,19 @@ export class DragonBattleService {
                 const armorBreak = 0.5 + 0.1 * defender.armor * attacker.skills.staticStrike / 50;
                 defender.armor -= armorBreak;
                 extraLogs.push(`<div class="log-extra">+ broken ${armorBreak.toFixed(1)} armor</div>`);
+            }
+            if (attacker.skills.electroStrike) {
+                if (defender.resistance > 0) {
+                    const resistanceBreak = 0.5 + 0.1 * defender.armor * attacker.skills.staticStrike / 50;
+                    defender.resistance -= resistanceBreak;
+                    extraLogs.push(`<div class="log-extra">+ broken ${resistanceBreak.toFixed(1)} resistance</div>`);
+                }
+                const paralysisChance = attacker.skills.electroStrike / 110;
+                if (paralysisChance > Math.random()) {
+                    defender.speed -= 0.1 * defender.speed;
+                    defender.initiative -= 0.25 * defender.speed;
+                    extraLogs.push(`<div class="log-extra">+ paralysis</div>`);
+                }
             }
         }
 
