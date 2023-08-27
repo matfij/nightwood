@@ -232,6 +232,17 @@ export class DragonBattleService {
             log = this.battleHelperService.getSkillLog('Tidal Surge', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
+        if (attacker.skills.earthquake > 0) {
+            let baseDamage = this.mathService.randRange(0.9, 1.1) * (attacker.skills.earthquake / 16) * (1 * attacker.magicalAttack);
+            let inflictedDamege = baseDamage - defender.resistance;
+            inflictedDamege = this.mathService.limit(attacker.skills.earthquake, inflictedDamege, inflictedDamege);
+            defender.health -= inflictedDamege;
+            const armorBreak = defender.armor * (attacker.skills.earthquake / 80);
+            defender.armor -= armorBreak;
+            extraLogs.push(`<div class="log-extra">+ broken (${armorBreak.toFixed(1)}) armor</div>`);
+            log = this.battleHelperService.getSkillLog('Earthquake', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
+            return { attacker: attacker, defender: defender, skip: false, log: log };
+        }
         return turnResult;
     }
 
