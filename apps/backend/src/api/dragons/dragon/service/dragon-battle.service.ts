@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/data/skills-common";
-import { AirVector, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
+import { AirVector, EnchantedBarrier, FireBolt, IceBolt, LeafCut, RockBlast, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
 import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -359,6 +359,24 @@ export class DragonBattleService {
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
+        if (attacker.skills.tempestFury > 0) {
+            const castCost = castFactor * TempestFury.castMana * (1 + attacker.skills.tempestFury / 7);
+            if (attacker.mana > castCost && Math.random() < TempestFury.castChance) {
+                let baseDamage = this.mathService.randRange(0.8, 1.4) * (1 + attacker.skills.tempestFury / 8) * (1.9 * attacker.magicalAttack);
+                let inflictedDamage = baseDamage - defender.resistance;
+                inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
+                inflictedDamage *= (1 - blockedHit);
+                defender.health -= inflictedDamage;
+                attacker.mana -= castCost;
+                extraLogs.push(`<div class="log-extra">+ focus</div>`);
+                attacker.critBoost = {
+                    extraChance: 1,
+                    turnLeft: 1,
+                }
+                log = this.battleHelperService.getSkillLog('Tempest Fury', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
+        }
 
         return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
     }
@@ -420,7 +438,12 @@ export class DragonBattleService {
         /**
          * Critical chance
          */
-        if (attacker.critChance > Math.random()) {
+        let critChance = attacker.critChance;
+        if (attacker.critBoost.turnLeft > 0) {
+            critChance += attacker.critBoost.extraChance;
+            attacker.critBoost.turnLeft -= 1;
+        }
+        if (critChance > Math.random()) {
             isCrit = true;
             critFactor = attacker.critPower;
             cssClasses += ' log-crit';

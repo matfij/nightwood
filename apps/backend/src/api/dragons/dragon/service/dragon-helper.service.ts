@@ -115,6 +115,10 @@ export class BattleHelperService {
             healthRegen: healthRegen,
             deepWounds: 0,
             blazeScar: 0,
+            critBoost: {
+                turnLeft: 0,
+                extraChance: 0,
+            },
         };
     }
 

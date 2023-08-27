@@ -53,4 +53,12 @@ export class DragonBattleDto extends PartialType(DragonDto) {
 
     @ApiPropertyOptional()
     blazeScar: number;
+
+    @ApiPropertyOptional()
+    critBoost: CritBoost;
+}
+
+export interface CritBoost {
+    extraChance: number;
+    turnLeft: number;
 }

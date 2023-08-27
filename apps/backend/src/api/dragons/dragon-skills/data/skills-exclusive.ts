@@ -110,10 +110,10 @@ export const Zeal: Skill = {
 export const TempestFury: Skill = {
     uid: 'tempestFury',
     name: 'Tempest Fury',
-    hint: 'Unleash a raging tempest that deals devastating damage and guarantees critical during next action.',
+    hint: 'Unleash a raging tempest that deals devastating damage and guarantees critical during next action. Base mana cost: 50, grows with skill level.',
     level: 100,
     requiredNature: [DragonNature.Wind],
-    castMana: 40,
+    castMana: 50,
     castChance: 0.15,
 };
 
