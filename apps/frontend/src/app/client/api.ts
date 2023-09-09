@@ -2194,6 +2194,7 @@ export interface IItemController {
     getOwnedFoods(): Observable<ItemPageDto>;
     getRuneBaseRecipes(): Observable<ItemRecipeDto[]>;
     getRuneSpecialRecipes(): Observable<ItemRecipeDto[]>;
+    getRuneEterRecipes(): Observable<ItemRecipeDto[]>;
     composeRecipe(body: RecipeComposeDto): Observable<ItemDto>;
 }
 
@@ -2378,6 +2379,53 @@ export class ItemController implements IItemController {
     }
 
     protected processGetRuneSpecialRecipes(response: HttpResponseBase): Observable<ItemRecipeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ItemRecipeDto[];
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getRuneEterRecipes(): Observable<ItemRecipeDto[]> {
+        let url_ = this.baseUrl + "/api/v1/item/getRuneEterRecipes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRuneEterRecipes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRuneEterRecipes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ItemRecipeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ItemRecipeDto[]>;
+        }));
+    }
+
+    protected processGetRuneEterRecipes(response: HttpResponseBase): Observable<ItemRecipeDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4905,6 +4953,17 @@ export interface DragonSkillsDto {
     veritableStrike: number;
     woundedPride: number;
     prominenceBlast: number;
+    conserve: number;
+    counterattack: number;
+    heavyImpact: number;
+    blazeScar: number;
+    tidalSurge: number;
+    tempestFury: number;
+    earthquake: number;
+    electroStrike: number;
+    solarBeam: number;
+    laserExedra: number;
+    andromedaArrow: number;
 
     [key: string]: any;
 }
@@ -5364,6 +5423,8 @@ export interface ItemPageDto {
 export interface ItemRecipeDto {
     uid: string;
     product: ItemDto;
+    gold: number;
+    eter: number;
     ingredients: ItemDto[];
 
     [key: string]: any;
@@ -5511,6 +5572,8 @@ export interface DragonBattleDto {
     dodgeChance: number;
     healthRegen: number;
     deepWounds?: number;
+    blazeScar?: number;
+    critBoost?: any;
 
     [key: string]: any;
 }
@@ -5590,7 +5653,9 @@ export interface ExpeditionDto {
     hint: string;
     level: number;
     gold: number;
+    eter: number;
     extraGold: number;
+    extraEter: number;
     loots: ItemDto[];
     extraLoots: ItemDto[];
     minimumActionTime: number;

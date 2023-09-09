@@ -5,53 +5,6 @@
         <div class="wrapper-crafting-section">
             <div class="wrapper-lore">
                 <div class="wrapper-lore-img">
-                    <img src="assets/img/lore/crafting-eter.png" draggable="false" alt="Goblin thinkerer" />
-                </div>
-                <div class="wrapper-lore-text">
-                    <div>{{ 'crafting.eterCraftingHint' | translate }}</div>
-                    <button (click)="displayEterRecipes = !displayEterRecipes" class="btn-base btn-small">
-                        {{ 'alchemy.toggleOffer' | translate }}
-                    </button>
-                </div>
-            </div>
-
-            <div *ngIf="displayEterRecipes">
-                <ng-template #itemsLoading>
-                    <div class="item-action" style="margin: 30px auto">
-                        <app-loading-indicator></app-loading-indicator>
-                    </div>
-                </ng-template>
-                <div *ngIf="{ items: (items$ | async), _: true } as vm" class="item-action">
-                    <div>{{ 'crafting.decomposeHint' | translate }}</div>
-                    <select #itemSelect (change)="($event)" class="input-select" style="margin-top: 5px">
-                        <option value=""></option>
-                        <option
-                            class="input-select-option"
-                            *ngFor="let item of filterEquipment(vm.items || [])"
-                            [value]="item.id"
-                        >
-                            {{ item.name }} ({{ item.quantity }})
-                        </option>
-                    </select>
-                    <div *ngIf="itemSelect.value">
-                        {{ 'crafting.eterGain' | translate }}
-                        {{ calculateEterGain(+itemSelect.value, vm.items || []) }}
-                    </div>
-                    <button
-                        (click)="decomposeItem(+itemSelect.value)"
-                        [disabled]="!itemSelect.value || (decomposeLoading$ | async)"
-                        class="btn-base btn-action"
-                    >
-                        {{ 'common.confirm' | translate }}
-                    </button>
-                    <div *ngIf="decomposeLoading$ | async">{{ decomposeItem$ | async }}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="wrapper-crafting-section">
-            <div class="wrapper-lore">
-                <div class="wrapper-lore-img">
                     <img
                         src="assets/img/lore/crafting-base-runes.png"
                         draggable="false"
@@ -106,6 +59,63 @@
                 </div>
                 <app-crafting-item-list
                     *ngIf="{ items: items$ | async, recipes: recipesSpecial$ | async } as vm"
+                    [items]="vm.items"
+                    [recipes]="vm.recipes"
+                    (refreshItems)="getOwnedItems()"
+                >
+                </app-crafting-item-list>
+            </div>
+        </div>
+
+        <div class="wrapper-crafting-section">
+            <div class="wrapper-lore">
+                <div class="wrapper-lore-img">
+                    <img src="assets/img/lore/crafting-eter.png" draggable="false" alt="Goblin thinkerer" />
+                </div>
+                <div class="wrapper-lore-text">
+                    <div>{{ 'crafting.eterCraftingHint' | translate }}</div>
+                    <button (click)="displayEterRecipes = !displayEterRecipes" class="btn-base btn-small">
+                        {{ 'alchemy.toggleOffer' | translate }}
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="displayEterRecipes">
+                <ng-template #itemsLoading>
+                    <div class="item-action" style="margin: 30px auto">
+                        <app-loading-indicator></app-loading-indicator>
+                    </div>
+                </ng-template>
+                <div *ngIf="{ items: (items$ | async), _: true } as vm" class="item-action">
+                    <div>{{ 'crafting.decomposeHint' | translate }}</div>
+                    <select #itemSelect (change)="($event)" class="input-select" style="margin-top: 5px">
+                        <option value=""></option>
+                        <option
+                            class="input-select-option"
+                            *ngFor="let item of filterEquipment(vm.items || [])"
+                            [value]="item.id"
+                        >
+                            {{ item.name }} ({{ item.quantity }})
+                        </option>
+                    </select>
+                    <div *ngIf="itemSelect.value">
+                        {{ 'crafting.eterGain' | translate }}
+                        {{ calculateEterGain(+itemSelect.value, vm.items || []) }}
+                    </div>
+                    <button
+                        (click)="decomposeItem(+itemSelect.value)"
+                        [disabled]="!itemSelect.value || (decomposeLoading$ | async)"
+                        class="btn-base btn-action"
+                    >
+                        {{ 'common.confirm' | translate }}
+                    </button>
+                    <div *ngIf="decomposeLoading$ | async">{{ decomposeItem$ | async }}</div>
+                </div>
+                <div *ngIf="!(recipesEter$ | async)?.length" style="margin: 30px auto">
+                    <app-loading-indicator></app-loading-indicator>
+                </div>
+                <app-crafting-item-list
+                    *ngIf="{ items: items$ | async, recipes: recipesEter$ | async } as vm"
                     [items]="vm.items"
                     [recipes]="vm.recipes"
                     (refreshItems)="getOwnedItems()"

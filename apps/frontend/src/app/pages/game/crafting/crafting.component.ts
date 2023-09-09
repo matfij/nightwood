@@ -16,6 +16,7 @@ export class CraftingComponent implements OnInit {
     items$ = new Observable<ItemDto[]>();
     recipesBase$ = new Observable<ItemRecipeDto[]>();
     recipesSpecial$ = new Observable<ItemRecipeDto[]>();
+    recipesEter$ = new Observable<ItemRecipeDto[]>();
     decomposeItem$ = new Observable<void>();
     decomposeLoading$ = new BehaviorSubject(false);
 
@@ -42,6 +43,7 @@ export class CraftingComponent implements OnInit {
     getRecipes() {
         this.recipesBase$ = this.itemController.getRuneBaseRecipes();
         this.recipesSpecial$ = this.itemController.getRuneSpecialRecipes();
+        this.recipesEter$ = this.itemController.getRuneEterRecipes();
     }
 
     filterEquipment(items: ItemDto[]): ItemDto[] {
@@ -50,6 +52,9 @@ export class CraftingComponent implements OnInit {
 
     calculateEterGain(itemId: number, items: ItemDto[]): number {
         const item = items.filter((item) => item.id === itemId)[0];
+        if (!item) {
+            return 0;
+        }
         return CONVERT_ETER(item.level, item.rarity);
     }
 

@@ -1,27 +1,44 @@
 <div *ngIf="recipes" class="wrapper-recipes">
-
-  <div *ngFor="let recipe of recipes" class="item-recipe">
-    <div class="item-recipe-img">
-      <app-item-display [item]="recipe.product" [simplified]="true" style="width: 55px; height: 55px;"></app-item-display>
-    </div>
-
-    <div class="recipe-info">
-      <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
-      <div *ngFor="let ingredient of recipe.ingredients">
-        {{ ingredient.name }} ({{ ingredient.quantity }})
-        <div *ngIf="items?.length" class="inline">
-          <progress [value]="getItemQuantity(ingredient.uid)" [max]="ingredient.quantity"></progress>
+    <div *ngFor="let recipe of recipes" class="item-recipe">
+        <div class="item-recipe-img">
+            <app-item-display
+                [item]="recipe.product"
+                [simplified]="true"
+                style="width: 55px; height: 55px"
+            ></app-item-display>
         </div>
-        <div *ngIf="!items?.length" class="inline">
-          <progress [value]="0" [max]="100"></progress>
+
+        <div *ngIf="user$ | async as user" class="recipe-info">
+            <b>{{ 'crafting.requiredIngredients' | translate }}:</b>
+            <div *ngIf="recipe.gold">
+                {{ 'guild.gold' | translate }} ({{ recipe.gold }})
+                <progress [value]="user.gold" [max]="recipe.gold" class="inline"></progress>
+            </div>
+            <div *ngIf="recipe.eter">
+                {{ 'guild.eter' | translate }} ({{ recipe.eter }})
+                <progress [value]="user.eter" [max]="recipe.eter" class="inline"></progress>
+            </div>
+            <div *ngFor="let ingredient of recipe.ingredients">
+                {{ ingredient.name }} ({{ ingredient.quantity }})
+                <div *ngIf="items?.length" class="inline">
+                    <progress
+                        [value]="getItemQuantity(ingredient.uid)"
+                        [max]="ingredient.quantity"
+                    ></progress>
+                </div>
+                <div *ngIf="!items?.length" class="inline">
+                    <progress [value]="0" [max]="100"></progress>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="break"></div>
+        <button
+            (click)="craftRecipe(recipe)"
+            [disabled]="checkIngredients(recipe) || (itemsLoading$ | async)"
+            class="btn-base btn-craft"
+        >
+            {{ 'crafting.craft' | translate }}
+        </button>
     </div>
-
-    <div class="break"></div>
-    <button (click)="craftRecipe(recipe)" [disabled]="checkIngredients(recipe) || (itemsLoading$ | async)" class="btn-base btn-craft">
-      {{ 'crafting.craft' | translate }}
-    </button>
-  </div>
-
 </div>

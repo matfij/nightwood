@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
-import { ItemController, ItemDto, ItemRecipeDto, RecipeComposeDto } from 'src/app/client/api';
+import { ItemController, ItemDto, ItemRecipeDto, RecipeComposeDto, UserAuthDto } from 'src/app/client/api';
 import { ToastService } from 'src/app/common/services/toast.service';
+import { EngineService } from '../../services/engine.service';
 
 @Component({
   selector: 'app-crafting-item-list',
@@ -13,17 +14,21 @@ export class CraftingItemListComponent implements OnInit {
 
   @Input() items: ItemDto[] | null = [];
   @Input() recipes: ItemRecipeDto[] | null = [];
-  @Output() refreshItems: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() refreshItems = new EventEmitter<boolean>();
 
-  itemsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  user$?: BehaviorSubject<UserAuthDto>;
+  itemsLoading$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private itemController: ItemController,
     private toastService: ToastService,
     private translateService: TranslateService,
+    private engineService: EngineService,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user$ = this.engineService.getUser();
+  }
 
   getItemQuantity(uid: string): number {
     const item = this.items?.find((x) => x.uid === uid);
