@@ -1,5 +1,5 @@
-import { EquipmentType, ItemRarity, ItemType } from "../model/definitions/items";
-import { ItemDto } from "../model/dto/item.dto";
+import { EquipmentType, ItemRarity, ItemType } from '../model/definitions/items';
+import { ItemDto } from '../model/dto/item.dto';
 
 export const RUNE_ATTACK_1: ItemDto = {
     uid: 'item-r-7',
@@ -67,7 +67,7 @@ export const RUNE_DEFENSE_1: ItemDto = {
     statistics: {
         health: 40,
         armor: 4,
-    }
+    },
 };
 
 export const RUNE_DEFENSE_2: ItemDto = {
@@ -80,7 +80,7 @@ export const RUNE_DEFENSE_2: ItemDto = {
     statistics: {
         health: 120,
         armor: 12,
-    }
+    },
 };
 
 export const RUNE_DEFENSE_3: ItemDto = {
@@ -93,7 +93,7 @@ export const RUNE_DEFENSE_3: ItemDto = {
     statistics: {
         health: 240,
         armor: 24,
-    }
+    },
 };
 
 export const RUNE_DEFENSE_4: ItemDto = {
@@ -106,7 +106,7 @@ export const RUNE_DEFENSE_4: ItemDto = {
     statistics: {
         health: 360,
         armor: 36,
-    }
+    },
 };
 
 export const RUNE_AGILITY_1: ItemDto = {
@@ -119,7 +119,7 @@ export const RUNE_AGILITY_1: ItemDto = {
     statistics: {
         dexterity: 3,
         speed: 5,
-    }
+    },
 };
 
 export const RUNE_AGILITY_2: ItemDto = {
@@ -132,7 +132,7 @@ export const RUNE_AGILITY_2: ItemDto = {
     statistics: {
         dexterity: 10,
         speed: 15,
-    }
+    },
 };
 
 export const RUNE_AGILITY_3: ItemDto = {
@@ -219,7 +219,7 @@ export const RUNE_WISDOM_4: ItemDto = {
 
 export const RUNE_SPECIAL_ATTACK_1: ItemDto = {
     uid: 'item-r-23',
-    name: 'Pupil\'s Attack',
+    name: "Pupil's Attack",
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Equipment,
@@ -262,7 +262,7 @@ export const RUNE_SPECIAL_ATTACK_3: ItemDto = {
 
 export const RUNE_SPECIAL_DEFENSE_1: ItemDto = {
     uid: 'item-r-24',
-    name: 'Pupil\'s Defense',
+    name: "Pupil's Defense",
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Equipment,
@@ -306,7 +306,7 @@ export const RUNE_SPECIAL_DEFENSE_3: ItemDto = {
 
 export const RUNE_SPECIAL_AGILITY_1: ItemDto = {
     uid: 'item-r-25',
-    name: 'Pupil\'s Agility',
+    name: "Pupil's Agility",
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Equipment,
@@ -350,7 +350,7 @@ export const RUNE_SPECIAL_AGILITY_3: ItemDto = {
 
 export const RUNE_SPECIAL_WISDOM_1: ItemDto = {
     uid: 'item-r-26',
-    name: 'Pupil\'s Knwoledge',
+    name: "Pupil's Knwoledge",
     level: 1,
     rarity: ItemRarity.Common,
     type: ItemType.Equipment,
@@ -389,6 +389,129 @@ export const RUNE_SPECIAL_WISDOM_3: ItemDto = {
     },
 };
 
+/**
+ * Eter runes
+ */
+
+export const RUNE_ETER_OFFENSE_1: ItemDto = {
+    uid: 'item-r-35',
+    name: "Falcon's Blessing I",
+    level: 75,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        strength: 25,
+        allAttributes: 10,
+        speed: 10,
+        criticalChance: 5,
+    },
+};
+
+export const RUNE_ETER_OFFENSE_2: ItemDto = {
+    uid: 'item-r-36',
+    name: "Falcon's Blessing II",
+    level: 150,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        strength: 50,
+        allAttributes: 20,
+        speed: 20,
+        criticalChance: 5,
+    },
+};
+
+export const RUNE_ETER_OFFENSE_3: ItemDto = {
+    uid: 'item-r-37',
+    name: "Falcon's Blessing III",
+    level: 225,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        strength: 75,
+        allAttributes: 30,
+        speed: 30,
+        criticalChance: 5,
+    },
+};
+
+export const RUNE_ETER_DEFENSE_1: ItemDto = {
+    uid: 'item-r-38',
+    name: 'Banquet of Invincibility I',
+    level: 75,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        health: 300,
+        armor: 30,
+        resistance: 30,
+    },
+};
+
+export const RUNE_ETER_DEFENSE_2: ItemDto = {
+    uid: 'item-r-39',
+    name: 'Banquet of Invincibility II',
+    level: 150,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        health: 600,
+        armor: 60,
+        resistance: 60,
+    },
+};
+
+export const RUNE_ETER_DEFENSE_3: ItemDto = {
+    uid: 'item-r-40',
+    name: 'Banquet of Invincibility III',
+    level: 225,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        health: 900,
+        armor: 90,
+        resistance: 90,
+    },
+};
+
+export const RUNE_ETER_SPECIAL_1: ItemDto = {
+    uid: 'item-r-41',
+    name: 'Power of Calamity',
+    level: 100,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        allAttributes: 25,
+        criticalChance: 10,
+        dodge: 10,
+        health: 250,
+        healthRegeneration: 75,
+    },
+};
+
+export const RUNE_ETER_SPECIAL_2: ItemDto = {
+    uid: 'item-r-42',
+    name: 'Power of Fate',
+    level: 200,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Equipment,
+    equipmentType: EquipmentType.Rune,
+    statistics: {
+        allAttributes: 50,
+        armor: 100,
+        resistance: 100,
+        health: 500,
+        healthRegeneration: 150,
+    },
+};
+
 export const RUNES_BASE = [
     RUNE_ATTACK_1,
     RUNE_ATTACK_2,
@@ -423,7 +546,15 @@ export const RUNES_SPECIAL = [
     RUNE_SPECIAL_WISDOM_3,
 ];
 
-export const RUNES = [
-    ...RUNES_BASE,
-    ...RUNES_SPECIAL,
+export const ETER_RUNES = [
+    RUNE_ETER_OFFENSE_1,
+    RUNE_ETER_DEFENSE_1,
+    RUNE_ETER_OFFENSE_2,
+    RUNE_ETER_DEFENSE_2,
+    RUNE_ETER_OFFENSE_3,
+    RUNE_ETER_DEFENSE_3,
+    RUNE_ETER_SPECIAL_1,
+    RUNE_ETER_SPECIAL_2,
 ];
+
+export const RUNES = [...RUNES_BASE, ...RUNES_SPECIAL, ...ETER_RUNES];
