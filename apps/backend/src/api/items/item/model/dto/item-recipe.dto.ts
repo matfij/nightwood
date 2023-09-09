@@ -9,6 +9,12 @@ export class ItemRecipeDto {
     @ApiProperty()
     product: ItemDto;
 
+    @ApiProperty()
+    gold: number;
+
+    @ApiProperty()
+    eter: number;
+
     @ApiProperty({ type: [ItemDto] })
     ingredients: ItemDto[];
 }

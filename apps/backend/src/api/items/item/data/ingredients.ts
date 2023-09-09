@@ -169,6 +169,14 @@ export const CRIMSON_TEAR: ItemDto = {
     type: ItemType.Ingredient,
 };
 
+export const RUNE_BASE: ItemDto = {
+    uid: 'item-i-16',
+    name: 'Rune Base',
+    level: 1,
+    rarity: ItemRarity.Rare,
+    type: ItemType.Ingredient,
+};
+
 export const INGREDIENTS = [
     TRANSMUTATION_STONE,
     GATE_PARTICLE,
@@ -191,4 +199,5 @@ export const INGREDIENTS = [
     SCORIA_ORE,
     AZURE_PEBBLE,
     CRIMSON_TEAR,
+    RUNE_BASE,
 ];

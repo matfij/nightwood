@@ -43,6 +43,12 @@ export class ItemController {
         return this.itemRuneService.getRuneSpecialRecipes();
     }
 
+    @Post('getRuneEterRecipes')
+    @ApiOkResponse({ type: [ItemRecipeDto] })
+    getRuneEterRecipes(): Promise<ItemRecipeDto[]> {
+        return this.itemRuneService.getRuneEterRecipes();
+    }
+
     @Post('composeRecipe')
     @ApiOkResponse({ type: ItemDto })
     composeRecipe(@Request() req: AuthorizedRequest, @Body() dto: RecipeComposeDto): Promise<ItemDto> {
