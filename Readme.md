@@ -53,6 +53,6 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 ## Stage 2
 
 -   Guilds - members, constructions [100%]
--   Mini games [0%]
+-   New dragon natures [0%]
+-   New skills and equipment - 100 lvl, 200 lvl [100%]
 -   Battle tournaments [0%]
--   New skills - 100 lvl, 200 lvl [10%]
