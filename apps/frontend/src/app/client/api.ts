@@ -33,6 +33,7 @@ export interface IActionController {
     checkExpeditions(): Observable<ExpeditionReportDto[]>;
     extendDragonLimit(): Observable<void>;
     buyAuction(id: string): Observable<AuctionBuyResultDto>;
+    composeRecipe(body: RecipeComposeDto): Observable<ItemDto>;
     decomposeItem(id: number): Observable<void>;
 }
 
@@ -880,6 +881,57 @@ export class ActionController implements IActionController {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuctionBuyResultDto;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    composeRecipe(body: RecipeComposeDto): Observable<ItemDto> {
+        let url_ = this.baseUrl + "/api/v1/action/composeRecipe";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processComposeRecipe(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processComposeRecipe(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ItemDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ItemDto>;
+        }));
+    }
+
+    protected processComposeRecipe(response: HttpResponseBase): Observable<ItemDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ItemDto;
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -5163,6 +5215,12 @@ export interface AuctionBuyResultDto {
     [key: string]: any;
 }
 
+export interface RecipeComposeDto {
+    recipeUid: string;
+
+    [key: string]: any;
+}
+
 export interface GuildCreateDto {
     name: string;
     tag: string;
@@ -5426,12 +5484,6 @@ export interface ItemRecipeDto {
     gold: number;
     eter: number;
     ingredients: ItemDto[];
-
-    [key: string]: any;
-}
-
-export interface RecipeComposeDto {
-    recipeUid: string;
 
     [key: string]: any;
 }

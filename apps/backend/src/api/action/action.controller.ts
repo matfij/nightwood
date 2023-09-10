@@ -19,6 +19,8 @@ import { BoosterActivateDto } from '../items/alchemy/model/dto/booster-activate.
 import { Roles } from '../users/auth/util/roles.decorator';
 import { RolesGuard } from '../users/auth/util/roles.guard';
 import { UserRole } from '../users/user/model/definitions/users';
+import { RecipeComposeDto } from '../items/item/model/dto/recipe-compose.dto';
+import { ItemDto } from '../items/item/model/dto/item.dto';
 
 @Controller('action')
 @UseGuards(JwtAuthGuard)
@@ -141,6 +143,12 @@ export class ActionController {
         @Param('id') id: string,
     ): Promise<AuctionBuyResultDto> {
         return this.actionItemService.buyAuction(req.user.id, +id);
+    }
+
+    @Post('composeRecipe')
+    @ApiOkResponse({ type: ItemDto })
+    composeRecipe(@Request() req: AuthorizedRequest, @Body() dto: RecipeComposeDto): Promise<ItemDto> {
+        return this.actionItemService.composeRecipe(req.user.id, dto);
     }
 
     @Post('decomposeItem/:id')

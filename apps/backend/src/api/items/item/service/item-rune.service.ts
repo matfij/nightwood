@@ -1,17 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { UserDto } from "src/api/users/user/model/dto/user.dto";
-import { ErrorService } from "src/common/services/error.service";
-import { MoreThan, Repository } from "typeorm";
-import { RUNE_BASE_RECIPES, RUNE_ETER_RECIPES, RUNE_SPECIAL_RECIPES } from "../data/rune-recipes";
-import { ItemRecipeDto } from "../model/dto/item-recipe.dto";
-import { ItemDto } from "../model/dto/item.dto";
-import { RecipeComposeDto } from "../model/dto/recipe-compose.dto";
-import { Item } from "../model/item.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ErrorService } from 'src/common/services/error.service';
+import { MoreThan, Repository } from 'typeorm';
+import { RUNE_BASE_RECIPES, RUNE_ETER_RECIPES, RUNE_SPECIAL_RECIPES } from '../data/rune-recipes';
+import { ItemRecipeDto } from '../model/dto/item-recipe.dto';
+import { ItemDto } from '../model/dto/item.dto';
+import { RecipeComposeDto } from '../model/dto/recipe-compose.dto';
+import { Item } from '../model/item.entity';
 
 @Injectable()
 export class ItemRuneService {
-
     constructor(
         @InjectRepository(Item)
         private itemRepository: Repository<Item>,
@@ -30,24 +28,32 @@ export class ItemRuneService {
         return RUNE_ETER_RECIPES;
     }
 
+    findRecipe(uid: string): ItemRecipeDto {
+        const recipe = [...RUNE_BASE_RECIPES, ...RUNE_SPECIAL_RECIPES, ...RUNE_ETER_RECIPES].find(
+            (x) => x.uid === uid,
+        );
+        if (!recipe) {
+            this.errorService.throw('errors.recipeNotFound');
+        }
+        return recipe;
+    }
+
     async composeRecipe(userId: number, dto: RecipeComposeDto): Promise<ItemDto> {
         const items = await this.itemRepository.find({
             where: { user: { id: userId }, quantity: MoreThan(0) },
         });
-
-        const recipe = [...RUNE_BASE_RECIPES, ...RUNE_SPECIAL_RECIPES, ...RUNE_ETER_RECIPES].find(x => x.uid === dto.recipeUid);
-        if (!recipe) this.errorService.throw('errors.recipeNotFound');
+        const recipe = this.findRecipe(dto.recipeUid);
 
         const requiredItems = recipe.ingredients;
-        const missingItems = requiredItems.filter(requiredItem => {
-            const item = items.find(y => y.uid === requiredItem.uid);
+        const missingItems = requiredItems.filter((requiredItem) => {
+            const item = items.find((y) => y.uid === requiredItem.uid);
             if (!item || item.quantity < requiredItem.quantity) return true;
             return false;
         });
         if (missingItems.length > 0) this.errorService.throw('errors.insufficientIngredients');
 
-        requiredItems.forEach(requiredItem => {
-            const item = items.find(y => y.uid === requiredItem.uid);
+        requiredItems.forEach((requiredItem) => {
+            const item = items.find((y) => y.uid === requiredItem.uid);
             item.quantity -= requiredItem.quantity;
             this.itemRepository.save(item);
         });

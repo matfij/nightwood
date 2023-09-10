@@ -464,7 +464,7 @@ export const RECIPE_RUNE_ETER_SPECIAL_1: ItemRecipeDto = {
 };
 
 export const RECIPE_RUNE_ETER_SPECIAL_2: ItemRecipeDto = {
-    uid: 'recipe-r-33',
+    uid: 'recipe-r-36',
     product: RUNE_ETER_SPECIAL_2,
     gold: 8000,
     eter: 2000,
