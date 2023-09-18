@@ -46,11 +46,17 @@ export class CraftingComponent implements OnInit {
         this.recipesEter$ = this.itemController.getRuneEterRecipes();
     }
 
-    filterEquipment(items: ItemDto[]): ItemDto[] {
+    filterEquipment(items: ItemDto[] | null): ItemDto[] {
+        if (!items) {
+            return [];
+        }
         return items.filter((item) => item.type === ItemType.Equipment);
     }
 
-    calculateEterGain(itemId: number, items: ItemDto[]): number {
+    calculateEterGain(itemId: number, items: ItemDto[] | null): number {
+        if (!items) {
+            return 0;
+        }
         const item = items.filter((item) => item.id === itemId)[0];
         if (!item) {
             return 0;
