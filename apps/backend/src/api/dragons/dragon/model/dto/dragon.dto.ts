@@ -59,6 +59,9 @@ export class DragonDto {
     experience: number;
 
     @ApiProperty()
+    seasonalExperience: number;
+
+    @ApiProperty()
     strength: number;
 
     @ApiProperty()

@@ -54,6 +54,9 @@ export class Dragon {
     @Column({ default: 0 })
     experience: number;
 
+    @Column({ default: 0 })
+    seasonalExperience: number;
+
     @Column({ default: 1})
     level: number;
 

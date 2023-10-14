@@ -755,7 +755,9 @@ export class DragonBattleService {
                 lostExperience = Math.round(this.mathService.randRange(0.8, 1.2) * this.mathService.limit(1, lostExperience, 10));
 
                 owned.experience += gainedExperience;
+                owned.seasonalExperience += gainedExperience;
                 enemy.experience -= lostExperience;
+                enemy.seasonalExperience -= lostExperience;
                 resultExperience = { ownedExperience: gainedExperience, enemyExperience: lostExperience };
                 break;
             }
@@ -766,7 +768,9 @@ export class DragonBattleService {
                 lostExperience = Math.round(this.mathService.randRange(0.8, 1.2) * this.mathService.limit(1, lostExperience, 10));
 
                 owned.experience -= lostExperience;
+                owned.seasonalExperience -= lostExperience;
                 enemy.experience += gainedExperience;
+                enemy.seasonalExperience += gainedExperience;
                 resultExperience = { ownedExperience: lostExperience, enemyExperience: gainedExperience };
                 break;
             }
@@ -775,7 +779,9 @@ export class DragonBattleService {
                 gainedExperience = Math.round(this.mathService.randRange(0.8, 1.2) * this.mathService.limit(1, gainedExperience, 50));
 
                 owned.experience += gainedExperience;
+                owned.seasonalExperience += gainedExperience;
                 enemy.experience += gainedExperience;
+                enemy.seasonalExperience += gainedExperience;
                 resultExperience = { ownedExperience: gainedExperience, enemyExperience: gainedExperience };
                 break;
             }
@@ -787,15 +793,17 @@ export class DragonBattleService {
         owned.battledWith.push(enemy.id);
 
         if (owned.experience < 0) owned.experience = 0;
+        if (owned.seasonalExperience < 0) owned.seasonalExperience = 0;
         if (enemy.experience < 0) enemy.experience = 0;
+        if (enemy.seasonalExperience < 0) enemy.seasonalExperience = 0;
 
         await this.dragonRepository.update(
             owned.id, 
-            { experience: owned.experience, stamina: owned.stamina, battledWith: owned.battledWith },
+            { experience: owned.experience, seasonalExperience: owned.seasonalExperience, stamina: owned.stamina, battledWith: owned.battledWith },
         );
         await this.dragonRepository.update(
             enemy.id,
-            { experience: enemy.experience },
+            { experience: enemy.experience, seasonalExperience: enemy.seasonalExperience },
         );
         return resultExperience;
     }

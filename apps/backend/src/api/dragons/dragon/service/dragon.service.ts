@@ -121,25 +121,48 @@ export class DragonService {
     }
 
     async getBest(): Promise<DragonBestDto[]> {
-        const filterOptions: FindManyOptions<Dragon> = {
-            relations: ['user'],
-            order: { experience: 'DESC' },
-        };
-
         const dragons = await this.dragonRepository.find({
-            ...filterOptions,
+            relations: {
+                user: true,
+            },
+            order: {
+                experience: 'DESC',
+            },
             take: 10,
         });
-
         const bestDragons: DragonBestDto[] = dragons.map((dragon) => ({
             id: dragon.id,
             name: dragon.name,
             level: dragon.level,
             experience: dragon.experience,
+            seasonalExperience: dragon.seasonalExperience,
             userId: dragon.user?.id ?? null,
             userNickname: dragon.user?.nickname ?? null,
         }));
         return bestDragons;
+    }
+
+    async getSeasonalWinners(): Promise<DragonBestDto[]> {
+        const dragons = await this.dragonRepository.find({
+            relations: {
+                user: true,
+            },
+            order: {
+                seasonalExperience: 'DESC',
+                experience: 'DESC',
+            },
+            take: 10,
+        });
+        const winningDragons = dragons.map((dragon) => ({
+            id: dragon.id,
+            name: dragon.name,
+            level: dragon.level,
+            experience: dragon.experience,
+            seasonalExperience: dragon.seasonalExperience,
+            userId: dragon.user?.id ?? null,
+            userNickname: dragon.user?.nickname ?? null,
+        }));
+        return winningDragons;
     }
 
     async adopt(user: UserDto, dto: DragonAdoptDto): Promise<DragonDto> {
@@ -420,5 +443,13 @@ export class DragonService {
 
     async getSummonActions(): Promise<DragonSummonActionDto[]> {
         return DRAGON_SUMMON_ACTIONS;
+    }
+
+    async resetSeasonalExperience() {
+        const dragons = await this.dragonRepository.find();
+        for (let dragon of dragons) {
+            dragon.seasonalExperience = 0;
+        }
+        await this.dragonRepository.save(dragons);
     }
 }

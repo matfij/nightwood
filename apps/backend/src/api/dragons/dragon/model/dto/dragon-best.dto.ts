@@ -15,6 +15,9 @@ export class DragonBestDto {
     experience: number;
 
     @ApiProperty()
+    seasonalExperience: number;
+
+    @ApiProperty()
     userId?: number;
 
     @ApiProperty()

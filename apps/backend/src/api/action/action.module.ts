@@ -17,6 +17,7 @@ import { ActionDragonService } from './service/action-dragon.service';
 import { ActionEventService } from './service/action-event.service';
 import { ActionGuildService } from './service/action-guild.service';
 import { ActionItemService } from './service/action-item.service';
+import { ActionDragonTourneamentService } from './service/action-dragon-tournament.service';
 
 @Module({
     imports: [
@@ -41,6 +42,7 @@ import { ActionItemService } from './service/action-item.service';
         ActionEventService,
         ActionItemService,
         ActionGuildService,
+        ActionDragonTourneamentService,
         ErrorService,
     ]
 })
