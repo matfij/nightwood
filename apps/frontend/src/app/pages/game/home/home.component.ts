@@ -4,31 +4,29 @@ import { Observable } from 'rxjs';
 import { DragonBestDto, DragonController } from 'src/app/client/api';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
+    bestDragons$ = new Observable<DragonBestDto[]>();
+    bestSeasonalDragons$ = new Observable<DragonBestDto[]>();
+    dragonsLoading = false;
+    displaySeasonalBest = false;
 
-  dragons$: Observable<DragonBestDto[]> = new Observable<DragonBestDto[]>();
-  dragonsLoading: boolean = false;
+    constructor(private router: Router, private dragonController: DragonController) {}
 
-  constructor(
-    private router: Router,
-    private dragonController: DragonController,
-  ) {}
+    ngOnInit(): void {
+        this.getTopDragons();
+    }
 
-  ngOnInit(): void {
-    this.getTopDragons();
-  }
+    getTopDragons() {
+        this.bestDragons$ = this.dragonController.getBest();
+        this.bestSeasonalDragons$ = this.dragonController.getSeasonalBest();
+    }
 
-  getTopDragons() {
-    this.dragons$ = this.dragonController.getBest();
-  }
-
-  showUserDetails(userId: number) {
-    this.router.navigate(['game', 'profile', userId]);
-  }
-
+    showUserDetails(userId: number) {
+        this.router.navigate(['game', 'profile', userId]);
+    }
 }

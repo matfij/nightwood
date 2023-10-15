@@ -2939,6 +2939,7 @@ export interface IDragonController {
     getOne(id: string): Observable<DragonDto>;
     getAll(body: DragonGetDto): Observable<DragonPageDto>;
     getBest(): Observable<DragonBestDto[]>;
+    getSeasonalBest(): Observable<DragonBestDto[]>;
     getOwned(): Observable<DragonDto[]>;
     getPublicPlayerDragons(id: string): Observable<DragonPublicDto[]>;
     calculateStatistics(id: string): Observable<DragonBattleDto>;
@@ -3141,6 +3142,53 @@ export class DragonController implements IDragonController {
     }
 
     protected processGetBest(response: HttpResponseBase): Observable<DragonBestDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as DragonBestDto[];
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getSeasonalBest(): Observable<DragonBestDto[]> {
+        let url_ = this.baseUrl + "/api/v1/dragon/getSeasonalBest";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSeasonalBest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSeasonalBest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DragonBestDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DragonBestDto[]>;
+        }));
+    }
+
+    protected processGetSeasonalBest(response: HttpResponseBase): Observable<DragonBestDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5134,6 +5182,7 @@ export interface DragonDto {
     level: number;
     stamina: number;
     experience: number;
+    seasonalExperience: number;
     strength: number;
     dexterity: number;
     endurance: number;
@@ -5568,6 +5617,7 @@ export interface DragonBestDto {
     name: string;
     level: number;
     experience: number;
+    seasonalExperience: number;
     userId: number;
     userNickname: string;
 
@@ -5603,6 +5653,7 @@ export interface DragonBattleDto {
     level?: number;
     stamina?: number;
     experience?: number;
+    seasonalExperience?: number;
     strength?: number;
     dexterity?: number;
     endurance?: number;

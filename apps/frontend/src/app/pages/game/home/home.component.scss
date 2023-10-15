@@ -1,79 +1,89 @@
 @import '../../../core/theme/variables.scss';
 
-
 .wrapper-content {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  padding: 10px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    padding: 10px;
 }
 
 .wrapper-news {
-  height: clamp(0px, 60vh, 600px);
-  overflow: auto;
+    height: clamp(0px, 60vh, 600px);
+    overflow: auto;
 }
 
 .title {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .item-news {
-  margin-top: 10px;
+    margin-top: 10px;
 
-  text-align: left;
-  box-shadow: inset 1px 1px 12px 1px $app-dark;
-  background-color: transparentize($color: $app-dark, $amount: 0.6);
-  padding: 10px;
-  font-style: italic;
-  letter-spacing: 0.8px;
+    text-align: left;
+    box-shadow: inset 1px 1px 12px 1px $app-dark;
+    background-color: transparentize($color: $app-dark, $amount: 0.6);
+    padding: 10px;
+    font-style: italic;
+    letter-spacing: 0.8px;
 
-  img {
-    width: 200px;
-    padding-right: 10px;
-    float: left;
-  }
+    img {
+        width: 200px;
+        padding-right: 10px;
+        float: left;
+    }
 
-  &:first-of-type {
-    margin-top: 0px;
-  }
+    &:first-of-type {
+        margin-top: 0px;
+    }
+}
+
+.wrapper-dragon-mode {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+
+    button {
+        width: 100%;
+        margin: 0;
+    }
 }
 
 .item-dragon {
-  margin-bottom: 4px;
+    margin-bottom: 4px;
 
-  padding: 4px;
-  box-shadow: inset 1px 1px 12px 1px $app-primary;
-  background-color: transparentize($color: $app-primary, $amount: 0.95);
-  letter-spacing: 1px;
+    padding: 4px;
+    box-shadow: inset 1px 1px 12px 1px $app-primary;
+    background-color: transparentize($color: $app-primary, $amount: 0.95);
+    letter-spacing: 1px;
 
-  &:hover {
-    box-shadow: inset 1px 1px 12px 1px lighten($app-primary, 10);
-  }
+    &:hover {
+        box-shadow: inset 1px 1px 12px 1px lighten($app-primary, 10);
+    }
 
-  a {
-    cursor: pointer;
-  }
-  a:hover {
-    color: white;
-    text-decoration: underline;
-  }
+    a {
+        cursor: pointer;
+    }
+    a:hover {
+        color: white;
+        text-decoration: underline;
+    }
 }
 
 .dragon-first {
-  box-shadow: inset 1px 1px 12px 1px $app-secondary;
-  background-color: transparentize($color: $app-secondary, $amount: 0.95);
+    box-shadow: inset 1px 1px 12px 1px $app-secondary;
+    background-color: transparentize($color: $app-secondary, $amount: 0.95);
 
-  &:hover {
-    box-shadow: inset 1px 1px 12px 1px lighten($app-secondary, 10);
-  }
+    &:hover {
+        box-shadow: inset 1px 1px 12px 1px lighten($app-secondary, 10);
+    }
 }
 
 @media screen and (max-width: $mobile-threshold) {
-
-  .wrapper-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px 0px;
-    padding: 10px;
-  }
+    .wrapper-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px 0px;
+        padding: 10px;
+    }
 }

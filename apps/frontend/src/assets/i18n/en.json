@@ -312,7 +312,9 @@
         "action": "Action",
         "battle": "Battle",
         "selectDragon": "Select dragon",
-        "vs": "vs"
+        "vs": "vs",
+        "overall": "Overall",
+        "seasonal": "Seasonal"
     },
     "inventory": {
         "gold": "Gold",

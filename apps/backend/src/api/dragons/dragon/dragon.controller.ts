@@ -54,6 +54,13 @@ export class DragonController {
         return this.dragonService.getBest();
     }
 
+    @Post('getSeasonalBest')
+    @UseInterceptors(PaginationInterceptor)
+    @ApiOkResponse({ type: [DragonBestDto] })
+    getSeasonalBest(): Promise<DragonBestDto[]> {
+        return this.dragonService.getSeasonalWinners();
+    }
+
     @Post('getOwned')
     @ApiOkResponse({ type: [DragonDto] })
     getOwned(@Request() req: AuthorizedRequest): Promise<DragonDto[]> {
