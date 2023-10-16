@@ -38,7 +38,7 @@
 }
 
 .wrapper-dragon-mode {
-    margin-bottom: 5px;
+    margin-top: 5px;
     display: flex;
     justify-content: center;
     gap: 5px;
@@ -46,36 +46,6 @@
     button {
         width: 100%;
         margin: 0;
-    }
-}
-
-.item-dragon {
-    margin-bottom: 4px;
-
-    padding: 4px;
-    box-shadow: inset 1px 1px 12px 1px $app-primary;
-    background-color: transparentize($color: $app-primary, $amount: 0.95);
-    letter-spacing: 1px;
-
-    &:hover {
-        box-shadow: inset 1px 1px 12px 1px lighten($app-primary, 10);
-    }
-
-    a {
-        cursor: pointer;
-    }
-    a:hover {
-        color: white;
-        text-decoration: underline;
-    }
-}
-
-.dragon-first {
-    box-shadow: inset 1px 1px 12px 1px $app-secondary;
-    background-color: transparentize($color: $app-secondary, $amount: 0.95);
-
-    &:hover {
-        box-shadow: inset 1px 1px 12px 1px lighten($app-secondary, 10);
     }
 }
 

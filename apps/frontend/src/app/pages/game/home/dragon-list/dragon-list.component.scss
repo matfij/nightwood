@@ -1,0 +1,56 @@
+@import '../../../../core/theme/variables.scss';
+
+.item-dragon {
+    margin-bottom: 4px;
+    display: grid;
+    grid-template-columns: 6fr 3fr 5fr;
+    padding: 4px;
+    box-shadow: inset 1px 1px 12px 1px $app-primary;
+    background-color: transparentize($color: $app-primary, $amount: 0.95);
+    letter-spacing: 1px;
+
+    span {
+        margin-left: 4px;
+    }
+
+    &:hover {
+        box-shadow: inset 1px 1px 12px 1px lighten($app-primary, 10);
+    }
+
+    a:hover {
+        cursor: pointer;
+        color: white;
+        text-decoration: underline;
+    }
+}
+
+.dragon-first {
+    box-shadow: inset 1px 1px 12px 1px $app-secondary;
+    background-color: transparentize($color: $app-secondary, $amount: 0.95);
+
+    &:hover {
+        box-shadow: inset 1px 1px 12px 1px lighten($app-secondary, 10);
+    }
+}
+
+.item-dragon-skeleton {
+    background: linear-gradient(
+        90deg,
+        transparentize($color: $app-light, $amount: 0.9) 30%,
+        transparentize($color: $app-light, $amount: 0.8) 60%,
+        transparentize($color: $app-light, $amount: 0.7) 90%
+    );
+    background-size: 200% 100%;
+    animation: loading 2s infinite;
+    text-shadow: 0 0 7px transparentize($color: $app-light, $amount: 0.3);
+    color: transparent;
+}
+
+@keyframes loading {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}

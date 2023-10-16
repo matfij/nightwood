@@ -1,0 +1,34 @@
+<div *ngIf="dragons$ | async as dragons; else loading" class="wrapper-dragons">
+    <div
+        *ngFor="let dragon of dragons; index as i"
+        [ngStyle]="{ 'font-size': 'clamp(13px, ' + (18 - 1.5 * i) + 'px, 18px)' }"
+        [ngClass]="{ 'dragon-first': i === 0 }"
+        class="item-dragon"
+    >
+        <span>{{ dragon.name }} [{{ dragon.level }}]</span>
+        <span>
+            {{ (isSeasonal ? dragon.seasonalExperience : dragon.experience) | shortNumber }}
+            {{ 'dragon.exp' | translate }}
+        </span>
+        <span *ngIf="dragon.userNickname">
+            <a (click)="showUserDetails(dragon.userId)">{{ dragon.userNickname }}</a>
+        </span>
+    </div>
+</div>
+<ng-template #loading>
+    <div class="wrapper-dragons">
+        <div
+            *ngFor="let _ of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; index as i"
+            [ngStyle]="{ 'font-size': 'clamp(13px, ' + (18 - 1.5 * i) + 'px, 18px)' }"
+            [ngClass]="{ 'dragon-first': i === 0 }"
+            class="item-dragon item-dragon-skeleton"
+        >
+            <span>SSSSSSSS [99]</span>
+            <span>
+                {{ 88888 | shortNumber }}
+                {{ 'dragon.exp' | translate }}
+            </span>
+            <span>SSSSSSSS</span>
+        </div>
+    </div>
+</ng-template>

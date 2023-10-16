@@ -25,8 +25,4 @@ export class HomeComponent implements OnInit {
         this.bestDragons$ = this.dragonController.getBest();
         this.bestSeasonalDragons$ = this.dragonController.getSeasonalBest();
     }
-
-    showUserDetails(userId: number) {
-        this.router.navigate(['game', 'profile', userId]);
-    }
 }
