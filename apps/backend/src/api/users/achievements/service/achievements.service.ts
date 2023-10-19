@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { DragonDto } from "src/api/dragons/dragon/model/dto/dragon.dto";
 import { Repository } from "typeorm";
 import { User } from "../../user/model/user.entity";
-import { ACHIEVEMENTS_ALL, ACHIEVEMENTS_CROESUS, ACHIEVEMENTS_CURIOUS_EXPLORER, ACHIEVEMENTS_DRAGON_OWNER, ACHIEVEMENTS_DRAGON_TRAINER, ACHIEVEMENTS_PERSISTENT_BREEDER } from "../data/achievements";
+import { ACHIEVEMENTS_ALL, ACHIEVEMENTS_CHAMPION, ACHIEVEMENTS_CROESUS, ACHIEVEMENTS_CURIOUS_EXPLORER, ACHIEVEMENTS_DRAGON_OWNER, ACHIEVEMENTS_DRAGON_TRAINER, ACHIEVEMENTS_PERSISTENT_BREEDER } from "../data/achievements";
 import { Achievements } from "../model/achievements.entity";
 import { AchievementDto } from "../model/dto/achievement.dto";
 import { AchievementsDto } from "../model/dto/achievements.dto";

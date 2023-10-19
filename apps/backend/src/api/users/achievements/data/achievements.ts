@@ -120,10 +120,35 @@ export const ACHIEVEMENTS_CROESUS: Achievement[] = [
     },
 ];
 
+export const ACHIEVEMENTS_CHAMPION: Achievement[] = [
+    {
+        uid: 'champion',
+        name: 'Battler',
+        tier: 1,
+        hint: 'Finish 3rd in the Season Tournament.',
+        requiredPoints: 1,
+    },
+    {
+        uid: 'champion',
+        name: 'Warior',
+        tier: 2,
+        hint: 'Finish 2nd in the Season Tournament.',
+        requiredPoints: 1,
+    },
+    {
+        uid: 'champion',
+        name: 'Champion',
+        tier: 3,
+        hint: 'Finish 1st in the Season Tournament.',
+        requiredPoints: 1,
+    },
+];
+
 export const ACHIEVEMENTS_ALL: Achievement[] = [
     ...ACHIEVEMENTS_DRAGON_OWNER,
     ...ACHIEVEMENTS_PERSISTENT_BREEDER,
     ...ACHIEVEMENTS_CURIOUS_EXPLORER,
     ...ACHIEVEMENTS_DRAGON_TRAINER,
     ...ACHIEVEMENTS_CROESUS,
+    ...ACHIEVEMENTS_CHAMPION,
 ];

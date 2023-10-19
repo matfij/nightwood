@@ -23,4 +23,7 @@ export class Achievements {
 
     @Column({ default: 0 })
     croesus: number;
+
+    @Column({ default: 0 })
+    champion: number;
 }

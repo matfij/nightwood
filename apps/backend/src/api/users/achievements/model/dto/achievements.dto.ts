@@ -22,4 +22,7 @@ export class AchievementsDto {
 
     @ApiProperty()
     croesus: number;
+
+    @ApiProperty()
+    champion: number;
 }
