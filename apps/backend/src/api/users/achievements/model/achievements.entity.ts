@@ -26,4 +26,7 @@ export class Achievements {
 
     @Column({ default: 0 })
     champion: number;
+
+    @Column({ default: 0 })
+    championCount: number;
 }

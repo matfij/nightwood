@@ -8,6 +8,7 @@ import { MailService } from '../../users/mail/service/mail.service';
 import { BattleTournamentAward } from '../../dragons/dragon/model/definitions/battle-tournament-award';
 import { UserDto } from '../../users/user/model/dto/user.dto';
 import { DragonBestDto } from '../../dragons/dragon/model/dto/dragon-best.dto';
+import { AchievementsService } from '../../users/achievements/service/achievements.service';
 
 @Injectable()
 export class ActionDragonTourneamentService {
@@ -32,6 +33,7 @@ export class ActionDragonTourneamentService {
         private userService: UserService,
         private itemService: ItemService,
         private mailService: MailService,
+        private achievementsService: AchievementsService,
     ) {}
 
     // @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
@@ -55,6 +57,7 @@ export class ActionDragonTourneamentService {
             await this.userService.updateGold(owner.id, award.gold);
             await this.userService.updateEter(owner.id, award.eter);
             await this.itemService.updateInventory(owner.id, award.items);
+            await this.achievementsService.checkChampionAchievements(owner.id, true);
             await this.notifyWinner(owner, dragon, place + 1, award);
         }
         await this.dragonService.resetSeasonalExperience();

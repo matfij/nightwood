@@ -123,24 +123,24 @@ export const ACHIEVEMENTS_CROESUS: Achievement[] = [
 export const ACHIEVEMENTS_CHAMPION: Achievement[] = [
     {
         uid: 'champion',
-        name: 'Battler',
+        name: 'Winner',
         tier: 1,
-        hint: 'Finish 3rd in the Season Tournament.',
-        requiredPoints: 1,
-    },
-    {
-        uid: 'champion',
-        name: 'Warior',
-        tier: 2,
-        hint: 'Finish 2nd in the Season Tournament.',
+        hint: 'Winner of the Seasonal Tournament.',
         requiredPoints: 1,
     },
     {
         uid: 'champion',
         name: 'Champion',
+        tier: 2,
+        hint: 'Triple winner of the Seasonal Tournament.',
+        requiredPoints: 3,
+    },
+    {
+        uid: 'champion',
+        name: 'Legend',
         tier: 3,
-        hint: 'Finish 1st in the Season Tournament.',
-        requiredPoints: 1,
+        hint: 'Ten-time winner of the Season Tournaments.',
+        requiredPoints: 12,
     },
 ];
 

@@ -25,4 +25,7 @@ export class AchievementsDto {
 
     @ApiProperty()
     champion: number;
+
+    @ApiProperty()
+    championCount: number;
 }
