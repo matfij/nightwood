@@ -11,10 +11,18 @@ import { Router } from '@angular/router';
 export class DragonListComponent {
     @Input() dragons$!: Observable<DragonBestDto[]>;
 	@Input() isSeasonal = false;
+    DRAGON_SKELETON_DATA = DRAGON_SKELETON_DATA;
 
     constructor(private router: Router) {}
 
     showUserDetails(userId: number) {
         this.router.navigate(['game/profile', userId]);
     }
+}
+
+const DRAGON_SKELETON_DATA = {
+    itemCount: new Array(10),
+    dragonName: 'XXXXXXX [88]',
+    dragonExp: 88888,
+    userName: 'XXXXXXXX',
 }

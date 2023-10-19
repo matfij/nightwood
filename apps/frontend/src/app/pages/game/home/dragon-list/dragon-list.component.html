@@ -1,7 +1,7 @@
 <div *ngIf="dragons$ | async as dragons; else loading" class="wrapper-dragons">
     <div
         *ngFor="let dragon of dragons; index as i"
-        [ngStyle]="{ 'font-size': 'clamp(13px, ' + (18 - 1.5 * i) + 'px, 18px)' }"
+        [ngStyle]="{ 'font-size': 'clamp(13px, ' + (18 - i) + 'px, 18px)' }"
         [ngClass]="{ 'dragon-first': i === 0 }"
         class="item-dragon"
     >
@@ -18,17 +18,17 @@
 <ng-template #loading>
     <div class="wrapper-dragons">
         <div
-            *ngFor="let _ of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; index as i"
-            [ngStyle]="{ 'font-size': 'clamp(13px, ' + (18 - 1.5 * i) + 'px, 18px)' }"
+            *ngFor="let _ of DRAGON_SKELETON_DATA.itemCount; index as i"
+            [ngStyle]="{ 'font-size': 'clamp(13px, ' + (18 - i) + 'px, 18px)' }"
             [ngClass]="{ 'dragon-first': i === 0 }"
             class="item-dragon item-dragon-skeleton"
         >
-            <span>SSSSSSSS [99]</span>
+            <span>{{ DRAGON_SKELETON_DATA.dragonName }}</span>
             <span>
-                {{ 88888 | shortNumber }}
+                {{ DRAGON_SKELETON_DATA.dragonExp | shortNumber }}
                 {{ 'dragon.exp' | translate }}
             </span>
-            <span>SSSSSSSS</span>
+            <span>{{ DRAGON_SKELETON_DATA.userName }}</span>
         </div>
     </div>
 </ng-template>
