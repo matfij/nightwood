@@ -36,8 +36,7 @@ export class ActionDragonTourneamentService {
         private achievementsService: AchievementsService,
     ) {}
 
-    // @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
-    @Cron(CronExpression.EVERY_MINUTE)
+    @Cron(CronExpression.EVERY_1ST_DAY_OF_MONTH_AT_NOON)
     async checkIfTournamentEnded() {
         await this.awardTournamentWinners();
     }

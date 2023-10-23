@@ -18,6 +18,7 @@ import { ActionEventService } from './service/action-event.service';
 import { ActionGuildService } from './service/action-guild.service';
 import { ActionItemService } from './service/action-item.service';
 import { ActionDragonTourneamentService } from './service/action-dragon-tournament.service';
+import { ActionAdminController } from './action-admin.controller';
 
 @Module({
     imports: [
@@ -36,6 +37,7 @@ import { ActionDragonTourneamentService } from './service/action-dragon-tourname
     controllers: [
         ActionController,
         ActionGuildController,
+        ActionAdminController,
     ],
     providers: [
         ActionDragonService,
