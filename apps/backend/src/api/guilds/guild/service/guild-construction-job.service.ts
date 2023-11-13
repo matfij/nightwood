@@ -10,7 +10,7 @@ import { GUILD_RESOURCES_GAIN, GUILD_RESOURCE_LIMIT } from '../../../../configur
 export class GuildConstructionJobService {
     constructor(@InjectRepository(Guild) private guildRepository: Repository<Guild>) {}
 
-    @Cron(CronExpression.EVERY_30_SECONDS)
+    @Cron(CronExpression.EVERY_HOUR)
     async updateResources() {
         const guilds = await this.guildRepository.find();
         for (const guild of guilds) {
