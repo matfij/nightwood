@@ -1,5 +1,5 @@
-import { ItemRarity, ItemType } from "../model/definitions/items";
-import { ItemDto } from "../model/dto/item.dto";
+import { ItemRarity, ItemType } from '../model/definitions/items';
+import { ItemDto } from '../model/dto/item.dto';
 
 export const TRANSMUTATION_STONE: ItemDto = {
     uid: 'item-i-1',
@@ -177,6 +177,22 @@ export const RUNE_BASE: ItemDto = {
     type: ItemType.Ingredient,
 };
 
+export const DRAEDON_PLANS: ItemDto = {
+    uid: 'item-i-17',
+    name: 'Draedon Plans',
+    level: 1,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Ingredient,
+};
+
+export const EON_CHANT: ItemDto = {
+    uid: 'item-i-18',
+    name: 'Eon Chant',
+    level: 1,
+    rarity: ItemRarity.Mythical,
+    type: ItemType.Ingredient,
+};
+
 export const INGREDIENTS = [
     TRANSMUTATION_STONE,
     GATE_PARTICLE,
@@ -200,4 +216,6 @@ export const INGREDIENTS = [
     AZURE_PEBBLE,
     CRIMSON_TEAR,
     RUNE_BASE,
+    DRAEDON_PLANS,
+    EON_CHANT,
 ];

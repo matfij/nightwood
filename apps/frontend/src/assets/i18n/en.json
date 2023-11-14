@@ -284,6 +284,8 @@
         "thunderHint": "Summon a dragon of storms",
         "natureHint": "Summon a dragon of forest",
         "darkHint": "Summon a dragon of shadows",
+        "mechanicalHint": "Summon a dragon construct",
+        "timeHint": "Summon a dragon of eternity",
         "summon": "Summon",
         "summonSuccess": "You have summoned a new dragon!"
     },
