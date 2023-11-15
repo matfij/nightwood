@@ -230,7 +230,7 @@ export const SolarBeam: Skill = {
     level: 100,
     requiredNature: [DragonNature.Nature],
     castMana: 50,
-    castChance: 0.20,
+    castChance: 0.2,
 };
 
 /**
@@ -306,5 +306,42 @@ export const AndromedaArrow: Skill = {
     level: 100,
     requiredNature: [DragonNature.Power],
     castMana: 50,
-    castChance: 0.20,
+    castChance: 0.2,
+};
+
+/**
+ * Mechanical
+ */
+
+export const SuperiorEngine: Skill = {
+    uid: 'superiorEngine',
+    name: 'Superior Engine',
+    hint: 'Increases all base satistics',
+    level: 10,
+    requiredNature: [DragonNature.Mechanical]
+};
+
+export const SpiralCannon: Skill = {
+    uid: 'spiralCannon',
+    name: 'Spiral Cannon',
+    hint: 'Enables a dragon to cast destructive attack that ignores target defence and inflict bleeding',
+    level: 30,
+    requiredNature: [DragonNature.Mechanical],
+    castChance: 0.2
+};
+
+export const EnergyShield: Skill = {
+    uid: 'energyShield',
+    name: 'Energy Shield',
+    hint: 'Grants a barrier that will reduce incoming damage',
+    level: 60,
+    requiredNature: [DragonNature.Mechanical],
+};
+
+export const InvincibleTechnology: Skill = {
+    uid: 'invincibleTechnology',
+    name: 'Invincible Technology',
+    hint: 'Base attacks diminish enemy statistics',
+    level: 100,
+    requiredNature: [DragonNature.Mechanical],
 };

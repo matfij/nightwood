@@ -1,7 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class DragonSkillsDto {
-
     @ApiProperty()
     id?: number;
 
@@ -148,4 +147,16 @@ export class DragonSkillsDto {
 
     @ApiProperty()
     andromedaArrow?: number;
+
+    @ApiProperty()
+    superiorEngine?: number;
+
+    @ApiProperty()
+    spiralCannon?: number;
+
+    @ApiProperty()
+    energyShield?: number;
+
+    @ApiProperty()
+    invincibleTechnology?: number;
 }

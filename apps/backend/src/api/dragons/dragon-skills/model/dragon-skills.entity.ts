@@ -149,4 +149,16 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     andromedaArrow: number;
+
+    @Column({ default: 0 })
+    superiorEngine: number;
+
+    @Column({ default: 0 })
+    spiralCannon: number;
+
+    @Column({ default: 0 })
+    energyShield: number;
+
+    @Column({ default: 0 })
+    invincibleTechnology: number;
 }
