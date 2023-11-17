@@ -318,7 +318,7 @@ export const SuperiorEngine: Skill = {
     name: 'Superior Engine',
     hint: 'Increases all base satistics',
     level: 10,
-    requiredNature: [DragonNature.Mechanical]
+    requiredNature: [DragonNature.Mechanical],
 };
 
 export const SpiralCannon: Skill = {
@@ -327,7 +327,7 @@ export const SpiralCannon: Skill = {
     hint: 'Enables a dragon to cast destructive attack that ignores target defence and inflict bleeding',
     level: 30,
     requiredNature: [DragonNature.Mechanical],
-    castChance: 0.2
+    castChance: 0.2,
 };
 
 export const EnergyShield: Skill = {
@@ -344,4 +344,42 @@ export const InvincibleTechnology: Skill = {
     hint: 'Base attacks diminish enemy statistics',
     level: 100,
     requiredNature: [DragonNature.Mechanical],
+};
+
+/**
+ * Time
+ */
+
+export const TimeAccel: Skill = {
+    uid: 'timeAccel',
+    name: 'Time Accel',
+    hint: 'Increases initial initiative',
+    level: 10,
+    requiredNature: [DragonNature.Time],
+};
+
+export const StarWind: Skill = {
+    uid: 'starWind',
+    name: 'Star Wind',
+    hint: 'Enables dragon to cast mighty magical attack that also breaks enemy defences',
+    level: 30,
+    requiredNature: [DragonNature.Time],
+    castMana: 30,
+    castChance: 0.2,
+};
+
+export const FeebleDream: Skill = {
+    uid: 'feebleDream',
+    name: 'Feeble Dream',
+    hint: 'Opponent statistics fades every turn',
+    level: 60,
+    requiredNature: [DragonNature.Time],
+};
+
+export const TimeAlter: Skill = {
+    uid: 'timeAlter',
+    name: 'Time Alter',
+    hint: 'Enables dragon to revive after receiving fatal damage',
+    level: 100,
+    requiredNature: [DragonNature.Time],
 };

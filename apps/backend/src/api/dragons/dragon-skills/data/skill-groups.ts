@@ -50,6 +50,14 @@ import {
     SolarBeam,
     LaserExedra,
     AndromedaArrow,
+    SuperiorEngine,
+    SpiralCannon,
+    EnergyShield,
+    InvincibleTechnology,
+    TimeAccel,
+    StarWind,
+    FeebleDream,
+    TimeAlter,
 } from './skills-exclusive';
 
 export const COMMON_SKILLS: Skill[] = [
@@ -111,6 +119,16 @@ export const EXCLUSIVE_SKILLS: Skill[] = [
     WoundedPride,
     ProminenceBlast,
     AndromedaArrow,
+
+    SuperiorEngine,
+    SpiralCannon,
+    EnergyShield,
+    InvincibleTechnology,
+
+    TimeAccel,
+    StarWind,
+    FeebleDream,
+    TimeAlter,
 ];
 
 export const ALL_SKILLS: Skill[] = [...COMMON_SKILLS, ...EXCLUSIVE_SKILLS];

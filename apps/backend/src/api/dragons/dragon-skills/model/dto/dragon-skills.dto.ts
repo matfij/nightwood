@@ -159,4 +159,16 @@ export class DragonSkillsDto {
 
     @ApiProperty()
     invincibleTechnology?: number;
+
+    @ApiProperty()
+    timeAccel?: number;
+
+    @ApiProperty()
+    starWind?: number;
+
+    @ApiProperty()
+    feebleDream?: number;
+
+    @ApiProperty()
+    timeAlter?: number;
 }

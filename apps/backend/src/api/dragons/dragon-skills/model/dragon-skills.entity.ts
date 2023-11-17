@@ -161,4 +161,16 @@ export class DragonSkills {
 
     @Column({ default: 0 })
     invincibleTechnology: number;
+
+    @Column({ default: 0 })
+    timeAccel: number;
+
+    @Column({ default: 0 })
+    starWind: number;
+
+    @Column({ default: 0 })
+    feebleDream: number;
+
+    @Column({ default: 0 })
+    timeAlter: number;
 }
