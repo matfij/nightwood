@@ -328,6 +328,7 @@ export const SpiralCannon: Skill = {
     level: 30,
     requiredNature: [DragonNature.Mechanical],
     castChance: 0.2,
+    castMana: 0,
 };
 
 export const EnergyShield: Skill = {

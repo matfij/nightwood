@@ -432,6 +432,21 @@ export class DragonBattleService {
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
+        if (attacker.skills.spiralCannon > 0) {
+            let baseDamage = this.mathService.randRange(0.8, 1.2) * (1 + attacker.skills.spiralCannon / 10) * (1.8 * attacker.physicalAttack);
+            let inflictedDamage = baseDamage - defender.armor;
+            inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
+            inflictedDamage *= (1 - blockedHit);
+            defender.health -= inflictedDamage;
+            const bleedingChance = 0.33 + attacker.skills.thunderbolt / 75;
+            if (bleedingChance > Math.random()) {
+                const newWound = defender.maxHealth * (attacker.skills.spiralCannon / 100);
+                defender.deepWounds += newWound;
+                extraLogs.push(`<div class="log-extra">+ bleeding ${newWound.toFixed(1)} damage</div>`);
+            }
+            log = this.battleHelperService.getSkillLog('Spiral Cannon', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+            return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+        }
         
         return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
     }
