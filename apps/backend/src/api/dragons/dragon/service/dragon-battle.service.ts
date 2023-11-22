@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/data/skills-common";
-import { AirVector, AndromedaArrow, EnchantedBarrier, FireBolt, IceBolt, LaserExedra, LeafCut, RockBlast, SolarBeam, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
+import { AirVector, AndromedaArrow, EnchantedBarrier, FireBolt, IceBolt, LaserExedra, LeafCut, RockBlast, SolarBeam, SpiralCannon, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
 import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -264,6 +264,14 @@ export class DragonBattleService {
                 extraLogs.push(`<div class="log-extra">- blocked ${(100*blockedHit).toFixed(1)}% damage</div>`);
             }
         }
+        if (defender.barrier.turnLeft > 0) {
+            blockedHit = Math.min(1, blockedHit + defender.barrier.damageReduction);
+            extraLogs.push(`<div class="log-extra">- dispersed ${(100*blockedHit).toFixed(1)}% damage</div>`);
+            defender.barrier.turnLeft -= 1;
+        }
+        /**
+         * Spells
+         */
         if (attacker.skills.magicArrow > 0) {
             const castCost = castFactor * MagicArrow.castMana * (1 + attacker.skills.magicArrow / 10);
             if (attacker.mana > castCost && Math.random() < MagicArrow.castChance) {
@@ -432,8 +440,8 @@ export class DragonBattleService {
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
-        if (attacker.skills.spiralCannon > 0) {
-            let baseDamage = this.mathService.randRange(0.8, 1.2) * (1 + attacker.skills.spiralCannon / 10) * (1.8 * attacker.physicalAttack);
+        if (attacker.skills.spiralCannon > 0 && SpiralCannon.castChance > Math.random()) {
+            let baseDamage = this.mathService.randRange(0.8, 1.2) * (1 + attacker.skills.spiralCannon / 11) * (1.7 * attacker.physicalAttack);
             let inflictedDamage = baseDamage - defender.armor;
             inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
             inflictedDamage *= (1 - blockedHit);
@@ -494,14 +502,18 @@ export class DragonBattleService {
                 extraLogs.push(`<div class="log-extra">- blocked ${(100*blockedHit).toFixed(1)}% damage</div>`);
             }
         }
-
+        if (defender.barrier.turnLeft > 0) {
+            blockedHit = Math.min(1, blockedHit + defender.barrier.damageReduction);
+            extraLogs.push(`<div class="log-extra">- dispersed ${(100*blockedHit).toFixed(1)}% damage</div>`);
+            defender.barrier.turnLeft -= 1;
+        }
         if (defender.skills.enchantedBarrier) {
             const barrierCost = EnchantedBarrier.castMana + defender.skills.enchantedBarrier / 8;
             if (defender.mana >= barrierCost) {
                 defender.mana -= barrierCost;
                 let absorbedHit = (10 + defender.skills.enchantedBarrier / 3) / 100;
                 blockedHit += absorbedHit;
-                extraLogs.push(`<div class="log-extra">- absorbed ${(100*absorbedHit).toFixed(1)}% damage</div>`);
+                extraLogs.push(`<div class="log-extra">- dispersed ${(100*absorbedHit).toFixed(1)}% damage</div>`);
             }
         }
 

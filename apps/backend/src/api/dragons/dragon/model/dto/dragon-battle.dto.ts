@@ -56,9 +56,17 @@ export class DragonBattleDto extends PartialType(DragonDto) {
 
     @ApiPropertyOptional()
     critBoost: CritBoost;
+
+    @ApiPropertyOptional()
+    barrier: Barrier;
 }
 
 export interface CritBoost {
     extraChance: number;
+    turnLeft: number;
+}
+
+export interface Barrier {
+    damageReduction: number;
     turnLeft: number;
 }

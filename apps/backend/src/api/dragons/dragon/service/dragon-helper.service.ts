@@ -4,7 +4,7 @@ import { EquipmentStatisticsDto } from 'src/api/items/item/model/dto/equipment-s
 import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
 import { MathService } from 'src/common/services/math.service';
 import { ExpeditionGuardianDto } from '../../dragon-action/model/dto/expedition-guardian.dto';
-import { DragonBattleDto } from '../model/dto/dragon-battle.dto';
+import { Barrier, DragonBattleDto } from '../model/dto/dragon-battle.dto';
 import { DragonDto } from '../model/dto/dragon.dto';
 
 @Injectable()
@@ -114,6 +114,11 @@ export class BattleHelperService {
         magicalAttack = Math.max(this.BASE_MAGICAL_ATTACK, magicalAttack);
         dodgeChance = Math.max(this.BASE_DODGE_CHANCE, dodgeChance);
 
+        const barrier: Barrier = {
+            turnLeft: 0 + Math.floor(dragon.skills.energyShield / 5),
+            damageReduction: 0.5 + dragon.skills.energyShield / 55,
+        };
+
         return {
             ...dragon,
             maxHealth: health,
@@ -137,6 +142,7 @@ export class BattleHelperService {
                 turnLeft: 0,
                 extraChance: 0,
             },
+            barrier: barrier,
         };
     }
 
