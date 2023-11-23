@@ -115,8 +115,8 @@ export class BattleHelperService {
         dodgeChance = Math.max(this.BASE_DODGE_CHANCE, dodgeChance);
 
         const barrier: Barrier = {
-            turnLeft: 0 + Math.floor(dragon.skills.energyShield / 5),
-            damageReduction: 0.5 + dragon.skills.energyShield / 55,
+            turnLeft: 0 + Math.floor(dragon.skills.energyShield / 4),
+            damageReduction: 0.5 + dragon.skills.energyShield / 60,
         };
 
         return {

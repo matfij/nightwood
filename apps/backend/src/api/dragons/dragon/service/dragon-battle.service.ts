@@ -11,7 +11,6 @@ import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
 import { BattleHelperService } from "./dragon-helper.service";
 import { TurnResult, BattleResultType, BattleResultExperience } from "../model/definitions/dragon-battle";
-import { zip } from "rxjs";
 
 @Injectable()
 export class DragonBattleService {
@@ -26,10 +25,8 @@ export class DragonBattleService {
     async executeBattle(ownedDragon: DragonDto, enemyDragon: Partial<DragonDto>): Promise<Partial<BattleResultDto>> {
         let owned = this.battleHelperService.calculateBattleStats(ownedDragon);
         let enemy = this.battleHelperService.calculateBattleStats(enemyDragon);
-
         const logs = this.performInitialMovement(owned, enemy);
         let result = '';
-
         while (owned.health > 0 && enemy.health > 0 && logs.length <= 100) {
             let turnResult: TurnResult;
 
@@ -194,9 +191,15 @@ export class DragonBattleService {
         if (!dodged && turnResult.skip && defender.skills.counterattack) {
             const counterattackChance = defender.skills.counterattack / 40;
             if (counterattackChance > Math.random()) {
-                defender.initiative = attacker.initiative + defender.speed;
+                turnResult.defender.initiative = attacker.initiative + defender.speed;
                 turnResult.log += `<div class="item-log log-status">${defender.name} performs counterattack:</div>`
             }
+        }
+        /**
+         * Barrier consumption
+         */
+        if (!dodged && defender.barrier.turnLeft > 0) {
+            turnResult.defender.barrier.turnLeft -= 1;
         }
 
         return turnResult;
@@ -267,7 +270,6 @@ export class DragonBattleService {
         if (defender.barrier.turnLeft > 0) {
             blockedHit = Math.min(1, blockedHit + defender.barrier.damageReduction);
             extraLogs.push(`<div class="log-extra">- dispersed ${(100*blockedHit).toFixed(1)}% damage</div>`);
-            defender.barrier.turnLeft -= 1;
         }
         /**
          * Spells
@@ -505,7 +507,6 @@ export class DragonBattleService {
         if (defender.barrier.turnLeft > 0) {
             blockedHit = Math.min(1, blockedHit + defender.barrier.damageReduction);
             extraLogs.push(`<div class="log-extra">- dispersed ${(100*blockedHit).toFixed(1)}% damage</div>`);
-            defender.barrier.turnLeft -= 1;
         }
         if (defender.skills.enchantedBarrier) {
             const barrierCost = EnchantedBarrier.castMana + defender.skills.enchantedBarrier / 8;
@@ -513,7 +514,7 @@ export class DragonBattleService {
                 defender.mana -= barrierCost;
                 let absorbedHit = (10 + defender.skills.enchantedBarrier / 3) / 100;
                 blockedHit += absorbedHit;
-                extraLogs.push(`<div class="log-extra">- dispersed ${(100*absorbedHit).toFixed(1)}% damage</div>`);
+                extraLogs.push(`<div class="log-extra">- absorbed ${(100*absorbedHit).toFixed(1)}% damage</div>`);
             }
         }
 
@@ -585,8 +586,8 @@ export class DragonBattleService {
         let baseHit = this.mathService.randRange(0.9, 1.1) * critFactor * rageFactor * attacker.physicalAttack * lethalFactor;
         baseDamage = baseHit;
         baseHit = isArmorPenetrated ? baseHit : baseHit - defender.armor;
-        baseHit *= (1 - blockedHit);
         baseHit = this.mathService.limit(1 + attacker.level / 10, baseHit, baseHit);
+        baseHit *= (1 - blockedHit);
         inflictedDamage += baseHit;
         defender.health -= baseHit;
 
@@ -627,8 +628,8 @@ export class DragonBattleService {
         if (attacker.skills.fireBreath) {
             const baseFireComponent = Math.log(2 + attacker.skills.fireBreath) * (0.4 * attacker.magicalAttack);
             let fireHit = critFactor * rageFactor * baseFireComponent - defender.resistance;
-            fireHit *= (1 - blockedHit);
             fireHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(1 + attacker.level / 10, fireHit, fireHit);
+            fireHit *= (1 - blockedHit);
             inflictedDamage += fireHit;
             defender.health -= fireHit;
             extraLogs.push(`<div class="log-extra">+ ${fireHit.toFixed(1)} fire damage</div>`);
@@ -637,8 +638,8 @@ export class DragonBattleService {
         if (attacker.skills.staticStrike) {
             const baseStaticComponent = Math.log(2 + attacker.skills.staticStrike) * (0.3 * attacker.magicalAttack);
             let staticHit = critFactor * rageFactor * baseStaticComponent - defender.resistance;
-            staticHit *= (1 - blockedHit);
             staticHit = this.mathService.randRange(0.5, 1.9) * this.mathService.limit(1 + attacker.level / 9, staticHit, staticHit);
+            staticHit *= (1 - blockedHit);
             inflictedDamage += staticHit;
             defender.health -= staticHit;
             extraLogs.push(`<div class="log-extra">+ ${staticHit.toFixed(1)} electric damage</div>`);
@@ -667,8 +668,8 @@ export class DragonBattleService {
         if (attacker.skills.leafCut > 0 && attacker.mana > leafCutCost) {
             const baseLeafComponent = Math.log(2 + attacker.skills.leafCut) * (0.6 * attacker.magicalAttack);
             let leafHit = critFactor * rageFactor * baseLeafComponent - defender.resistance;
-            leafHit *= (1 - blockedHit);
             leafHit = this.mathService.randRange(0.9, 1.1) * this.mathService.limit(1 + attacker.level / 8, leafHit, leafHit);
+            leafHit *= (1 - blockedHit);
             inflictedDamage += leafHit;
             defender.health -= leafHit;
             attacker.mana -= leafCutCost;
