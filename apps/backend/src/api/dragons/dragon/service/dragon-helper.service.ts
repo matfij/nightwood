@@ -55,26 +55,26 @@ export class BattleHelperService {
             health *
             (1 + (dragon.skills.greatVigor || 0) / 50) *
             (1 + boosterStats.healthBoost ?? 0) *
-            (1 + dragon.skills.superiorEngine / 80);
+            (1 + (dragon.skills.superiorEngine || 0) / 80);
         mana = mana * (1 + (dragon.skills.innerFlow || 0) / 40) * (1 + boosterStats.manaBoost ?? 0);
         armor =
             armor *
             (1 + boosterStats.armorBoost ?? 0) *
             (1 + (dragon.skills.inferialBlessing || 0) / 50) *
-            (1 + dragon.skills.superiorEngine / 80);
+            (1 + (dragon.skills.superiorEngine || 0) / 80);
         resistance =
             (resistance + 0.3 * armor) *
             (1 + (dragon.skills.inferialBlessing || 0) / 50) *
-            (1 + dragon.skills.superiorEngine / 80);
+            (1 + (dragon.skills.superiorEngine || 0) / 80);
         speed =
             speed *
             (1 + (dragon.skills.innateSpeed || 0) / 60) *
             (1 + boosterStats.speedBoost ?? 0) *
-            (1 + dragon.skills.superiorEngine / 90);
+            (1 + (dragon.skills.superiorEngine || 0) / 90);
         physicalAttack =
             physicalAttack *
             (1 + boosterStats.physicalAttackBoost ?? 0) *
-            (1 + dragon.skills.superiorEngine / 90);
+            (1 + (dragon.skills.superiorEngine || 0) / 90);
         magicalAttack = magicalAttack * (1 + boosterStats.magicalAttackBoost ?? 0);
         let manaRegen = mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
         let healthRegen = 0 + runeStats.healthRegeneration;
@@ -143,6 +143,7 @@ export class BattleHelperService {
                 extraChance: 0,
             },
             barrier: barrier,
+            timeAlterUsed: false,
         };
     }
 

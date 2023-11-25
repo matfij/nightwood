@@ -800,8 +800,8 @@ export class DragonBattleService {
             defender.critChance += woundedPrideFactor / 100;
         }
 
-        if (defender.skills.feebleDream) {
-            const fadeFactor = (5 + attacker.skills.feebleDream) / 600;
+        if (defender.skills.feebleDream > 0) {
+            const fadeFactor = (5 + defender.skills.feebleDream) / 600;
             attacker.speed *= (1 - fadeFactor);
             attacker.manaRegen *= (1 - fadeFactor);
             attacker.dodgeChance *= (1 - fadeFactor);
@@ -815,6 +815,13 @@ export class DragonBattleService {
             attacker.critChance *= (1 - fadeFactor);
             attacker.critPower *= (1 - fadeFactor);
             independentLogs.push(`<div class="item-log log-status">Feeble dream fading</div>`);
+        }
+
+        if (defender.skills.timeAlter > 0 && defender.health <= 0 && !defender.timeAlterUsed) {
+            const restoreAmount = (4 + defender.skills.timeAlter) / 27;
+            defender.health = restoreAmount * defender.maxHealth;
+            independentLogs.push(`<div class="item-log log-status">Time alter activated</div>`);
+            defender.timeAlterUsed = true;
         }
 
         independentLogs.forEach(independentLog => log += independentLog);

@@ -59,6 +59,9 @@ export class DragonBattleDto extends PartialType(DragonDto) {
 
     @ApiPropertyOptional()
     barrier: Barrier;
+
+    @ApiPropertyOptional()
+    timeAlterUsed: boolean;
 }
 
 export interface CritBoost {
