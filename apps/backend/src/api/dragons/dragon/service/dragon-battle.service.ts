@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/data/skills-common";
-import { AirVector, AndromedaArrow, EnchantedBarrier, FireBolt, IceBolt, LaserExedra, LeafCut, RockBlast, SolarBeam, SpiralCannon, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
+import { AirVector, AndromedaArrow, EnchantedBarrier, FireBolt, IceBolt, LaserExedra, LeafCut, RockBlast, SolarBeam, SpiralCannon, StarWind, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
 import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -428,7 +428,7 @@ export class DragonBattleService {
         }
         if (attacker.skills.andromedaArrow > 0) {
             const castCost = castFactor * AndromedaArrow.castMana * (1 + attacker.skills.andromedaArrow / 7);
-            if (attacker.mana > castCost && Math.random() < LaserExedra.castChance) {
+            if (attacker.mana > castCost && Math.random() < AndromedaArrow.castChance) {
                 let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.andromedaArrow / 9) * (1.8 * attacker.magicalAttack);
                 let inflictedDamage = baseDamage - defender.resistance;
                 inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
@@ -456,6 +456,28 @@ export class DragonBattleService {
             }
             log = this.battleHelperService.getSkillLog('Spiral Cannon', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
             return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+        }
+        if (attacker.skills.starWind > 0) {
+            const castCost = castFactor * StarWind.castMana * (1 + attacker.skills.starWind / 7);
+            if (attacker.mana > castCost && Math.random() < StarWind.castChance) {
+                let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.starWind / 9) * (1.6 * attacker.magicalAttack);
+                let inflictedDamage = baseDamage - defender.resistance;
+                inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
+                inflictedDamage *= (1 - blockedHit);
+                defender.health -= inflictedDamage;
+                if (defender.armor > 0) {
+                    const brokenArmor = this.mathService.randRange(0.9, 1.1) * (3 + 0.02 * defender.armor * attacker.skills.starWind);
+                    defender.resistance -= brokenArmor;
+                    extraLogs.push(`<div class="log-extra">+ broken ${brokenArmor.toFixed(1)} armor</div>`);
+                }
+                if (defender.resistance > 0) {
+                    const brokenResistance = this.mathService.randRange(0.9, 1.1) * (3 + 0.02 * defender.resistance * attacker.skills.starWind);
+                    defender.resistance -= brokenResistance;
+                    extraLogs.push(`<div class="log-extra">+ broken ${brokenResistance.toFixed(1)} resistance</div>`);
+                }
+                log = this.battleHelperService.getSkillLog('Star Wind', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
+            }
         }
         
         return { attacker: attacker, defender: defender, log: log, cssClasses: cssClasses, skip: false };
