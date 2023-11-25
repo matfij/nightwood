@@ -79,7 +79,7 @@ export class BattleHelperService {
         let manaRegen = mana * ((dragon.skills.innerFlow || 0) / 40) + runeStats.manaRegeneration;
         let healthRegen = 0 + runeStats.healthRegeneration;
 
-        let initiative = (speed + runeStats.initiative) * (1 + (dragon.skills.timeAccel || 0) / 4);
+        let initiative = (speed + runeStats.initiative) * (1 + (dragon.skills.timeAccel || 0) / 7);
         let critChance = Math.min(
             this.MAX_CRIT_CHANCE,
             (1 + boosterStats.criticalChanceBoost ?? 0) *

@@ -723,13 +723,13 @@ export class DragonBattleService {
         }
 
         if (attacker.skills.invincibleTechnology > 0) {
-            const diminishFactor = (1 + attacker.skills.invincibleTechnology) / 900;
+            const diminishFactor = (1 + attacker.skills.invincibleTechnology) / 700;
             defender.speed *= (1 - diminishFactor);
             defender.physicalAttack *= (1 - diminishFactor);
             defender.magicalAttack *= (1 - diminishFactor);
             defender.resistance *= (1 - diminishFactor)
             defender.armor *= (1 - diminishFactor);
-            defender.critChance *= (1 - diminishFactor) / 100;
+            defender.critChance *= (1 - diminishFactor);
             extraLogs.push(`<div class="log-extra">+ diminish ${(100 * diminishFactor).toFixed(1)}%</div>`);
         }
         
@@ -798,6 +798,23 @@ export class DragonBattleService {
             defender.resistance += woundedPrideFactor
             defender.armor += woundedPrideFactor;
             defender.critChance += woundedPrideFactor / 100;
+        }
+
+        if (defender.skills.feebleDream) {
+            const fadeFactor = (5 + attacker.skills.feebleDream) / 600;
+            attacker.speed *= (1 - fadeFactor);
+            attacker.manaRegen *= (1 - fadeFactor);
+            attacker.dodgeChance *= (1 - fadeFactor);
+            attacker.maxHealth *= (1 - fadeFactor);
+            attacker.maxMana *= (1 - fadeFactor);
+            attacker.healthRegen *= (1 - fadeFactor);
+            attacker.physicalAttack *= (1 - fadeFactor);
+            attacker.magicalAttack *= (1 - fadeFactor);
+            attacker.resistance *= (1 - fadeFactor)
+            attacker.armor *= (1 - fadeFactor);
+            attacker.critChance *= (1 - fadeFactor);
+            attacker.critPower *= (1 - fadeFactor);
+            independentLogs.push(`<div class="item-log log-status">Feeble dream fading</div>`);
         }
 
         independentLogs.forEach(independentLog => log += independentLog);
