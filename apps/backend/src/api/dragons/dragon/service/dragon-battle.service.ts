@@ -699,6 +699,17 @@ export class DragonBattleService {
                 extraLogs.push(`<div class="log-extra">+ blaze scar ${newScar.toFixed(1)} damage</div>`);
             }
         }
+
+        if (attacker.skills.invincibleTechnology > 0) {
+            const diminishFactor = (1 + attacker.skills.invincibleTechnology) / 800;
+            defender.speed *= (1 - diminishFactor);
+            defender.physicalAttack *= (1 - diminishFactor);
+            defender.magicalAttack *= (1 - diminishFactor);
+            defender.resistance *= (1 - diminishFactor)
+            defender.armor *= (1 - diminishFactor);
+            defender.critChance *= (1 - diminishFactor) / 100;
+            extraLogs.push(`<div class="log-extra">+ diminished ${diminishFactor.toFixed(1)} statistics</div>`);
+        }
         
         /**
          * Post-defensive skills
