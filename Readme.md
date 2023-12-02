@@ -53,6 +53,13 @@ Play now at: [re.nightwood.dev](https://re.nightwood.dev/)
 ## Stage 2
 
 -   Guilds - members, constructions [100%]
--   New dragon natures [70%]
+-   New dragon natures [100%]
 -   New skills and equipment - 100 lvl, 200 lvl [100%]
 -   Battle tournaments [100%]
+
+## Stage 3
+
+-   Expeditions extension - new maps, levels, loots redistribution [0%]
+-   Guilds extension - activity logs, marketplace, chat,board, challenges [0%]
+-   Social life - friends removing, direct trades, guild links [0%]
+-   Marketplace - detail trading, system offers [0%]
