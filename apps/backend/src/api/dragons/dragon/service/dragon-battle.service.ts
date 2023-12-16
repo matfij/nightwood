@@ -9,8 +9,9 @@ import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
 import { DragonDto } from "../model/dto/dragon.dto";
-import { BattleHelperService } from "./dragon-helper.service";
+import { DragonBattleHelperService } from "./dragon-battle-helper.service";
 import { TurnResult, BattleResultType, BattleResultExperience } from "../model/definitions/dragon-battle";
+import { DragonBattleStatsService } from "./dragon-battle-stats.service";
 
 @Injectable()
 export class DragonBattleService {
@@ -18,13 +19,14 @@ export class DragonBattleService {
     constructor (
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
-        private battleHelperService: BattleHelperService,
+        private dragonBattleStatsService: DragonBattleStatsService,
+        private dragonBattleHelperService: DragonBattleHelperService,
         private mathService: MathService,
     ) {}
 
     async executeBattle(ownedDragon: DragonDto, enemyDragon: Partial<DragonDto>): Promise<Partial<BattleResultDto>> {
-        let owned = this.battleHelperService.calculateBattleStats(ownedDragon);
-        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon);
+        let owned = this.dragonBattleStatsService.calculateBattleStats(ownedDragon);
+        let enemy = this.dragonBattleStatsService.calculateBattleStats(enemyDragon);
         const logs = this.performInitialMovement(owned, enemy);
         let result = '';
         while (owned.health > 0 && enemy.health > 0 && logs.length <= 100) {
@@ -65,10 +67,10 @@ export class DragonBattleService {
     }
 
     async executeGuardianBattle(ownedDragon: DragonDto, expedition: ExpeditionDto): Promise<Partial<BattleResultDto>> {
-        let enemyDragon = this.battleHelperService.createDragonFromGuardian(expedition.guardian);
+        let enemyDragon = this.dragonBattleHelperService.createDragonFromGuardian(expedition.guardian);
         
-        let owned = this.battleHelperService.calculateBattleStats(ownedDragon);
-        let enemy = this.battleHelperService.calculateBattleStats(enemyDragon);
+        let owned = this.dragonBattleStatsService.calculateBattleStats(ownedDragon);
+        let enemy = this.dragonBattleStatsService.calculateBattleStats(enemyDragon);
 
         const logs = this.performInitialMovement(owned, enemy);
         let result = '';
@@ -163,7 +165,6 @@ export class DragonBattleService {
          * Dodge chance
          */
         let dodgeChance = turnResult.defender.dodgeChance * (1 - (attacker.skills.thoughtfulStrike || 0) / 70);
-        // dodgeChance = Math.min(dodgeChance, 0.67);
         if (!turnResult.skip && dodgeChance > Math.random()) {
             turnResult.log = `
                 <div class="item-log log-miss">
@@ -218,7 +219,7 @@ export class DragonBattleService {
             inflictedDamege = Math.min(inflictedDamege, 0.75 * defender.health)
             defender.health -= inflictedDamege;
             attacker.mana = 0;
-            log = this.battleHelperService.getSkillLog('Prominence Blast', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
+            log = this.dragonBattleHelperService.getSkillLog('Prominence Blast', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
         if (attacker.skills.tidalSurge > 0) {
@@ -230,7 +231,7 @@ export class DragonBattleService {
             speedReduction = this.mathService.limit(attacker.skills.tidalSurge, speedReduction, defender.speed / 3);
             defender.speed -= speedReduction;
             extraLogs.push(`<div class="log-extra">+ reduced speed by (${speedReduction.toFixed(1)})</div>`);
-            log = this.battleHelperService.getSkillLog('Tidal Surge', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
+            log = this.dragonBattleHelperService.getSkillLog('Tidal Surge', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
         if (attacker.skills.earthquake > 0) {
@@ -241,7 +242,7 @@ export class DragonBattleService {
             const armorBreak = defender.armor * (attacker.skills.earthquake / 80);
             defender.armor -= armorBreak;
             extraLogs.push(`<div class="log-extra">+ broken (${armorBreak.toFixed(1)}) armor</div>`);
-            log = this.battleHelperService.getSkillLog('Earthquake', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
+            log = this.dragonBattleHelperService.getSkillLog('Earthquake', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
         return turnResult;
@@ -289,7 +290,7 @@ export class DragonBattleService {
                     defender.resistance -= brokenResistance;
                     extraLogs.push(`<div class="log-extra">+ broken ${brokenResistance.toFixed(1)} resistance</div>`);
                 }
-                log = this.battleHelperService.getSkillLog('Magic Arrow', attacker, defender, baseDamage, inflictedDamege, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Magic Arrow', attacker, defender, baseDamage, inflictedDamege, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, skip: true, log: log };
             }
         }
@@ -305,7 +306,7 @@ export class DragonBattleService {
                 const extraCritPower = attacker.skills.fireBolt;
                 attacker.critPower += extraCritPower / 100;
                 extraLogs.push(`<div class="log-extra">+ critical power boost (${extraCritPower.toFixed(1)} %)</div>`);
-                log = this.battleHelperService.getSkillLog('Fire Bolt', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Fire Bolt', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -321,7 +322,7 @@ export class DragonBattleService {
                 const skillSlow = this.mathService.randRange(0.9, 1.1) * (5 + 0.075 * defender.speed * attacker.skills.iceBolt);
                 defender.initiative -= skillSlow;
                 extraLogs.push(`<div class="log-extra">+ slow (${skillSlow.toFixed(1)} initiative)</div>`);
-                log = this.battleHelperService.getSkillLog('Ice Bolt', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Ice Bolt', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -337,7 +338,7 @@ export class DragonBattleService {
                 const skillHaste = this.mathService.randRange(0.9, 1.1) * (5 + 0.09 * attacker.speed * attacker.skills.airVector);
                 attacker.initiative += skillHaste;
                 extraLogs.push(`<div class="log-extra">+ haste (${skillHaste.toFixed(1)} initiative)</div>`);
-                log = this.battleHelperService.getSkillLog('Air Vector', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Air Vector', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true };
             }
         }
@@ -355,7 +356,7 @@ export class DragonBattleService {
                     defender.initiative -= defender.speed;
                     extraLogs.push(`<div class="log-extra">+ stun</div>`);
                 }
-                log = this.battleHelperService.getSkillLog('Rock Blast', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Rock Blast', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -374,7 +375,7 @@ export class DragonBattleService {
                     defender.initiative -= 0.25 * defender.speed;
                     extraLogs.push(`<div class="log-extra">+ paralysis</div>`);
                 }
-                log = this.battleHelperService.getSkillLog('Thunderbolt', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Thunderbolt', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -392,7 +393,7 @@ export class DragonBattleService {
                     extraChance: 1,
                     turnLeft: 1,
                 }
-                log = this.battleHelperService.getSkillLog('Tempest Fury', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Tempest Fury', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -407,7 +408,7 @@ export class DragonBattleService {
                 attacker.mana -= castCost;
                 attacker.dodgeChance += 0.12;
                 extraLogs.push(`<div class="log-extra">+ dazzle</div>`);
-                log = this.battleHelperService.getSkillLog('Solar Beam', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Solar Beam', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -422,7 +423,7 @@ export class DragonBattleService {
                 defender.maxHealth -= inflictedDamage;
                 attacker.mana -= castCost;
                 extraLogs.push(`<div class="log-extra">+ permanent loss (${inflictedDamage.toFixed(1)}) health</div>`);
-                log = this.battleHelperService.getSkillLog('Laser Exedra', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Laser Exedra', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -438,7 +439,7 @@ export class DragonBattleService {
                 defender.mana -= destroyedMana;
                 attacker.mana -= castCost;
                 extraLogs.push(`<div class="log-extra">+ destroyed (${destroyedMana.toFixed(1)}) mana</div>`);
-                log = this.battleHelperService.getSkillLog('Andromeda Arrow', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Andromeda Arrow', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }
@@ -454,7 +455,7 @@ export class DragonBattleService {
                 defender.deepWounds += newWound;
                 extraLogs.push(`<div class="log-extra">+ bleeding ${newWound.toFixed(1)} damage</div>`);
             }
-            log = this.battleHelperService.getSkillLog('Spiral Cannon', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+            log = this.dragonBattleHelperService.getSkillLog('Spiral Cannon', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
             return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
         }
         if (attacker.skills.starWind > 0) {
@@ -475,7 +476,7 @@ export class DragonBattleService {
                     defender.resistance -= brokenResistance;
                     extraLogs.push(`<div class="log-extra">+ broken ${brokenResistance.toFixed(1)} resistance</div>`);
                 }
-                log = this.battleHelperService.getSkillLog('Star Wind', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
+                log = this.dragonBattleHelperService.getSkillLog('Star Wind', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
                 return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
             }
         }

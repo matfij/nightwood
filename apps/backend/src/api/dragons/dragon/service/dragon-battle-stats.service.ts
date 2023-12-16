@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { BOOSTERS } from 'src/api/items/alchemy/data/boosters';
-import { EquipmentStatisticsDto } from 'src/api/items/item/model/dto/equipment-statistics.dto';
-import { ItemDto } from 'src/api/items/item/model/dto/item.dto';
-import { MathService } from 'src/common/services/math.service';
-import { ExpeditionGuardianDto } from '../../dragon-action/model/dto/expedition-guardian.dto';
-import { Barrier, DragonBattleDto } from '../model/dto/dragon-battle.dto';
+import { BOOSTERS } from '../../../items/alchemy/data/boosters';
+import { EquipmentStatisticsDto } from '../../../items/item/model/dto/equipment-statistics.dto';
+import { ItemDto } from '../../../items/item/model/dto/item.dto';
+import { DragonBattleDto, Barrier } from '../model/dto/dragon-battle.dto';
 import { DragonDto } from '../model/dto/dragon.dto';
 
 @Injectable()
-export class BattleHelperService {
+export class DragonBattleStatsService {
     private readonly BASE_HEALTH = 100;
     private readonly BASE_MANA = 20;
     private readonly BASE_ARMOR = 5;
@@ -23,8 +21,6 @@ export class BattleHelperService {
     private readonly BASE_CRIT_POWER = 1.5;
     private readonly MAX_CRIT_CHANCE = 0.5;
     private readonly MAX_CRIT_POWER = 3;
-
-    constructor(private mathService: MathService) {}
 
     calculateBattleStats(dragon: Partial<DragonDto>): DragonBattleDto {
         const runeStats = this.getRunesStats(dragon.runes);
@@ -206,33 +202,5 @@ export class BattleHelperService {
         };
         const booster = BOOSTERS.find((b) => b.uid === boosterUid);
         return { ...boosterStats, ...booster?.statistics };
-    }
-
-    createDragonFromGuardian(guardian: ExpeditionGuardianDto): Partial<DragonDto> {
-        const dragon: Partial<DragonDto> = {
-            ...guardian,
-        };
-
-        return dragon;
-    }
-
-    getSkillLog(
-        name: string,
-        attacker: DragonBattleDto,
-        defender: DragonBattleDto,
-        baseDamage: number,
-        inflictedDamege: number,
-        extraLogs: string[],
-        extraClasses?: string,
-    ) {
-        let log = `
-        <div class="item-log log-skill ${extraClasses}">
-            ${attacker.name} (${Math.round(attacker.health)}) uses <b>${name}</b>
-            with power of ${Math.round(baseDamage)}`;
-        extraLogs.forEach((extraLog) => (log += extraLog));
-        log += `<div>${defender.name} (${Math.round(defender.health)}) took ${Math.round(
-            inflictedDamege,
-        )} damage</div></div>`;
-        return log;
     }
 }

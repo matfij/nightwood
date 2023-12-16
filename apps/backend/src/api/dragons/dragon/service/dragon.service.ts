@@ -37,7 +37,6 @@ import { DragonNature } from '../model/definitions/dragons';
 import { DRAGON_SUMMON_ACTIONS } from '../data/dragon-summon-actions';
 import { DragonSummonActionDto } from '../model/dto/dragon-summon.dto';
 import { DragonBattleDto } from '../model/dto/dragon-battle.dto';
-import { BattleHelperService } from './dragon-helper.service';
 import { BOOSTERS } from 'src/api/items/alchemy/data/boosters';
 import { EXPEDITIONS } from '../../dragon-action/data/expeditions';
 import { DragonBestDto } from '../model/dto/dragon-best.dto';
@@ -46,7 +45,7 @@ import { AchievementsService } from 'src/api/users/achievements/service/achievem
 import { DragonPublicDto } from '../model/dto/dragon-public.dto';
 import { FoodType } from 'src/api/items/item/model/definitions/items';
 import { EXPEDITIONS_EVENT } from '../../dragon-action/data/expeditions-event';
-import { User } from 'src/api/users/user/model/user.entity';
+import { DragonBattleStatsService } from './dragon-battle-stats.service';
 
 @Injectable()
 export class DragonService {
@@ -54,7 +53,7 @@ export class DragonService {
         @InjectRepository(Dragon)
         private dragonRepository: Repository<Dragon>,
         private dragonBattleService: DragonBattleService,
-        private battleHelperService: BattleHelperService,
+        private dragonBattleStatsService: DragonBattleStatsService,
         private dragonActionService: DragonActionService,
         private dragonSkillsService: DragonSkillsService,
         private achievementsService: AchievementsService,
@@ -226,7 +225,7 @@ export class DragonService {
     async calculateStatistics(ownerId: number, dragonId: number): Promise<DragonBattleDto> {
         const dragon = await this.checkDragon(ownerId, dragonId);
 
-        const battleDragon = this.battleHelperService.calculateBattleStats(dragon);
+        const battleDragon = this.dragonBattleStatsService.calculateBattleStats(dragon);
 
         return battleDragon;
     }
