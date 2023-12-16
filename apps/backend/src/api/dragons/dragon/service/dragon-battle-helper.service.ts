@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ExpeditionGuardianDto } from '../../dragon-action/model/dto/expedition-guardian.dto';
 import { DragonBattleDto } from '../model/dto/dragon-battle.dto';
 import { DragonDto } from '../model/dto/dragon.dto';
+import { Skill } from '../../dragon-skills/model/definitions/dragons-skills';
 
 @Injectable()
 export class DragonBattleHelperService {
@@ -9,8 +10,25 @@ export class DragonBattleHelperService {
         const dragon: Partial<DragonDto> = {
             ...guardian,
         };
-
         return dragon;
+    }
+
+    tryUseSkill(dragon: DragonBattleDto, skill: Skill) {
+        const skillPoints = dragon.skills[skill.uid];
+        if (!skillPoints) {
+            return false;
+        }
+        const castFactor = dragon.skills.conserve ? 1 - (dragon.skills.conserve / 60) : 1;
+        const castCost = castFactor * skill.castMana * (1 + skillPoints / 7);
+        const canUse = skillPoints > 0 && castCost <= dragon.mana && skill.castChance > Math.random();
+        return canUse;
+    }
+
+    getSkillCost(dragon: DragonBattleDto, skill: Skill) {
+        const skillPoints = dragon.skills[skill.uid];
+        const castFactor = dragon.skills.conserve ? 1 - (dragon.skills.conserve / 60) : 1;
+        const castCost = castFactor * skill.castMana * (1 + skillPoints / 6) * (1);
+        return castCost;
     }
 
     getSkillLog(
