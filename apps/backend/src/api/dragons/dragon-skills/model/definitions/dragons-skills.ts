@@ -9,4 +9,10 @@ export interface Skill {
 
     castChance?: number;
     castMana?: number;
+    damageSpread?: number;
+    skillDamageMod?: number;
+    physicalAttackMod?: number;
+    magicalAttackMod?: number;
+    physicalDefMod?: number;
+    magicalDefMod?: number;
 }

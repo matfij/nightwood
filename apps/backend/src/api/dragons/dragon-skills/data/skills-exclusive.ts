@@ -21,6 +21,12 @@ export const FireBolt: Skill = {
     requiredNature: [DragonNature.Fire],
     castMana: 20,
     castChance: 0.25,
+    damageSpread: 0.1,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.31,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 export const InferialBlessing: Skill = {
@@ -59,6 +65,12 @@ export const IceBolt: Skill = {
     requiredNature: [DragonNature.Water],
     castMana: 20,
     castChance: 0.25,
+    damageSpread: 0.1,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.28,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 export const Freeze: Skill = {
@@ -75,6 +87,12 @@ export const TidalSurge: Skill = {
     hint: 'Once, at the beggining of the battle, summons a powerful wave that deals damage and slows the enemy.',
     level: 100,
     requiredNature: [DragonNature.Water],
+    damageSpread: 0.1,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.31,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 /**
@@ -97,6 +115,12 @@ export const AirVector: Skill = {
     requiredNature: [DragonNature.Wind],
     castMana: 20,
     castChance: 0.25,
+    damageSpread: 0.1,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.28,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 export const Zeal: Skill = {
@@ -115,6 +139,12 @@ export const TempestFury: Skill = {
     requiredNature: [DragonNature.Wind],
     castMana: 50,
     castChance: 0.15,
+    damageSpread: 0.25,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.81,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 /**
@@ -137,6 +167,12 @@ export const RockBlast: Skill = {
     requiredNature: [DragonNature.Earth],
     castMana: 20,
     castChance: 0.25,
+    damageSpread: 0.1,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.31,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 export const DeepWounds: Skill = {
@@ -153,6 +189,12 @@ export const Earthquake: Skill = {
     hint: 'Once, at the beggining of the battle, summons almighty earthquake that breaks enemy armor.',
     level: 100,
     requiredNature: [DragonNature.Earth],
+    damageSpread: 0.1,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.31,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 /**
@@ -175,6 +217,12 @@ export const Thunderbolt: Skill = {
     requiredNature: [DragonNature.Electric],
     castMana: 20,
     castChance: 0.25,
+    damageSpread: 0.6,
+    skillDamageMod: 0.11,
+    magicalAttackMod: 1.77,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 export const SuperCharge: Skill = {
@@ -231,6 +279,12 @@ export const SolarBeam: Skill = {
     requiredNature: [DragonNature.Nature],
     castMana: 50,
     castChance: 0.2,
+    damageSpread: 0.2,
+    skillDamageMod: 0.1,
+    magicalAttackMod: 1.84,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.11,
 };
 
 /**
@@ -269,6 +323,12 @@ export const LaserExedra: Skill = {
     requiredNature: [DragonNature.Dark],
     castMana: 50,
     castChance: 0.15,
+    damageSpread: 0.15,
+    skillDamageMod: 0.11,
+    magicalAttackMod: 1.84,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 /**
@@ -297,6 +357,12 @@ export const ProminenceBlast: Skill = {
     hint: 'Performs a powerful attack at the beginning of the combat that uses all the dragons mana. Will not instantly kill the enemy.',
     level: 60,
     requiredNature: [DragonNature.Power],
+    damageSpread: 0.1,
+    skillDamageMod: 0.12,
+    magicalAttackMod: 1.84,
+    physicalAttackMod: 1.84,
+    magicalDefMod: 1,
+    physicalDefMod: 1,
 };
 
 export const AndromedaArrow: Skill = {
@@ -307,6 +373,12 @@ export const AndromedaArrow: Skill = {
     requiredNature: [DragonNature.Power],
     castMana: 50,
     castChance: 0.2,
+    damageSpread: 0.15,
+    skillDamageMod: 0.11,
+    magicalAttackMod: 1.89,
+    physicalAttackMod: 0,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 /**
@@ -329,6 +401,12 @@ export const SpiralCannon: Skill = {
     requiredNature: [DragonNature.Mechanical],
     castChance: 0.2,
     castMana: 0,
+    damageSpread: 0.2,
+    skillDamageMod: 0.11,
+    magicalAttackMod: 0,
+    physicalAttackMod: 1.77,
+    magicalDefMod: 0.1,
+    physicalDefMod: 1,
 };
 
 export const EnergyShield: Skill = {
@@ -367,6 +445,12 @@ export const StarWind: Skill = {
     requiredNature: [DragonNature.Time],
     castMana: 30,
     castChance: 0.2,
+    damageSpread: 0.1,
+    skillDamageMod: 0.11,
+    magicalAttackMod: 0,
+    physicalAttackMod: 1.77,
+    magicalDefMod: 1,
+    physicalDefMod: 0.1,
 };
 
 export const FeebleDream: Skill = {

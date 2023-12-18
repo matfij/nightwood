@@ -375,7 +375,7 @@ export class DragonBattleService {
             log = this.dragonBattleHelperService.getSkillLog('Tempest Fury', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
             return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
         }
-        if (this.dragonBattleHelperService.tryUseSkill(attacker, TempestFury)) {
+        if (this.dragonBattleHelperService.tryUseSkill(attacker, SolarBeam)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, SolarBeam);
             let baseDamage = this.mathService.randRange(0.9, 1.3) * (1 + attacker.skills.solarBeam / 7) * (1.9 * attacker.magicalAttack);
             let inflictedDamage = baseDamage - defender.resistance;
@@ -421,7 +421,7 @@ export class DragonBattleService {
             inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
             inflictedDamage *= (1 - blockedHit);
             defender.health -= inflictedDamage;
-            const bleedingChance = 0.33 + attacker.skills.thunderbolt / 75;
+            const bleedingChance = 0.33 + attacker.skills.spiralCannon / 75;
             if (bleedingChance > Math.random()) {
                 const newWound = defender.maxHealth * (attacker.skills.spiralCannon / 100);
                 defender.deepWounds += newWound;
