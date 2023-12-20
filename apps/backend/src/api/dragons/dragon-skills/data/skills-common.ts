@@ -65,7 +65,7 @@ export const MagicArrow: Skill = {
     castChance: 0.25,
     castMana: 10,
     damageSpread: 0.1,
-    skillDamageMod: 0.1,
+    damageMod: 0.1,
     magicalAttackMod: 1,
     physicalAttackMod: 0,
     magicalDefMod: 1,

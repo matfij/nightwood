@@ -4,7 +4,7 @@ import { MathService } from "src/common/services/math.service";
 import { Repository } from "typeorm";
 import { ExpeditionDto } from "../../dragon-action/model/dto/expedition.dto";
 import { MagicArrow } from "../../dragon-skills/data/skills-common";
-import { AirVector, AndromedaArrow, EnchantedBarrier, FireBolt, IceBolt, LaserExedra, LeafCut, RockBlast, SolarBeam, SpiralCannon, StarWind, TempestFury, Thunderbolt } from "../../dragon-skills/data/skills-exclusive";
+import { AirVector, AndromedaArrow, Earthquake, EnchantedBarrier, FireBolt, IceBolt, LaserExedra, LeafCut, ProminenceBlast, RockBlast, SolarBeam, SpiralCannon, StarWind, TempestFury, Thunderbolt, TidalSurge } from "../../dragon-skills/data/skills-exclusive";
 import { DragonBattleDto } from "../model/dto/dragon-battle.dto";
 import { Dragon } from "../model/dragon.entity";
 import { BattleResultDto } from "../model/dto/battle-result.dto";
@@ -204,36 +204,29 @@ export class DragonBattleService {
         let extraLogs = [];
 
         if (attacker.skills.prominenceBlast > 0) {
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (attacker.skills.prominenceBlast / 8) * (2.5 * (attacker.magicalAttack + attacker.physicalAttack));
-            let inflictedDamege = baseDamage - (defender.resistance + defender.armor);
-            inflictedDamege = this.mathService.limit(attacker.level / 5, inflictedDamege, inflictedDamege);
-            inflictedDamege = Math.min(inflictedDamege, 0.75 * defender.health)
-            defender.health -= inflictedDamege;
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(ProminenceBlast, attacker, defender);
+            defender.health -= inflictedDamage;
             attacker.mana = 0;
-            log = this.dragonBattleHelperService.getSkillLog('Prominence Blast', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
+            log = this.dragonBattleHelperService.getSkillLog('Prominence Blast', attacker, defender, baseDamage, inflictedDamage, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
         if (attacker.skills.tidalSurge > 0) {
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (attacker.skills.tidalSurge / 16) * (1 * attacker.magicalAttack);
-            let inflictedDamege = baseDamage - defender.resistance;
-            inflictedDamege = this.mathService.limit(attacker.skills.tidalSurge, inflictedDamege, inflictedDamege);
-            defender.health -= inflictedDamege;
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(TidalSurge, attacker, defender);
+            defender.health -= inflictedDamage;
             let speedReduction = this.mathService.randRange(0.9, 1.1) * (5 + 0.025 * defender.speed * attacker.skills.tidalSurge);
             speedReduction = this.mathService.limit(attacker.skills.tidalSurge, speedReduction, defender.speed / 3);
             defender.speed -= speedReduction;
             extraLogs.push(`<div class="log-extra">+ reduced speed by (${speedReduction.toFixed(1)})</div>`);
-            log = this.dragonBattleHelperService.getSkillLog('Tidal Surge', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
+            log = this.dragonBattleHelperService.getSkillLog('Tidal Surge', attacker, defender, baseDamage, inflictedDamage, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
         if (attacker.skills.earthquake > 0) {
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (attacker.skills.earthquake / 16) * (1 * attacker.magicalAttack);
-            let inflictedDamege = baseDamage - defender.resistance;
-            inflictedDamege = this.mathService.limit(attacker.skills.earthquake, inflictedDamege, inflictedDamege);
-            defender.health -= inflictedDamege;
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(Earthquake, attacker, defender);
+            defender.health -= inflictedDamage;
             const armorBreak = defender.armor * (attacker.skills.earthquake / 80);
             defender.armor -= armorBreak;
             extraLogs.push(`<div class="log-extra">+ broken (${armorBreak.toFixed(1)}) armor</div>`);
-            log = this.dragonBattleHelperService.getSkillLog('Earthquake', attacker, defender, baseDamage, inflictedDamege, extraLogs, 'skill-special skill-initial')
+            log = this.dragonBattleHelperService.getSkillLog('Earthquake', attacker, defender, baseDamage, inflictedDamage, extraLogs, 'skill-special skill-initial')
             return { attacker: attacker, defender: defender, skip: false, log: log };
         }
         return turnResult;
@@ -247,7 +240,6 @@ export class DragonBattleService {
         let cssClasses = turnResult.cssClasses;
 
         let blockedHit = 0;
-        let castFactor = attacker.skills.conserve ? 1 - (attacker.skills.conserve / 60) : 1;
 
         /**
          * Pre-spell effects
@@ -269,11 +261,8 @@ export class DragonBattleService {
          */
         if (this.dragonBattleHelperService.tryUseSkill(attacker, MagicArrow)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, MagicArrow);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.magicArrow / 10) * (1.1 * attacker.magicalAttack)
-            let inflictedDamege = baseDamage - defender.resistance;
-            inflictedDamege = this.mathService.limit(attacker.level / 5, inflictedDamege, inflictedDamege);
-            inflictedDamege *= (1 - blockedHit);
-            defender.health -= inflictedDamege;
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(MagicArrow, attacker, defender, blockedHit);
+            defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             let brokenResistance = 0;
             if (defender.resistance > 0) {
@@ -281,15 +270,12 @@ export class DragonBattleService {
                 defender.resistance -= brokenResistance;
                 extraLogs.push(`<div class="log-extra">+ broken ${brokenResistance.toFixed(1)} resistance</div>`);
             }
-            log = this.dragonBattleHelperService.getSkillLog('Magic Arrow', attacker, defender, baseDamage, inflictedDamege, extraLogs, cssClasses);
+            log = this.dragonBattleHelperService.getSkillLog('Magic Arrow', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
             return { attacker: attacker, defender: defender, skip: true, log: log };
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, FireBolt)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, FireBolt);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.fireBolt / 10) * (1.5 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 5, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(FireBolt, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             const extraCritPower = attacker.skills.fireBolt;
@@ -300,10 +286,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, IceBolt)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, IceBolt);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.iceBolt / 10) * (1.4 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 5, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(IceBolt, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             const skillSlow = this.mathService.randRange(0.9, 1.1) * (5 + 0.075 * defender.speed * attacker.skills.iceBolt);
@@ -314,10 +297,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, AirVector)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, AirVector);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.airVector / 10) * (1.3 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 5, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(AirVector, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             const skillHaste = this.mathService.randRange(0.9, 1.1) * (5 + 0.09 * attacker.speed * attacker.skills.airVector);
@@ -328,10 +308,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, RockBlast)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, RockBlast);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.rockBlast / 10) * (1.5 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 5, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(RockBlast, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             const stunChance = 0.1 + attacker.skills.rockBlast / 75;
@@ -344,10 +321,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, Thunderbolt)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, Thunderbolt);
-            let baseDamage = this.mathService.randRange(0.5, 1.9) * (1 + attacker.skills.thunderbolt / 10) * (1.9 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 5, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(Thunderbolt, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             const paralysisChance = 0.125 + attacker.skills.thunderbolt / 75;
@@ -361,10 +335,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, TempestFury)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, TempestFury);
-            let baseDamage = this.mathService.randRange(0.8, 1.4) * (1 + attacker.skills.tempestFury / 8) * (1.9 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(TempestFury, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             extraLogs.push(`<div class="log-extra">+ focus</div>`);
@@ -377,10 +348,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, SolarBeam)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, SolarBeam);
-            let baseDamage = this.mathService.randRange(0.9, 1.3) * (1 + attacker.skills.solarBeam / 7) * (1.9 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(SolarBeam, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             attacker.mana -= castCost;
             attacker.dodgeChance += 0.12;
@@ -390,12 +358,8 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, LaserExedra)) {
             const castCost =this.dragonBattleHelperService.getSkillCost(attacker, LaserExedra);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.laserExedra / 6) * (1.8 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(LaserExedra, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
-            defender.maxHealth -= inflictedDamage;
             attacker.mana -= castCost;
             extraLogs.push(`<div class="log-extra">+ permanent loss (${inflictedDamage.toFixed(1)}) health</div>`);
             log = this.dragonBattleHelperService.getSkillLog('Laser Exedra', attacker, defender, baseDamage, inflictedDamage, extraLogs, cssClasses);
@@ -403,10 +367,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, AndromedaArrow)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, AndromedaArrow);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.andromedaArrow / 9) * (1.8 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(AndromedaArrow, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             let destroyedMana = defender.maxMana * (attacker.skills.andromedaArrow / 125);
             defender.mana -= destroyedMana;
@@ -416,10 +377,7 @@ export class DragonBattleService {
             return { attacker: attacker, defender: defender, log: log, skip: true, cssClasses: cssClasses };
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, SpiralCannon)) {
-            let baseDamage = this.mathService.randRange(0.8, 1.2) * (1 + attacker.skills.spiralCannon / 11) * (1.7 * attacker.physicalAttack);
-            let inflictedDamage = baseDamage - defender.armor;
-            inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(SpiralCannon, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             const bleedingChance = 0.33 + attacker.skills.spiralCannon / 75;
             if (bleedingChance > Math.random()) {
@@ -432,10 +390,7 @@ export class DragonBattleService {
         }
         if (this.dragonBattleHelperService.tryUseSkill(attacker, StarWind)) {
             const castCost = this.dragonBattleHelperService.getSkillCost(attacker, StarWind);
-            let baseDamage = this.mathService.randRange(0.9, 1.1) * (1 + attacker.skills.starWind / 9) * (1.6 * attacker.magicalAttack);
-            let inflictedDamage = baseDamage - defender.resistance;
-            inflictedDamage = this.mathService.limit(attacker.level / 4, inflictedDamage, inflictedDamage);
-            inflictedDamage *= (1 - blockedHit);
+            const { baseDamage, inflictedDamage } = this.dragonBattleHelperService.getSkillInflictedDamage(StarWind, attacker, defender, blockedHit);
             defender.health -= inflictedDamage;
             if (defender.armor > 0) {
                 const brokenArmor = this.mathService.randRange(0.9, 1.1) * (3 + 0.02 * defender.armor * attacker.skills.starWind);

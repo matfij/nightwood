@@ -7,7 +7,7 @@ export class MathService {
         return Math.random() * (max - min) + min;
     }
 
-    limit(min: number, target: number, max: number): number {
+    limit(min: number, target: number, max: number = target): number {
         return Math.max(min, Math.min(max, target));
     }
 }
